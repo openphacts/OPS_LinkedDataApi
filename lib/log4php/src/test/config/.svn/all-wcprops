@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/config
+END
+phpunit_to_surefire.xslt
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/config/phpunit_to_surefire.xslt
+END

@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/174/trunk/lib/arc/parsers
+END
+ARC2_LegacyXMLParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_LegacyXMLParser.php
+END
+ARC2_SPARQLPlusParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_SPARQLPlusParser.php
+END
+ARC2_RSSParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_RSSParser.php
+END
+ARC2_SPOGParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_SPOGParser.php
+END
+ARC2_SemHTMLParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_SemHTMLParser.php
+END
+ARC2_JSONParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_JSONParser.php
+END
+ARC2_RDFParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_RDFParser.php
+END
+ARC2_RDFXMLParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_RDFXMLParser.php
+END
+ARC2_CBJSONParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_CBJSONParser.php
+END
+ARC2_TurtleParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_TurtleParser.php
+END
+ARC2_AtomParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_AtomParser.php
+END
+ARC2_SPARQLParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_SPARQLParser.php
+END
+ARC2_SPARQLXMLResultParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_SPARQLXMLResultParser.php
+END
+ARC2_SGAJSONParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/174/trunk/lib/arc/parsers/ARC2_SGAJSONParser.php
+END

@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php
+END
+LoggerReflectionUtilsTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerReflectionUtilsTest.php
+END
+bootstrap.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/bootstrap.php
+END
+LoggerExceptionTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerExceptionTest.php
+END
+LoggerAppenderTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerAppenderTest.php
+END
+LoggerHierarchyTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerHierarchyTest.php
+END
+LoggerTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerTest.php
+END
+phpunit.xml
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/phpunit.xml
+END
+LoggerRootTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerRootTest.php
+END
+LoggerTest.properties
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerTest.properties
+END
+LoggerFilterTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerFilterTest.php
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/README
+END
+LoggerLevelTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerLevelTest.php
+END
+LoggerLoggingEventTest.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/62/trunk/lib/log4php/src/test/php/LoggerLoggingEventTest.php
+END

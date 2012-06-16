@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 29
+/svn/!svn/ver/251/trunk/views
+END
+simple_xml.php
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/182/trunk/views/simple_xml.php
+END
+xslt.php
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/248/trunk/views/xslt.php
+END
+rdf_xml.php
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/4/trunk/views/rdf_xml.php
+END
+footer.html
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/73/trunk/views/footer.html
+END
+turtle.php
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/4/trunk/views/turtle.php
+END
+simple_json.php
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/121/trunk/views/simple_json.php
+END
+rdf_json.php
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/248/trunk/views/rdf_json.php
+END
+html.php
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/182/trunk/views/html.php
+END
+header.html
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/188/trunk/views/header.html
+END
+config.html.php
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/203/trunk/views/config.html.php
+END

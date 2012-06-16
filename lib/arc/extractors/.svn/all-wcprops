@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/!svn/ver/174/trunk/lib/arc/extractors
+END
+ARC2_DcExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_DcExtractor.php
+END
+ARC2_RDFExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_RDFExtractor.php
+END
+ARC2_RdfaExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_RdfaExtractor.php
+END
+ARC2_OpenidExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_OpenidExtractor.php
+END
+ARC2_TwitterProfilePicExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_TwitterProfilePicExtractor.php
+END
+ARC2_ErdfExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_ErdfExtractor.php
+END
+ARC2_MicroformatsExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_MicroformatsExtractor.php
+END
+ARC2_PoshRdfExtractor.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/174/trunk/lib/arc/extractors/ARC2_PoshRdfExtractor.php
+END

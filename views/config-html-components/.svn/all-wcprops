@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/185/trunk/views/config-html-components
+END
+config.pathTemplateMatch.php
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/184/trunk/views/config-html-components/config.pathTemplateMatch.php
+END
+formatters.html.php
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/184/trunk/views/config-html-components/formatters.html.php
+END
+variables.html.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/184/trunk/views/config-html-components/variables.html.php
+END
+listendpoint.html.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/184/trunk/views/config-html-components/listendpoint.html.php
+END
+itemendpoint.html.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/185/trunk/views/config-html-components/itemendpoint.html.php
+END

@@ -1,0 +1,35 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix cw: <http://www.conceptwiki.org/concept/>
+
+<#OpsAPI> a api:API ;
+	rdfs:label "OpenPHACTS Linked Data Cache"@en ;
+	api:maxPageSize "50";
+	api:defaultPageSize "10" ;
+	api:sparqlEndpoint <http://ops.few.vu.nl:9090/openrdf-sesame/repositories/OPS_postMarch> ;
+	api:contentNegotiation api:parameterBased ; 
+	api:endpoint _:compoundEndpoint . 
+
+_:proteinEndpoint a api:ItemEndpoint ;
+	api:uriTemplate "/protein?uri={uri}" ;
+        api:itemTemplate "{uri}" ;
+	api:defaultViewer _:proteinViewer . 
+
+_:proteinViewer a api:Viewer ;
+	api:name "proteinViewer" ;
+	api:template 
+"		?ops_item ";
+	api:where
+"		" .
+
+<http://rdf.farmbio.uu.se/chembl/onto/#forMolecule> a rdf:Property ;
+	api:label "uri" . 

@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders
+END
+LoggerAppenderEcho.html
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderEcho.html
+END
+LoggerAppenderFile.html
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderFile.html
+END
+LoggerAppenderSyslog.html
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderSyslog.html
+END
+LoggerAppenderPDO.html
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderPDO.html
+END
+LoggerAppenderMail.html
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderMail.html
+END
+LoggerAppenderConsole.html
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderConsole.html
+END
+LoggerAppenderDailyFile.html
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderDailyFile.html
+END
+LoggerAppenderMailEvent.html
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderMailEvent.html
+END
+LoggerAppenderRollingFile.html
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderRollingFile.html
+END
+LoggerAppenderPhp.html
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderPhp.html
+END
+LoggerAppenderSocket.html
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderSocket.html
+END
+LoggerAppenderAdodb.html
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderAdodb.html
+END
+LoggerAppenderNull.html
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/62/trunk/lib/log4php/docs/log4php/appenders/LoggerAppenderNull.html
+END

@@ -1,0 +1,107 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix cw: <http://www.conceptwiki.org/concept/>
+
+<#OpsAPI> a api:API ;
+	rdfs:label "OpenPHACTS Linked Data Cache"@en ;
+	api:maxPageSize "50";
+	api:defaultPageSize "10" ;
+	api:sparqlEndpoint <http://ops.few.vu.nl:9090/openrdf-sesame/repositories/OPS_postMarch> ;
+	api:contentNegotiation api:parameterBased ; 
+	api:endpoint _:compoundEndpoint . 
+
+_:compoundEndpoint a api:ItemEndpoint ;
+	api:uriTemplate "/compound?uri={uri}" ;
+        api:itemTemplate "{uri}" ;
+	api:defaultViewer _:compoundViewer . 
+
+_:compoundViewer a api:Viewer ;
+	api:name "compoundViewer" ;
+	api:template 
+"		?ops_item <http://www.w3.org/2004/02/skos/core#prefLabel> ?compound_name ;
+			<http://www.w3.org/2004/02/skos/core#exactMatch> ?replacedURI2 .
+		?replacedURI2 <http://rdf.chemspider.com/#smiles> ?smiles .
+                ?replacedURI2 <http://rdf.chemspider.com/#inchi> ?inchi . 
+                ?replacedURI2 <http://rdf.chemspider.com/#inchikey> ?inchiKey .
+                ?replacedURI2 <http://rdfs.org/ns/void#inDataset> <http://www.chemspider.com> .
+		?ops_item <http://www.w3.org/2004/02/skos/core#exactMatch> ?replacedURI3 . 
+                ?replacedURI3 ?bNode1 ?molformula.
+                ?replacedURI3 ?bNode2 ?alogp.
+                ?replacedURI3 ?bNode3 ?hba.
+                ?replacedURI3 ?bNode4 ?hbd.
+                ?replacedURI3 ?bNode5 ?molweight.
+                ?replacedURI3 ?bNode6 ?mw_freebase.
+                ?replacedURI3 ?bNode7 ?num_ro5_violations.
+                ?replacedURI3 ?bNode8 ?psa.
+                ?replacedURI3 ?bNode9 ?rtb.
+                ?replacedURI3 <http://rdfs.org/ns/void#inDataset> <http://data.kasabi.com/dataset/chembl-rdf>.
+                ?ops_item <http://www.w3.org/2004/02/skos/core#exactMatch> ?replacedURI4 .
+		?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/biotransformation> ?biotransformation.
+		?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/description> ?description.
+		?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/proteinBinding> ?proteinBinding.
+		?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/toxicity> ?toxicity.
+		?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/meltingPoint> ?meltingPoint.
+		?replacedURI4 <http://rdfs.org/ns/void#inDataset> <http://linkedlifedata.com/resource/drugbank>.";
+	api:where
+"		GRAPH <http://larkc.eu#Fixedcontext> {
+			?ops_item <http://www.w3.org/2004/02/skos/core#prefLabel> ?compound_name.
+		}
+		GRAPH <http://www.chemspider.com> {
+			?replacedURI2 <http://rdf.chemspider.com/#smiles> ?smiles.
+			?replacedURI2 <http://rdf.chemspider.com/#inchi> ?inchi.
+			?replacedURI2 <http://rdf.chemspider.com/#inchikey> ?inchiKey.
+			FILTER (?replacedURI2 = <http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5> || ?replacedURI2 = <http://data.kasabi.com/dataset/chembl-rdf/molecule/m276734> || ?replacedURI2 = <http://rdf.chemspider.com/187440> || ?replacedURI2 = <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/DB00398>)
+		}
+		GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+			?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode1 .
+			?bNode1 a <http://semanticscience.org/resource/CHEMINF_000042> ;
+				<http://semanticscience.org/resource/SIO_000300> ?molformula.
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode2 .
+				?bNode2 a <http://semanticscience.org/resource/CHEMINF_000305> ;
+					<http://semanticscience.org/resource/SIO_000300> ?alogp.}
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode3 .
+				?bNode3 a <http://semanticscience.org/resource/CHEMINF_000309> ;
+					<http://semanticscience.org/resource/SIO_000300> ?hba.}
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode4 .
+				?bNode4 a <http://semanticscience.org/resource/CHEMINF_000310> ;
+					<http://semanticscience.org/resource/SIO_000300> ?hbd.}
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode5 .
+				?bNode5 a <http://semanticscience.org/resource/CHEMINF_000198> ;
+					<http://semanticscience.org/resource/SIO_000300> ?molweight. }
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode6 .
+				?bNode6 a <http://semanticscience.org/resource/CHEMINF_000350> ;
+					<http://semanticscience.org/resource/SIO_000300> ?mw_freebase.}
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode7 .
+				?bNode7 a <http://semanticscience.org/resource/CHEMINF_000314> ;
+					<http://semanticscience.org/resource/SIO_000300> ?num_ro5_violations.}
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode8 .
+				?bNode8 a <http://semanticscience.org/resource/CHEMINF_000308> ;
+					<http://semanticscience.org/resource/SIO_000300> ?psa.}
+			OPTIONAL { ?replacedURI3 <http://semanticscience.org/resource/CHEMINF_000200> ?bNode9 .
+				?bNode9 a <http://semanticscience.org/resource/CHEMINF_000311> ;
+					<http://semanticscience.org/resource/SIO_000300> ?rtb.}
+			FILTER (?replacedURI3 = <http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5> || ?replacedURI3 = <http://data.kasabi.com/dataset/chembl-rdf/molecule/m276734> || ?replacedURI3 = <http://rdf.chemspider.com/187440> || ?replacedURI3 = <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/DB00398>)
+}
+			OPTIONAL {
+				GRAPH <http://linkedlifedata.com/resource/drugbank> {
+					?replacedURI4<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/affectedOrganism> ?affectedOrganism.
+					OPTIONAL { ?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/biotransformation> ?biotransformation. }
+					OPTIONAL { ?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/description> ?description.}
+					OPTIONAL { ?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/indication> ?indication.}
+					OPTIONAL { ?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/proteinBinding> ?proteinBinding.}
+					OPTIONAL { ?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/toxicity> ?toxicity.}
+					OPTIONAL { ?replacedURI4 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/meltingPoint> ?meltingPoint.}
+					FILTER (?replacedURI4 = <http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5> || ?replacedURI4 = <http://data.kasabi.com/dataset/chembl-rdf/molecule/m276734> || ?replacedURI4 = <http://rdf.chemspider.com/187440> || ?replacedURI4 = <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/DB00398>)
+}}" .
+
+<http://rdf.farmbio.uu.se/chembl/onto/#forMolecule> a rdf:Property ;
+	api:label "uri" . 
