@@ -11,14 +11,6 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix cw: <http://www.conceptwiki.org/concept/>
 
-<#OpsAPI> a api:API ;
-	rdfs:label "OpenPHACTS Linked Data Cache"@en ;
-	api:maxPageSize "50";
-	api:defaultPageSize "10" ;
-	api:sparqlEndpoint <http://ops.few.vu.nl:9090/openrdf-sesame/repositories/OPS_postMarch> ;
-	api:contentNegotiation api:parameterBased ; 
-	api:endpoint _:compoundEndpoint . 
-
 _:proteinEndpoint a api:ItemEndpoint ;
 	api:uriTemplate "/protein?uri={uri}" ;
         api:itemTemplate "{uri}" ;
@@ -31,5 +23,3 @@ _:proteinViewer a api:Viewer ;
 	api:where
 "		" .
 
-<http://rdf.farmbio.uu.se/chembl/onto/#forMolecule> a rdf:Property ;
-	api:label "uri" . 

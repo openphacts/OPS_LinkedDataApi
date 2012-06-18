@@ -1,5 +1,5 @@
 
-<dt>Formatters</dt>
+<dt>Formatters (use in the _format HTTP POST/GET parameter)</dt>
 <dd>
     <?php 
     if ($formatters = $ConfigGraph->getFormatters()):?>
@@ -16,7 +16,7 @@
                 <span class="rdf-type"><?php echo $ConfigGraph->get_label($formatterType) ?></span>
                 
                 </h3>
-            <dl>
+            <dl class="endpoint-properties">
             <dt title="this can be used in the `_format` query parameter">name</dt>
             <dd><?php echo $ConfigGraph->get_first_literal($formatterUri, API.'name') ?></dd>
             <dt>mimetype</dt>

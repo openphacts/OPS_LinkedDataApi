@@ -15,22 +15,33 @@
             function(){
                 $("dl.api-properties").hide();
                 $(".API>h2").click(function(){  $("dl.api-properties", $(this).parent()).toggle("slow");   }).css({"cursor":"pointer"});
-		
+		$("dl.endpoint-properties").hide();
+                $("h3").click(function(){  $("dl.endpoint-properties", $(this).parent()).toggle("slow");   }).css({"cursor":"pointer"});		
 		
             }
         );
     </script>
     <div class="container">
-    <div class="header">Puelia: an implementation of the Linked Data API</div>
+    <div class="header">OpenPHACTS Linked Data Cache</div>
     <div class="contents">
         <h1>Linked Data API Configuration APIs:</h1>
+	<div class="API">
+                <h2>Default variables</h2>
+                <p>Variables that can be supplied by HTTP GET/POST to all endpoints</p>
+ 	        <dl class="api-properties">
+		<?php require 'config-html-components/builtin-variables.html.php' ?>
+		<?php require 'config-html-components/formatters.html.php' ?>
+		</dl>
+	</div>
+
         <?php foreach ($ConfigGraph->get_subjects_of_type(API.'API') as $apiUri): ?>
             <div class="API">
                 <?php $ConfigGraph->resetApiAndEndpoint($apiUri) ?>
                 <h2><?php echo $ConfigGraph->get_label($apiUri) ?> <em class="type">API</em></h2>
-                <p><?php echo $ConfigGraph->get_description($apiUri) ?></p>
+                <p><?php echo $ConfigGraph->get_first_literal($apiUri, API.'description') ?></p>
                 
                 <dl class="api-properties">
+<!-- Antonis
                     <dt>Base Uri</dt>
                     <dd><?php 
                     $base = $ConfigGraph->get_first_literal($apiUri, API.'base');
@@ -41,32 +52,36 @@
 					endif;
                     ?>
                     <?php echo $base ?>
-                    </dd>
+                    </dd> -->
                     <dt>SPARQL Endpoint</dt><dd>
                         <?php 
                         $sparqlEndpoint = $ConfigGraph->get_first_resource($apiUri, API.'sparqlEndpoint');
                         echo empty($sparqlEndpoint)? "<em>Warning: No SPARQL Endpoint configured. This API will not work.</em>" : '<a href="'.$sparqlEndpoint.'">'.$sparqlEndpoint.'</a>';
                         ?>  
                     </dd>
-                    <dt>voiD Dataset</dt>
-                    <dd><?php 
-                    $voidDataset = $ConfigGraph->get_first_resource($apiUri, API.'dataset');
-                    
-                    ?>
-                    <a href="<?php echo $voidDataset ?>"><?php echo $ConfigGraph->get_label($voidDataset) ?></a>
-</dd>
+                    <dt>voiD Datasets</dt>
+<!-- Antonis -->
+                    <dd><?php if ($voidDatasets = $ConfigGraph->get_resource_triple_values($apiUri, API.'dataset')): ?> 
+                    <!-- $voidDataset = $ConfigGraph->get_first_resource($apiUri, API.'dataset'); -->
+                    <ul>
+			<?php foreach ($voidDatasets as $voidDataset): ?>
+                    		<li><a href="<?php echo $voidDataset ?>"><?php echo $ConfigGraph->get_label($voidDataset) ?></a></li>
+			<?php endforeach ?>
+		    </ul>
+			<?php endif ?>
+		    </dd>
                     
                     <dt>Vocabularies:</dt>
                     <dd>
                         <?php if ($vocabs = $ConfigGraph->get_resource_triple_values($apiUri, API.'vocabulary')): ?>
                         <ul>
                         <?php foreach ($vocabs as $vocabUri): ?>
-                            <li><a href="<?php echo $vocabUri ?>"><?php echo $ConfigGraph->get_label($vocabUri) ?></a></li>
+                            <li><a href="<?php echo $vocabUri ?>"><?php echo $ConfigGraph->get_first_literal($vocabUri, API.'label') ?></a></li>
                         <?php endforeach ?>
                         </ul>
                         <?php endif ?>
                     </dd>
-                    <dt>Default Viewer</dt>
+<!--                    <dt>Default Viewer</dt>
                     <dd>
                         <a href="<?php
                           $defaultViewerUri = $ConfigGraph->get_first_resource($apiUri, API.'defaultViewer');
@@ -74,26 +89,26 @@
                         ?>"><?php
                         echo $ConfigGraph->get_label($defaultViewerUri);
                         ?></a>
-                    </dd>
+                    </dd>-->
                     <?php require 'config-html-components/variables.html.php' ?>
 
-                    <dt>Item Endpoints:</dt>
+                    <dt>Item Endpoints (click to expand):</dt>
                     <dd>
 <?php require 'config-html-components/itemendpoint.html.php' ?>
                     </dd>
                     
                     
-                      <dt>List Endpoints:</dt>
+                      <dt>List Endpoints (click to expand):</dt>
                       <dd>
 <?php require 'config-html-components/listendpoint.html.php' ?>                        
                       </dd>   
-<?php require 'config-html-components/formatters.html.php' ?>                
+<!--<?php require 'config-html-components/formatters.html.php' ?>                -->
                                        
                 </dl>
             </div>
         <?php endforeach ?>
 
-<div>
+<!-- Antonis <div>
     <h3>Property Chain Short Names</h3>
     <?php
         $propertyChainNames = array();
@@ -121,7 +136,7 @@
                     </li>
         <?php endforeach ?>
     </ul>
-</div>    
+</div>   --> 
 
     </div>
     <?php include 'footer.html' ?>

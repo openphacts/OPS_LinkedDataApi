@@ -2,16 +2,22 @@
       <ul>
       <?php foreach ($endpoints as $endpointUri): ?>
   <li>
-      <h3>
-          <?php $uriTemplate = $ConfigGraph->get_first_literal($endpointUri, API.'uriTemplate') ; 
-              echo $uriTemplate ;
-               ?> <em class="type">Item Endpoint</em>
+      <h3><!-- Antonis -->
+          <?php $endpointName = $ConfigGraph->get_first_literal($endpointUri, API.'name') ; 
+              echo $endpointName ;
+               ?> <em class="type rdf-type">Item Endpoint</em>
       </h3>
   
-      <dl>
+      <dl class="endpoint-properties">
+	  <dt>Description:</dt>
+          <dd>
+              <?php $description = $ConfigGraph->get_first_literal($endpointUri, API.'description') ;
+                echo $description ?>
+          </dd>
           <dt>URI Template:</dt>
           <dd>
-              <?php echo $uriTemplate ?>
+              <?php $uriTemplate = $ConfigGraph->get_first_literal($endpointUri, API.'uriTemplate') ;
+		echo $uriTemplate ?>
           </dd>
           <?php if ($exampleRequestPaths = $ConfigGraph->get_literal_triple_values($endpointUri, API.'exampleRequestPath')): ?>
         <dt>Example URIs:</dt>
@@ -20,7 +26,7 @@
             <?php foreach ($exampleRequestPaths as $exampleRequestPath): ?>
             <li>
                 <a href="<?php echo $Request->getInstallSubDir().$exampleRequestPath ?>"><?php echo $exampleRequestPath ?></a>
-                <?php include 'config.pathTemplateMatch.php' ?>
+<!--Antonis     <?php include 'config.pathTemplateMatch.php' ?> -->
             </li>
             <?php endforeach ?>
             </ul>
@@ -45,8 +51,15 @@
                   </ul>
                   </dd>
                   <?php endif ?>
-
-                  
+<!--Antonis-->
+              	<?php if ($template = $ConfigGraph->get_literal_triple_values($viewerUri, API.'template')): ?>
+                  <dt>Response Template:</dt>
+                  <dd>
+		  <pre><code>
+<?php echo htmlentities($template[0]) ?>
+                  </code></pre>
+                  </dd>
+                  <?php endif ?>    
               </dl>
           </li>
       <?php endforeach ?>

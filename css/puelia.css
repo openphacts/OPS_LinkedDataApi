@@ -564,6 +564,10 @@ dl.api-properties {
 	margin-left: 2em;
 }
 
+dl.endpoint-properties {
+        margin-left: 2em;
+}
+
 header, div.header {
 	font-size: 2em;
 	color: green;
@@ -628,11 +632,11 @@ dd.viewers dt {
 }
 
 code {
-	font-size: 1.5em;
+	font-size: 12px;
 	font-family: monaco, monospace;
 }
 dt>code {
-	font-size: 1em;
+	font-size: 12px;
 }
 
 # dt, dd { display: block; float: left; margin-top: 20px; }

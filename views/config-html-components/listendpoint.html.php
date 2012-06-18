@@ -4,11 +4,11 @@
           <?php $ConfigGraph->resetApiAndEndpoint($apiUri, $endpointUri); ?>
   <li>
       <h3>
-          <?php $uriTemplate =  $ConfigGraph->get_first_literal($endpointUri, API.'uriTemplate') ?>
-          <a href="<?php echo $base.$uriTemplate ?>"><?php echo $uriTemplate ?></a>
+	  <?php $endpointName = $ConfigGraph->get_first_literal($endpointUri, API.'name') ;
+            echo $endpointName ;?>
            <em class="type rdf-type">List Endpoint</em>
       </h3>
-      <dl>
+      <dl class="endpoint-properties">
             <?php if ($exampleRequestPaths = $ConfigGraph->get_literal_triple_values($endpointUri, API.'exampleRequestPath')): ?>
         <dt>Example URIs:</dt>
         <dd>
@@ -31,7 +31,7 @@
 <code><?php echo htmlentities($filter) ?></code>
                 <?php endforeach ?>
             </dd>
-            <?php if ($where = $ConfigGraph->getSelectWhere()): ?>
+<!--Antonis <?php if ($where = $ConfigGraph->getSelectWhere()): ?>
             <dt>Selector <code>WHERE</code></dt>
             <dd>
                 <pre>
@@ -40,7 +40,7 @@
                     </code>
                 </pre>
             </dd>
-            <?php endif ?>
+            <?php endif ?> -->
             <?php if ($viewers=$ConfigGraph->get_resource_triple_values($endpointUri, API.'viewer')) :?>
         <dt>Viewers:</dt>
         <dd class="viewers">
@@ -80,6 +80,15 @@
                     There is no description of this viewer ( <?php echo $defaultViewer ?> ) in the api config files; it will not work. 
                 </p>
             <?php endif ?>
+<!-- Antonis -->
+                <?php if ($template = $ConfigGraph->get_literal_triple_values($defaultViewer, API.'template')): ?>
+                  <dt>Response Template:</dt>
+                  <dd>
+                  <pre><code>
+<?php echo htmlentities($template[0]) ?>
+                  </code></pre>
+                  </dd>
+                  <?php endif ?>
           </dd>
       <?php endif ?>
           

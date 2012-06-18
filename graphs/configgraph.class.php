@@ -672,20 +672,20 @@ class ConfigGraph extends PueliaGraph {
                 $this->_vocab = new VocabularyGraph();
                 $vocabUris = $this->getVocabularies();
                 $vocabUris = array_unique($vocabUris);
-                if(!empty($vocabUris)){
-                    foreach($this->getVocabularies() as $vocab){
-                        $vocabUrl = preg_replace('/#.*/', '', $vocab);
-                        $request = $this->_requestFactory->make('GET', $vocabUrl);
-                        $request->set_accept('application/rdf+xml,application/turtle,text/turtle,text/rdf+n3,application/xml;q=0.5,text/plain;q=0.5,text/html;q=0.5,*/*;q=0.4');
-                        $response = $request->execute();
-                        if($response->status_code >= 200 && $response->status_code <= 400){
-                          $this->_vocab->add_rdf($response->body);
-                        } 
-                        else {
-                            throw new ConfigGraphException("The vocabulary {$vocabUrl} could not be fetched. a GET returned a {$response->status_code}");
-                        }
-                    }
-                }
+#Antonis botch  if(!empty($vocabUris)){
+#	        foreach($this->getVocabularies() as $vocab){
+#                        $vocabUrl = preg_replace('/#.*/', '', $vocab);
+#		         $request = $this->_requestFactory->make('GET', $vocabUrl);
+#                        $request->set_accept('application/rdf+xml,application/turtle,text/turtle,text/rdf+n3,application/xml;q=0.5,text/plain;q=0.5,text/html;q=0.5,*/*;q=0.4');
+#                        $response = $request->execute();
+#                        if($response->status_code >= 200 && $response->status_code <= 400){
+#                          $this->_vocab->add_rdf($response->body);
+#                        } 
+#                        else {
+#                            throw new ConfigGraphException("The vocabulary {$vocabUrl} could not be fetched. a GET returned a {$response->status_code}");
+#                        }
+#                    }
+#                }
                 return $this->_vocab;
             }
     }
