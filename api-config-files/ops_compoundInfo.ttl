@@ -13,7 +13,7 @@
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/>
 
-<http://ops.few.vu.nl> a api:API ;
+<#compound> a api:API ;
         rdfs:label "Compound"@en ;
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
@@ -49,7 +49,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables name ?ops_item" .
+	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
 <#compoundViewer> a api:Viewer ;
 	api:name "compoundViewer" ;

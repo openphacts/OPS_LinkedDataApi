@@ -1,4 +1,4 @@
-@base <http://www.openphacts.org/api> .
+@base <http://www.openphacts.org/api#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -16,9 +16,10 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix uniprot: <http://purl.uniprot.org/core/>
 
-<#compound> a api:API ;
-        rdfs:label "Compound"@en ;
+<#enzyme> a api:API ;
+        rdfs:label "Enzyme Classification"@en ;
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
@@ -32,34 +33,34 @@
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
-	api:description "An API configuration to return information about compounds" ;
+	api:vocabulary <http://purl.uniprot.org/core/> ;
+	api:description "An API configuration to return information about members if Enzyme Classification classes." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Compound Pharmacology Count" ;
-		api:description "The total number of acitivity values in the LDC for a given compound" ;
-		api:uriTemplate "/compound/pharmacology/count?uri={uri}" ;
-        	api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
-		api:viewer <#compoundPharmacologyCountViewer> ; 
-		api:defaultViewer <#compoundPharmacologyCountViewer> . ] .
+		api:name "Get Enzyme Classification Class Members" ;
+		api:description "A representation of all members of a given Enzyme Class." ;
+		api:uriTemplate "/target/enzyme/members?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/target/enzyme/members?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-";
+		api:viewer <#enzymeMemberViewer> ;
+		api:defaultViewer <#enzymeMemberViewer> ] .
 
-<http://www.openphacts.org/api#> api:label "ops" .
-<http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://purl.uniprot.org/core/> api:label "uniprot" .
 
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
-<#compoundPharmacologyCountViewer> a api:Viewer ;
-	api:name "compoundPharmacologyCountViewer" ;
+<#enzymeMemberViewer> a api:Viewer ;
+	api:name "enzymeMemberViewer";
 	api:template 
-"?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
-	api:where
-"{ SELECT (COUNT(?activity_uri) AS ?count) {
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-		?activity_uri chembl:forMolecule ?chembl_uri;
-			chembl:type ?std_type;
-			chembl:relation ?relation;
-			chembl:standardValue ?std_value;
-			chembl:standardUnits ?std_unit;
-			chembl:onAssay ?assay_uri . }}}" .
+"?ops_item ops:member ?member .
+?member uniprot:name ?member_name .";
+api:where 
+"GRAPH <http://purl.uniprot.org/enzyme/direct> {
+	?member rdfs:subClassOf ?ops_item .
+}
+GRAPH <http://purl.uniprot.org/enzyme> {
+	?member uniprot:name ?member_name .
+}" .
+

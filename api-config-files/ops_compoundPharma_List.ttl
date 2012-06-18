@@ -18,7 +18,7 @@
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 
-<http://ops.few.vu.nl> a api:API ;
+<#compound> a api:API ;
         rdfs:label "Compound"@en ;
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
@@ -41,7 +41,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri"; 
-	api:value "A URLEncoded input URI" .
+	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
 <#compoundPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/pharmacology/pages?uri={uri}" ;
