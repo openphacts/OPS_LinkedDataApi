@@ -14,116 +14,51 @@
 @prefix sio: <http://semanticscience.org/resource/>
 
 <#compound> a api:API ;
-        rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        rdfs:label "Document"@en ;
+        api:sparqlEndpoint <http://ops-virtuoso.scai.fraunhofer.de:8892/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
-	api:dataset <http://www.chemspider.com> ;
-	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
-	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
-	api:vocabulary <http://rdf.chemspider.com/#> ;
-	api:vocabulary <http://semanticscience.org/resource/> ;
-	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
-	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
-	api:description "An API configuration to return information about compounds" ;
+	api:dataset <http://www.ncbi.nlm.nih.gov/pubmed/> ;
+	api:dataset <https://trac.nbic.nl/data-mining/> ;
+	api:vocabulary <http://purl.org/dc/terms/> ;
+	api:vocabulary <http://www.w3.org/1999/02/22-rdf-syntax-ns#> ;
+	api:description "An API configuration to return information about documents" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Compound Information" ;
-		api:description "Returns information about a single compound that corresponds to {uri}.";
-		api:uriTemplate "/compound?uri={uri}" ;
+		api:name "Document Information" ;
+		api:description "Returns information about a single document that corresponds to {uri}.";
+		api:uriTemplate "/document?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
-		api:viewer <#compoundViewer> ;
-		api:defaultViewer <#compoundViewer> . ] .
+		api:exampleRequestPath "/document?uri=http%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpubmed%11999999";
+		api:viewer <#documentViewer> ;
+		api:defaultViewer <#documentViewer> . ] .
 
-<http://www.chemspider.com> api:label "ChemSpider" .
-<http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.ncbi.nlm.nih.gov/pubmed/> api:label "PubMed" .
+<https://trac.nbic.nl/data-mining/> api:label "Peregrine" .
 
-<http://rdf.chemspider.com/#> api:label "chemspider" .
-<http://semanticscience.org/resource/> api:label "sio" .
-<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> api:label "drugbank" .
-<http://www.w3.org/2004/02/skos/core#> api:label "skos" .
+<http://purl.org/dc/terms/> api:label "dc-term" .
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#> api:label "rdf" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
-<#compoundViewer> a api:Viewer ;
-	api:name "compoundViewer" ;
+<#documentViewer> a api:Viewer ;
+	api:name "documentViewer" ;
 	api:template 
-"?ops_item skos:exactMatch ?cw_uri .
-?cw_uri skos:prefLabel ?compound_name ;
-	void:inDataset <http://www.conceptwiki.org> .
-?ops_item skos:exactMatch ?cs_uri .
-?cs_uri chemspider:smiles ?smiles ;
-	chemspider:inchi ?inchi ;
-	chemspider:inchikey ?inchiKey ;
-	void:inDataset <http://www.chemspider.com> .
-?ops_item skos:exactMatch ?chembl_uri . 
-?chembl_uri ?bNode1 ?molformula ;
-	?bNode2 ?alogp ;
-	?bNode3 ?hba ;
-	?bNode4 ?hbd ;
-	?bNode5 ?molweight ;
-	?bNode6 ?mw_freebase ;
-	?bNode7 ?num_ro5_violations ;
-	?bNode8 ?psa ;
-	?bNode9 ?rtb ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
-?ops_item skos:exactMatch ?db_uri .
-?db_uri drugbank:biotransformation ?biotransformation ;
-	drugbank:description ?description ;
-	drugbank:proteinBinding ?proteinBinding ;
-	drugbank:toxicity ?toxicity ;
-	drugbank:meltingPoint ?meltingPoint ;
-	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
+"?ops_item rdf:type <http://nlp2rdf.lod2.eu/schema/string/Document>.
+?ops_item dc-term:title ?title .
+?ops_item dc-term:creator ?author .
+?ops_item dc-term:date ?date .
+?ops_item dc-term:abstract ?abstract .
+?ops_item dc-term:identifier ?pmid .
+?ops_item dc-term:publisher ?publisher .";
 	api:where
 "GRAPH <http://www.conceptwiki.org> {
-	?cw_uri skos:prefLabel ?compound_name.
-}
-GRAPH <http://www.chemspider.com> {
-	?cs_uri chemspider:smiles ?smiles.
-	?cs_uri chemspider:inchi ?inchi.
-	?cs_uri chemspider:inchikey ?inchiKey.
-}
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?chembl_uri sio:CHEMINF_000200 ?bNode1 .
-	?bNode1 a sio:CHEMINF_000042 ;
-		sio:SIO_000300 ?molformula.
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode2 .
-		?bNode2 a sio:CHEMINF_000305 ;
-			sio:SIO_000300 ?alogp.}
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode3 .
-		?bNode3 a sio:CHEMINF_000309 ;
-			sio:SIO_000300?hba.}
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode4 .
-		?bNode4 a sio:CHEMINF_000310 ;
-			sio:SIO_000300 ?hbd.}
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode5 .
-		?bNode5 a sio:CHEMINF_000198 ;
-			sio:SIO_000300 ?molweight. }
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode6 .
-		?bNode6 a sio:CHEMINF_000350 ;
-			sio:SIO_000300 ?mw_freebase.}
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode7 .
-		?bNode7 a sio:CHEMINF_000314 ;
-			sio:SIO_000300 ?num_ro5_violations.}
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode8 .
-		?bNode8 a sio:CHEMINF_000308 ;
-			sio:SIO_000300 ?psa.}
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode9 .
-		?bNode9 a sio:CHEMINF_000311 ;
-			sio:SIO_000300 ?rtb.}
-}
-GRAPH <http://linkedlifedata.com/resource/drugbank> {
-	OPTIONAL { ?db_uri drugbank:affectedOrganism ?affectedOrganism. }
-	OPTIONAL { ?db_uri drugbank:biotransformation ?biotransformation. }
-	OPTIONAL { ?db_uri drugbank:description ?description.}
-	OPTIONAL { ?db_uri drugbank:indication ?indication.}
-	OPTIONAL { ?db_uri drugbank:proteinBinding ?proteinBinding.}
-	OPTIONAL { ?db_uri drugbank:toxicity ?toxicity.}
-	OPTIONAL { ?db_uri drugbank:meltingPoint ?meltingPoint.}
+	?ops_item dc-term:title ?title .
+	?ops_item dc-term:creator ?author .
+	?ops_item dc-term:date ?date .
+	?ops_item dc-term:abstract ?abstract .
+	?ops_item dc-term: identifier ?pmid .
+	?ops_item dc-term:publisher ?publisher .
 }" .
