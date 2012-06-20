@@ -13,7 +13,7 @@
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/>
 
-<#compound> a api:API ;
+<#document> a api:API ;
         rdfs:label "Document"@en ;
         api:sparqlEndpoint <http://ops-virtuoso.scai.fraunhofer.de:8892/sparql/> ;
         api:contentNegotiation api:parameterBased ;
@@ -29,7 +29,7 @@
 		api:description "Returns information about a single document that corresponds to {uri}.";
 		api:uriTemplate "/document?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/document?uri=http%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpubmed%11999999";
+		api:exampleRequestPath "/document?uri=http%3A%2F%2Fwww.ncbi.nlm.nih.gov%2Fpubmed%2F11999999";
 		api:viewer <#documentViewer> ;
 		api:defaultViewer <#documentViewer> . ] .
 
@@ -37,7 +37,7 @@
 <https://trac.nbic.nl/data-mining/> api:label "Peregrine" .
 
 <http://purl.org/dc/terms/> api:label "dc-term" .
-<http://www.w3.org/1999/02/22-rdf-syntax-ns#> api:label "rdf" ;
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#> api:label "rdf" .
 
 <#input> api:name "uri" ;
 	api:label "uri";
@@ -54,11 +54,11 @@
 ?ops_item dc-term:identifier ?pmid .
 ?ops_item dc-term:publisher ?publisher .";
 	api:where
-"GRAPH <http://www.conceptwiki.org> {
+"GRAPH <http://documents_medline12.xml> {
 	?ops_item dc-term:title ?title .
 	?ops_item dc-term:creator ?author .
 	?ops_item dc-term:date ?date .
 	?ops_item dc-term:abstract ?abstract .
-	?ops_item dc-term: identifier ?pmid .
+	?ops_item dc-term:identifier ?pmid .
 	?ops_item dc-term:publisher ?publisher .
 }" .
