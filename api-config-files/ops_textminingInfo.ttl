@@ -46,7 +46,7 @@
 <#documentViewer> a api:Viewer ;
 	api:name "documentViewer" ;
 	api:template 
-"?ops_item rdf:type <http://nlp2rdf.lod2.eu/schema/string/Document>.
+"?ops_item rdf:type <http://nlp2rdf.lod2.eu/schema/string/Document> .
 ?ops_item dc-term:title ?title .
 ?ops_item dc-term:creator ?author .
 ?ops_item dc-term:date ?date .

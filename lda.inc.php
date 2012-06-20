@@ -3,7 +3,7 @@
 $appRoot = dirname(__FILE__);
 set_include_path(get_include_path() . PATH_SEPARATOR . $appRoot . ':lib/' );
 define('PUELIA_VERSION', '0.9');
-define('PUELIA_RDF_ACCEPT_MIMES', 'application/json;q=1,text/turtle;q=0.9,application/rdf+xml;q=0.8,*/*;q=0.1');
+define('PUELIA_RDF_ACCEPT_MIMES', 'application/rdf+xml;q=0.8,*/*;q=0.1');
 define('PUELIA_SPARQL_ACCEPT_MIMES', 'application/sparql-results+json;q=1,application/sparql-results+xml;q=0.8,*/*;q=0.1');
 define('MORIARTY_ARC_DIR', 'lib/arc/');
 define('MORIARTY_HTTP_CACHE_DIR', dirname(__FILE__). '/cache/');
