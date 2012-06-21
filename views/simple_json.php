@@ -10,7 +10,7 @@ switch($this->ConfigGraph->getEndpointType()){
 }
 
 $json = $DataGraph->to_simple_json($pageUri) ;
-if($callback = $Request->getParam('callback')){
+if($callback = $Request->getParam('_callback')){
 #    $callback = preg_replace("/[^_a-zA-Z0-9\.]/", "", $callback);
     echo "{$callback}({$json})"; 
 } else {
