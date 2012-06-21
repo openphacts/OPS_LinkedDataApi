@@ -66,7 +66,7 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	chembl:standardUnits ?std_unit ;
 	chembl:forMolecule ?compound_chembl ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?compound_uri ?node1 ?num_ro5_violations ;
+?compound_chembl ?node1 ?num_ro5_violations ;
 	?node2 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw .
@@ -78,37 +78,37 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	void:inDataset <http://www.conceptwiki.org/> .";
 	api:where 
 "GRAPH <http://purl.uniprot.org/enzyme/inference> {
-		?subclass rdfs:subClassOf ?ops_item 
-	}
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-		?target_chembl skos:exactMatch ?subclass;
-			dc:title ?target_name;
-			chembl:organism ?target_organism . 
-		?assay_uri chembl:hasTarget ?target_chembl ;
-			chembl:organism ?assay_organism .
-		?activity_uri chembl:onAssay ?assay_uri ;
-			chembl:type ?std_type ;
-			chembl:relation ?relation ;
-			chembl:standardValue ?std_value ;
-			chembl:standardUnits ?std_unit ;
-			chembl:forMolecule ?compound_chembl .
-		?compound_chembl owl:equivalentClass ?equiv_uri . 
-		?equiv_uri skos:exactMatch ?compound_cs .
-		OPTIONAL { ?compound_chembl sio:CHEMINF_000200 _:node1 . 
-			_:node1 a sio:CHEMINF_000314 ;
-				sio:SIO_000300 ?num_ro5_violations }
-		OPTIONAL { ?compound_chembl sio:CHEMINF_000200 _:node2 . 
-			_:node2 a sio:CHEMINF_000198 ;
-				sio:SIO_000300 ?molweight }
-	}
-	GRAPH <http://www.chemspider.com> {
-		?compound_cs chemspider:inchi ?inchi;
-			chemspider:inchikey ?inchi_key;
-			chemspider:smiles ?smiles . 
-	}
-	GRAPH <http://www.conceptwiki.org> {
-		?compound_cw skos:exactMatch ?compound_cs ; 
-			skos:prefLabel ?compound_name .
-	}".
+	?subclass rdfs:subClassOf ?ops_item 
+}
+GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+	?target_chembl skos:exactMatch ?subclass;
+		dc:title ?target_name;
+		chembl:organism ?target_organism . 
+	?assay_uri chembl:hasTarget ?target_chembl ;
+		chembl:organism ?assay_organism .
+	?activity_uri chembl:onAssay ?assay_uri ;
+		chembl:type ?std_type ;
+		chembl:relation ?relation ;
+		chembl:standardValue ?std_value ;
+		chembl:standardUnits ?std_unit ;
+		chembl:forMolecule ?compound_chembl .
+	?compound_chembl owl:equivalentClass ?equiv_uri . 
+	?equiv_uri skos:exactMatch ?compound_cs .
+	?compound_chembl sio:CHEMINF_000200 ?node1 . 
+	?node1 a sio:CHEMINF_000314 ;
+		sio:SIO_000300 ?num_ro5_violations .
+	?compound_chembl sio:CHEMINF_000200 ?node2 . 
+	?node2 a sio:CHEMINF_000198 ;
+		sio:SIO_000300 ?molweight 
+}
+GRAPH <http://www.chemspider.com> {
+	?compound_cs chemspider:inchi ?inchi;
+		chemspider:inchikey ?inchi_key;
+		chemspider:smiles ?smiles . 
+}
+GRAPH <http://www.conceptwiki.org> {
+	?compound_cw skos:exactMatch ?compound_cs ; 
+		skos:prefLabel ?compound_name .
+}".
 
 

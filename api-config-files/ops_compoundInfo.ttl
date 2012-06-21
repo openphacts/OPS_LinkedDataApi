@@ -98,7 +98,7 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 			sio:SIO_000300 ?alogp.}
 	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode3 .
 		?bNode3 a sio:CHEMINF_000309 ;
-			sio:SIO_000300?hba.}
+			sio:SIO_000300 ?hba.}
 	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode4 .
 		?bNode4 a sio:CHEMINF_000310 ;
 			sio:SIO_000300 ?hbd.}

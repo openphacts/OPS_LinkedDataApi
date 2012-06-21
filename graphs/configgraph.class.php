@@ -329,9 +329,12 @@ class ConfigGraph extends PueliaGraph {
             $name = $this->get_first_literal($variableUri, API.'name');
             $value = $this->get_first_literal($variableUri, API.'value');
             $variableBindings[$name]['value'] = $value;
+#Antonis botch
+	    $variableBindings[$name]['uri'] = $endpointUri;	
             if($type = $this->get_first_resource($variableUri, API.'type')){
                 $variableBindings[$name]['type'] = $type;                    
             }
+	   
         }
         return $variableBindings;
         

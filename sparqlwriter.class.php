@@ -120,7 +120,6 @@ class SparqlWriter {
             $namespaces = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
             return array($this->qnameOrUri($uri, $namespaces));
         } else {
-	    print_r('lame');
             $literal =  '"""'.$val.'"""';
             return $this->addDatatypeOrLangToLiteral($literal, $propertyUri, $langs);
         }
@@ -584,7 +583,26 @@ _SPARQL_;
     function getViewQueryForUri($uri, $viewerUri){
         return $this->getViewQueryForUriList(array($uri), $viewerUri);
     }
-    
+ 
+    function getFilterGraph() {
+	$filterGraph="{";
+	$params = $this->_request->getParams();
+	$vars = $this->_config->getEndpointConfigVariableBindings();
+	foreach ($params as $param_name => $param_value) {
+		foreach ($vars as $var) {
+			if (param_name==var){
+				$filterGraph.=$param_name . "}";	
+			}
+		}
+#		if ($prop = $this->_config->get_first_resource($name,API.'name') AND !empty($prop)
+#	 	  AND $hook = $this->_config->get_first_literal($prop, API.'sparqlHook')){
+#				$filterGraph.=$prop . $hook;
+#		}
+	}
+	#$filterGraph.="}";
+	return $filterGraph;
+    }
+   
     function getViewQueryForUriList($uriList, $viewerUri){
         
         $fromClause = $this->getFromClause();
@@ -595,21 +613,24 @@ _SPARQL_;
 			$query='Something went wrong';
 			$limit="";
 			$offset="";
+			$filterGraph = $this->getFilterGraph();
 			$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
 			if ($this->_config->getEndpointType() == API.'ListEndpoint') {
 				$limit =" LIMIT ".$this->getLimit();
 			        $offset =" OFFSET ".$this->getOffset();
 				$orderBy = $this->getOrderBy();
 				$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-				if (stripos($query, "SELECT ") !== false){
-                        	        $query .= " {$orderBy['orderBy']}  {$limit} {$offset} } }";
+				if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
+                        	        $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) . 
+						"\n{$filterGraph}\n" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))+1) .
+						"{$orderBy['orderBy']}  {$limit} {$offset} } }";
                         	}
 				else {
-        	                        $query .= "} {$orderBy['orderBy']} {$limit} {$offset} ";
+        	                        $query .= "{$filterGraph} } {$orderBy['orderBy']} {$limit} {$offset} ";
 				}
 			}
 			else {
-				$query.="}";
+				$query.="{$filterGraph}}";
 			}
 			return $query;
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){

@@ -349,9 +349,9 @@ class LinkedDataApiResponse {
             $this->DataGraph->add_literal_triple($pageUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
             $rdfListUri = '_:itemsList';
 
-			if($datasetUri = $this->ConfigGraph->getDatasetUri()){
-            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
-			}
+#			if($datasetUri = $this->ConfigGraph->getDatasetUri()){
+#            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
+#			}
 
 
             $this->DataGraph->add_resource_triple($pageUri, API.'items', $rdfListUri);
