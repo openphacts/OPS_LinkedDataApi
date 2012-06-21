@@ -21,5 +21,5 @@ _:proteinViewer a api:Viewer ;
 	api:template 
 "		?ops_item ";
 	api:where
-"		" .
+"	" .
 
