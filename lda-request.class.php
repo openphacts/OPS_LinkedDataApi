@@ -17,7 +17,7 @@ class LinkedDataApiRequest {
         '_orderBy',# is a space-separated list of OrderConditions
         '_select',#
         '_lang', # is a comma-separated list of languages
-        'callback', # for JSONP
+        '_callback', # for JSONP
         
         );
     
