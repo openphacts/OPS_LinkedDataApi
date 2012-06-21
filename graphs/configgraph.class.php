@@ -330,7 +330,7 @@ class ConfigGraph extends PueliaGraph {
             $value = $this->get_first_literal($variableUri, API.'value');
             $variableBindings[$name]['value'] = $value;
 #Antonis botch
-	    $variableBindings[$name]['uri'] = $endpointUri;	
+	    $variableBindings[$name]['uri'] = $variableUri;	
             if($type = $this->get_first_resource($variableUri, API.'type')){
                 $variableBindings[$name]['type'] = $type;                    
             }
@@ -349,8 +349,12 @@ class ConfigGraph extends PueliaGraph {
                 $name = $this->get_first_literal($variableUri, API.'name');
                 $value = $this->get_first_literal($variableUri, API.'value');
                 $variableBindings[$name]['value'] = $value;
+		$variableBindings[$name]['uri'] = $variableUri;
                 if($type = $this->get_first_resource($variableUri, API.'type')){
                     $variableBindings[$name]['type'] = $type;                    
+                }
+		if($sparql = $this->get_first_literal($variableUri, API.'filterVariable')){
+                    $variableBindings[$name]['sparqlVar'] = $sparql;
                 }
             }
         }
@@ -373,7 +377,8 @@ class ConfigGraph extends PueliaGraph {
     
     function getCompletedItemTemplate(){
         $itemTemplate = $this->getEndpointItemTemplate();
-        $bindings = $this->getAllProcessedVariableBindings();
+	$bindings = $this->getAllProcessedVariableBindings();
+#	print_r($bindings);
         $filledInTemplate = $this->bindVariablesInValue($itemTemplate, $bindings, RDFS.'Resource' );
         return $filledInTemplate;
     }
@@ -445,10 +450,11 @@ class ConfigGraph extends PueliaGraph {
     
     function getAllProcessedVariableBindings(){
         $bindings = $this->getAllVariableBindings();
-        foreach($bindings as $name => $value){
-            if($name==='callback'){
-                throw new ConfigGraphException("'callback' is reserved and cannot be used as a variable name");
-            }
+#        print_r($bindings);
+	foreach($bindings as $name => $value){
+            #if($name==='callback'){
+            #    throw new ConfigGraphException("'callback' is reserved and cannot be used as a variable name");
+            #}
           $bindings[$name]['value']  = $this->processVariableBinding($name, $bindings);
         }
         return $bindings;
@@ -498,8 +504,9 @@ class ConfigGraph extends PueliaGraph {
                 $this->getApiConfigVariableBindings(),
                 $this->getPathVariableBindings(),
                 $this->getParamVariableBindings(),
-                $this->getRequestVariableBindings(),
-                $this->getEndpointConfigVariableBindings()
+		$this->getEndpointConfigVariableBindings(),
+                $this->getRequestVariableBindings()
+#                $this->getEndpointConfigVariableBindings()
             );
         }
         return  $this->_allVariableBindings;

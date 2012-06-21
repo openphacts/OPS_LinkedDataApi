@@ -16,13 +16,15 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
-
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#>
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:10183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:type ;
+	api:variable chembl-ops:normalisedValue ;
+	api:variable <#input>;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -47,7 +49,14 @@
 
 chembl:type api:name "activity-type" ;
 	api:label "activity-type" ;
-	api:value "One of: 'IC50' , 'Activity' " ;
+	api:value "One of: 'IC50' , 'Potency' " ;
+	api:filterVariable "?activity_uri";
+	a rdf:Property .
+
+chembl-ops:normalisedValue api:name "activity-value" ;
+	api:label "activity-value" ;
+	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
@@ -87,13 +96,13 @@ ops:hasActivity owl:inverseOf chembl:forMolecule .
 	chembl:organism ?target_organism .";
 	api:where
 "GRAPH <http://www.conceptwiki.org> {
-	?ops_item skos:prefLabel ?compound_name.
+	?cw_uri skos:prefLabel ?compound_name.
 }
 GRAPH <http://www.chemspider.com> {
 	?cs_uri chemspider:smiles ?smiles ;
 		chemspider:inchi ?inchi ;
 		chemspider:inchikey ?inchiKey.
-	}
+}
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?activity_uri chembl:forMolecule ?chembl_uri;
 		chembl:type ?std_type;

@@ -20,9 +20,10 @@
 
 <#enzyme> a api:API ;
         rdfs:label "Enzyme Classification"@en ;
-        api:sparqlEndpoint <http://localhost:10183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
+	api:variable chembl:type;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;

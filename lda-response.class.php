@@ -207,16 +207,17 @@ class LinkedDataApiResponse {
         if($response->is_success()){
             $rdf = $response->body;
             $this->DataGraph->add_rdf($rdf);
+#	    echo $uri;
             $this->DataGraph->add_resource_triple($pageUri, FOAF.'primaryTopic', $uri);
             $label = $this->DataGraph->get_first_literal($uri, SKOS.'prefLabel');
-            if(!empty($label) || $label = $this->DataGraph->get_label($uri)){
-              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-            }
+#            if(!empty($label) || $label = $this->DataGraph->get_label($uri)){
+#              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
+#            }
  
             $this->DataGraph->add_resource_triple($uri , FOAF.'isPrimaryTopicOf', $pageUri);
             $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
 			if($datasetUri = $this->ConfigGraph->getDatasetUri()){
-            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
+#            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
               $voidRequest = $this->HttpRequestFactory->make('GET', $datasetUri);
               $voidRequest->set_accept(PUELIA_RDF_ACCEPT_MIMES);
               $voidResponse = $voidRequest->execute();

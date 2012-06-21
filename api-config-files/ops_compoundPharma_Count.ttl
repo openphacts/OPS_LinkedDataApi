@@ -19,9 +19,10 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:10183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
+	api:variable chembl:type;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -45,6 +46,11 @@
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+
+chembl:type api:name "activity-type" ;
+	api:label "activity-type" ;
+	api:value "One of: 'IC50' , 'Activity' " ;
+	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";

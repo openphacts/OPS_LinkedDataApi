@@ -337,7 +337,7 @@ _SPARQL_;
     
     function paramNameToPropertyNames($name){
         #remove min-/max-
-        $nameArray = $this->splitPrefixAndName($name);
+	$nameArray = $this->splitPrefixAndName($name);
         $name = $nameArray['name'];
         #split on dot
         $splitNames = explode('.', $name);
@@ -403,6 +403,7 @@ _SPARQL_;
             $propertyNames = $this->paramNameToPropertyNames($k);
             $propertyNamesWithUris = $this->mapParamNameToProperties($k);
             foreach($propertyNames as $pn){
+#Antonis
                   if(empty($propertyNamesWithUris[$pn])){
                         $this->_unknownPropertiesFromRequestParameter[]=$pn;
                     }
@@ -583,24 +584,45 @@ _SPARQL_;
     function getViewQueryForUri($uri, $viewerUri){
         return $this->getViewQueryForUriList(array($uri), $viewerUri);
     }
- 
+
+
+#Antonis 
     function getFilterGraph() {
-	$filterGraph="{";
 	$params = $this->_request->getParams();
-	$vars = $this->_config->getEndpointConfigVariableBindings();
+	$vars = $this->_config->getApiConfigVariableBindings();
+	$filterGraph = "\n{ ";
+#	print_r($params);
+#	print_r($vars);
+	$count=1;
 	foreach ($params as $param_name => $param_value) {
-		foreach ($vars as $var) {
-			if (param_name==var){
-				$filterGraph.=$param_name . "}";	
+	   if ($param_name != 'uri'){
+		foreach ($vars as $var_name => $var_props) {
+			if ($param_name==$var_name){
+		           if (stripos($param_value , "|")!== false){
+				$token = strtok($param_value,'|');
+				$filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
+				$token=strtok('|');
+				while ($token != false){
+					$filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
+					$token=strtok('|');
+				}
+			   }
+			   else {
+				$filterGraph.=  $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $param_value  . '"' . ".";	
+			   }
+			}
+			elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
+				$filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?_int_var_' . $count . " } ";
+				#$filterGraph .= " . FILTER( ?_int_var_" . $count . ' < "' . $param_value . '"^^<http://www.w3.org/2001/XMLSchema#float> || ?_int_var_' . $count . ' = "' . $param_value . '"^^<http://www.w3.org/2001/XMLSchema#float> ) }';
+				$count++;  
 			}
 		}
-#		if ($prop = $this->_config->get_first_resource($name,API.'name') AND !empty($prop)
-#	 	  AND $hook = $this->_config->get_first_literal($prop, API.'sparqlHook')){
-#				$filterGraph.=$prop . $hook;
-#		}
+	   }
 	}
-	#$filterGraph.="}";
-	return $filterGraph;
+	if ($filterGraph != "\n{ "){
+		$filterGraph .= " }\n";
+		return $filterGraph;
+	}
     }
    
     function getViewQueryForUriList($uriList, $viewerUri){
@@ -622,7 +644,7 @@ _SPARQL_;
 				$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
 				if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
                         	        $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) . 
-						"\n{$filterGraph}\n" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))+1) .
+						"{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
 						"{$orderBy['orderBy']}  {$limit} {$offset} } }";
                         	}
 				else {
