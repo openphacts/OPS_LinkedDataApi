@@ -58,12 +58,21 @@ class SparqlWriter {
     }
     
     function getExplicitSelectQuery(){
-        if($template = $this->getSelectTemplate()){
+#        if($template = $this->getSelectTemplate()){
+	if($template = $this->getConfigGraph()->getSelectWhere()){
             $limit = $this->getLimit();
             $offset = $this->getOffset();
-
-            $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
-            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
+	    $orderBy = $this->getOrderBy();
+	    if (empty($orderBy['orderBy'])) {
+		$orderBy['orderBy']='ORDER BY ?item';
+	    }
+	    $filterGraph = $this->getFilterGraph();
+#            $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
+#Antonis            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
+	    $sparql= 'SELECT DISTINCT ?item WHERE {' .  "{$filterGraph} {$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
+	    $ops_uri = $this->_request->getParam('uri');
+	    $sparql = str_replace('?ops_item', '<'.$ops_uri.'>', $sparql);
+	    return $sparql;	
         } else {
             return false;
         }
@@ -590,7 +599,7 @@ _SPARQL_;
     function getFilterGraph() {
 	$params = $this->_request->getParams();
 	$vars = $this->_config->getApiConfigVariableBindings();
-	$filterGraph = "\n{ ";
+	$filterGraph = "{\n";
 #	print_r($params);
 #	print_r($vars);
 	$count=1;
@@ -608,19 +617,34 @@ _SPARQL_;
 				}
 			   }
 			   else {
-				$filterGraph.=  $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $param_value  . '"' . ".";	
+				$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> "' . $param_value  . '"' . ". } ";	
 			   }
 			}
 			elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
-				$filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?_int_var_' . $count . " } ";
-				#$filterGraph .= " . FILTER( ?_int_var_" . $count . ' < "' . $param_value . '"^^<http://www.w3.org/2001/XMLSchema#float> || ?_int_var_' . $count . ' = "' . $param_value . '"^^<http://www.w3.org/2001/XMLSchema#float> ) }';
+				$filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+				$filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ') }';
 				$count++;  
 			}
+			elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
+                                $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+                                $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ' ) }';
+                                $count++;  
+                        }
+			elseif (stripos($param_name,"minEx-")!==false AND substr($param_name,6) == $var_name){
+                                $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+                                $filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' ) }';
+                                $count++;  
+                        }
+			elseif (stripos($param_name,"maxEx-")!==false AND substr($param_name,6) == $var_name){
+                                $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+                                $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' ) }';
+                                $count++;  
+                        }
 		}
 	   }
 	}
-	if ($filterGraph != "\n{ "){
-		$filterGraph .= " }\n";
+	if ($filterGraph != "{\n"){
+		$filterGraph .= "\n}";
 		return $filterGraph;
 	}
     }
@@ -641,10 +665,14 @@ _SPARQL_;
 				$limit =" LIMIT ".$this->getLimit();
 			        $offset =" OFFSET ".$this->getOffset();
 				$orderBy = $this->getOrderBy();
+ 		                if (empty($orderBy['orderBy'])) {
+		   	             $orderBy['orderBy']='ORDER BY ?item';
+            			}
+
 				$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
 				if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
                         	        $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) . 
-						"{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
+						"{ {$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
 						"{$orderBy['orderBy']}  {$limit} {$offset} } }";
                         	}
 				else {
@@ -652,7 +680,18 @@ _SPARQL_;
 				}
 			}
 			else {
-				$query.="{$filterGraph}}";
+			   $orderBy = $this->getOrderBy();
+	                   if (empty($orderBy['orderBy']) AND stripos($query, "SELECT ") !== false) {
+		                $orderBy['orderBy']='ORDER BY ?item';
+		           }
+
+                           if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
+                                $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT ")) + 1) .
+                                       "{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) . "}}"; 
+			   }
+			   else {
+				$query.="{$filterGraph}} {$orderBy['orderBy']}";
+			   }
 			}
 			return $query;
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){

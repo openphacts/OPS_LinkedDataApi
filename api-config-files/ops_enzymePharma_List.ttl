@@ -1,0 +1,165 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix cw: <http://www.conceptwiki.org/concept/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
+
+<#enzyme> a api:API ;
+        rdfs:label "Enzyme Classification"@en ;
+        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:variable chembl:organism ;
+        api:variable <#input> ; 
+	api:variable chembl:type;
+	api:variable chembl-ops:normalisedValue ;
+	api:dataset <http://www.chemspider.com> ;
+	api:dataset <http://www.conceptwiki.org> ;
+	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:vocabulary <http://rdf.chemspider.com/#> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:description "An API configuration to return paginated information about members if Enzyme Classification classes." ;
+	api:endpoint <#enzymePharmacologyListEndpoint> .
+
+chembl:organism api:name "assay_organism" ;
+	api:label "assay_organism" ;
+	api:value "A literal organism in ChEMBL." ;
+	api:filterVariable "?assay_uri";
+	a rdf:Property .
+
+chembl:type api:name "activity_type" ;
+	api:label "activity_type" ;
+	api:filterVariable "?item";
+	api:value "One of: 'IC50' , 'Activity' " ;
+	a rdf:Property .
+
+chembl-ops:normalisedValue api:name "activity_value" ;
+	api:label "activity_value" ;
+	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:filterVariable "?item";
+	a rdf:Property .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+
+<#enzymePharmacologyListEndpoint> a api:ListEndpoint ;
+	api:uriTemplate "/enzyme/pharmacology/pages?uri={uri}" ;
+	api:name "Enzyme Pharmacology Paginated" ;
+	api:description "A page of items corresponding to acitivity values in the LDC for a given Enzyme Classification class" ;
+	api:exampleRequestPath "/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-";
+	api:exampleRequestPath "/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Homo%20sapiens";
+	api:selector [
+		api:where 
+"GRAPH <http://purl.uniprot.org/enzyme/inference> {
+	?subclass rdfs:subClassOf ?ops_item
+}
+GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
+	?target_chembl skos:exactMatch ?subclass ;
+		dc:title ?target_name ;
+		chembl:organism ?target_organism .
+	?assay_uri chembl:hasTarget ?target_chembl ;
+		chembl:organism ?assay_organism .
+	?item chembl:onAssay ?assay_uri ;
+		chembl:type ?std_type ;
+		chembl:relation ?relation ;
+		chembl:standardValue ?std_value ;
+		chembl:standardUnits ?std_unit ;
+		chembl:forMolecule ?compound_chembl .
+	?compound_chembl owl:equivalentClass ?equiv_uri . 
+	?equiv_uri skos:exactMatch ?compound_cs .
+}
+GRAPH <http://www.chemspider.com> {
+		?compound_cs chemspider:inchi ?inchi;
+			chemspider:inchikey ?inchi_key;
+			chemspider:smiles ?smiles . 
+	}
+	GRAPH <http://www.conceptwiki.org> {
+		?compound_cw skos:exactMatch ?compound_cs ; 
+			skos:prefLabel ?compound_name .
+	}
+" ;
+	] ;
+	api:defaultViewer <#enzymePharmacologyListViewer> .
+
+<#enzymePharmacologyListViewer> a api:Viewer ;
+        api:name "enzymePharmacologyListViewer" ;
+	api:template 
+"[] ops:input ?ops_item .
+?item chembl:forMolecule ?compound_chembl;
+	chembl:type ?std_type;
+	chembl:relation ?relation;
+	chembl:standardValue ?std_value;
+	chembl:standardUnits ?std_unit;
+	chembl:onAssay ?assay_uri ;
+	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+?assay_uri chembl:hasTarget ?target_chembl ;
+	   chembl:organism ?assay_organism .
+?target_chembl dc:title ?target_name;
+	chembl:organism ?target_organism ;
+	skos:exactMatch ?subclass. 
+?compound_chembl ?node1 ?num_ro5_violations ;
+	?node2 ?molweight ;
+	skos:exactMatch ?compound_cs ;
+	skos:exactMatch ?compound_cw .
+?compound_cs chemspider:smiles ?smiles ;
+	chemspider:inchi ?inchi ;
+	chemspider:inchikey ?inchiKey;
+	void:inDataset <http://rdf.chemspider.com/> .
+?compound_cw skos:prefLabel ?compound_name ;
+	void:inDataset <http://www.conceptwiki.org/> .
+" ; 
+	api:where 
+"{       
+SELECT DISTINCT ?item ?target_chembl ?subclass ?compound_chembl ?compound_cs ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?node2 ?num_ro5_violations {
+	GRAPH <http://purl.uniprot.org/enzyme/inference> {
+		?subclass rdfs:subClassOf ?ops_item 
+	}	
+	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+	?target_chembl skos:exactMatch ?subclass;
+		dc:title ?target_name;
+		chembl:organism ?target_organism . 
+	?assay_uri chembl:hasTarget ?target_chembl ;
+		chembl:organism ?assay_organism .
+	?item chembl:onAssay ?assay_uri ;
+		chembl:type ?std_type ;
+		chembl:relation ?relation ;
+		chembl:standardValue ?std_value ;
+		chembl:standardUnits ?std_unit ;
+		chembl:forMolecule ?compound_chembl .
+	?compound_chembl owl:equivalentClass ?equiv_uri . 
+	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
+		?node1 a sio:CHEMINF_000314 ;
+			sio:SIO_000300 ?num_ro5_violations }
+	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node2 . 
+		?node2 a sio:CHEMINF_000198 ;
+			sio:SIO_000300 ?molweight }
+	}
+	GRAPH <http://www.chemspider.com> {
+		?compound_cs chemspider:inchi ?inchi;
+			chemspider:inchikey ?inchi_key;
+			chemspider:smiles ?smiles . 
+	}
+	GRAPH <http://www.conceptwiki.org> {
+		?compound_cw skos:exactMatch ?compound_cs ; 
+			skos:prefLabel ?compound_name .
+	}
+}}" .

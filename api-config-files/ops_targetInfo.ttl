@@ -1,0 +1,103 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+
+<#target> a api:API ;
+        rdfs:label "Target"@en ;
+        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable <#input> ; 
+	api:dataset <http://www.chemspider.com> ;
+	api:dataset <http://www.conceptwiki.org> ;
+	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:vocabulary <http://rdf.chemspider.com/#> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:description "An API configuration to return information about targets" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Target Information" ;
+		api:description "Returns information about a single target that corresponds to {uri}.";
+		api:uriTemplate "/target?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/target?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F00059958-a045-4581-9dc5-e5a08bb0c291";
+		api:viewer <#targetViewer> ;
+		api:defaultViewer <#targetViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+
+<http://rdf.chemspider.com/#> api:label "chemspider" .
+<http://semanticscience.org/resource/> api:label "sio" .
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> api:label "drugbank" .
+<http://www.w3.org/2004/02/skos/core#> api:label "skos" .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+
+<#targetViewer> a api:Viewer ;
+	api:name "compoundViewer" ;
+	api:template 
+"?ops_item skos:exactMatch ?cw_uri ;
+	skos:exactMatch ?chembl_uri ;
+	skos:exactMatch ?db_uri .
+?cw_uri skos:prefLabel ?compound_name ;
+	void:inDataset <http://www.conceptwiki.org> .
+?chembl_uri chembl:hasKeyword ?keywords ;
+	chembl:hasDescription ?description ;
+	rdfs:subClassOf ?target_type ;
+	chembl:organism ?organism ;
+	rdfs:label ?synonyms ;	
+	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
+?db_uri drugbank:cellularLocation ?cellularLocation ;
+	drugbank:molecularWeight ?molecularWeight ;
+	drugbank:numberOfResidues ?numberOfResidues ;
+	drugbank:pdbIdPage ?pdbIdPage ;
+	drugbank:specificFunction ?specificFunction ;
+	drugbank:theoreticalPi ?theoreticalPi .
+" ;
+	api:where 
+"GRAPH <http://larkc.eu#Fixedcontext> {
+		?cw_uri skos:prefLabel ?target_name.
+	}
+{
+SELECT ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) {
+	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+		?chembl_uri chembl:hasKeyword ?keyword ;
+			chembl:hasDescription ?description ;
+			rdfs:subClassOf ?target_type ;
+			chembl:organism ?organism ;
+			rdfs:label ?synonym
+	}
+} GROUP BY ?target_type ?description ?organism ?molecularWeight ?numberOfResidues  
+}
+{
+SELECT (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi {
+	GRAPH <http://linkedlifedata.com/resource/drugbank> {
+		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
+		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
+		OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
+		OPTIONAL { ?db_uri drugbank:pdbIdPage ?pdbIdPage }
+		OPTIONAL { ?db_uri drugbank:specificFunction ?specificFunction }
+		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
+	}
+} GROUP BY ?pdbIdPage ?specificFunction ?theoreticalPi 
+}
+";
+

@@ -158,4 +158,4 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 				?bNode2 a sio:CHEMINF_000314 ;
 					sio:SIO_000300 ?num_ro5_violations. }
 		}
-	} }GROUP BY ?chembl_uri ?item ?std_type ?relation ?std_value ?std_unit ?assay_uri ?bNode1 ?molweight ?bNode2 ?num_ro5_violations ?activity_value " .
+	} }GROUP BY ?chembl_uri ?item ?std_type ?relation ?std_value ?std_unit ?assay_uri ?bNode1 ?molweight ?bNode2 ?num_ro5_violations ?activity_value" .
