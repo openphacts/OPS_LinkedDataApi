@@ -16,14 +16,17 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
 
 
 <#enzyme> a api:API ;
         rdfs:label "Enzyme Classification"@en ;
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
+	api:variable chembl:organism ;
         api:variable <#input> ; 
 	api:variable chembl:type;
+	api:variable chembl-ops:normalisedValue ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -42,8 +45,27 @@
 		api:uriTemplate "/target/enzyme/pharmacology?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-";
+		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Homo%20sapiens";
 		api:viewer <#enzymePharmacologyViewer> ;
 		api:defaultViewer <#enzymePharmacologyViewer> ] .
+
+chembl:organism api:name "assay_organism" ;
+	api:label "assay_organism" ;
+	api:value "A literal organism in ChEMBL." ;
+	api:filterVariable "?assay_uri";
+	a rdf:Property .
+
+chembl:type api:name "activity_type" ;
+	api:label "activity_type" ;
+	api:filterVariable "?item";
+	api:value "One of: 'IC50' , 'Activity' " ;
+	a rdf:Property .
+
+chembl-ops:normalisedValue api:name "activity_value" ;
+	api:label "activity_value" ;
+	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:filterVariable "?item";
+	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";

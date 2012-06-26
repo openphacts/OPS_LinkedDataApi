@@ -19,8 +19,8 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
 
-<#compound> a api:API ;
-        rdfs:label "Compound"@en ;
+<#target> a api:API ;
+        rdfs:label "Target"@en ;
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
@@ -35,13 +35,8 @@
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
-	api:description "An API configuration to return paginated pharmacology information about compounds and the target associated with them." ;
-	api:endpoint <#compoundPharmacologyListEndpoint> .
-
-<http://www.chemspider.com> api:label "ChemSpider" .
-<http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+	api:description "An API configuration to return paginated pharmacology information about a given target." ;
+	api:endpoint <#targetPharmacologyListEndpoint> .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -65,97 +60,104 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "uri";
 	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
-<#compoundPharmacologyListEndpoint> a api:ListEndpoint ;
-	api:uriTemplate "/compound/pharmacology/pages?uri={uri}" ;
-	api:name "Compound Pharmacology Paginated" ;
-	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;
-	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
-	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Mus%20musculus";
+<#targetPharmacologyListEndpoint> a api:ListEndpoint ;
+	api:uriTemplate "/target/pharmacology/pages?uri={uri}" ;
+	api:name "Enzyme Pharmacology Paginated" ;
+	api:description "A page of items corresponding to acitivity values in the LDC for a given Enzyme Classification class" ;
+	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F00059958-a045-4581-9dc5-e5a08bb0c291";
+	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F00059958-a045-4581-9dc5-e5a08bb0c291&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Homo%20sapiens";
 	api:selector [
 		api:where 
 "GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-?item ops:input ?ops_item .
-?item chembl:forMolecule ?chembl_uri ; 
-	chembl:type ?std_type;
-        chembl:relation ?relation;
-	chembl:standardValue ?std_value;
-        chembl:standardUnits ?std_unit;
-        chembl:onAssay ?assay_uri .
-?assay_uri chembl:hasTarget ?target_uri .
-?target_uri dc:title ?target_name ;
-	chembl:organism ?target_organism . }" ;
+	?item ops:input ?ops_item .
+	?chembl_uri chembl:organism ?target_organism .
+	?assay_uri chembl:hasTarget ?target_chembl ;
+		chembl:organism ?assay_organism .
+	?item chembl:onAssay ?assay_uri ;
+		chembl:type ?std_type ;
+		chembl:relation ?relation ;
+		chembl:standardValue ?std_value ;
+		chembl:standardUnits ?std_unit ;
+		chembl:forMolecule ?compound_chembl .
+	?compound_chembl owl:equivalentClass ?equiv_uri . 
+	?equiv_uri skos:exactMatch ?compound_cs .
+}
+GRAPH <http://www.chemspider.com> {
+		?compound_cs chemspider:inchi ?inchi;
+			chemspider:inchikey ?inchi_key;
+			chemspider:smiles ?smiles . 
+	}
+	GRAPH <http://www.conceptwiki.org> {
+		?cw_uri skos:prefLabel ?target_name . 
+		?compound_cw skos:exactMatch ?compound_cs ; 
+			skos:prefLabel ?compound_name .
+	}
+" ;
 	] ;
-	api:defaultViewer <#compoundPharmacologyListViewer> .
+	api:defaultViewer <#enzymePharmacologyListViewer> .
 
-<#compoundPharmacologyListViewer> a api:Viewer ;
-        api:name "compoundPharmacologyListViewer" ;
+<#enzymePharmacologyListViewer> a api:Viewer ;
+        api:name "enzymePharmacologyListViewer" ;
 	api:template 
 "[] ops:input ?ops_item .
-?item chembl:forMolecule ?chembl_uri;
+?item chembl:forMolecule ?compound_chembl;
 	chembl:type ?std_type;
 	chembl:relation ?relation;
 	chembl:standardValue ?std_value;
 	chembl:standardUnits ?std_unit;
 	chembl:onAssay ?assay_uri ;
-	chembl-ops:normalisedValue ?activity_value ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?assay_uri chembl:hasTarget [
-		ops:concatenatedURIs ?target_uris ;
-		dc:title ?target_names ;
-		chembl:organism ?target_organisms ];
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?chembl_uri skos:exactMatch ?cw_uri .
-?cw_uri skos:prefLabel ?compound_name ;
+?assay_uri chembl:hasTarget ?chembl_uri ;
+	   chembl:organism ?assay_organism .
+?chembl_uri chembl:organism ?target_organism ;
+	skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
-?chembl_uri skos:exactMatch ?cs_uri .
-?cs_uri chemspider:smiles ?smiles ;
+?compound_chembl ?node1 ?num_ro5_violations ;
+	?node2 ?molweight ;
+	skos:exactMatch ?compound_cs ;
+	skos:exactMatch ?compound_cw ;
+	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+?compound_cs chemspider:smiles ?smiles ;
 	chemspider:inchi ?inchi ;
 	chemspider:inchikey ?inchiKey;
 	void:inDataset <http://rdf.chemspider.com/> .
-?chembl_uri ?bNode1 ?molweight ;
-	?bNode2 ?num_ro5_violations ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?chembl_uri skos:exactMatch ?db_uri .
-?db_uri drugbank:drugType ?drugTypes ;
-	drugbank:genericName ?drug_name ;
-	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
+?compound_cw skos:prefLabel ?compound_name ;
+	void:inDataset <http://www.conceptwiki.org/> .
+" ; 
 	api:where 
-"{
-	GRAPH <http://www.conceptwiki.org> {
-		?cw_uri skos:prefLabel ?compound_name.
+"{       
+SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?node2 ?num_ro5_violations {
+	GRAPH <http://purl.uniprot.org/enzyme/inference> {
+		?subclass rdfs:subClassOf ?ops_item 
+	}	
+	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+	?chembl_uri chembl:organism ?target_organism . 
+	?assay_uri chembl:hasTarget ?chembl_uri ;
+		chembl:organism ?target_organism .
+	?item chembl:onAssay ?assay_uri ;
+		chembl:type ?std_type ;
+		chembl:relation ?relation ;
+		chembl:standardValue ?std_value ;
+		chembl:standardUnits ?std_unit ;
+		chembl:forMolecule ?compound_chembl ;
+		chembl:organism ?assay_organism .
+	?compound_chembl owl:equivalentClass ?equiv_uri . 
+	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
+		?node1 a sio:CHEMINF_000314 ;
+			sio:SIO_000300 ?num_ro5_violations }
+	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node2 . 
+		?node2 a sio:CHEMINF_000198 ;
+			sio:SIO_000300 ?molweight }
 	}
 	GRAPH <http://www.chemspider.com> {
-		?cs_uri chemspider:smiles ?smiles ;
-			chemspider:inchi ?inchi ;
-			chemspider:inchikey ?inchiKey.
+		?compound_cs chemspider:inchi ?inchi;
+			chemspider:inchikey ?inchi_key;
+			chemspider:smiles ?smiles . 
 	}
-	{
-		SELECT DISTINCT ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) {
-			GRAPH <http://linkedlifedata.com/resource/drugbank> {
-				?db_uri drugbank:genericName ?drug_name ;
-					drugbank:drugType ?drugType_uri .
-				?drugType_uri rdfs:label ?drugType.
-			}
-		} GROUP BY ?drug_name ?db_uri
+	GRAPH <http://www.conceptwiki.org> {
+		?cw_uri skos:prefLabel ?target_name .
+		?compound_cw skos:exactMatch ?compound_cs ; 
+			skos:prefLabel ?compound_name .
 	}
-}
-{       
-	SELECT DISTINCT ?item ?chembl_uri ?std_type ?relation ?std_value ?std_unit ?assay_uri (GROUP_CONCAT(DISTINCT ?target_uri ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?bNode2 ?num_ro5_violations ?activity_value{
-		GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-			?item chembl:forMolecule ?chembl_uri ;
-				chembl:type ?std_type;
-				chembl:relation ?relation;
-				chembl:standardValue ?std_value;
-				chembl:standardUnits ?std_unit;
-				chembl:onAssay ?assay_uri .
-			?assay_uri chembl:hasTarget ?target_uri .
-			?target_uri dc:title ?target_name ;
-				chembl:organism ?target_organism .
-			OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode1 .
-				?bNode1 a sio:CHEMINF_000198 ;
-					sio:SIO_000300 ?molweight. }
-			OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode2 .
-				?bNode2 a sio:CHEMINF_000314 ;
-					sio:SIO_000300 ?num_ro5_violations. }
-		}
-	} }GROUP BY ?chembl_uri ?item ?std_type ?relation ?std_value ?std_unit ?assay_uri ?bNode1 ?molweight ?bNode2 ?num_ro5_violations ?activity_value" .
+}}" .

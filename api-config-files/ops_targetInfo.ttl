@@ -12,6 +12,7 @@
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
+@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
@@ -97,7 +98,6 @@ SELECT (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellula
 		OPTIONAL { ?db_uri drugbank:specificFunction ?specificFunction }
 		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
 	}
-} GROUP BY ?pdbIdPage ?specificFunction ?theoreticalPi 
-}
+}} GROUP BY ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi 
 ";
 
