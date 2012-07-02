@@ -136,7 +136,7 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 		chembl:relation ?relation ;
 		chembl:standardValue ?std_value ;
 		chembl:standardUnits ?std_unit ;
-		chembl:forMolecule ?compound_chembl ;
+		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
