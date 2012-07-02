@@ -130,14 +130,13 @@ SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?compound_cw ?in
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?chembl_uri chembl:organism ?target_organism . 
 	?assay_uri chembl:hasTarget ?chembl_uri ;
-		chembl:organism ?target_organism .
+		chembl:organism ?assay_organism .
 	?item chembl:onAssay ?assay_uri ;
 		chembl:type ?std_type ;
 		chembl:relation ?relation ;
 		chembl:standardValue ?std_value ;
 		chembl:standardUnits ?std_unit ;
 		chembl:forMolecule ?compound_chembl ;
-		chembl:organism ?assay_organism .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
