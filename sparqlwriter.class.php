@@ -606,7 +606,7 @@ _SPARQL_;
 	foreach ($params as $param_name => $param_value) {
 	   if ($param_name != 'uri'){
 		foreach ($vars as $var_name => $var_props) {
-			if ($param_name==$var_name){
+			if ($param_name==$var_name AND $param_value !=""){
 		           if (stripos($param_value , "|")!== false){
 				$token = strtok($param_value,'|');
 				$filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
