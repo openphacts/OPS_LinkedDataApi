@@ -71,7 +71,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 "GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
 	?item ops:input ?ops_item .
 	?chembl_uri chembl:organism ?target_organism .
-	?assay_uri chembl:hasTarget ?target_chembl ;
+	?assay_uri chembl:hasTarget ?chembl_uri ;
 		chembl:organism ?assay_organism .
 	?item chembl:onAssay ?assay_uri ;
 		chembl:type ?std_type ;
@@ -94,10 +94,10 @@ GRAPH <http://www.chemspider.com> {
 	}
 " ;
 	] ;
-	api:defaultViewer <#enzymePharmacologyListViewer> .
+	api:defaultViewer <#targetPharmacologyListViewer> .
 
-<#enzymePharmacologyListViewer> a api:Viewer ;
-        api:name "enzymePharmacologyListViewer" ;
+<#targetPharmacologyListViewer> a api:Viewer ;
+        api:name "targetPharmacologyListViewer" ;
 	api:template 
 "[] ops:input ?ops_item .
 ?item chembl:forMolecule ?compound_chembl;
@@ -126,11 +126,8 @@ GRAPH <http://www.chemspider.com> {
 " ; 
 	api:where 
 "{       
-SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?node2 ?num_ro5_violations {
-	GRAPH <http://purl.uniprot.org/enzyme/inference> {
-		?subclass rdfs:subClassOf ?ops_item 
-	}	
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?node2 ?num_ro5_violations {
+GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?chembl_uri chembl:organism ?target_organism . 
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		chembl:organism ?target_organism .
@@ -149,15 +146,15 @@ SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?inchi ?inchi_ke
 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node2 . 
 		?node2 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight }
-	}
-	GRAPH <http://www.chemspider.com> {
-		?compound_cs chemspider:inchi ?inchi;
-			chemspider:inchikey ?inchi_key;
-			chemspider:smiles ?smiles . 
-	}
-	GRAPH <http://www.conceptwiki.org> {
-		?cw_uri skos:prefLabel ?target_name .
-		?compound_cw skos:exactMatch ?compound_cs ; 
-			skos:prefLabel ?compound_name .
-	}
+}
+GRAPH <http://www.chemspider.com> {
+	?compound_cs chemspider:inchi ?inchi;
+		chemspider:inchikey ?inchi_key;
+		chemspider:smiles ?smiles . 
+}
+GRAPH <http://www.conceptwiki.org> {
+	?cw_uri skos:prefLabel ?target_name .
+	?compound_cw skos:exactMatch ?compound_cs ; 
+		skos:prefLabel ?compound_name .
+}
 }}" .
