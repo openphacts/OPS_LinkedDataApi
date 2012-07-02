@@ -78,7 +78,7 @@
 		?cw_uri skos:prefLabel ?target_name.
 	}
 {
-SELECT ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) {
+SELECT ?chembl_uri ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) {
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 		?chembl_uri chembl:hasKeyword ?keyword ;
 			chembl:hasDescription ?description ;
@@ -89,7 +89,7 @@ SELECT ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?keyword ; SE
 } GROUP BY ?target_type ?description ?organism ?molecularWeight ?numberOfResidues  
 }
 {
-SELECT (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi {
+SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi {
 	GRAPH <http://linkedlifedata.com/resource/drugbank> {
 		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
 		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
