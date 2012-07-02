@@ -86,7 +86,7 @@ SELECT ?chembl_uri ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?
 			chembl:organism ?organism ;
 			rdfs:label ?synonym
 	}
-} GROUP BY ?target_type ?description ?organism ?molecularWeight ?numberOfResidues  
+} GROUP BY ?chembl_uri ?target_type ?description ?organism ?molecularWeight ?numberOfResidues  
 }
 {
 SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi {
@@ -98,6 +98,6 @@ SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as 
 		OPTIONAL { ?db_uri drugbank:specificFunction ?specificFunction }
 		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
 	}
-}} GROUP BY ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi 
+}} GROUP BY ?db_uri ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi 
 ";
 
