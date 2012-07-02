@@ -57,14 +57,14 @@ chembl:organism api:name "assay_organism" ;
 
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
-	api:filterVariable "?item";
+	api:filterVariable "?activity_uri";
 	api:value "One of: 'IC50' , 'Activity' " ;
 	a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
 	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
-	api:filterVariable "?item";
+	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
