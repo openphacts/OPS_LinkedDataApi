@@ -74,7 +74,7 @@
 	drugbank:theoreticalPi ?theoreticalPi .
 " ;
 	api:where 
-"GRAPH <http://larkc.eu#Fixedcontext> {
+"GRAPH <http://www.conceptwiki.org> {
 		?cw_uri skos:prefLabel ?target_name.
 	}
 {
