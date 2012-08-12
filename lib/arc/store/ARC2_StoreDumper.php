@@ -20,7 +20,7 @@ class ARC2_StoreDumper extends ARC2_Class {
   function __init() {
     parent::__init();
     $this->store = $this->caller;
-    $this->keep_time_limit = $this->v('keep_time_limit', 0, $this->a);
+    $this->keep_time_limit = $this->v('keep_time_limit', 1, $this->a);
     $this->limit = 100000;
   }
 

@@ -17,7 +17,9 @@
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
 @prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
-
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 
 <#enzyme> a api:API ;
         rdfs:label "Enzyme Classification"@en ;
@@ -41,7 +43,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Enzyme Pharmacology Complete" ;
-		api:description "A complete representation of acitivity values in the LDC for a given Enzyme Class. Potentially extremely large result. Currently hits a hard limit at 100 until we have a better RDF store." ;
+		api:description "A complete representation of acitivity values in the LDC for a given Enzyme Class. Potentially extremely large result. Example will use up 2GB of RAM in Chrome." ;
 		api:uriTemplate "/target/enzyme/pharmacology?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-";
@@ -76,7 +78,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:template 
 "?ops_item skos:exactMatch ?target_chembl .
 ?target_chembl dc:title ?target_name;
-	chembl:organism ?target_organism ;
+	ops:target_organism ?target_organism ;
 	ops:targetOfAssay ?assay_uri ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ops:targetOfAssay owl:inverseOf chembl:hasTarget .
@@ -89,13 +91,13 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	chembl:standardUnits ?std_unit ;
 	chembl:forMolecule ?compound_chembl ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?compound_chembl ?node1 ?num_ro5_violations ;
-	?node2 ?molweight ;
+?compound_chembl ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw .
 ?compound_cs chemspider:smiles ?smiles ;
 	chemspider:inchi ?inchi ;
-	chemspider:inchikey ?inchiKey;
+	chemspider:inchikey ?inchi_key;
+        ops:ro5_violations ?num_ro5_violations ;
 	void:inDataset <http://rdf.chemspider.com/> .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .";
@@ -110,24 +112,24 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?assay_uri chembl:hasTarget ?target_chembl ;
 		chembl:organism ?assay_organism .
 	?activity_uri chembl:onAssay ?assay_uri ;
-		chembl:type ?std_type ;
-		chembl:relation ?relation ;
-		chembl:standardValue ?std_value ;
-		chembl:standardUnits ?std_unit ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
-	?compound_chembl sio:CHEMINF_000200 ?node1 . 
-	?node1 a sio:CHEMINF_000314 ;
-		sio:SIO_000300 ?num_ro5_violations .
-	?compound_chembl sio:CHEMINF_000200 ?node2 . 
-	?node2 a sio:CHEMINF_000198 ;
-		sio:SIO_000300 ?molweight 
+        OPTIONAL { ?activity_uri chembl:type ?std_type }
+        OPTIONAL { ?activity_uri chembl:relation ?relation }
+        OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
+        OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
+	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
+	?node1 a sio:CHEMINF_000198 ;
+		sio:SIO_000300 ?molweight }
 }
 GRAPH <http://www.chemspider.com> {
 	?compound_cs chemspider:inchi ?inchi;
 		chemspider:inchikey ?inchi_key;
 		chemspider:smiles ?smiles . 
+        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+                a cheminf:CHEMINF_000367;
+                qudt:numericValue ?num_ro5_violations . }
 }
 GRAPH <http://www.conceptwiki.org> {
 	?compound_cw skos:exactMatch ?compound_cs ; 

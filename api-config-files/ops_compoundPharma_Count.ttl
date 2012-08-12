@@ -78,11 +78,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:template 
 "?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
-"{ SELECT (COUNT(?activity_uri) AS ?count) ?activity_uri {
+"{ SELECT (COUNT(?activity_uri) AS ?count) {
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 		?activity_uri chembl:forMolecule ?chembl_uri;
-			chembl:type ?std_type;
-			chembl:relation ?relation;
-			chembl:standardValue ?std_value;
-			chembl:standardUnits ?std_unit;
 			chembl:onAssay ?assay_uri . } } }" .

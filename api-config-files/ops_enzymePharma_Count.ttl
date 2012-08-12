@@ -23,7 +23,7 @@
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
-         api:variable <#input> ; 
+        api:variable <#input> ; 
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
 	api:dataset <http://www.chemspider.com> ;
@@ -78,7 +78,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:template 
 "?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
-"{ SELECT (COUNT(?activity_uri) AS ?count) ?activity_uri {
+"{ SELECT (COUNT(?activity_uri) AS ?count) {
 GRAPH <http://purl.uniprot.org/enzyme/inference> {
 	?subclass rdfs:subClassOf ?ops_item 
 }

@@ -3,7 +3,6 @@ require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'moriarty.inc.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'labeller.class.php';
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'httprequestfactory.class.php';
 require_once MORIARTY_ARC_DIR . "ARC2.php";
-
 /**
  * Represents an RDF graph and provides some simple functions for traversing and manipulating it.
  */

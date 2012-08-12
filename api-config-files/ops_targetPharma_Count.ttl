@@ -76,10 +76,9 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 <#targetPharmacologyCountViewer> a api:Viewer ;
 	api:name "compoundPharmacologyCountViewer" ;
 	api:template 
-"?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
+"?ops_item ops:targetPharmacologyTotalResults ?count . " ; 
 	api:where
-"{ SELECT (COUNT(?activity_uri) AS ?count) ?activity_uri {
+"{ SELECT (COUNT(?activity_uri) AS ?count) {
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?assay_uri chembl:hasTarget ?chembl_uri ;
-		chembl:organism ?assay_organism .
+	?assay_uri chembl:hasTarget ?chembl_uri .
 	?activity_uri chembl:onAssay ?assay_uri  } } }" .

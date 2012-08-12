@@ -58,7 +58,7 @@
 "?ops_item skos:exactMatch ?cw_uri ;
 	skos:exactMatch ?chembl_uri ;
 	skos:exactMatch ?db_uri .
-?cw_uri skos:prefLabel ?compound_name ;
+?cw_uri skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org> .
 ?chembl_uri chembl:hasKeyword ?keywords ;
 	chembl:hasDescription ?description ;
@@ -86,7 +86,7 @@ SELECT ?chembl_uri ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?
 			chembl:organism ?organism ;
 			rdfs:label ?synonym
 	}
-} GROUP BY ?chembl_uri ?target_type ?description ?organism ?molecularWeight ?numberOfResidues  
+} GROUP BY ?chembl_uri ?target_type ?description ?organism  
 }
 {
 SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi {

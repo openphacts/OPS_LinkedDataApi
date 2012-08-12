@@ -18,6 +18,9 @@
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
@@ -74,10 +77,6 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		chembl:organism ?assay_organism .
 	?item chembl:onAssay ?assay_uri ;
-		chembl:type ?std_type ;
-		chembl:relation ?relation ;
-		chembl:standardValue ?std_value ;
-		chembl:standardUnits ?std_unit ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
@@ -108,48 +107,49 @@ GRAPH <http://www.chemspider.com> {
 	chembl:onAssay ?assay_uri ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?assay_uri chembl:hasTarget ?chembl_uri ;
-	   chembl:organism ?assay_organism .
-?chembl_uri chembl:organism ?target_organism ;
+	chembl:organism ?assay_organism .
+?chembl_uri ops:target_organism ?target_organism ;
 	skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
-?compound_chembl ?node1 ?num_ro5_violations ;
-	?node2 ?molweight ;
+?compound_chembl ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?compound_cs chemspider:smiles ?smiles ;
 	chemspider:inchi ?inchi ;
 	chemspider:inchikey ?inchiKey;
+        ops:ro5_violations ?num_ro5_violations ;
 	void:inDataset <http://rdf.chemspider.com/> .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
 	api:where 
 "{       
-SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?node2 ?num_ro5_violations {
+SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?num_ro5_violations {
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?chembl_uri chembl:organism ?target_organism . 
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		chembl:organism ?assay_organism .
 	?item chembl:onAssay ?assay_uri ;
-		chembl:type ?std_type ;
-		chembl:relation ?relation ;
-		chembl:standardValue ?std_value ;
-		chembl:standardUnits ?std_unit ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?item chembl:type ?std_type }
+        OPTIONAL { ?item chembl:relation ?relation }
+        OPTIONAL { ?item chembl:standardValue ?std_value }
+        OPTIONAL { ?item chembl:standardUnits ?std_unit }
 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
-		?node1 a sio:CHEMINF_000314 ;
-			sio:SIO_000300 ?num_ro5_violations }
-	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node2 . 
-		?node2 a sio:CHEMINF_000198 ;
+		?node1 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight }
 }
 GRAPH <http://www.chemspider.com> {
 	?compound_cs chemspider:inchi ?inchi;
 		chemspider:inchikey ?inchi_key;
 		chemspider:smiles ?smiles . 
+        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+                a cheminf:CHEMINF_000367;
+                qudt:numericValue ?num_ro5_violations . }
+
 }
 GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?target_name .
