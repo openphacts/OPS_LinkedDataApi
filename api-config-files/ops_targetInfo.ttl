@@ -13,6 +13,8 @@
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
@@ -56,48 +58,67 @@
 	api:name "compoundViewer" ;
 	api:template 
 "?ops_item skos:exactMatch ?cw_uri ;
+	skos:exactMatch ?uniprot_uri ;
 	skos:exactMatch ?chembl_uri ;
 	skos:exactMatch ?db_uri .
 ?cw_uri skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org> .
+?uniprot_uri uniprot:existence ?existence ;
+	uniprot:organism ?organism ;
+	uniprot:sequence ?sequence ;
+	uniprot:Function_Annotation ?function ;
+	uniprot:classifiedWith ?class ;
+	uniprot:alternativeName ?alt_names ;
+	rdfs:seeAlso ?target_pdb ;
+        void:inDataset <http://purl.uniprot.org> .
 ?chembl_uri chembl:hasKeyword ?keywords ;
 	chembl:hasDescription ?description ;
 	rdfs:subClassOf ?target_type ;
-	chembl:organism ?organism ;
 	rdfs:label ?synonyms ;	
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
 ?db_uri drugbank:cellularLocation ?cellularLocation ;
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
-	drugbank:pdbIdPage ?pdbIdPage ;
-	drugbank:specificFunction ?specificFunction ;
-	drugbank:theoreticalPi ?theoreticalPi .
+	drugbank:theoreticalPi ?theoreticalPi ; 
+        void:inDataset <http://linkedlifedata.com/resource/drugbank>.
 " ;
-	api:where 
-"GRAPH <http://www.conceptwiki.org> {
+	api:where "
+GRAPH <http://www.conceptwiki.org> {
 		?cw_uri skos:prefLabel ?target_name.
 	}
 {
-SELECT ?chembl_uri ?target_type ?description ?organism (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) {
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-		?chembl_uri chembl:hasKeyword ?keyword ;
-			chembl:hasDescription ?description ;
-			rdfs:subClassOf ?target_type ;
-			chembl:organism ?organism ;
-			rdfs:label ?synonym
+SELECT ?chembl_uri ?uniprot_uri ?target_type ?description (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) ?existence ?organism ?target_pdb ?sequence ?function ?class ( GROUP_CONCAT( DISTINCT ?alt_name ; SEPARATOR=' , ' ) as ?alt_names ) {
+	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
+		?chembl_uri skos:exactMatch ?uniprot_uri .
+		OPTIONAL { ?chembl_uri chembl:hasKeyword ?keyword . }
+		OPTIONAL { ?chembl_uri chembl:hasDescription ?description . }
+		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
+		OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
 	}
-} GROUP BY ?chembl_uri ?target_type ?description ?organism  
+	GRAPH <http://purl.uniprot.org> {
+		?uniprot_uri uniprot:existence ?existence .
+		OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
+		OPTIONAL { ?uniprot_uri uniprot:sequence ?seq_uri . 
+	                ?seq_uri rdf:value ?sequence . }
+		OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri . 
+	                ?fun_uri a uniprot:Function_Annotation ;
+        	                rdfs:comment ?function . }
+		OPTIONAL { ?uniprot_uri uniprot:classifiedWith ?class . }
+		OPTIONAL { ?uniprot_uri uniprot:alternativeName ?alt_name_uri . 
+	                ?alt_name_uri uniprot:fullName ?alt_name . }
+		OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb . 
+	                ?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
+	}
+} GROUP BY ?chembl_uri ?uniprot_uri ?target_type ?description ?existence ?organism ?target_pdb ?sequence ?function ?class
 }
 {
-SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi {
+SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?theoreticalPi {
 	GRAPH <http://linkedlifedata.com/resource/drugbank> {
 		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
 		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
 		OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
-		OPTIONAL { ?db_uri drugbank:pdbIdPage ?pdbIdPage }
-		OPTIONAL { ?db_uri drugbank:specificFunction ?specificFunction }
 		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
 	}
-}} GROUP BY ?db_uri ?molecularWeight ?numberOfResidues ?pdbIdPage ?specificFunction ?theoreticalPi 
+}} GROUP BY ?db_uri ?molecularWeight ?numberOfResidues ?theoreticalPi 
 ";
 

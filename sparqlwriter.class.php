@@ -695,12 +695,13 @@ _SPARQL_;
 			}
 			return $query;
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
-                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
-                  foreach($uriList as $describeUri){
-                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
-                  }
-                  $uriSetFilter.= ")\n";
-                  return $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$template} {$uriSetFilter} }");
+#Antonis
+#                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
+#                  foreach($uriList as $describeUri){
+#                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
+#                  }
+#                  $uriSetFilter.= ")\n";
+                  return $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
                   /* 
                     FILTER doesn't work so well with all triplestores, could do it by adding incrementers to every variable in the pattern which increment for ever loop of the URI list. If do so, it would be good to change the propertypath->sparql code to map to a plain pattern which is then passed to the same code as this is, to add the incrementers 
                     
