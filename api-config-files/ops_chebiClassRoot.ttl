@@ -18,9 +18,10 @@
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
 @prefix uniprot: <http://purl.uniprot.org/core/> .
 @prefix enzyme: <http://purl.uniprot.org/enzyme/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
 
-<#enzyme> a api:API ;
-        rdfs:label "Enzyme Classification"@en ;
+<#chebi> a api:API ;
+        rdfs:label "ChEBI Ontology" ;
         api:sparqlEndpoint <http://localhost:8183/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
@@ -35,33 +36,30 @@
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
 	api:vocabulary <http://purl.uniprot.org/core/> ;
-	api:description "An API configuration to return information about members if Enzyme Classification classes." ;
+        api:vocabulary <http://purl.obolibrary.org/obo/> ;
+	api:description "An API configuration to return information about members of classes in the ChEBI Ontology." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get Enzyme Classification Root Classes" ;
-		api:description "A representation of the root classes of the Enzyme Classification." ;
-		api:uriTemplate "/target/enzyme/root" ;
-	        api:itemTemplate "http://purl.uniprot.org/enzyme/" ;
-		api:exampleRequestPath "/target/enzyme/root";
-		api:viewer <#enzymeRootViewer> ;
-		api:defaultViewer <#enzymeRootViewer> ] .
+		api:name "Get ChEBI Ontology Root Classes" ;
+		api:description "A representation of the root classes of the ChEBI Ontology." ;
+		api:uriTemplate "/compound/chebi/root" ;
+	        api:itemTemplate "http://www.ebi.ac.uk/chebi" ;
+		api:exampleRequestPath "/compound/chebi/root";
+		api:viewer <#chebiRootViewer> ;
+		api:defaultViewer <#chebiRootViewer> ] .
 
-<http://purl.uniprot.org/core/> api:label "uniprot" .
+<http://purl.obolibrary.org/obo/> api:label "obo" .
 
-<#enzymeRootViewer> a api:Viewer ;
-	api:name "enzymeRootViewer";
+<#chebiRootViewer> a api:Viewer ;
+	api:name "chebiRootViewer";
 	api:template 
 "
-<http://purl.uniprot.org/enzyme/> ops:rootNode enzyme:1.-.-.- ;
-	ops:rootNode enzyme:2.-.-.- ;
-	ops:rootNode enzyme:3.-.-.- ;
-	ops:rootNode enzyme:4.-.-.- ;
-	ops:rootNode enzyme:5.-.-.- ;
-	ops:rootNode enzyme:6.-.-.- .
-enzyme:1.-.-.- uniprot:name 'Oxidoreductases' .
-enzyme:2.-.-.- uniprot:name 'Transferases' .
-enzyme:3.-.-.- uniprot:name 'Hydrolases' .
-enzyme:4.-.-.- uniprot:name 'Lyases' .
-enzyme:5.-.-.- uniprot:name 'Isomerases' .
-enzyme:6.-.-.- uniprot:name 'Ligases' .
+<http://www.ebi.ac.uk/chebi>  ops:rootNode obo:CHEBI_24431;
+	ops:rootNode obo:CHEBI_27189 ;
+	ops:rootNode obo:CHEBI_36342 ;
+	ops:rootNode obo:CHEBI_50906 .
+obo:CHEBI_24431 rdfs:label 'chemical entity' .
+obo:CHEBI_27189 rdfs:label 'unclassifieds' .
+obo:CHEBI_36342 rdfs:label 'subatomic particle' .
+obo:CHEBI_50906 rdfs:label 'role' .
 " .

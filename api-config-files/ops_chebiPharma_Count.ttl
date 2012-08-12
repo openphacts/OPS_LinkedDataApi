@@ -1,0 +1,90 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#>
+
+<#chebi> a api:API ;
+        rdfs:label "ChEBI Ontology"@en ;
+        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:variable chembl:organism ;
+        api:variable <#input> ; 
+	api:variable chembl:type;
+	api:variable chembl-ops:normalisedValue ;
+	api:dataset <http://www.chemspider.com> ;
+	api:dataset <http://www.conceptwiki.org> ;
+	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:vocabulary <http://rdf.chemspider.com/#> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:vocabulary <http://www.openphacts.org/api#> ;
+	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
+	api:description "An API configuration to return information about classes in the ChEBI Ontology" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "ChEBI Class Pharmacology Count" ;
+		api:description "The total number of acitivity values in the LDC for a given ChEBI Ontology class." ;
+		api:uriTemplate "/compound/chebi/pharmacology/count?uri={uri}" ;
+        	api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus";
+		api:viewer <#chebiPharmacologyCountViewer> ; 
+		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
+
+<http://www.openphacts.org/api#> api:label "ops" .
+<http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+
+chembl:organism api:name "assay_organism" ;
+	api:label "assay_organism" ;
+	api:value "A literal organism in ChEMBL." ;
+	api:filterVariable "?assay_uri";
+	a rdf:Property .
+
+chembl:type api:name "activity_type" ;
+	api:label "activity_type" ;
+	api:filterVariable "?activity_uri";
+	api:value "One of: 'IC50' , 'Activity' " ;
+	a rdf:Property .
+
+chembl-ops:normalisedValue api:name "activity_value" ;
+	api:label "activity_value" ;
+	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:filterVariable "?activity_uri";
+	a rdf:Property .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+
+<#chebiPharmacologyCountViewer> a api:Viewer ;
+	api:name "chebiPharmacologyCountViewer" ;
+	api:template 
+"?ops_item ops:chebiPharmacologyTotalResults ?count . " ; 
+	api:where
+"{ SELECT (COUNT(?activity_uri) AS ?count) {
+	GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
+        	?class rdfs:subClassOf ?ops_item
+	}
+	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+        	?compound_chembl skos:exactMatch ?class . 
+		?activity_uri chembl:forMolecule ?compound_chembl;
+			chembl:onAssay ?assay_uri . 
+	} 
+} }" .

@@ -54,7 +54,7 @@
 <#enzymeMemberViewer> a api:Viewer ;
 	api:name "enzymeMemberViewer";
 	api:template 
-"?ops_item ops:member ?member .
+"?ops_item ops:has_member ?member .
 ?member uniprot:name ?member_name .";
 api:where 
 "GRAPH <http://purl.uniprot.org/enzyme/direct> {

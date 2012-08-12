@@ -112,7 +112,7 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	?activity_uri chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
-		?equiv_uri skos:exactMatch ?compound_cs . 
+	?equiv_uri skos:exactMatch ?compound_cs . 
 	OPTIONAL { ?activity_uri chembl:type ?std_type }
 	OPTIONAL { ?activity_uri chembl:relation ?relation }
 	OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
