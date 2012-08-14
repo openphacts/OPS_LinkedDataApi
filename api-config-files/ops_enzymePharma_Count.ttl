@@ -76,7 +76,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 <#enzymePharmacologyCountViewer> a api:Viewer ;
 	api:name "compoundPharmacologyCountViewer" ;
 	api:template 
-"?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
+"?ops_item ops:enzymePharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(?activity_uri) AS ?count) {
 GRAPH <http://purl.uniprot.org/enzyme/inference> {
