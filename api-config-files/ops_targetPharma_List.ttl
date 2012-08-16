@@ -73,24 +73,22 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 		api:where 
 "GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
 	?item ops:input ?ops_item .
-	?chembl_uri chembl:organism ?target_organism .
-	?assay_uri chembl:hasTarget ?chembl_uri ;
-		chembl:organism ?assay_organism .
+	?assay_uri chembl:hasTarget ?chembl_uri . 
 	?item chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
 }
 GRAPH <http://www.chemspider.com> {
-		?compound_cs chemspider:inchi ?inchi;
-			chemspider:inchikey ?inchi_key;
-			chemspider:smiles ?smiles . 
-	}
-	GRAPH <http://www.conceptwiki.org> {
-		?cw_uri skos:prefLabel ?target_name . 
-		?compound_cw skos:exactMatch ?compound_cs ; 
-			skos:prefLabel ?compound_name .
-	}
+	?compound_cs chemspider:inchi ?inchi;
+		chemspider:inchikey ?inchi_key;
+		chemspider:smiles ?smiles . 
+}
+GRAPH <http://www.conceptwiki.org> {
+	?cw_uri skos:prefLabel ?target_name . 
+	?compound_cw skos:exactMatch ?compound_cs ; 
+		skos:prefLabel ?compound_name .
+}
 " ;
 	] ;
 	api:defaultViewer <#targetPharmacologyListViewer> .
@@ -127,13 +125,13 @@ GRAPH <http://www.chemspider.com> {
 "{       
 SELECT DISTINCT ?item ?chembl_uri ?compound_chembl ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight ?num_ro5_violations {
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?chembl_uri chembl:organism ?target_organism . 
-	?assay_uri chembl:hasTarget ?chembl_uri ;
-		chembl:organism ?assay_organism .
+	?assay_uri chembl:hasTarget ?chembl_uri .
 	?item chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?chembl_uri chembl:organism ?target_organism }
+	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
 	OPTIONAL { ?item chembl:type ?std_type }
         OPTIONAL { ?item chembl:relation ?relation }
         OPTIONAL { ?item chembl:standardValue ?std_value }

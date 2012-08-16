@@ -79,12 +79,16 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 "?ops_item ops:chebiPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(?activity_uri) AS ?count) {
-	GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
-        	?class rdfs:subClassOf ?ops_item
+	GRAPH <http://www.ebi.ac.uk/chebi/inference> {
+        	?subclass rdfs:subClassOf ?ops_item .
 	}
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-        	?compound_chembl skos:exactMatch ?class . 
-		?activity_uri chembl:forMolecule ?compound_chembl;
-			chembl:onAssay ?assay_uri . 
+	        ?compound_chembl skos:exactMatch ?subclass ;
+                owl:equivalentClass ?equiv_uri .
+	        ?equiv_uri skos:exactMatch ?compound_cs .
+       		?activity_uri chembl:forMolecule ?compound_chembl ;
+        	        chembl:onAssay ?assay_uri .
+	        ?assay_uri chembl:hasTarget ?target_uri .
+	
 	} 
 } }" .

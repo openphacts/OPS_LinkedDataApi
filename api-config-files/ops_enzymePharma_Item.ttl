@@ -106,15 +106,15 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	?subclass rdfs:subClassOf ?ops_item 
 }
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?target_chembl skos:exactMatch ?subclass;
-		dc:title ?target_name;
-		chembl:organism ?target_organism . 
-	?assay_uri chembl:hasTarget ?target_chembl ;
-		chembl:organism ?assay_organism .
+	?target_chembl skos:exactMatch ?subclass .
+	?assay_uri chembl:hasTarget ?target_chembl . 
 	?activity_uri chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+	OPTIONAL { ?target_chembl dc:title ?target_name }
+	OPTIONAL { ?target_chembl chembl:organism ?target_organism }
         OPTIONAL { ?activity_uri chembl:type ?std_type }
         OPTIONAL { ?activity_uri chembl:relation ?relation }
         OPTIONAL { ?activity_uri chembl:standardValue ?std_value }

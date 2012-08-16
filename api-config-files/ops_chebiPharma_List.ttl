@@ -78,12 +78,15 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 		api:where 
 "
 GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-?subclass rdfs:subClassOf ?ops_item .
+	?subclass rdfs:subClassOf ?ops_item .
 }
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-?compound_chembl skos:exactMatch ?subclass .
-?item chembl:forMolecule ?compound_chembl ; 
-        chembl:onAssay ?assay_uri .
+	?compound_chembl skos:exactMatch ?subclass ;
+		owl:equivalentClass ?equiv_uri .
+	?equiv_uri skos:exactMatch ?compound_cs .
+	?item chembl:forMolecule ?compound_chembl ;
+		chembl:onAssay ?assay_uri .
+	?assay_uri chembl:hasTarget ?target_uri .
 }" ;
 	] ;
 	api:defaultViewer <#chebiPharmacologyListViewer> .
@@ -130,10 +133,10 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 		        ?equiv_uri skos:exactMatch ?compound_cs .		
 			?item chembl:forMolecule ?compound_chembl ;
 				chembl:onAssay ?assay_uri .
-			?assay_uri chembl:hasTarget ?target_uri ; 
-                                chembl:organism ?assay_organism . 
-			OPTIONAL { ?target_uri dc:title ?target_name ; 
-				chembl:organism ?target_organism . }
+			?assay_uri chembl:hasTarget ?target_uri . 
+			OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+			OPTIONAL { ?target_uri dc:title ?target_name } 
+			OPTIONAL { ?target_uri chembl:organism ?target_organism . }
 			OPTIONAL { ?item chembl:type ?std_type } 
                         OPTIONAL { ?item chembl:relation ?relation }
                         OPTIONAL { ?item chembl:standardValue ?std_value }

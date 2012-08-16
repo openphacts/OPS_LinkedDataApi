@@ -122,10 +122,11 @@ GRAPH <http://www.chemspider.com> {
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?activity_uri chembl:forMolecule ?chembl_uri;
 		chembl:onAssay ?assay_uri . 
-	?assay_uri chembl:hasTarget ?target_uri ;
-		chembl:organism ?assay_organism .
-	?target_uri dc:title ?target_name ;
-		chembl:organism ?target_organism .
+	OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri 
+        	OPTIONAL { ?target_uri dc:title ?target_name }
+        	OPTIONAL { ?target_uri chembl:organism ?target_organism }
+	}
+	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
 	OPTIONAL { ?activity_uri chembl:type ?std_type }
         OPTIONAL { ?activity_uri chembl:relation ?relation }
         OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
@@ -133,10 +134,10 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode1 .
 		?bNode1 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight. }
-}
+}OPTIONAL {
 GRAPH <http://linkedlifedata.com/resource/drugbank> {
-        ?db_uri drugbank:genericName ?drug_name ;
-		drugbank:drugType ?drugType_uri .
-	?drugType_uri rdfs:label ?drugType. 
-}" .
+        OPTIONAL { ?db_uri drugbank:genericName ?drug_name }
+	OPTIONAL { ?db_uri drugbank:drugType ?drugType_uri .
+		?drugType_uri rdfs:label ?drugType }
+}}" .
 

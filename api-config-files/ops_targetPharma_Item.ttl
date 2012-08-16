@@ -106,13 +106,13 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	void:inDataset <http://www.conceptwiki.org/> .";
 	api:where 
 "GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?chembl_uri chembl:organism ?target_organism . 
-	?assay_uri chembl:hasTarget ?chembl_uri ;
-		chembl:organism ?assay_organism .
+	?assay_uri chembl:hasTarget ?chembl_uri . 
 	?activity_uri chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
-	?equiv_uri skos:exactMatch ?compound_cs . 
+	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?chembl_uri chembl:organism ?target_organism } 
+	OPTIONAL { ?assay_uri chembl:organism ?assay_organism  }
 	OPTIONAL { ?activity_uri chembl:type ?std_type }
 	OPTIONAL { ?activity_uri chembl:relation ?relation }
 	OPTIONAL { ?activity_uri chembl:standardValue ?std_value }

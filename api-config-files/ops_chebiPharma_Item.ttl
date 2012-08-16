@@ -118,10 +118,10 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
         ?equiv_uri skos:exactMatch ?compound_cs . 
         ?activity_uri chembl:forMolecule ?compound_chembl;
                 chembl:onAssay ?assay_uri .
-        ?assay_uri chembl:hasTarget ?target_uri ;
-                chembl:organism ?assay_organism .
-        ?target_uri dc:title ?target_name ;
-                chembl:organism ?target_organism .
+        ?assay_uri chembl:hasTarget ?target_uri . 
+	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+	OPTIONAL { ?target_uri dc:title ?target_name }
+	OPTIONAL { ?target_uri chembl:organism ?target_organism }
         OPTIONAL { ?activity_uri chembl:type ?std_type }
         OPTIONAL { ?activity_uri chembl:relation ?relation }
         OPTIONAL { ?activity_uri chembl:standardValue ?std_value }

@@ -75,8 +75,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	?subclass rdfs:subClassOf ?ops_item
 }
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-	?target_chembl skos:exactMatch ?subclass ;
-		chembl:organism ?target_organism .
+	?target_chembl skos:exactMatch ?subclass . 
 	?assay_uri chembl:hasTarget ?target_chembl ;
 		chembl:organism ?assay_organism .
 	?item chembl:onAssay ?assay_uri ;
@@ -85,14 +84,14 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?equiv_uri skos:exactMatch ?compound_cs .
 }
 GRAPH <http://www.chemspider.com> {
-		?compound_cs chemspider:inchi ?inchi;
-			chemspider:inchikey ?inchi_key;
-			chemspider:smiles ?smiles . 
+	?compound_cs chemspider:inchi ?inchi;
+		chemspider:inchikey ?inchi_key;
+		chemspider:smiles ?smiles . 
 	}
-	GRAPH <http://www.conceptwiki.org> {
-		?compound_cw skos:exactMatch ?compound_cs ; 
-			skos:prefLabel ?compound_name .
-	}
+GRAPH <http://www.conceptwiki.org> {
+	?compound_cw skos:exactMatch ?compound_cs ; 
+		skos:prefLabel ?compound_name .
+}
 " ;
 	] ;
 	api:defaultViewer <#enzymePharmacologyListViewer> .
@@ -108,11 +107,11 @@ GRAPH <http://www.chemspider.com> {
 	chembl:standardUnits ?std_unit;
 	chembl:onAssay ?assay_uri ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?assay_uri chembl:hasTarget ?target_chembl ;
+?assay_uri chembl:hasTarget ?targets_chembl ;
 	   chembl:organism ?assay_organism .
-?target_chembl dc:title ?target_name;
-	ops:target_organism ?target_organism ;
-	skos:exactMatch ?subclass. 
+?targets_chembl dc:title ?target_names;
+	ops:target_organism ?target_organisms ;
+	skos:exactMatch ?subclasses . 
 ?compound_chembl ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw .
@@ -126,25 +125,25 @@ GRAPH <http://www.chemspider.com> {
 " ; 
 	api:where 
 "{       
-SELECT DISTINCT ?item ?target_chembl ?subclass ?compound_chembl ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight {
+SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?target_chembl ; SEPARATOR=' , ' ) AS ?targets_chembl ) ( GROUP_CONCAT ( DISTINCT ?subclass ; SEPARATOR=' , ' ) AS ?subclasses ) ?compound_chembl ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name ; SEPARATOR=' , ' ) AS ?target_names ) ( GROUP_CONCAT ( DISTINCT ?target_organism ; SEPARATOR=' , ' ) AS ?target_organisms ) ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight {
 	GRAPH <http://purl.uniprot.org/enzyme/inference> {
 		?subclass rdfs:subClassOf ?ops_item 
 	}	
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?target_chembl skos:exactMatch ?subclass;
-		dc:title ?target_name;
-		chembl:organism ?target_organism . 
+	?target_chembl skos:exactMatch ?subclass . 
 	?assay_uri chembl:hasTarget ?target_chembl ;
 		chembl:organism ?assay_organism .
 	?item chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_uri . 
 	?equiv_uri skos:exactMatch ?compound_cs .
+	OPTIONAL { ?target_chembl dc:title ?target_name }
+	OPTIONAL { ?target_chembl chembl:organism ?target_organism }
         OPTIONAL { ?item chembl:type ?std_type }
         OPTIONAL { ?item chembl:relation ?relation }
         OPTIONAL { ?item chembl:standardValue ?std_value }
         OPTIONAL { ?item chembl:standardUnits ?std_unit }
-	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
+ 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
 		?node1 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight }
 	}
@@ -161,4 +160,4 @@ SELECT DISTINCT ?item ?target_chembl ?subclass ?compound_chembl ?compound_cs ?in
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
 	}
-}}" .
+} } GROUP BY ?item ?compound_chembl ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_name ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism ?node1 ?molweight " .

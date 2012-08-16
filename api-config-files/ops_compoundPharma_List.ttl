@@ -79,11 +79,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 "GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
 ?item ops:input ?ops_item .
 ?item chembl:forMolecule ?chembl_uri ; 
-        chembl:onAssay ?assay_uri .
-?assay_uri chembl:hasTarget ?target_uri ;
-	chembl:organism ?assay_organism .
-?target_uri dc:title ?target_name ;
-	chembl:organism ?target_organism . }" ;
+        chembl:onAssay ?assay_uri . }" ;
 	] ;
 	api:defaultViewer <#compoundPharmacologyListViewer> .
 
@@ -145,14 +141,15 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	}
 }
 {       
-	SELECT DISTINCT ?item ?chembl_uri ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism (GROUP_CONCAT(DISTINCT ?target_uri ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?bNode2 ?activity_value{
+	SELECT DISTINCT ?item ?chembl_uri ?std_type ?relation ?std_value ?std_unit ?assay_uri ?assay_organism (GROUP_CONCAT(DISTINCT ?target_uri ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?activity_value{
 		GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 			?item chembl:forMolecule ?chembl_uri ;
 				chembl:onAssay ?assay_uri .
-			?assay_uri chembl:hasTarget ?target_uri ; 
-                                chembl:organism ?assay_organism .
-			?target_uri dc:title ?target_name ;
-				chembl:organism ?target_organism .
+			OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri 
+				OPTIONAL { ?target_uri dc:title ?target_name }
+				OPTIONAL { ?target_uri chembl:organism ?target_organism }
+			}
+                        OPTIONAL {?assay_uri chembl:organism ?assay_organism }
 			OPTIONAL { ?item chembl:type ?std_type } 
                         OPTIONAL { ?item chembl:relation ?relation }
                         OPTIONAL { ?item chembl:standardValue ?std_value }
@@ -161,4 +158,4 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 				?bNode1 a sio:CHEMINF_000198 ;
 					sio:SIO_000300 ?molweight. }
 		}
-	} }GROUP BY ?chembl_uri ?item ?assay_uri ?target_uri ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value " .
+	} }GROUP BY ?chembl_uri ?item ?assay_uri ?assay_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value " .

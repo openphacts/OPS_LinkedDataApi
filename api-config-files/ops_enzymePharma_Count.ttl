@@ -78,12 +78,25 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:template 
 "?ops_item ops:enzymePharmacologyTotalResults ?count . " ; 
 	api:where
-"{ SELECT (COUNT(?activity_uri) AS ?count) {
+"{ SELECT (COUNT( DISTINCT ?activity_uri) AS ?count) {
 GRAPH <http://purl.uniprot.org/enzyme/inference> {
-	?subclass rdfs:subClassOf ?ops_item 
+        ?subclass rdfs:subClassOf ?ops_item
 }
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-?target_chembl skos:exactMatch ?subclass .
-?assay_uri chembl:hasTarget ?target_chembl ;
-	chembl:organism ?assay_organism .
-?activity_uri chembl:onAssay ?assay_uri  } } }" .
+        ?target_chembl skos:exactMatch ?subclass .
+        ?assay_uri chembl:hasTarget ?target_chembl ;
+                chembl:organism ?assay_organism .
+        ?activity_uri chembl:onAssay ?assay_uri ;
+                chembl:forMolecule ?compound_chembl .
+        ?compound_chembl owl:equivalentClass ?equiv_uri .
+        ?equiv_uri skos:exactMatch ?compound_cs .
+}
+GRAPH <http://www.chemspider.com> {
+        ?compound_cs chemspider:inchi ?inchi;
+                chemspider:inchikey ?inchi_key;
+                chemspider:smiles ?smiles .
+        }
+GRAPH <http://www.conceptwiki.org> {
+        ?compound_cw skos:exactMatch ?compound_cs ;
+                skos:prefLabel ?compound_name .
+} } }" .
