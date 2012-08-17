@@ -20,6 +20,8 @@
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix bibo:<http://purl.org/ontology/bibo/> .
 
 <#chebi> a api:API ;
         rdfs:label "ChEBI"@en ;
@@ -90,8 +92,8 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 ?compound_db drugbank:genericName ?drug_name ;
 	drugbank:drugType ?drugType ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.
-?ops_item skos:exactMatch ?compound_chembl . 
-?compound_chembl ?bNode1 ?molweight ;
+?ops_item skos:exactMatch ?equiv_compound . 
+?equiv_compound ?bNode1 ?molweight ;
 	ops:hasActivity ?activity_uri ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
 ops:hasActivity owl:inverseOf chembl:forMolecule .
@@ -100,12 +102,15 @@ ops:hasActivity owl:inverseOf chembl:forMolecule .
 	chembl:relation ?relation;
 	chembl:standardValue ?std_value;
 	chembl:standardUnits ?std_unit;
-	chembl:onAssay ?assay_uri ;
+	chembl:onAssay ?equiv_assay ;
 	chembl-ops:normalisedValue ?activity_value ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
-?assay_uri chembl:hasTarget ?target_uri ;
+	cito:citesAsDataSource ?doi ;
+	bibo:pmid ?pmid ;
+	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+?equiv_assay chembl:hasTarget ?equiv_target ;
+	chembl:hasDescription ?assay_desc ;
 	chembl:organism ?assay_organism .
-?target_uri dc:title ?target_name ;
+?equiv_target dc:title ?target_name ;
 	ops:target_organism ?target_organism .";
 	api:where
 "
@@ -114,18 +119,24 @@ GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
 }
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?compound_chembl skos:exactMatch ?class ;
-		owl:equivalentClass ?equiv_uri .
-        ?equiv_uri skos:exactMatch ?compound_cs . 
+		owl:equivalentClass ?equiv_compound .
+        ?equiv_compound skos:exactMatch ?compound_cs . 
         ?activity_uri chembl:forMolecule ?compound_chembl;
                 chembl:onAssay ?assay_uri .
-        ?assay_uri chembl:hasTarget ?target_uri . 
+        ?assay_uri chembl:hasTarget ?target_uri ;
+		owl:equivalentClass ?equiv_assay .
+	?target_uri owl:equivalentClass ?equiv_target .
 	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+	OPTIONAL { ?assay_uri chembl:hasDescription ?assay_desc }
 	OPTIONAL { ?target_uri dc:title ?target_name }
 	OPTIONAL { ?target_uri chembl:organism ?target_organism }
         OPTIONAL { ?activity_uri chembl:type ?std_type }
         OPTIONAL { ?activity_uri chembl:relation ?relation }
         OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
         OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
+	OPTIONAL { ?activity_uri cito:citesAsDataSource ?doi_internal . 
+		OPTIONAL { ?doi_internal owl:sameAs ?doi }
+                OPTIONAL { ?doi_internal bibo:pmid ?pmid }
         OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?bNode1 .
                 ?bNode1 a sio:CHEMINF_000198 ;
                         sio:SIO_000300 ?molweight. }
