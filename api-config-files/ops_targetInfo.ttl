@@ -59,7 +59,7 @@
 	api:template 
 "?ops_item skos:exactMatch ?cw_uri ;
 	skos:exactMatch ?uniprot_uri ;
-	skos:exactMatch ?chembl_uri ;
+	skos:exactMatch ?equiv_target ;
 	skos:exactMatch ?db_uri .
 ?cw_uri skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org> .
@@ -71,7 +71,7 @@
 	uniprot:alternativeName ?alt_names ;
 	rdfs:seeAlso ?target_pdb ;
         void:inDataset <http://purl.uniprot.org> .
-?chembl_uri chembl:hasKeyword ?keywords ;
+?equiv_target chembl:hasKeyword ?keywords ;
 	chembl:hasDescription ?description ;
 	rdfs:subClassOf ?target_type ;
 	rdfs:label ?synonyms ;	
@@ -87,9 +87,10 @@ GRAPH <http://www.conceptwiki.org> {
 		?cw_uri skos:prefLabel ?target_name.
 	}
 {
-SELECT ?chembl_uri ?uniprot_uri ?target_type ?description (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) ?existence ?organism ?target_pdb ?sequence ?function ?class ( GROUP_CONCAT( DISTINCT ?alt_name ; SEPARATOR=' , ' ) as ?alt_names ) {
+SELECT ?equiv_target ?uniprot_uri ?target_type ?description (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) ?existence ?organism ?target_pdb ?sequence ?function ?class ( GROUP_CONCAT( DISTINCT ?alt_name ; SEPARATOR=' , ' ) as ?alt_names ) {
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-		?chembl_uri skos:exactMatch ?uniprot_uri .
+		?chembl_uri skos:exactMatch ?uniprot_uri ;
+			owl:equivalentClass ?equiv_target .
 		OPTIONAL { ?chembl_uri chembl:hasKeyword ?keyword . }
 		OPTIONAL { ?chembl_uri chembl:hasDescription ?description . }
 		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
@@ -109,7 +110,7 @@ SELECT ?chembl_uri ?uniprot_uri ?target_type ?description (GROUP_CONCAT( DISTINC
 		OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb . 
 	                ?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
 	}
-} GROUP BY ?chembl_uri ?uniprot_uri ?target_type ?description ?existence ?organism ?target_pdb ?sequence ?function ?class
+} GROUP BY ?equiv_target ?uniprot_uri ?target_type ?description ?existence ?organism ?target_pdb ?sequence ?function ?class
 }
 {
 SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ' ) as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?theoreticalPi {

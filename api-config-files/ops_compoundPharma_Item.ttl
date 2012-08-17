@@ -21,7 +21,7 @@
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix cito: <http://purl.org/spar/cito/> .
-@prefix bibo:<http://purl.org/ontology/bibo/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
@@ -105,7 +105,7 @@ ops:hasActivity owl:inverseOf chembl:forMolecule .
 	chembl:onAssay ?equiv_assay ;
 	chembl-ops:normalisedValue ?activity_value ;
         cito:citesAsDataSource ?doi ;
-	bibo:pmid ?pmid ;
+        bibo:pmid ?pmid ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
 ?equiv_assay chembl:hasTarget ?equiv_target ;
 	chembl:hasDescription ?assay_descrition ;

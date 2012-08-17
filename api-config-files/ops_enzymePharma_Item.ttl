@@ -21,7 +21,7 @@
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix cito: <http://purl.org/spar/cito/> .
-@prefix bibo:<http://purl.org/ontology/bibo/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
 
 <#enzyme> a api:API ;
         rdfs:label "Enzyme Classification"@en ;
@@ -86,15 +86,16 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 ops:targetOfAssay owl:inverseOf chembl:hasTarget .
 ?equiv_assay chembl:organism ?assay_organism ;
 	chembl:hasDescription ?assay_description ;
-	ops:assayOfActivity ?activity_uri .
+	ops:assayOfActivity ?activity_uri ;
+        void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ops:assayOfActivity owl:inverseOf chembl:onAssay .
 ?activity_uri chembl:type ?std_type ;
 	chembl:relation ?relation ;
 	chembl:standardValue ?std_value ;
 	chembl:standardUnits ?std_unit ;
 	chembl:forMolecule ?equiv_compound ;
-	cito:citesAsDataSource ?doi ;
-	bibo:pmid ?pmid ;
+        cito:citesAsDataSource ?doi ;
+        bibo:pmid ?pmid ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?equiv_compound ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
@@ -129,7 +130,7 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
         OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
         OPTIONAL { ?activity_uri cito:citesAsDataSource ?doi_internal .
                 OPTIONAL { ?doi_internal owl:sameAs ?doi }
-		OPTIONAL {?doi_internal bibo:pmid ?pmid }
+		OPTIONAL { ?doi_internal bibo:pmid ?pmid }
 	}
 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
 	?node1 a sio:CHEMINF_000198 ;

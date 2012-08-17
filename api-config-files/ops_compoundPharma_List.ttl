@@ -97,7 +97,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	chembl:onAssay ?equiv_assay ;
 	chembl-ops:normalisedValue ?activity_value ;
         cito:citesAsDataSource ?doi ;
-	bibo:pmid ?pmid ;
+        bibo:pmid ?pmid ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?equiv_assay chembl:hasTarget _:b1 ;
         chembl:organism ?assay_organism ;
@@ -146,7 +146,7 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	}
 }
 {       
-	SELECT DISTINCT ?item ?doi ?bibo ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?activity_value ?assay_description {
+	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?activity_value ?assay_description {
 		GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 			?item chembl:forMolecule ?chembl_uri ;
 				chembl:onAssay ?assay_uri .
@@ -172,4 +172,4 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 				?bNode1 a sio:CHEMINF_000198 ;
 					sio:SIO_000300 ?molweight. }
 		}
-	} }GROUP BY ?equiv_compound ?item ?doi ?bibo ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value " .
+	} }GROUP BY ?equiv_compound ?item ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value " .
