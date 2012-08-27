@@ -26,7 +26,7 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8186/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
@@ -121,7 +121,7 @@ GRAPH <http://www.conceptwiki.org> {
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?compound_cs chemspider:smiles ?smiles ;
 	chemspider:inchi ?inchi ;
-	chemspider:inchikey ?inchiKey;
+	chemspider:inchikey ?inchi_key;
         ops:ro5_violations ?num_ro5_violations ;
 	void:inDataset <http://rdf.chemspider.com/> .
 ?compound_cw skos:prefLabel ?compound_name ;

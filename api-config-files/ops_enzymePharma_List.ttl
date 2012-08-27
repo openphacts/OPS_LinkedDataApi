@@ -26,7 +26,7 @@
 
 <#enzyme> a api:API ;
         rdfs:label "Enzyme Classification"@en ;
-        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8185/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
@@ -131,7 +131,7 @@ _:b1 ops:concatenatedURIs ?targets_chembl ;
 " ; 
 	api:where 
 "{       
-SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' ) AS ?targets_chembl ) ( GROUP_CONCAT ( DISTINCT ?subclass ; SEPARATOR=' , ' ) AS ?subclasses ) ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name ; SEPARATOR=' , ' ) AS ?target_names ) ( GROUP_CONCAT ( DISTINCT ?target_organism ; SEPARATOR=' , ' ) AS ?target_organisms ) ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
+SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' ) AS ?targets_chembl ) ( GROUP_CONCAT ( DISTINCT ?subclass ; SEPARATOR=' , ' ) AS ?subclasses ) ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name ; SEPARATOR=' , ' ) AS ?target_names ) ( GROUP_CONCAT ( DISTINCT ?target_organism ; SEPARATOR=' , ' ) AS ?target_organisms ) ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
 	GRAPH <http://purl.uniprot.org/enzyme/inference> {
 		?subclass rdfs:subClassOf ?ops_item 
 	}	
@@ -173,4 +173,4 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' 
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
 	}
-} } GROUP BY ?item ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_name ?std_type ?relation ?std_value ?doi ?pmid ?std_unit ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight " .
+} } GROUP BY ?item ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?std_type ?relation ?std_value ?doi ?pmid ?std_unit ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight " .
