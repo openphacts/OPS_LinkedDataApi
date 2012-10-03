@@ -26,7 +26,7 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8186/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
@@ -74,7 +74,6 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:selector [
 		api:where 
 "GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?item ops:input ?ops_item .
         ?assay_uri chembl:hasTarget ?chembl_uri ;
                 owl:equivalentClass ?equiv_assay .
         ?chembl_uri owl:equivalentClass ?equiv_target .

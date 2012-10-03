@@ -3,3 +3,5 @@ RewriteEngine on
 RewriteCond %{REQUEST_FILENAME}  -f
 RewriteRule  ^.*$  -  [L]
 RewriteRule ^.*$  index.php [L]
+php_value memory_limit 1G
+php_value max_execution_time 300

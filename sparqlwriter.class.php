@@ -1,5 +1,7 @@
 <?php
 require_once 'graphs/vocabularygraph.class.php';
+require_once 'ops_ims.class.php';
+require_once 'virtuosoformatter.class.php';
 class SparqlWriter {
     
     private $_config;
@@ -76,7 +78,9 @@ class SparqlWriter {
 	    $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
 	    $ops_uri = $this->_request->getParam('uri');
 	    $sparql = str_replace('?ops_item', '<'.$ops_uri.'>', $sparql);
-	    return $sparql;	
+	    $ims = new OpsIms();
+	    $formatter = new VirtuosoFormatter();
+	    return $formatter->formatQuery($ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri));
         } else {
             return false;
         }
@@ -697,7 +701,9 @@ _SPARQL_;
 				$query.="{$filterGraph}} {$orderBy['orderBy']}";
 			   }
 			}
-			return $query;
+			$ims = new OpsIms();
+			$formatter = new VirtuosoFormatter();
+			return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
 #Antonis
 #                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
@@ -705,7 +711,10 @@ _SPARQL_;
 #                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
 #                  }
 #                  $uriSetFilter.= ")\n";
-                  return $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+                  $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+		  $ims = new OpsIms();
+		  $formatter = new VirtuosoFormatter();
+		  return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
                   /* 
                     FILTER doesn't work so well with all triplestores, could do it by adding incrementers to every variable in the pattern which increment for ever loop of the URI list. If do so, it would be good to change the propertypath->sparql code to map to a plain pattern which is then passed to the same code as this is, to add the incrementers 
                     

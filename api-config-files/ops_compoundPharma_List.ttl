@@ -26,7 +26,7 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:8184/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
@@ -93,7 +93,6 @@ chembl-ops:normalisedValue api:name "activity_value" ;
                                 qudt:numericValue ?num_ro5_violations . }
                 }
                 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-		        ?item ops:input ?ops_item .	
                         ?item chembl:forMolecule ?chembl_uri ;
                                 chembl:onAssay ?assay_uri .
                         ?chembl_uri owl:equivalentClass ?equiv_compound .

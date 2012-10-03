@@ -26,7 +26,7 @@
 
 <#chebi> a api:API ;
         rdfs:label "ChEBI Ontology"@en ;
-        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
