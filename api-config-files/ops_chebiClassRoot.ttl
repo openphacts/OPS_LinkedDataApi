@@ -22,7 +22,7 @@
 
 <#chebi> a api:API ;
         rdfs:label "ChEBI Ontology" ;
-        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:dataset <http://www.chemspider.com> ;
