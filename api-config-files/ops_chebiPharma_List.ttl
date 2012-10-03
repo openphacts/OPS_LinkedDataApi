@@ -131,7 +131,7 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 " ;
 	api:where "
 {       
-	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?bNode2 ?activity_value {
+	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?bNode2 ?activity_value {
 		GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
 		        ?class rdfs:subClassOf ?ops_item
 		}
@@ -172,4 +172,4 @@ _:b1 ops:concatenatedURIs ?target_uris ;
         	                a cheminf:CHEMINF_000367;
                 	        qudt:numericValue ?num_ro5_violations . }
 	        }
-	} } GROUP BY ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?item ?doi ?pmid ?equiv_assay ?equiv_target ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value " .
+	} } GROUP BY ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?item ?doi ?pmid ?equiv_assay ?equiv_target ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value" .

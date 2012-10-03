@@ -67,9 +67,13 @@ class SparqlWriter {
 		$orderBy['orderBy']='ORDER BY ?item';
 	    }
 	    $filterGraph = $this->getFilterGraph();
+            $addToSelect = preg_replace('/ORDER BY/','',$orderBy['orderBy']);
+	    $addToSelect = preg_replace('/DESC\(/i','',$addToSelect);
+            $addToSelect = preg_replace('/\)/','',$addToSelect);
+            $addToSelect = preg_replace('/\?item/','',$addToSelect);
 #            $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
 #Antonis            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
-	    $sparql= 'SELECT DISTINCT ?item WHERE {' .  "{$filterGraph} {$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
+	    $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
 	    $ops_uri = $this->_request->getParam('uri');
 	    $sparql = str_replace('?ops_item', '<'.$ops_uri.'>', $sparql);
 	    return $sparql;	
