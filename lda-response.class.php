@@ -67,6 +67,13 @@ class LinkedDataApiResponse {
                         'application/xml',
                     ),
             ),
+        'tsv' => array(
+                'ext' => 'tsv',
+                'view' => 'views/tsv.php',
+                'mimetypes' => array(
+                        'text/tab-seperated-values',
+                    ),
+            ),
            
         );
         

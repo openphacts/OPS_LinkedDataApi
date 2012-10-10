@@ -52,12 +52,15 @@ class ConfigGraph extends PueliaGraph {
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'mimeType', 'application/rdf+xml');
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'name', 'rdf');
         $this->add_literal_triple(API.'RdfXmlFormatter', RDFS_LABEL, 'RDF/XML');
+        $this->add_literal_triple(API.'TsvFormatter', API.'mimeType', 'text/tsv');
+        $this->add_literal_triple(API.'TsvFormatter', API.'name', 'tsv');
+        $this->add_literal_triple(API.'TsvFormatter', RDFS_LABEL, 'Comma Seperated Variables');
         $this->add_resource_triple(API.'JsonFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'XmlFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'RdfXmlFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'TurtleFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'RdfJsonFormatter',  RDF.'type', API.'Formatter');
-
+	$this->add_resource_triple(API.'TsvFormatter',  RDF.'type', API.'Formatter');
 
         //built-in viewer: basic
         $this->add_resource_triple(API.'basicViewer', RDF_TYPE, API.'Viewer');
@@ -859,6 +862,7 @@ class ConfigGraph extends PueliaGraph {
             'ttl' => API.'TurtleFormatter',
             'json' => API.'JsonFormatter',
             'xml' => API.'XmlFormatter',
+	    'tsv' => API.'TsvFormatter'
             );
         foreach($this->get_resource_triple_values($this->getApiUri(), API.'formatter') as $formatterUri){
             $name = $this->get_first_literal($formatterUri, API.'name');
