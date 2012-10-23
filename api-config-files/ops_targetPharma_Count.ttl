@@ -74,7 +74,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
 <#targetPharmacologyCountViewer> a api:Viewer ;
-	api:name "compoundPharmacologyCountViewer" ;
+	api:name "targetPharmacologyCountViewer" ;
 	api:template 
 "?ops_item ops:targetPharmacologyTotalResults ?count . " ; 
 	api:where

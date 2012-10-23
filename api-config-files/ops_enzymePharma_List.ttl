@@ -81,13 +81,13 @@ chembl-ops:normalisedValue api:name "activity_value" ;
         ?target_chembl skos:exactMatch ?subclass ;
                 owl:equivalentClass ?equiv_target .
         ?assay_uri chembl:hasTarget ?target_chembl ;
-                owl:equivalentClass ?equiv_assay ;
-                chembl:organism ?assay_organism .
+                owl:equivalentClass ?equiv_assay .
         ?item chembl:onAssay ?assay_uri ;
                 chembl:forMolecule ?compound_chembl .
         ?compound_chembl owl:equivalentClass ?equiv_compound .
         ?equiv_compound skos:exactMatch ?compound_cs .
         OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
+        OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
         OPTIONAL { ?target_chembl dc:title ?target_name }
         OPTIONAL { ?target_chembl chembl:organism ?target_organism }
         OPTIONAL { ?item chembl:type ?std_type }
@@ -131,13 +131,14 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	chembl:onAssay ?equiv_assay ;
 	chembl:citesAsDataSource ?doi ;
 	bibo:pmid ?pmid ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?equiv_assay ops:hasTargets ?targets ;
-	chembl:hasDescription ?assay_description ;
-	chembl:organism ?assay_organisms .
-?equiv_target dc:title ?target_names;
+	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> ;
+	chembl:hasTarget _:b1 .
+?equiv_assay chembl:hasDescription ?assay_description ;
+	chembl:organism ?assay_organism .
+_:b1	dc:title ?target_names;
+	ops:concatenetedURIs ?equiv_targets ;
 	ops:target_organism ?target_organism ;
-	skos:exactMatch ?subclasses . 
+	skos:exactMatch ?subclass . 
 ?equiv_compound ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw .
@@ -151,7 +152,11 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 " ; 
 	api:where 
 "{       
-SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' ) AS ?targets ) ( GROUP_CONCAT ( DISTINCT ?subclass ; SEPARATOR=' , ' ) AS ?subclasses ) ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name ; SEPARATOR=' , ' ) AS ?target_names ) ( GROUP_CONCAT ( DISTINCT ?target_organism ; SEPARATOR=' , ' ) AS ?target_organisms ) ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
+SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , ') AS ?equiv_targets ) ?subclass ?equiv_compound 
+?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations 
+?compound_cw ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name  ; SEPARATOR = ' , ') AS ?target_names ) 
+?target_organism ?std_type ?relation ?std_value ?std_unit 
+?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
 	GRAPH <http://purl.uniprot.org/enzyme/inference> {
 		?subclass rdfs:subClassOf ?ops_item 
 	}	
@@ -159,13 +164,13 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' 
 	?target_chembl skos:exactMatch ?subclass ;
 		owl:equivalentClass ?equiv_target . 
 	?assay_uri chembl:hasTarget ?target_chembl ;
-		owl:equivalentClass ?equiv_assay ;
-		chembl:organism ?assay_organism .
+		owl:equivalentClass ?equiv_assay .
 	?item chembl:onAssay ?assay_uri ;
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_compound . 
 	?equiv_compound skos:exactMatch ?compound_cs .
         OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
+        OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
 	OPTIONAL { ?target_chembl dc:title ?target_name }
 	OPTIONAL { ?target_chembl chembl:organism ?target_organism }
         OPTIONAL { ?item chembl:type ?std_type }
@@ -173,9 +178,9 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' 
         OPTIONAL { ?item chembl:standardValue ?std_value }
         OPTIONAL { ?item chembl:standardUnits ?std_unit }
         OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
-                OPTIONAL { ?doi_internal owl:sameAs ?doi }
-		OPTIONAL { ?doi_internal bibo:pmid ?pmid }
-	}
+                	?doi_internal owl:sameAs ?doi }
+	OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
+                        ?doi_internal bibo:pmid ?pmid }
  	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
 		?node1 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight }
@@ -193,4 +198,4 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR=' , ' 
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
 	}
-} } GROUP BY ?item ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?std_type ?relation ?std_value ?doi ?pmid ?std_unit ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight" .
+}} GROUP BY ?item ?subclass ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi" .

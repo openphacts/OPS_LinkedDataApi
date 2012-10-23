@@ -55,7 +55,7 @@
 	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
 
 <#targetViewer> a api:Viewer ;
-	api:name "compoundViewer" ;
+	api:name "targetViewer" ;
 	api:template 
 "?ops_item skos:exactMatch ?cw_uri ;
 	skos:exactMatch ?uniprot_uri ;

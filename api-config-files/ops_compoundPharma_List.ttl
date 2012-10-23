@@ -80,7 +80,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 		api:where 
 "
 
-{        SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
+{        SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_uri skos:prefLabel ?compound_name.
                 }
@@ -118,15 +118,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
                                 ?bNode1 a sio:CHEMINF_000198 ;
                                         sio:SIO_000300 ?molweight. }
                 }
-                OPTIONAL {
-                        GRAPH <http://linkedlifedata.com/resource/drugbank> {
-                                ?db_uri drugbank:genericName ?drug_name ;
-                                        drugbank:drugType ?drugType_uri .
-                                ?drugType_uri rdfs:label ?drugType.
-                        }
-                }
-
-        } GROUP BY ?item ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?drug_name ?db_uri ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations }" ;
+        } GROUP BY ?item ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations }" ; 
 	] ;
 	api:defaultViewer <#compoundPharmacologyListViewer> .
 
@@ -167,8 +159,20 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	drugbank:genericName ?drug_name ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
 	api:where 
-"{
-	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
+"
+{
+  {
+    SELECT DISTINCT ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) {
+      GRAPH <http://linkedlifedata.com/resource/drugbank> {
+        ?db_uri drugbank:genericName ?drug_name ;
+          drugbank:drugType ?drugType_uri .
+        ?drugType_uri rdfs:label ?drugType.
+      }
+    } GROUP BY ?drug_name ?db_uri
+  } 
+}
+{
+	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
 	        GRAPH <http://www.conceptwiki.org> {
                 	?cw_uri skos:prefLabel ?compound_name.
         	}
@@ -206,12 +210,4 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 				?bNode1 a sio:CHEMINF_000198 ;
 					sio:SIO_000300 ?molweight. }
 		}
-		OPTIONAL {
-               		GRAPH <http://linkedlifedata.com/resource/drugbank> {
-                        	?db_uri drugbank:genericName ?drug_name ;
-                                	drugbank:drugType ?drugType_uri .
-                        	?drugType_uri rdfs:label ?drugType.
-                	}
-		}
-
-	} }GROUP BY ?item ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?drug_name ?db_uri ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations" .
+	} } GROUP BY ?item ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations " .
