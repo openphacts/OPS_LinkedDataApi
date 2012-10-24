@@ -718,7 +718,10 @@ _SPARQL_;
 #                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
 #                  }
 #                  $uriSetFilter.= ")\n";
-                  $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+	          $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
+		  $template=$this->fillQueryTemplate($template,$bindings);
+		  $where=$this->fillQueryTemplate($this->_config->getViewerWhere($viewerUri),$bindings);
+                  $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$where}  }");
 		  $ims = new OpsIms();
 		  $formatter = new VirtuosoFormatter();
 		  return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
