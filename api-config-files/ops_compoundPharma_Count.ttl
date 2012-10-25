@@ -44,13 +44,25 @@
 		api:description "The total number of acitivity values in the LDC for a given compound" ;
 		api:uriTemplate "/compound/pharmacology/count?uri={uri}" ;
         	api:itemTemplate "{uri}" ;
+		api:variable <http://www.openphacts.org/units/Micromolar> ;
+		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Nanomolar> ;
+		api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
 		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
-		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Mus%20musculus";
+		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&activity_unit=micromolar&assay_organism=Mus%20musculus";
 		api:viewer <#compoundPharmacologyCountViewer> ; 
 		api:defaultViewer <#compoundPharmacologyCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://www.chemspider.com> api:label "ChemSpider" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -67,7 +79,7 @@ chembl:type api:name "activity_type" ;
  
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50</a>" ; 
         api:filterVariable "?activity_uri";
         a rdf:Property .
 

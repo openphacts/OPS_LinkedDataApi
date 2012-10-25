@@ -43,14 +43,26 @@
 		api:name "ChEBI Class Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given ChEBI Ontology class." ;
 		api:uriTemplate "/compound/chebi/pharmacology/count?uri={uri}" ;
+		api:variable <http://www.openphacts.org/units/Micromolar> ;
+		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Nanomolar> ;
+		api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
         	api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#chebiPharmacologyCountViewer> ; 
 		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://www.chemspider.com> api:label "ChemSpider" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -72,7 +84,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50</a>" ;
         api:filterVariable "?activity_uri";
         a rdf:Property .
 

@@ -44,6 +44,15 @@
 	api:description "An API configuration to return paginated information about members if Enzyme Classification classes." ;
 	api:endpoint <#enzymePharmacologyListEndpoint> .
 
+<http://www.chemspider.com> api:label "ChemSpider" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
+
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
@@ -55,12 +64,11 @@ chembl:type api:name "activity_type" ;
 	api:filterVariable "?item";
 api:value "One of the activity types listed at <a href=/pharmacology/filters/activities>/pharmacology/filters/activities</a>" ;
 	a rdf:Property .
-
  
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ; 
-        api:filterVariable "?activity_uri";
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50</a>" ; 
+        api:filterVariable "?item";
         a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
@@ -75,10 +83,14 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 <#enzymePharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/target/enzyme/pharmacology/pages?uri={uri}" ;
+	api:variable <http://www.openphacts.org/units/Micromolar> ;
+	api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+	api:variable <http://www.openphacts.org/units/Nanomolar> ;
+	api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
 	api:name "Enzyme Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given Enzyme Classification class" ;
-	api:exampleRequestPath "/target/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-";
-	api:exampleRequestPath "/target/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Homo%20sapiens";
+	api:exampleRequestPath "/target/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.1.1";
+	api:exampleRequestPath "/target/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.1.2&activity_type=IC50&maxEx-activity_value=10000&minEx-activity_value=1000&assay_organism=Homo%20sapiens&activity_unit=nanomolar";
 	api:selector [
 		api:where 
 "
@@ -136,6 +148,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	chembl:relation ?relation;
 	chembl:standardValue ?std_value;
 	chembl:standardUnits ?std_unit;
+	chembl-ops:normalisedValue ?activity_value ;
 	chembl:onAssay ?equiv_assay ;
 	chembl:citesAsDataSource ?doi ;
 	bibo:pmid ?pmid ;
@@ -163,7 +176,7 @@ _:b1	dc:title ?target_names;
 SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , ') AS ?equiv_targets ) ?subclass ?equiv_compound 
 ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations 
 ?compound_cw ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name  ; SEPARATOR = ' , ') AS ?target_names ) 
-?target_organism ?std_type ?relation ?std_value ?std_unit 
+?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value
 ?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
 	GRAPH <http://purl.uniprot.org/enzyme/inference> {
 		?subclass rdfs:subClassOf ?ops_item 
@@ -185,6 +198,7 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , 
         OPTIONAL { ?item chembl:relation ?relation }
         OPTIONAL { ?item chembl:standardValue ?std_value }
         OPTIONAL { ?item chembl:standardUnits ?std_unit }
+        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
         OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
                 	?doi_internal owl:sameAs ?doi }
 	OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
@@ -206,4 +220,4 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , 
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
 	}
-}} GROUP BY ?item ?subclass ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi" .
+}} GROUP BY ?item ?subclass ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi" .

@@ -49,10 +49,25 @@
 		api:description "A complete representation of acitivity values in the LDC for a given Enzyme Class. Potentially extremely large result. Example will use up 2GB of RAM in Chrome." ;
 		api:uriTemplate "/target/enzyme/pharmacology?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.1.2.-";
-		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.1.2.-&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Homo%20sapiens";
+		api:variable <http://www.openphacts.org/units/Micromolar> ;
+		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Nanomolar> ;
+		api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
+		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.1.1";
+		api:exampleRequestPath "/target/enzyme/pharmacology?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.1.2&activity_type=IC50&maxEx-activity_value=10000&minEx-activity_value=1000&assay_organism=Homo%20sapiens&activity_unit=nanomolar";
 		api:viewer <#enzymePharmacologyViewer> ;
 		api:defaultViewer <#enzymePharmacologyViewer> ] .
+
+<http://www.openphacts.org/api#> api:label "ops" .
+<http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://www.chemspider.com> api:label "ChemSpider" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -69,7 +84,7 @@ api:value "One of the activity types listed at <a href=/pharmacology/filters/act
  
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50</a>" ; 
         api:filterVariable "?activity_uri";
         a rdf:Property .
 

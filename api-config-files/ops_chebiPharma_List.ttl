@@ -48,8 +48,10 @@
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
-<http://www.openphacts.org/units/Micromolar> api:label "micromolar" ;
-	a rdf:Resource .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -65,7 +67,7 @@ api:value "One of the activity types listed at <a href=/pharmacology/filters/act
 
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50</a>" ; 
         api:filterVariable "?item";
 	a rdf:Property .
 
@@ -81,10 +83,14 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 <#chebiPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/chebi/pharmacology/pages?uri={uri}" ;
+	api:variable <http://www.openphacts.org/units/Micromolar> ;
+	api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+	api:variable <http://www.openphacts.org/units/Nanomolar> ;
+	api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
 	api:name "ChEBI Ontology Class Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;
 	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Mus%20musculus";
+	api:exampleRequestPath "http://localhost/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:selector [
 		api:where 
 "
@@ -161,6 +167,7 @@ _:b1 ops:concatenatedURIs ?target_uris ;
                         OPTIONAL { ?item chembl:relation ?relation }
                         OPTIONAL { ?item chembl:standardValue ?std_value }
                         OPTIONAL { ?item chembl:standardUnits ?std_unit }
+                        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
 			OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
 				OPTIONAL { ?doi_internal owl:sameAs ?doi }
 				OPTIONAL { ?doi_internal bibo:pmid ?pmid }
