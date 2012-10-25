@@ -32,7 +32,6 @@
         api:variable <#input> ; 
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
- 	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -48,10 +47,6 @@
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
-<http://www.openphacts.org/units/Micromolar> api:name "micromolar" . 
-<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
-<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
-<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -62,19 +57,12 @@ chembl:organism api:name "assay_organism" ;
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?item";
-	api:value "One of the activity types listed at <a href=/pharmacology/filters/activities>/pharmacology/filters/activities</a>" ;
+	api:value "One of: 'IC50' , 'Activity' " ;
 	a rdf:Property .
-
- 
-chembl-ops:normalisedUnit api:name "activity_unit" ;
-        api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ; 
-        api:filterVariable "?item";
-        a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
@@ -84,10 +72,6 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 <#compoundPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/pharmacology/pages?uri={uri}" ;
-	api:variable <http://www.openphacts.org/units/Micromolar> ;
-	api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
-	api:variable <http://www.openphacts.org/units/Nanomolar> ;
-	api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
 	api:name "Compound Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
@@ -96,7 +80,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 		api:where 
 "
 
-{        SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
+{        SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_uri skos:prefLabel ?compound_name.
                 }
@@ -134,7 +118,15 @@ chembl-ops:normalisedValue api:name "activity_value" ;
                                 ?bNode1 a sio:CHEMINF_000198 ;
                                         sio:SIO_000300 ?molweight. }
                 }
-        } GROUP BY ?item ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations }" ; 
+                OPTIONAL {
+                        GRAPH <http://linkedlifedata.com/resource/drugbank> {
+                                ?db_uri drugbank:genericName ?drug_name ;
+                                        drugbank:drugType ?drugType_uri .
+                                ?drugType_uri rdfs:label ?drugType.
+                        }
+                }
+
+        } GROUP BY ?item ?equiv_compound ?db_uri ?drug_name ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations }" ; 
 	] ;
 	api:defaultViewer <#compoundPharmacologyListViewer> .
 
@@ -176,19 +168,8 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
 	api:where 
 "
-OPTIONAL {
-  {
-    SELECT DISTINCT ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) {
-      GRAPH <http://linkedlifedata.com/resource/drugbank> {
-        ?db_uri drugbank:genericName ?drug_name ;
-          drugbank:drugType ?drugType_uri .
-        ?drugType_uri rdfs:label ?drugType.
-      }
-    } GROUP BY ?drug_name ?db_uri
-  } 
-}
 {
-	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations {
+	SELECT DISTINCT ?item ?db_uri ?drug_name ?doi ?pmid ?equiv_compound ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target ; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?assay_description ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) {
 	        GRAPH <http://www.conceptwiki.org> {
                 	?cw_uri skos:prefLabel ?compound_name.
         	}
@@ -226,4 +207,11 @@ OPTIONAL {
 				?bNode1 a sio:CHEMINF_000198 ;
 					sio:SIO_000300 ?molweight. }
 		}
-	} } GROUP BY ?item ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations " .
+		OPTIONAL {  
+			GRAPH <http://linkedlifedata.com/resource/drugbank> {
+				?db_uri drugbank:genericName ?drug_name ;
+					drugbank:drugType ?drugType_uri .
+			        ?drugType_uri rdfs:label ?drugType.
+			}
+		}
+	} } GROUP BY ?item ?db_uri ?drug_type ?drug_name ?equiv_compound ?doi ?pmid ?equiv_assay ?assay_organism ?assay_description ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?activity_value ?cw_uri ?compound_name ?cs_uri ?smiles ?inchi ?inchiKey ?num_ro5_violations" .

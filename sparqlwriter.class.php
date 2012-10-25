@@ -77,8 +77,7 @@ class SparqlWriter {
 #Antonis            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
 	    if (stripos($template, 'SELECT')!==false) {
 		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
-		$template = substr($template, 0, strrpos($template, "}")-1);
-		$sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$template}  {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset} } }";
+		$sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
 	    }
 	    else {
 	        $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
@@ -614,9 +613,11 @@ _SPARQL_;
     function getFilterGraph() {
 	$params = $this->_request->getParams();
 	$vars = $this->_config->getApiConfigVariableBindings();
+	$ep_vars = $this->_config->getEndpointConfigVariableBindings();
 	$filterGraph = "{\n";
-#	print_r($params);
-#	print_r($vars);
+	//print_r($params);
+	//print_r($vars);
+	//print_r($ep_vars);
 	$count=1;
 	foreach ($params as $param_name => $param_value) {
 	   if ($param_name != 'uri'){
@@ -627,12 +628,24 @@ _SPARQL_;
 				$filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
 				$token=strtok('|');
 				while ($token != false){
-					$filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
+					if (isset($ep_vars[$param_value]['uri'])) {
+						$token = '<' . $ep_vars[$token]['uri'] . '>';
+					}
+					else {
+						$token = '"' . $token  . '"';
+					}
+					$filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> ' . $token  . "}";
 					$token=strtok('|');
 				}
 			   }
 			   else {
-				$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> "' . $param_value  . '"' . ". } ";	
+				if (isset($ep_vars[$param_value]['uri'])) {
+					$param_value = '<' . $ep_vars[$param_value]['uri'] . '>';
+				}
+				else {
+					$param_value = '"' . $param_value . '"';
+				}
+				$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> ' . $param_value  . ". } ";	
 			   }
 			}
 			elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
@@ -718,10 +731,7 @@ _SPARQL_;
 #                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
 #                  }
 #                  $uriSetFilter.= ")\n";
-	          $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
-		  $template=$this->fillQueryTemplate($template,$bindings);
-		  $where=$this->fillQueryTemplate($this->_config->getViewerWhere($viewerUri),$bindings);
-                  $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$where}  }");
+                  $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
 		  $ims = new OpsIms();
 		  $formatter = new VirtuosoFormatter();
 		  return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));

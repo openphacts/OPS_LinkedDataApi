@@ -30,6 +30,7 @@
         api:variable <#input> ; 
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
+ 	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -64,12 +65,19 @@ chembl:organism api:name "assay_organism" ;
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?activity_uri";
-	api:value "One of: 'IC50' , 'Activity' " ;
+api:value "One of the activity types listed at <a href=/pharmacology/filters/activities>/pharmacology/filters/activities</a>" ;
 	a rdf:Property .
+
+ 
+chembl-ops:normalisedUnit api:name "activity_unit" ;
+        api:label "activity_unit" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50" ; 
+        api:filterVariable "?activity_uri";
+        a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:value "A number" ;
 	api:filterVariable "?activity_uri";
 	a rdf:Property .
 

@@ -36,14 +36,14 @@
 		a api:ItemEndpoint ;
 		api:name "Units for activity type" ;
 		api:description "A list of units that activities of the specified type have been normalised to." ;
-		api:uriTemplate "/pharmacology/filters/{act_name}" ;
+		api:uriTemplate "/pharmacology/filters/units/{act_name}" ;
         	api:itemTemplate "http://www.openphacts.org/chembl/onto/#{act_name}" ;
 		api:variable [
 			api:name "act_type" ;
 			api:value "http://www.openphacts.org/chembl/onto/#{act_name}" ;
 			api:type rdfs:Resource ;
 		] ;
-		api:exampleRequestPath "/pharmacology/filters/IC50";
+		api:exampleRequestPath "/pharmacology/filters/units/IC50";
 		api:viewer <#pharmacologyFiltersUnitViewer> ; 
 		api:defaultViewer <#pharmacologyFiltersUnitViewer> . ] .
 

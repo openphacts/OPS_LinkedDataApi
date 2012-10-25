@@ -2,7 +2,7 @@
 <dd>
     <?php
         $properties = array(
-		'param=value' => 'Select resources whose param has the specified value. "param" must be the api:name of a rdf:Property declared in the corresponding API configuration.',
+		'param=value' => 'Select resources whose param has the specified value. Multiple values can be specified with the "|" character. "param" must be the api:name of a rdf:Property declared in the corresponding API configuration.',
 		'min-param=value' => 'Select resources whose param is greater than or equal to the specified value',
 		'max-param=value' => 'Select resources whose param is less than or equal to the specified value',
 		'minEx-param=value' => 'Select resources whose param is greater than the specified value',
