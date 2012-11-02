@@ -101,4 +101,17 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 "{ SELECT (COUNT(?activity_uri) AS ?count) {
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 		?activity_uri chembl:forMolecule ?chembl_uri;
-			chembl:onAssay ?assay_uri . } } }" .
+			chembl:onAssay ?assay_uri . 
+		?chembl_uri owl:equivalentClass ?equiv_compound .
+		        ?equiv_compound sio:CHEMINF_000200 [] . 
+			?assay_uri owl:equivalentClass ?equiv_assay .
+	} 
+	GRAPH <http://www.conceptwiki.org> {
+               	?cw_uri skos:prefLabel ?compound_name.
+        }
+	GRAPH <http://www.chemspider.com> {
+                ?cs_uri chemspider:smiles ?smiles ;
+	                chemspider:inchi ?inchi ;
+                      	chemspider:inchikey ?inchiKey .
+	}
+} }" .
