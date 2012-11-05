@@ -158,7 +158,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	chembl:organism ?assay_organism .
 _:b1	dc:title ?target_names;
 	ops:concatenetedURIs ?equiv_targets ;
-	ops:target_organism ?target_organism ;
+	ops:target_organism ?target_organisms ;
 	skos:exactMatch ?subclass . 
 ?equiv_compound ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
@@ -176,7 +176,7 @@ _:b1	dc:title ?target_names;
 SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , ') AS ?equiv_targets ) ?subclass ?equiv_compound 
 ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations 
 ?compound_cw ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name  ; SEPARATOR = ' , ') AS ?target_names ) 
-?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value
+( GROUP_CONCAT ( DISTINCT ?target_organism ; SEPARATOR = ' , ') AS ?target_organisms ) ?std_type ?relation ?std_value ?std_unit ?activity_value
 ?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
 	GRAPH <http://purl.uniprot.org/enzyme/inference> {
 		?subclass rdfs:subClassOf ?ops_item 
@@ -220,4 +220,4 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , 
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
 	}
-}} GROUP BY ?item ?subclass ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi" .
+}} GROUP BY ?item ?subclass ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi" .
