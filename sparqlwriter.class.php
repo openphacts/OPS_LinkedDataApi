@@ -632,7 +632,12 @@ _SPARQL_;
 						$token = '<' . $ep_vars[$token]['uri'] . '>';
 					}
 					else {
-						$token = '"' . $token  . '"';
+						if (is_numeric($token)) {
+                                                        $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+						}
+						else {
+							$token = '"' . $token  . '"';
+						}
 					}
 					$filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> ' . $token  . "}";
 					$token=strtok('|');
@@ -643,14 +648,19 @@ _SPARQL_;
 					$param_value = '<' . $ep_vars[$param_value]['uri'] . '>';
 				}
 				else {
-					$param_value = '"' . $param_value . '"';
+                                        if (is_numeric($param_value)) {
+                                                $param_value = '"' . $param_value  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+                                        }
+                                        else {
+                                                $param_value = '"' . $param_value  . '"';
+                                        }
 				}
 				$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> ' . $param_value  . ". } ";	
 			   }
 			}
 			elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
 				$filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-				$filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ') }';
+				$filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ') }';
 				$count++;  
 			}
 			elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
