@@ -94,20 +94,51 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:selector [
 		api:where 
 "
-GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-	?subclass rdfs:subClassOf ?ops_item .
-}
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-	?compound_chembl skos:exactMatch ?subclass ;
-		owl:equivalentClass ?equiv_compound .
-	?equiv_compound skos:exactMatch ?compound_cs .
-	?item chembl:forMolecule ?compound_chembl ;
-		chembl:onAssay ?assay_uri .
-	?assay_uri chembl:hasTarget ?target_uri ;
-		owl:equivalentClass ?equiv_assay .
-	?target_uri owl:equivalentClass ?equiv_target .
-	
-}" ;
+{
+        SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?bNode2 ?activity_value {
+                GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
+                        ?class rdfs:subClassOf ?ops_item
+                }
+                GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+                        ?compound_chembl skos:exactMatch ?class ;
+                                owl:equivalentClass ?equiv_compound .
+                        ?equiv_compound skos:exactMatch ?compound_cs .
+                        ?item chembl:forMolecule ?compound_chembl ;
+                                chembl:onAssay ?assay_uri .
+                        ?assay_uri chembl:hasTarget ?target_uri ;
+                                owl:equivalentClass ?equiv_assay .
+                        ?target_uri owl:equivalentClass ?equiv_target.
+                        OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+                        OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
+                        OPTIONAL { ?target_uri dc:title ?target_name }
+                        OPTIONAL { ?target_uri chembl:organism ?target_organism . }
+                        OPTIONAL { ?item chembl:type ?std_type }
+                        OPTIONAL { ?item chembl:relation ?relation }
+                        OPTIONAL { ?item chembl:standardValue ?std_value }
+                        OPTIONAL { ?item chembl:standardUnits ?std_unit }
+                        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
+                        OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
+                                OPTIONAL { ?doi_internal owl:sameAs ?doi }
+                                OPTIONAL { ?doi_internal bibo:pmid ?pmid }
+                        }
+                        OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?bNode1 .
+                                ?bNode1 a sio:CHEMINF_000198 ;
+                                        sio:SIO_000300 ?molweight. }
+                }
+                GRAPH <http://www.conceptwiki.org> {
+                        ?compound_cw skos:exactMatch ?compound_cs ;
+                                skos:prefLabel ?compound_name .
+                }
+                GRAPH <http://www.chemspider.com> {
+                        ?compound_cs chemspider:smiles ?smiles ;
+                                chemspider:inchi ?inchi ;
+                                chemspider:inchikey ?inchiKey .
+                        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+                                a cheminf:CHEMINF_000367;
+                                qudt:numericValue ?num_ro5_violations . }
+                }
+        } } GROUP BY ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?item ?doi ?pmid ?equiv_assay ?equiv_target ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value
+" ;
 	] ;
 	api:defaultViewer <#chebiPharmacologyListViewer> .
 

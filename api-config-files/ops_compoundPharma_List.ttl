@@ -175,8 +175,7 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	drugbank:genericName ?drug_name ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
 	api:where 
-"
-OPTIONAL {
+"OPTIONAL {
   {
     SELECT DISTINCT ?db_uri ?drug_name (GROUP_CONCAT(DISTINCT ?drugType ; SEPARATOR=' , ') AS ?drugTypes) {
       GRAPH <http://linkedlifedata.com/resource/drugbank> {

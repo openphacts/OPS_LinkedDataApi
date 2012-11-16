@@ -94,6 +94,12 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:selector [
 		api:where 
 "
+{
+SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , ') AS ?equiv_targets ) ( GROUP_CONCAT ( DISTINCT ?subclass ; SEPARATOR = ' , ') AS ?subclasses )
+?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations
+?compound_cw ?compound_name ( GROUP_CONCAT ( DISTINCT ?target_name  ; SEPARATOR = ' , ') AS ?target_names )
+( GROUP_CONCAT ( DISTINCT ?target_organism ; SEPARATOR = ' , ') AS ?target_organisms ) ?std_type ?relation ?std_value ?std_unit ?activity_value
+?equiv_assay ?assay_organism ?assay_description ?pmid ?doi ?node1 ?molweight {
         GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 ?subclass rdfs:subClassOf ?ops_item
         }
@@ -114,6 +120,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
         OPTIONAL { ?item chembl:relation ?relation }
         OPTIONAL { ?item chembl:standardValue ?std_value }
         OPTIONAL { ?item chembl:standardUnits ?std_unit }
+        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
         OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
                 OPTIONAL { ?doi_internal owl:sameAs ?doi }
                 OPTIONAL { ?doi_internal bibo:pmid ?pmid }
@@ -135,6 +142,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
                 ?compound_cw skos:exactMatch ?compound_cs ;
                         skos:prefLabel ?compound_name .
         }
+}} GROUP BY ?item ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi
 " ;
 	] ;
 	api:defaultViewer <#enzymePharmacologyListViewer> .

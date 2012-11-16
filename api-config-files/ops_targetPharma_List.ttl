@@ -93,7 +93,9 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F208b03ad-e809-4d98-b83b-69ff85880897&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=9&activity_unit=micromolar&assay_organism=Mus%20musculus";
 	api:selector [
 		api:where 
-"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+"{
+SELECT DISTINCT ?item ?equiv_target ?cw_uri ?equiv_compound ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value ?doi ?pmid ?equiv_assay ?assay_description ?assay_organism ?node1 ?molweight ?num_ro5_violations WHERE {
+GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
         ?assay_uri chembl:hasTarget ?chembl_uri ;
                 owl:equivalentClass ?equiv_assay .
         ?chembl_uri owl:equivalentClass ?equiv_target .
@@ -108,6 +110,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
         OPTIONAL { ?item chembl:relation ?relation }
         OPTIONAL { ?item chembl:standardValue ?std_value }
         OPTIONAL { ?item chembl:standardUnits ?std_unit }
+        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value}
         OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
                 OPTIONAL { ?doi_internal owl:sameAs ?doi }
                 OPTIONAL { ?doi_internal bibo:pmid ?pmid }
@@ -129,6 +132,8 @@ GRAPH <http://www.conceptwiki.org> {
         ?cw_uri skos:prefLabel ?target_name .
         ?compound_cw skos:exactMatch ?compound_cs ;
                 skos:prefLabel ?compound_name .
+}
+}
 }" ;
 	] ;
 	api:defaultViewer <#targetPharmacologyListViewer> .
@@ -170,7 +175,7 @@ GRAPH <http://www.conceptwiki.org> {
 " ; 
 	api:where 
 "{       
-SELECT DISTINCT ?item ?equiv_target ?cw_uri ?equiv_compound ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value ?doi ?pmid ?equiv_assay ?assay_description ?assay_organism ?node1 ?molweight ?num_ro5_violations {
+SELECT DISTINCT ?item ?equiv_target ?cw_uri ?equiv_compound ?compound_cs ?compound_cw ?inchi ?inchi_key ?smiles ?compound_name ?target_name ?target_organism ?std_type ?relation ?std_value ?std_unit ?activity_value ?doi ?pmid ?equiv_assay ?assay_description ?assay_organism ?node1 ?molweight ?num_ro5_violations WHERE {
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		owl:equivalentClass ?equiv_assay .
