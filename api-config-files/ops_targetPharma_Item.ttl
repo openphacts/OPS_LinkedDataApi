@@ -118,6 +118,7 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	chembl:relation ?relation ;
 	chembl:standardValue ?std_value ;
 	chembl:standardUnits ?std_unit ;
+        chembl-ops:normalisedValue ?activity_value ;
 	chembl:forMolecule ?equiv_compound ;
 	chembl:citesAsDataSource ?doi ;
 	bibo:pmid ?pmid ;
@@ -148,7 +149,8 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	OPTIONAL { ?activity_uri chembl:relation ?relation }
 	OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
 	OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
-	        OPTIONAL { ?activity_uri cito:citesAsDataSource ?doi_internal .
+        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
+	OPTIONAL { ?activity_uri cito:citesAsDataSource ?doi_internal .
                 OPTIONAL { ?doi_internal owl:sameAs ?doi }
                 OPTIONAL { ?doi_internal bibo:pmid ?pmid }
         }
