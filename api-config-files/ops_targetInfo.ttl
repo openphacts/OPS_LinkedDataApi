@@ -86,41 +86,42 @@
 GRAPH <http://www.conceptwiki.org> {
 		?cw_uri skos:prefLabel ?target_name.
 	}
-{
-SELECT ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb (GROUP_CONCAT( DISTINCT ?alt_name ; SEPARATOR=' , ' ) as ?alt_names)
-?equiv_target ?target_type ?description (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) 
-?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ') as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?theoreticalPi {
+{ SELECT ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb (GROUP_CONCAT( DISTINCT ?alt_name ; SEPARATOR=' , ' ) as ?alt_names) {
 	GRAPH <http://purl.uniprot.org> {
-	        ?uniprot_uri uniprot:existence ?existence .
-        	OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
-	        OPTIONAL { ?uniprot_uri uniprot:sequence ?seq_uri .
-                	?seq_uri rdf:value ?sequence . }
-        	OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri .
-	                ?fun_uri a uniprot:Function_Annotation ;
-                	        rdfs:comment ?function . }
-        	OPTIONAL { ?uniprot_uri uniprot:classifiedWith ?class . }
-	        OPTIONAL { ?uniprot_uri uniprot:alternativeName ?alt_name_uri .
-        	        ?alt_name_uri uniprot:fullName ?alt_name . }
-	        OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb .
-        	        ?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
+	?uniprot_uri uniprot:existence ?existence .
+	OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
+	OPTIONAL { ?uniprot_uri uniprot:sequence ?seq_uri .
+		?seq_uri rdf:value ?sequence . }
+	OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri .
+		?fun_uri a uniprot:Function_Annotation ;
+		rdfs:comment ?function . }
+	OPTIONAL { ?uniprot_uri uniprot:classifiedWith ?class . }
+	OPTIONAL { ?uniprot_uri uniprot:alternativeName ?alt_name_uri .
+		?alt_name_uri uniprot:fullName ?alt_name . }
+	OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb .
+		?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
 	}
-	OPTIONAL {
-		GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-			?chembl_uri owl:equivalentClass ?equiv_target .
-			OPTIONAL { ?chembl_uri chembl:hasKeyword ?keyword . }
-			OPTIONAL { ?chembl_uri chembl:hasDescription ?description . }
-			OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
-			OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
-		}
-	}
-	OPTIONAL {
-                GRAPH <http://linkedlifedata.com/resource/drugbank> {
-                        OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
-                        OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
-                        OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
-                        OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
-                }
+} GROUP BY ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb }
+OPTIONAL {
+         { SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ') as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?theoreticalPi {
+         GRAPH <http://linkedlifedata.com/resource/drugbank> {
+		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
+		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
+		OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
+		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
         }
-}} GROUP BY ?equiv_target ?target_type ?description ?db_uri ?molecularWeight ?numberOfResidues ?theoreticalPi ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb
+	} GROUP BY ?db_uri ?molecularWeight ?numberOfResidues ?theoreticalPi }
+}
+OPTIONAL {
+	{ SELECT ?equiv_target ?target_type ?description (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) {
+	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
+		?chembl_uri owl:equivalentClass ?equiv_target .
+		OPTIONAL { ?chembl_uri chembl:hasKeyword ?keyword . }
+		OPTIONAL { ?chembl_uri chembl:hasDescription ?description . }
+		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
+		OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
+	}
+	} } GROUP BY ?equiv_target ?target_type ?description ?db_uri ?cellularLocations ?molecularWeight ?numberOfResidues ?theoreticalPi ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb 
+}
 ";
 
