@@ -119,7 +119,8 @@ else
 }
 
 $Response->serve();
-if (defined("PUELIA_SERVE_FROM_CACHE") AND  $Response->cacheable)
+if (defined("PUELIA_SERVE_FROM_CACHE") AND  PUELIA_SERVE_FROM_CACHE
+        AND !$Request->hasNoCacheHeader() AND $Response->cacheable)
 {
 	LinkedDataApiCache::cacheResponse($Request, $Response);
 }
