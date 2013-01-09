@@ -287,9 +287,9 @@ class ConfigGraph extends PueliaGraph {
      * @author Keith Alexander
      **/
     function pathTemplateMatches( $template, $path){
-	if(substr($template, -1,1)!='/'){ #trailing slash optional unless specified in template
-		$path = rtrim($path, '/');
-	}
+        if(substr($template, -1,1)!='/'){ #trailing slash optional unless specified in template
+            $path = rtrim($path, '/');
+        }
         preg_match_all(uriTemplateVariableRegex, $template, $ms);
         $templateVariables = array();
         $uriTemplateRegex = $template;
@@ -302,7 +302,8 @@ class ConfigGraph extends PueliaGraph {
         if(preg_match('@^'.$uriTemplateRegex.'$@', $path, $pathMatches)){
             $variableValuesFromPath = array();
             foreach($templateVariables as $n => $templateVariable){
-                $variableValuesFromPath[$templateVariable] = array('value'=> urldecode($pathMatches[$n+1]), 'source' => 'request');
+                $variableValuesFromPath[$templateVariable] = array('value'=> urldecode($pathMatches[$n+1]), 
+                                                                    'source' => 'request');
             }
             return $variableValuesFromPath;
         } else {
@@ -365,14 +366,14 @@ class ConfigGraph extends PueliaGraph {
     }
     
     function bindVariablesInValue($value, $variables, $valueType=false){
-      foreach($variables as $name => $props){
-        if($valueType==RDFS.'Resource'
-          AND isset($props['source']) 
-          AND $props['source']=='request'
-	  AND $name != 'uri'){ 
-# Antonis botch
-            $props['value'] = urlencode($props['value']);
-          }
+        foreach($variables as $name => $props){
+            if($valueType==RDFS.'Resource' AND 
+                    isset($props['source']) AND $props['source']=='request' 
+                    AND $name != 'uri'){
+                # Antonis botch
+                $props['value'] = urlencode($props['value']);
+            }
+            
             $value = str_replace('{'.$name.'}', $props['value'], $value);
         }
         return $value;
@@ -380,8 +381,9 @@ class ConfigGraph extends PueliaGraph {
     
     function getCompletedItemTemplate(){
         $itemTemplate = $this->getEndpointItemTemplate();
-	$bindings = $this->getAllProcessedVariableBindings();
-#	print_r($bindings);
+        $bindings = $this->getAllProcessedVariableBindings();
+        #	print_r($bindings);
+        
         $filledInTemplate = $this->bindVariablesInValue($itemTemplate, $bindings, RDFS.'Resource' );
         return $filledInTemplate;
     }
@@ -397,39 +399,40 @@ class ConfigGraph extends PueliaGraph {
 
 
     function dataUriToEndpointItem($dataUri){
-      if($results = $this->getMatchesFromDataUri( $dataUri ) ){
-          $result= $results[0]; # we can only return one URI
-          $uriTemplate = $result['uriTemplate'];
-          $matches = $result['matches'];
-					$endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');		
-					return $endpointItem;
-				} else {
-          return false;
+        if($results = $this->getMatchesFromDataUri( $dataUri ) ){
+            $result= $results[0]; # we can only return one URI
+            $uriTemplate = $result['uriTemplate'];
+            $matches = $result['matches'];
+            $endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');
+            return $endpointItem;
+        } else {
+            return false;
         }
     }
 
     function getMatchesFromDataUri($dataUri){
-      $return = array();
-   	  $subjects = $this->get_subjects_of_type(API.'ItemEndpoint');		
-  	  foreach($subjects as $s){
-	  	  foreach($this->get_subject_properties($s) as $p){
-		  	  if($p==API.'itemTemplate'){
-			  	  $itemTemplate = $this->get_first_literal($s, $p);
-				    $dataPath = parse_url($dataUri, PHP_URL_PATH);
-				    $uriTemplate = $this->get_first_literal($s, API.'uriTemplate');		
-            $itemPathTemplate = parse_url($itemTemplate, PHP_URL_PATH);
-				    if($matches = $this->pathTemplateMatches($itemPathTemplate, $dataPath )){
-              $return[]= array(
-                'matches' => $matches,
-                'uriTemplate' => $uriTemplate,
-                'endpointUri' => $s,
-              );
-			    	  }
-			      }
-		      }
-	      }
-      if(!empty($return)) return $return;
-  	  return false;
+        $return = array();
+        $subjects = $this->get_subjects_of_type(API.'ItemEndpoint');
+        foreach($subjects as $s){
+            foreach($this->get_subject_properties($s) as $p){
+                if($p==API.'itemTemplate'){
+                    $itemTemplate = $this->get_first_literal($s, $p);
+                    $dataPath = parse_url($dataUri, PHP_URL_PATH);
+                    $uriTemplate = $this->get_first_literal($s, API.'uriTemplate');
+                    $itemPathTemplate = parse_url($itemTemplate, PHP_URL_PATH);
+                    if($matches = $this->pathTemplateMatches($itemPathTemplate, $dataPath )){
+                        $return[]= array(
+                                'matches' => $matches,
+                                'uriTemplate' => $uriTemplate,
+                                'endpointUri' => $s,
+                        );
+                    }
+                }
+            }
+        }
+        if(!empty($return)) 
+            return $return;
+        return false;
     }
 
     function getRequestVariableBindings(){
@@ -453,12 +456,12 @@ class ConfigGraph extends PueliaGraph {
     
     function getAllProcessedVariableBindings(){
         $bindings = $this->getAllVariableBindings();
-#        print_r($bindings);
-	foreach($bindings as $name => $value){
+        #        print_r($bindings);
+        foreach($bindings as $name => $value){
             #if($name==='callback'){
             #    throw new ConfigGraphException("'callback' is reserved and cannot be used as a variable name");
             #}
-          $bindings[$name]['value']  = $this->processVariableBinding($name, $bindings);
+            $bindings[$name]['value']  = $this->processVariableBinding($name, $bindings);
         }
         return $bindings;
     }
@@ -504,16 +507,16 @@ class ConfigGraph extends PueliaGraph {
     function getAllVariableBindings(){
         if(empty($this->_allVariableBindings)){
             $this->_allVariableBindings = array_merge(
-                $this->getApiConfigVariableBindings(),
-                $this->getPathVariableBindings(),
-                $this->getParamVariableBindings(),
-		$this->getEndpointConfigVariableBindings(),
-                $this->getRequestVariableBindings()
-#                $this->getEndpointConfigVariableBindings()
+                    $this->getApiConfigVariableBindings(),
+                    $this->getPathVariableBindings(),
+                    $this->getParamVariableBindings(),
+                    $this->getEndpointConfigVariableBindings(),
+                    $this->getRequestVariableBindings()
+                    #                $this->getEndpointConfigVariableBindings()
             );
         }
-        return  $this->_allVariableBindings;
         
+        return  $this->_allVariableBindings;
     }
     
     function getEndpointItemTemplate(){
@@ -961,28 +964,29 @@ class ConfigGraph extends PueliaGraph {
     }
 
     function getViewerRelatedPagesForItemUri($viewerUri, $itemUri){
+        $base = $this->getRequest()->getBaseAndSubDir();
+        # get variable bindings from item endpoint
+        $result = $this->getMatchesFromDataUri($itemUri);
+        if(empty($result)) return false;
+        $endpointUri = $result[0]['endpointUri'];
+        $matches = $result[0]['matches'];
 
-      $base = $this->getRequest()->getBaseAndSubDir();
-      # get variable bindings from item endpoint
-      $result = $this->getMatchesFromDataUri($itemUri);
-      if(empty($result)) return false;
-      $endpointUri = $result[0]['endpointUri'];
-      $matches = $result[0]['matches'];
-
-      $relatedPages = array();
-      $relatedEndpoints = $this->getRelatedEndpointsForViewer($viewerUri);
-      foreach($relatedEndpoints as $relatedEndpoint){
-        $uriTemplate = $this->get_first_literal($relatedEndpoint, API.'uriTemplate');
-        $endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');
-        if(!$this->variableNamesInValue($endpointItem)){
-          $relatedUri = $base . $endpointItem;
-          $pageLabel = $this->get_first_literal($relatedEndpoint, API.'label');
-          $completedLabel = $this->bindVariablesInValue($pageLabel, $matches);
-          if(empty($pageLabel)) $completedLabel = $this->get_label($endpointUri);
-          $relatedPages[$relatedUri] = $completedLabel;
+        $relatedPages = array();
+        $relatedEndpoints = $this->getRelatedEndpointsForViewer($viewerUri);
+        
+        foreach($relatedEndpoints as $relatedEndpoint){
+            $uriTemplate = $this->get_first_literal($relatedEndpoint, API.'uriTemplate');
+            $endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');
+            
+            if(!$this->variableNamesInValue($endpointItem)){
+                $relatedUri = $base . $endpointItem;
+                $pageLabel = $this->get_first_literal($relatedEndpoint, API.'label');
+                $completedLabel = $this->bindVariablesInValue($pageLabel, $matches);
+                if(empty($pageLabel)) $completedLabel = $this->get_label($endpointUri);
+                $relatedPages[$relatedUri] = $completedLabel;
+            }
         }
-      }
-      return $relatedPages;
+        return $relatedPages;
     }
 
     function getUriTemplatesWithoutVariables(){

@@ -687,133 +687,166 @@ _SPARQL_;
 		return $filterGraph;
 	}
     }
-   
+       
     function getViewQueryForUriList($uriList, $viewerUri){
-        
+
         $fromClause = $this->getFromClause();
-#Antonis botch
-        if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template) 
-		AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
-		AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
-			$query='Something went wrong';
-			$limit="";
-			$offset="";
-			$filterGraph = $this->getFilterGraph();
-			$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-			if ($this->_config->getEndpointType() == API.'ListEndpoint') {
-				$limit =" LIMIT ".$this->getLimit();
-			        $offset =" OFFSET ".$this->getOffset();
-				$orderBy = $this->getOrderBy();
- 		                if (empty($orderBy['orderBy'])) {
-		   	             $orderBy['orderBy']='ORDER BY ?item';
-            			}
+        #Antonis botch
+        if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
+        AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
+        AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
+            $query='Something went wrong';
+            $limit="";
+            $offset="";
+            $filterGraph = $this->getFilterGraph();
+            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
+            if ($this->_config->getEndpointType() == API.'ListEndpoint') {
+                $limit =" LIMIT ".$this->getLimit();
+                $offset =" OFFSET ".$this->getOffset();
+                $orderBy = $this->getOrderBy();
+                if (empty($orderBy['orderBy'])) {
+                    $orderBy['orderBy']='ORDER BY ?item';
+                }
 
-				$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-				if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
-                        	        $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) . 
-						"{ {$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
-						"{$orderBy['orderBy']}  {$limit} {$offset} } }";
-                        	}
-				else {
-        	                        $query .= "{$filterGraph} } {$orderBy['orderBy']} {$limit} {$offset} ";
-				}
-			}
-			else {
-			   $orderBy = $this->getOrderBy();
-	                   if (empty($orderBy['orderBy']) AND stripos($query, "SELECT ") !== false) {
-		                $orderBy['orderBy']='ORDER BY ?item';
-		           }
+                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
+                if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
+                    $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) .
+                    "{ {$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
+                    "{$orderBy['orderBy']}  {$limit} {$offset} } }";
+                }
+                else {
+                    $query .= "{$filterGraph} } {$orderBy['orderBy']} {$limit} {$offset} ";
+                }
+            }
+            else {
+                $orderBy = $this->getOrderBy();
+                if (empty($orderBy['orderBy']) AND stripos($query, "SELECT ") !== false) {
+                    $orderBy['orderBy']='ORDER BY ?item';
+                }
 
-                           if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
-                                $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT ")) + 1) .
-                                       "{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) . "}}"; 
-			   }
-			   else {
-				$query.="{$filterGraph}} {$orderBy['orderBy']}";
-			   }
-			}
-			$ims = new OpsIms();
-			$formatter = new VirtuosoFormatter();
-			return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
+                if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
+                    $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT ")) + 1) .
+                    "{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) . "}}";
+                }
+                else {
+                    $query.="{$filterGraph}} {$orderBy['orderBy']}";
+                }
+            }
+            
+            $ims = new OpsIms();
+            $formatter = new VirtuosoFormatter();
+            return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
+            
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
-#Antonis
-#                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
-#                  foreach($uriList as $describeUri){
-#                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
-#                  }
-#                  $uriSetFilter.= ")\n";
-                  $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
-		  $ims = new OpsIms();
-		  $formatter = new VirtuosoFormatter();
-		  return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
-                  /* 
-                    FILTER doesn't work so well with all triplestores, could do it by adding incrementers to every variable in the pattern which increment for ever loop of the URI list. If do so, it would be good to change the propertypath->sparql code to map to a plain pattern which is then passed to the same code as this is, to add the incrementers 
-                    
-                  */
+            #Antonis
+            #                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
+            #                  foreach($uriList as $describeUri){
+            #                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
+            #                  }
+            #                  $uriSetFilter.= ")\n";
+            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+            $ims = new OpsIms();
+            $formatter = new VirtuosoFormatter();
+            return $formatter->formatQuery($ims->expandQuery($query, $ops_uri));
+            /*
+             FILTER doesn't work so well with all triplestores, could do it by adding incrementers to every variable in the pattern which increment for ever loop of the URI list. If do so, it would be good to change the propertypath->sparql code to map to a plain pattern which is then passed to the same code as this is, to add the incrementers
+
+            */
         } else if($viewerUri==API.'describeViewer' AND strlen($this->_request->getParam('_properties')) === 0 ){
             return 'DESCRIBE <'.implode('> <', $uriList).'>'.$fromClause;
         } else {
             $namespaces = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
             $conditionsGraph = '';
             $whereGraph = '';
-            $chains = $this->getViewerPropertyChains($viewerUri);            
+            $chains = $this->getViewerPropertyChains($viewerUri);
             $props = array();
             foreach($chains as $chain) {
-              $props =  $this->mapPropertyChainToStructure($chain, $props);
+                $props =  $this->mapPropertyChainToStructure($chain, $props);
             }
             foreach ($uriList as $position => $uri) {
-              if ($position) {
-                $whereGraph .= " UNION\n";
-              }
-              $conditionsGraph .= "\n    # constructing properties of {$uri} \n";
-              $whereGraph .= "\n  # identifying properties of {$uri} \n";
-              $counter = 0;
-              foreach ($props as $prop => $substruct) {
-                if ($counter) {
-                  $whereGraph .= "UNION {\n";
-                } else {
-                  $whereGraph .= "  {\n";
+                if ($position) {
+                    $whereGraph .= " UNION\n";
                 }
-                $propvar = $substruct['var'] . '_' . $position;
-                $invProps = false;
-            
-                if ($prop == API.'allProperties') {
-                  $triple = "    <{$uri}> {$propvar}_prop {$propvar} .\n";
-                } else {
-                  if($invProps = $this->getConfigGraph()->getInverseOfProperty($prop)){
-                    $inverseTriple="#Inverse Mappings \n\n";
-                    foreach($invProps as $no => $invProp){
-                      $invPropQnameOrUri = $this->qnameOrUri($invProp, $namespaces);
-                      $inverseTriple.= "{\n   {$propvar} {$invPropQnameOrUri} <{$uri}>  . \n ";
-                      if (array_key_exists('props', $substruct)) {
-                        $inverseTriple .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
-                      }
-                      $inverseTriple .= "}"; 
-                      if($no!=(count($invProps)-1)){
-                        $inverseTriple.= " UNION ";
-                      }
+                $conditionsGraph .= "\n    # constructing properties of {$uri} \n";
+                $whereGraph .= "\n  # identifying properties of {$uri} \n";
+                $counter = 0;
+                foreach ($props as $prop => $substruct) {
+                    if ($counter) {
+                        $whereGraph .= "UNION {\n";
+                    } else {
+                        $whereGraph .= "  {\n";
                     }
+                    $propvar = $substruct['var'] . '_' . $position;
+                    $invProps = false;
+
+                    if ($prop == API.'allProperties') {
+                        $triple = "    <{$uri}> {$propvar}_prop {$propvar} .\n";
+                    } else {
+                        if($invProps = $this->getConfigGraph()->getInverseOfProperty($prop)){
+                            $inverseTriple="#Inverse Mappings \n\n";
+                            foreach($invProps as $no => $invProp){
+                                $invPropQnameOrUri = $this->qnameOrUri($invProp, $namespaces);
+                                $inverseTriple.= "{\n   {$propvar} {$invPropQnameOrUri} <{$uri}>  . \n ";
+                                if (array_key_exists('props', $substruct)) {
+                                    $inverseTriple .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
+                                }
+                                $inverseTriple .= "}";
+                                if($no!=(count($invProps)-1)){
+                                    $inverseTriple.= " UNION ";
+                                }
+                            }
+                        }
+                         
+                        $propQnameOrUri = $this->qnameOrUri($prop, $namespaces);
+                        $triple = "    <{$uri}> {$propQnameOrUri} {$propvar} .\n";
+                    }
+
+                    $whereGraph .= ($invProps)? $inverseTriple :  $triple;
+                    $conditionsGraph .= $triple;
+                    if (array_key_exists('props', $substruct)) {
+                        if(!$invProps) $whereGraph .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
+                        $conditionsGraph .= $this->mapPropertyStructureToConstructGraph($substruct, $position, $namespaces);
+                    }
+                    $whereGraph .= "  } ";
+                    $counter += 1;
                 }
-                 
-                  $propQnameOrUri = $this->qnameOrUri($prop, $namespaces);
-                  $triple = "    <{$uri}> {$propQnameOrUri} {$propvar} .\n";
-                }
-                
-                $whereGraph .= ($invProps)? $inverseTriple :  $triple;
-                $conditionsGraph .= $triple;
-                if (array_key_exists('props', $substruct)) {
-                  if(!$invProps) $whereGraph .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
-                  $conditionsGraph .= $this->mapPropertyStructureToConstructGraph($substruct, $position, $namespaces);
-                }
-                $whereGraph .= "  } ";
-                $counter += 1;
-              }
             }
-            
+
             return $this->addPrefixesToQuery("CONSTRUCT { {$conditionsGraph}} $fromClause WHERE { {$whereGraph}\n}\n");
-            
+
         }
+
+    }
+    
+    /**
+     * Builds the query that inserts data into a graph
+     *
+     * @param string $rdfData
+     * @param string $graphName
+     * @return string
+     */
+    function getInsertQueryForExternalServiceData($rdfData, $graphName){
+        $query = "INSERT IN GRAPH <{$graphName}>{".$rdfData."}";
+    
+        return $query;
+    }
+    
+    /**
+     * Build query that retrieves all the information from a certain graph
+     * 
+     * @param string $graphName
+     * @param string $viewerUri
+     * @return string
+     */
+    function getViewQueryForExternalServiceData($graphName, $viewerUri){
+        //retrieve all the graph data
+        $template = $this->_config->getViewerTemplate($viewerUri);
         
+        $whereGraphTemplate = $this->_config->getViewerWhere($viewerUri);
+        $whereGraph = str_replace("{result_hash}", $graphName, $whereGraphTemplate);
+        
+        $query = "CONSTRUCT { {$template} } WHERE { {$whereGraph} ";
+        return $query;
     }
     
     function mapPropertyStructureToWhereGraph($structure, $uriPosition, $namespaces) {
