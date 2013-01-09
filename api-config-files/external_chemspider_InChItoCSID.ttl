@@ -1,0 +1,33 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+
+<#chemspider> a api :API ;
+	rdfs:label "Chemical structure to ChemSpider URL"@en;
+	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:variable <#inchi> ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Inchi to ChemSpider URL" ;
+		api:description "Returns a chemspider URL corresponding to a given InChI string."
+		api:uriTemplate "/structure/?inchi={inchi}" ;
+		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
+		api:externalResponseHandler "/converters/chemspider_id_xml_to_rdf.php" ;
+		api:viewer api:externalResponseViewer .
+	].
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+<#inchi> api:name "inchi" ;
+	api:label "inchi";
+	api:value "A URLEncoded InChI string." .
+
+api:externalResponseViewer a api:Viewer ;
+	api:template "?s ?p ?o . " ;
+	api:where "
+GRAPH <{result_hash}> {
+	?s ?p ?o
+}".
