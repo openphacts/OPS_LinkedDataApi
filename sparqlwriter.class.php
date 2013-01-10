@@ -428,7 +428,7 @@ _SPARQL_;
             $propertyNamesWithUris = $this->mapParamNameToProperties($k);
             foreach($propertyNames as $pn){
 #Antonis
-                  if(empty($propertyNamesWithUris[$pn])){
+                  if(empty($propertyNamesWithUris[$pn]) && $pn!=='XDEBUG_SESSION_START' && $pn!=='KEY' ){
                         $this->_unknownPropertiesFromRequestParameter[]=$pn;
                     }
             }

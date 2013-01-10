@@ -333,15 +333,14 @@ class ConfigGraph extends PueliaGraph {
             $name = $this->get_first_literal($variableUri, API.'name');
             $value = $this->get_first_literal($variableUri, API.'value');
             $variableBindings[$name]['value'] = $value;
-#Antonis botch
-	    $variableBindings[$name]['uri'] = $variableUri;	
+            #Antonis botch
+            $variableBindings[$name]['uri'] = $variableUri;
             if($type = $this->get_first_resource($variableUri, API.'type')){
-                $variableBindings[$name]['type'] = $type;                    
+                $variableBindings[$name]['type'] = $type;
             }
-	   
+
         }
         return $variableBindings;
-        
     }
     
     function getApiConfigVariableBindings(){
@@ -386,6 +385,17 @@ class ConfigGraph extends PueliaGraph {
         
         $filledInTemplate = $this->bindVariablesInValue($itemTemplate, $bindings, RDFS.'Resource' );
         return $filledInTemplate;
+    }
+    
+    function getCompletedExternalServiceTemplate(){
+        //match api:uriTemplate and extract parameter
+        $bindings = $this->getAllProcessedVariableBindings();
+        
+        //fill in api:externalRequestTemplate
+        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
+        $filledInExternalRequestTemplate = $this->bindVariablesInValue($externalRequestTemplate, $bindings);
+        
+        return $filledInExternalRequestTemplate;
     }
 
 
@@ -707,24 +717,31 @@ class ConfigGraph extends PueliaGraph {
     }
     
     function getEndpointType(){
-        if(!$this->getEndpointUri()) return false;
+        if(!$this->getEndpointUri()) 
+            return false;
+
+        $endpointType = $this->get_first_resource($this->getEndpointUri(), RDF_TYPE);
         
+        /*TODO check with Antonis
         if($types = $this->get_resource_triple_values($this->getEndpointUri(), RDF_TYPE)){
             if(in_array(API.'ItemEndpoint', $types)){
                 return API.'ItemEndpoint';
             } else if(in_array(API.'ListEndpoint', $types)){
                 return API.'ListEndpoint';
             } else if(in_array(PUELIA.'SearchEndpoint', $types)){
-              return PUELIA.'SearchEndpoint';
-#Antonis botch
+                return PUELIA.'SearchEndpoint';
+                #Antonis botch
             } else if(in_array(API.'OPSListEndpoint', $types)){
-              return API.'OPSListEndpoint';
-	    }
+                return API.'OPSListEndpoint';
+            }
+        }*/
+        if ($endpointType==null){
+            $itemTemplate = $this->getEndpointItemTemplate();
+            if(!empty($itemTemplate)){
+                return API.'ItemEndpoint';
+            }
         }
-        $itemTemplate = $this->getEndpointItemTemplate();
-        if(!empty($itemTemplate)){
-            return API.'ItemEndpoint';
-        } 
+        return $endpointType;
     }
     
     function getDisplayPropertiesOfViewer($viewerUri){
