@@ -4,7 +4,7 @@ switch($this->ConfigGraph->getEndpointType()){
         $pageUri = $this->Request->getUriWithPageParam();
         break;
     default:    
-    case API.'ItemEndpoint' :
+    case API.'ItemEndpoint' : case API.'ExternalHTTPService':
         $pageUri = $this->Request->getUri();
         break;
 }
