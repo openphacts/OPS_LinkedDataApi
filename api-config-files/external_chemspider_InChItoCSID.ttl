@@ -15,7 +15,7 @@
 		api:description "Returns a chemspider URL corresponding to a given InChI string." ;
 		api:uriTemplate "/structure?inchi={inchi}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
-		api:externalResponseHandler "/converters/chemspider_id_xml_to_rdf.php" ;
+		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
 		api:viewer api:externalResponseViewer . ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .

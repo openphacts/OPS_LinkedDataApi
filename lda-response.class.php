@@ -328,22 +328,39 @@ class LinkedDataApiResponse {
     }
     
     function loadDataFromExternalService(){
+        
+        $graphName = hash("crc32", $this->Request->getPathWithoutExtension());//TODO check if this is correct when adding metadata
+        
+        
+        
         //match api:uriTemplate and extract parameter
         //$template = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), array(API.'uriTemplate'));
         //$matches = $this->ConfigGraph->pathTemplateMatches($template, $this->Request->getUriWithoutBase());     
         $externalServiceRequest = $this->ConfigGraph->getCompletedExternalServiceTemplate();
-            
-        //make request to external service
-        $ch = curl_init($externalServiceRequest);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        
-        //call the converter by checking api:externalResponseHandler
-        $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->endpointUrl, API.'externalResponseHandler');
-        require $externalResponseHandler;
+        $rdfData = '';
+        try{
+            //make request to external service
+            $ch = curl_init($externalServiceRequest);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            if ($response==false){
+                throw new ErrorException("Request: ".$externalServiceRequest." failed");
+            }
+
+            //call the converter by checking api:externalResponseHandler
+            $this->pageUri = $this->Request->getUriWithoutPageParam();
+            $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'externalResponseHandler');
+            require $externalResponseHandler;
+        }
+        catch(Exception $e){
+            logError("Error while loading data from external service: ".$e->getMessage());
+            $this->setStatusCode(HTTP_Internal_Server_Error);
+            $this->serve();
+            exit;
+        }
         
         //insert new RDF data in Virtuoso
-        $graphName = hash("crc32", $this->Request->getUri());//TODO check if this is correct when adding metadata
+        logDebug("Created new graph: ".$graphName." for the request ".$this->Request->getUri());
         $insertQuery = $this->SparqlWriter->getInsertQueryForExternalServiceData($rdfData, $graphName);
         
         $response = $this->SparqlEndpoint->query($insertQuery);
@@ -352,10 +369,12 @@ class LinkedDataApiResponse {
             //even if insert fails we go ahead an give the data to the client
         }
         
+        
+        
         //get query from $this->SparqlWriter->getViewQueryForExternalServiceData()
         //when Virtuoso will be used to get the data directly in the format we want
         
-        $this->DataGraph->add_rdf($rdf);
+        //$this->DataGraph->add_rdf($rdf);
     }
     
     function getViewer(){
@@ -848,7 +867,20 @@ class LinkedDataApiResponse {
 	    header($this->statusCode);
 	    
 	    if($this->statusCode != HTTP_OK){
-	        $this->handleHTTPErrors();
+	        header("Content-Type: text/html");
+	        switch($this->statusCode){
+	            case HTTP_Unsupported_Media_Type:
+	            case HTTP_Bad_Request :
+	                require 'views/errors/400.php';
+	                break;
+	            default:
+	            case HTTP_Internal_Server_Error :
+	                require 'views/errors/500.php';
+	                break;
+	            case HTTP_Not_Found :
+	                require 'views/errors/404.php';
+	                break;
+	        }
 	        exit;
 	    }
 
@@ -876,7 +908,7 @@ class LinkedDataApiResponse {
 	            case PUELIA.'SearchEndpoint':
 	                $pageUri = $this->Request->getUriWithPageParam();
 	                break;
-	            case API.'ItemEndpoint' :
+	            case API.'ItemEndpoint': case API.'ExternalHTTPService':
 	                $pageUri = $this->Request->getUri();
 	                break;
 	            default:
@@ -915,10 +947,10 @@ class LinkedDataApiResponse {
 	        $this->serve();
 	    }
 	    
-	    $this->serveHTTPSuccessPage($mimetype, $viewFile);
+	    $this->serveHTTPSuccessPage($mimetype, $viewFile, $Request);
 	}
 	
-	private function serveHTTPSuccessPage($mimetype, $viewFile){
+	function serveHTTPSuccessPage($mimetype, $viewFile, $Request){
 	    header("Content-Type: {$mimetype}");
 	    header("Last-Modified: {$this->lastModified}");
 	    header("x-served-from-cache: false");
@@ -942,7 +974,7 @@ class LinkedDataApiResponse {
 	    }
 	}
 	    
-	private function handleHTTPErrors(){
+	function handleHTTPErrors(){
 	    header("Content-Type: text/html");
 	    switch($this->statusCode){
 	        case HTTP_Unsupported_Media_Type:

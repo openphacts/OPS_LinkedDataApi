@@ -85,13 +85,13 @@ class ConfigGraph extends PueliaGraph {
 
 	/* added so Config Can be reused between Requests */
 
-	function setRequest($Request){
-		$this->_request = $Request;
-  }
+    function setRequest($Request){
+        $this->_request = $Request;
+    }
 
-  function getRequest(){
-    return $this->_request;
-  }
+    function getRequest(){
+        return $this->_request;
+    }
 
 
     function init(){
@@ -366,9 +366,10 @@ class ConfigGraph extends PueliaGraph {
     
     function bindVariablesInValue($value, $variables, $valueType=false){
         foreach($variables as $name => $props){
-            if($valueType==RDFS.'Resource' AND 
+            if(($valueType==RDFS.'Resource' AND 
                     isset($props['source']) AND $props['source']=='request' 
-                    AND $name != 'uri'){
+                    AND $name != 'uri') ||
+                    $name==='inchi'){//TODO check how this works for other services
                 # Antonis botch
                 $props['value'] = urlencode($props['value']);
             }
@@ -389,7 +390,7 @@ class ConfigGraph extends PueliaGraph {
     
     function getCompletedExternalServiceTemplate(){
         //match api:uriTemplate and extract parameter
-        $bindings = $this->getAllProcessedVariableBindings();
+        $bindings = $this->getAllVariableBindings();
         
         //fill in api:externalRequestTemplate
         $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
@@ -487,14 +488,14 @@ class ConfigGraph extends PueliaGraph {
           $val = '';
         }
         
-        if(isset($bindings[$name]['type'])){
-          $type = $bindings[$name]['type'];
-        } else {
-          $type = RDFS.'Literal';
-        }
-        
         $varNames = $this->variableNamesInValue($val);
         if(is_array($varNames)){
+            if(isset($bindings[$name]['type'])){
+                $type = $bindings[$name]['type'];
+            } else {
+                $type = RDFS.'Literal';
+            }
+            
             foreach($varNames as $var){
                 $bindings[$var]['value'] = $this->processVariableBinding($var, $bindings, $history);
             }
