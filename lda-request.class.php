@@ -34,6 +34,15 @@ class LinkedDataApiRequest {
         $this->uri = $this->getUri();
     }
     
+    public static function eliminateDebugParams(){
+        $params = array('XDEBUG_SESSION_START', 'KEY');
+        foreach($params as $param){
+            $regex= '/([&?])'.$param.'=[^&]+(&|$)/';
+            $_SERVER['REQUEST_URI'] = rtrim(preg_replace($regex, '\1', $_SERVER['REQUEST_URI']), '?&');
+            $_SERVER['QUERY_STRING'] = rtrim(preg_replace($regex, '\1', $_SERVER['QUERY_STRING']), '?&');
+        }   
+    }
+    
     function getParams(){
         if(!empty($_SERVER['QUERY_STRING'])){
             return queryStringToParams($_SERVER['QUERY_STRING']);            
@@ -256,6 +265,18 @@ class LinkedDataApiRequest {
     function getUriWithPageParam($pageno=false, $defaultparamvalue=1){
         return $this->getUriWithParam('_page', $pageno, $defaultparamvalue);
     }
+    
+    function getRequestUriWithoutFormatExtension(){
+        if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $_SERVER['REQUEST_URI'], $m)){
+            $ret = $m[1].$m[3];
+        }
+        else{//the uri does not have a format extension
+            $ret = $_SERVER['REQUEST_URI'];
+        }
+        
+        return $ret;
+    }
+    
     
     function getPageUriWithFormatExtension($uri, $extension){
         if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $uri, $m)){

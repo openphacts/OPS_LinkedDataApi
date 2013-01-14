@@ -329,28 +329,44 @@ class LinkedDataApiResponse {
     
     function loadDataFromExternalService(){
         
-        $graphName = hash("crc32", $this->Request->getPathWithoutExtension());//TODO check if this is correct when adding metadata
+        $uriWithoutExtension = $this->Request->getRequestUriWithoutFormatExtension();
+        $graphName = hash("crc32", $uriWithoutExtension);//TODO check if this is correct when adding metadata
         
-        
-        
-        //match api:uriTemplate and extract parameter
-        //$template = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), array(API.'uriTemplate'));
-        //$matches = $this->ConfigGraph->pathTemplateMatches($template, $this->Request->getUriWithoutBase());     
-        $externalServiceRequest = $this->ConfigGraph->getCompletedExternalServiceTemplate();
-        $rdfData = '';
-        try{
-            //make request to external service
-            $ch = curl_init($externalServiceRequest);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $response = curl_exec($ch);
-            if ($response==false){
-                throw new ErrorException("Request: ".$externalServiceRequest." failed");
-            }
-
-            //call the converter by checking api:externalResponseHandler
+        $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
+    
+        if ($checkDatastore == true){
+            //build query 
             $this->pageUri = $this->Request->getUriWithoutPageParam();
-            $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'externalResponseHandler');
-            require $externalResponseHandler;
+            $viewer = $this->getViewer();
+            $this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $viewer);
+            if (LOG_VIEW_QUERIES) {
+                logViewQuery($this->Request, $this->viewQuery);
+            }
+            
+            //query the data store
+            $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);//TODO use appropriate mime in the future
+            $this->DataGraph->add_rdf($response->body);
+            if ($response->is_success()){
+                $this->DataGraph->add_rdf($response->body);
+                
+                if (!$this->DataGraph->is_empty()){//no data returned       
+                    $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
+                    //we haved data in the datastore, so serve it directly
+                    return;
+                }
+                else{
+                    logDebug("Data not found at: {$this->SparqlEndpoint->uri}, going to external service");
+                }
+            }
+            else{
+                logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+            }          
+        }    
+        
+        //match api:uriTemplate, extract parameters and fill in api:externalRequestTemplate 
+        $externalServiceRequest = $this->ConfigGraph->getCompletedExternalServiceTemplate();
+        try{
+            $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
         }
         catch(Exception $e){
             logError("Error while loading data from external service: ".$e->getMessage());
@@ -359,8 +375,51 @@ class LinkedDataApiResponse {
             exit;
         }
         
-        //insert new RDF data in Virtuoso
-        logDebug("Created new graph: ".$graphName." for the request ".$this->Request->getUri());
+        $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
+        
+        //if we went to the external service we cache the path without extension
+        if ($checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){         
+            LinkedDataApiCache::cacheURI($pathWithoutExtension);
+        }
+    }
+    
+    private function decideToCheckTripleStore($pathWithoutExtension){
+        //if caching is enabled
+        if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
+            if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
+                //we get the data from the datastore
+                $checkDatastore = true;
+            }
+            else{//we go directly to the external service
+                $checkDatastore = false;
+            }
+        }
+        else{// try to get the data from the datastore
+            $checkDatastore = true;
+        }
+        
+        return $checkDatastore;
+    }
+    
+    private function retrieveRDFDataFromExternalService($externalServiceRequest, $rdfData){
+        //make request to external service
+        $ch = curl_init($externalServiceRequest);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        if ($response==false){
+            throw new ErrorException("Request: ".$externalServiceRequest." failed");
+        }
+        
+        //call the appropriate converter by checking api:externalResponseHandler
+        $this->pageUri = $this->Request->getUriWithoutPageParam();
+        $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'externalResponseHandler');
+        require $externalResponseHandler;
+        
+        return $rdfData;
+    }
+    
+    private function insertRDFDataIntoTripleStore($graphName, $rdfData){
+        //insert new RDF data in the triple store
         $insertQuery = $this->SparqlWriter->getInsertQueryForExternalServiceData($rdfData, $graphName);
         
         $response = $this->SparqlEndpoint->query($insertQuery);
@@ -368,13 +427,9 @@ class LinkedDataApiResponse {
             logError("Endpoint returned {$response->status_code} {$response->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             //even if insert fails we go ahead an give the data to the client
         }
-        
-        
-        
-        //get query from $this->SparqlWriter->getViewQueryForExternalServiceData()
-        //when Virtuoso will be used to get the data directly in the format we want
-        
-        //$this->DataGraph->add_rdf($rdf);
+        else{
+            logDebug("Created new graph: ".$graphName." for the request ".$this->Request->getUri());
+        }
     }
     
     function getViewer(){
@@ -398,7 +453,7 @@ class LinkedDataApiResponse {
             } else if($this->viewerUri = $this->ConfigGraph->getApiDefaultViewer()){
                 logDebug("API Default Viewer is $this->viewerUri");
                 return $this->viewerUri;
-            } else {
+            } else {//TODO shouldn't this also check endpoint:viewer /
                 logDebug("returning default viewer");
                 return  API.'describeViewer';
             }

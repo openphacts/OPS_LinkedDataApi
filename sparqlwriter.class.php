@@ -16,17 +16,18 @@ class SparqlWriter {
     }
     
     function addPrefixesToQuery($query){
-    	  $prefixesString='';	
+        $prefixesString='';
         $prefixes = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
-	  preg_match_all('/([a-zA-Z_\-]+)\:[a-zA-Z0-9_\-]+/', $query, $matches);
-	  foreach($matches[1] as $prefix){
-		  if(isset($prefixes[$prefix])){
-			$ns = $prefixes[$prefix];
-			$prefixesString.="PREFIX {$prefix}: <{$ns}>\n";
-			unset($prefixes[$prefix]);
-		  }
-	  }
-	  return $prefixesString.$query;
+        preg_match_all('/([a-zA-Z_\-]+)\:[a-zA-Z0-9_\-]+/', $query, $matches);
+        
+        foreach($matches[1] as $prefix){
+            if(isset($prefixes[$prefix])){
+                $ns = $prefixes[$prefix];
+                $prefixesString.="PREFIX {$prefix}: <{$ns}>\n";
+                unset($prefixes[$prefix]);
+            }
+        }
+        return $prefixesString.$query;
     }
     
     function getLimit(){
@@ -838,15 +839,20 @@ _SPARQL_;
      * @param string $viewerUri
      * @return string
      */
-    function getViewQueryForExternalServiceData($graphName, $viewerUri){
-        //retrieve all the graph data
+    function getViewQueryForExternalService($graphName, $pageUri, $viewerUri){
+        //get the template query from the config
         $template = $this->_config->getViewerTemplate($viewerUri);
+        //fill in pageUri
+        $template = str_replace("{pageUri}", '<'.$pageUri.'>', $template);
         
+        //get the where template from the config
         $whereGraphTemplate = $this->_config->getViewerWhere($viewerUri);
+        //fill in the graph name
         $whereGraph = str_replace("{result_hash}", $graphName, $whereGraphTemplate);
         
-        $query = "CONSTRUCT { {$template} } WHERE { {$whereGraph} ";
-        return $query;
+        $query = "CONSTRUCT { {$template} } WHERE { {$whereGraph} }";
+        $finalQuery = $this->addPrefixesToQuery($query);
+        return $finalQuery;
     }
     
     function mapPropertyStructureToWhereGraph($structure, $uriPosition, $namespaces) {

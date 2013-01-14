@@ -125,7 +125,37 @@ class LinkedDataApiCache
 		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 		$mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
 	}
+	
+	public static function cacheURI($uri){
+	    if(!function_exists("memcache_connect")) 
+	        return false;
+	    
+	    logDebug('Caching '.$uri);
+	    $key = LinkedDataApiCache::cacheKey($uri, '');
+	    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
+	    $mc->add($key, true, false );
+	    return $key;
+	}
 
+	public static function hasCachedUri($uri){
+	
+	    logDebug("Looking in memcache for $uri");
+	    if(!function_exists("memcache_connect")) 
+	        return false;
+	    
+	    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
+	    
+	    $key = LinkedDataApiCache::cacheKey($uri);
+	    $cachedObject = $mc->get($key);
+	    if ($cachedObject)
+	    {
+	        return $cachedObject;
+	    }
+	    logDebug("No cached uri $uri");
+	    return false;
+	}
+	
+	
 	public static function cacheConfig($filepath, ConfigGraph $configgraph){
 		if(!function_exists("memcache_connect")) return false;
 		

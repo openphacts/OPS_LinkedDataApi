@@ -2,6 +2,8 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#chemspider> a api :API ;
 	rdfs:label "Chemical structure to ChemSpider URL"@en;
@@ -16,7 +18,7 @@
 		api:uriTemplate "/structure?inchi={inchi}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
 		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
-		api:viewer api:externalResponseViewer . ] .
+		api:defaultViewer api:externalResponseViewer . ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 
@@ -24,9 +26,15 @@
 	api:label "inchi";
 	api:value "A URLEncoded InChI string." .
 
-api:externalResponseViewer a api:Viewer ;
-	api:template "?s ?p ?o . " ;
+	api:externalResponseViewer a api:Viewer ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic chemspider:inchi ?inchi .
+?primaryTopic ?p1 ?o1 . " ;
+
 	api:where "
 GRAPH <{result_hash}> {
-	?s ?p ?o
+	?primaryTopic chemspider:inchi ?inchi .
+	?primaryTopic ?p1 ?o1 .
 }".
