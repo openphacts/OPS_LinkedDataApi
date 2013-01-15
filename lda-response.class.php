@@ -345,7 +345,7 @@ class LinkedDataApiResponse {
             
             //query the data store
             $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);//TODO use appropriate mime in the future
-            $this->DataGraph->add_rdf($response->body);
+            //$this->DataGraph->add_rdf($response->body);
             if ($response->is_success()){
                 $this->DataGraph->add_rdf($response->body);
                 
@@ -379,7 +379,7 @@ class LinkedDataApiResponse {
         
         //if we went to the external service we cache the path without extension
         if ($checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){         
-            LinkedDataApiCache::cacheURI($pathWithoutExtension);
+            LinkedDataApiCache::cacheURI($uriWithoutExtension);
         }
     }
     
@@ -422,7 +422,7 @@ class LinkedDataApiResponse {
         //insert new RDF data in the triple store
         $insertQuery = $this->SparqlWriter->getInsertQueryForExternalServiceData($rdfData, $graphName);
         
-        $response = $this->SparqlEndpoint->query($insertQuery);
+        $response = $this->SparqlEndpoint->graph($insertQuery, PUELIA_RDF_ACCEPT_MIMES);
         if(!$response->is_success()){
             logError("Endpoint returned {$response->status_code} {$response->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             //even if insert fails we go ahead an give the data to the client

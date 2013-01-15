@@ -434,7 +434,7 @@ _SPARQL_;
                     }
             }
         }
-        $this->getOrderBy();
+        $this->getOrderBy();//?
 
         try{
             $chain = $this->getConfigGraph()->getRequestPropertyChainArray();
