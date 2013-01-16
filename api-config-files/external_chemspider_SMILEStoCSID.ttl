@@ -8,35 +8,35 @@
 <#chemspider> a api :API ;
 	rdfs:label "Chemical structure to ChemSpider URL"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
-	api:variable <#inchi> ;
+	api:variable <#smiles> ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Inchi to ChemSpider URL" ;
-		api:description "Returns a chemspider URL corresponding to a given InChI string." ;
-		api:uriTemplate "/structure?inchi={inchi}" ;
-		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
-		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
+		api:name "Smiles to ChemSpider URL" ;
+		api:description "Returns a chemspider URL corresponding to a given SMILES string." ;
+		api:uriTemplate "/structure?smiles={smiles}" ;
+		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/SMILESToInChI?smiles={smiles}" ;
+		api:externalResponseHandler "converters/smiles_to_chemspider_id_xml_to_rdf.php" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 
-<#inchi> api:name "inchi" ;
-	api:label "inchi";
-	api:value "A URLEncoded InChI string." .
+<#smiles> api:name "smiles" ;
+	api:label "smiles";
+	api:value "A URLEncoded SMILES string." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
 	api:template "
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
-?primaryTopic chemspider:inchi ?inchi .
+?primaryTopic chemspider:smiles ?smiles .
 ?primaryTopic ?p1 ?o1 . " ;
 
 	api:where "
 GRAPH <{result_hash}> {
-	?primaryTopic chemspider:inchi ?inchi .
+	?primaryTopic chemspider:smiles ?smiles .
 	?primaryTopic ?p1 ?o1 .
 }".

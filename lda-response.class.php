@@ -329,8 +329,8 @@ class LinkedDataApiResponse {
     
     function loadDataFromExternalService(){
         
-        $uriWithoutExtension = $this->Request->getRequestUriWithoutFormatExtension();
-        $graphName = hash("crc32", $uriWithoutExtension);//TODO check if this is correct when adding metadata
+        $uriWithoutExtension = $this->ConfigGraph->getCompletedUriTemplate();
+        $graphName = hash("crc32", $uriWithoutExtension);
         
         $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
     
@@ -351,7 +351,7 @@ class LinkedDataApiResponse {
                 
                 if (!$this->DataGraph->is_empty()){//no data returned       
                     $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
-                    //we haved data in the datastore, so serve it directly
+                    //we have data in the datastore, so serve it directly
                     return;
                 }
                 else{
@@ -422,7 +422,7 @@ class LinkedDataApiResponse {
         //insert new RDF data in the triple store
         $insertQuery = $this->SparqlWriter->getInsertQueryForExternalServiceData($rdfData, $graphName);
         
-        $response = $this->SparqlEndpoint->graph($insertQuery, PUELIA_RDF_ACCEPT_MIMES);
+        $response = $this->SparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
         if(!$response->is_success()){
             logError("Endpoint returned {$response->status_code} {$response->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             //even if insert fails we go ahead an give the data to the client
