@@ -368,12 +368,20 @@ class ConfigGraph extends PueliaGraph {
         foreach($variables as $name => $props){
             if(($valueType==RDFS.'Resource' AND 
                     isset($props['source']) AND $props['source']=='request' 
-                    AND $name != 'uri') ||
-                    $name==='inchi'){//TODO check how this works for other services
+                    AND $name != 'uri')) {
+                    //$name==='inchi'){//TODO check how this works for other services
                 # Antonis botch
                 $props['value'] = urlencode($props['value']);
             }
             
+            $value = str_replace('{'.$name.'}', $props['value'], $value);
+        }
+        return $value;
+    }
+    
+    function bindURLEncodedVariablesInValue($value, $variables){
+        foreach($variables as $name => $props){
+            $props['value'] = urlencode($props['value']);
             $value = str_replace('{'.$name.'}', $props['value'], $value);
         }
         return $value;
@@ -394,9 +402,18 @@ class ConfigGraph extends PueliaGraph {
         
         //fill in api:externalRequestTemplate
         $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
-        $filledInExternalRequestTemplate = $this->bindVariablesInValue($externalRequestTemplate, $bindings);
+        $filledInExternalRequestTemplate = $this->bindVariablesInValue($externalRequestTemplate, $bindings, RDFS.'Resource');
         
         return $filledInExternalRequestTemplate;
+    }
+    
+    function getCompletedUriTemplate(){
+        $bindings = array_merge($this->getPathVariableBindings(),
+                                $this->getParamVariableBindings());
+        
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        $filledInUriTemplate = $this->bindURLEncodedVariablesInValue($uriTemplate, $bindings);
+        return $filledInUriTemplate;
     }
 
 
