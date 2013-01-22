@@ -18,6 +18,8 @@ class LinkedDataApiRequest {
         '_select',#
         '_lang', # is a comma-separated list of languages
         '_callback', # for JSONP
+	'app_id',
+	'app_key',
         
         );
     
@@ -66,7 +68,7 @@ class LinkedDataApiRequest {
         $params = $this->getParams();
         $unreservedParams = array();
         foreach($params as $k => $v){
-            if($k[0]!=='_' AND $k!=='callback' AND $v!==''){
+            if($k[0]!=='_' AND $k!=='callback' AND $v!=='' AND $k!=='app_id' AND $k!=='app_key'){
                 $unreservedParams[$k] = $v;
             }
         }
