@@ -12,13 +12,13 @@
 	api:variable <#commonOptions> ;
 	api:variable <#searchResultOptions> ;
 	api:dataset <http://www.chemspider.com> ;
-	api:description "An API configuration to return the result of an exact chemical structure search." ;
+	api:description "An API configuration to return the result of a chemical similarity search." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "ChemSpider Exact Structure Search" ;
-		api:description "Returns a Chemspider Id corresponding to a given SMILES string." ;
-		api:uriTemplate "/structure/exact?searchOptions.Molecule={smiles}" ;
-		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
+		api:name "ChemSpider Similarity Search" ;
+		api:description "Do a similarity search based on a SMILES input." ;
+		api:uriTemplate "/structure/similarity?searchOptions.Molecule={smiles}" ;
+		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
@@ -30,13 +30,17 @@
 	api:label "searchOptions" ;
 	api:value "Possible search option values" .
 
-<#MatchType> api:name "MatchType" ;
-	api:label "MatchType" ;
-	api:value "0: ExactMatch ; 1: AllTautomers ; 2: SameSkeletonIncludingH ; 3: SameSkeletonExcludingH ; 4: AllIsomers" .
+<#SimilarityType> api:name "SimilarityType" ;
+	api:label "SimilarityType" ;
+	api:value "0: Tanimoto ; 1: Tversky ; 2: Euclidian" .
+
+<#Threshold> api:name "Threshold" ;
+	api:label "Threshold" ;
+	api:value "Single" .
 
 <#Molecule> api:name "Molecule" ;
 	api:label "Molecule" ;
-	api:value "String" .
+	api:value "SMILES String" .
 
 
 <#commonOptions> api:name "commonOptions" ;
@@ -66,19 +70,24 @@
 
 <#Limit> api:name "Limit" ;
 	api:label "Limit" ;
-	api:value "Integer" .
+	api:value "Integer. Search limit. Specefy how many results return back during the search. Default value: -1 ." .
 
 <#Start> api:name "Start" ;
 	api:label "Start" ;
-	api:value "Integer" .
+	api:value "Integer. Return results starting the index. Default value: 0" .
+
+<#Length> api:name "Length" ;
+	api:label "Length" ;
+	api:value "Integer. How many results should be returned started the Start index. Default value: -1." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
 	api:template "
-{pageUri} foaf:primaryTopic ?primaryTopic .
-?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+	{pageUri} foaf:primaryTopic ?primaryTopic .
+	?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
 		?primaryTopic a ?searchType ;
-		cs:commonSearchOptions#MatchType ?searchMatchType ; 
+		cs:commonSearchOptions#Threshold ?searchThreshold ; 
+		cs:commonSearchOptions#SimilarityType ?searchSimilarityType ;
 		cs:commonSearchOptions#Molecule ?moleculeSmiles ;
 		cs:commonOptions#Complexity ?complexity ;
 		cs:commonOptions#Isotopic ?isotopic ;
@@ -92,7 +101,8 @@
 	api:where "
 GRAPH <{result_hash}> {
 	?primaryTopic cs:commonSearchOptions#Molecule ?moleculeSmiles .
-	OPTIONAL { ?primaryTopic cs:commonSearchOptions#MatchType ?searchMatchType }
+	OPTIONAL { ?primaryTopic cs:commonSearchOptions#SimilarityType ?searchSimilarityType }
+	OPTIONAL { ?primaryTopic cs:commonSearchOptions#Threshold ?searchThreshold }
 	OPTIONAL { ?primaryTopic cs:commonOptions#Complexity ?complexity }
 	OPTIONAL { ?primaryTopic cs:commonOptions#Isotopic ?isotopic }
 	OPTIONAL { ?primaryTopic cs:commonOptions#HasSpectra ?hasSpectra }
