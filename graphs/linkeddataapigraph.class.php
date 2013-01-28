@@ -53,35 +53,33 @@ class LinkedDataApiGraph extends PueliaGraph {
     }
     
     function _resource_to_simple_json_object($uri, $subjectUri, $propertyUri=false, $parentUris){
-         if(
-                !in_array($uri, $parentUris)
-        )
+        if(!in_array($uri, $parentUris))
         {
-        $parentUris[]=$uri;        
-        $index = $this->get_index();
-        $properties = $this->get_subject_properties($uri);
-        $resource = array();
-        if($this->node_is_blank($uri)){
-            if(count($this->get_subjects_where_object($uri)) > 1){
-                $bnodeNewId = 'node'.$this->getNewNodeNumber();
-                $bnodeIdIndex[$uri] = $bnodeNewId;
-                $resource['_id'] = $uri;
+            $parentUris[]=$uri;
+            $index = $this->get_index();
+            $properties = $this->get_subject_properties($uri);
+            $resource = array();
+            if($this->node_is_blank($uri)){
+                if(count($this->get_subjects_where_object($uri)) > 1){
+                    $bnodeNewId = 'node'.$this->getNewNodeNumber();
+                    $bnodeIdIndex[$uri] = $bnodeNewId;
+                    $resource['_id'] = $uri;
+                }
+            } else if(!empty($uri)) {
+                $resource['_about'] = $uri;
             }
-        } else if(!empty($uri)) {
-            $resource['_about'] = $uri;
-        }
-        sort($properties);
-        foreach($properties as $propertyUri){
+            sort($properties);
+            foreach($properties as $propertyUri){
                 $objects = $index[$uri][$propertyUri];
                 $jsonPropertyName = $this->get_short_name_for_uri($propertyUri);
                 $val = $this->get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris);
                 $resource[$jsonPropertyName] = $val;
-        }
+            }
 
-        if(!empty($resource)) return $resource;
-    } else {
-        return $uri;
-    }
+            if(!empty($resource)) return $resource;
+        } else {
+            return $uri;
+        }
     
 }
     

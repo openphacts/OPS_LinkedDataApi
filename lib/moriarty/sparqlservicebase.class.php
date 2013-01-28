@@ -147,6 +147,32 @@ class SparqlServiceBase {
 
    return $request->execute();
   }
+  
+  function insert($insertQuery, $mime=''){
+      if (empty( $this->request_factory) ) {
+          $this->request_factory = new HttpRequestFactory();
+      }
+      
+      if ( empty($mime) ) {
+          $output = '';
+          $accept = '*/*';
+      }
+      elseif (strstr($mime, '/') === FALSE) {
+          $output = $mime;
+          $accept = '*/*';
+      }
+      else {
+          $output = '';
+          $accept = $mime;
+      }
+      
+      $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
+      $request->set_body( $this->get_query_params($insertQuery, $output) );
+      $request->set_accept($accept);
+      $request->set_content_type(MIME_FORMENCODED);
+      
+      return $request->execute();
+  }
 
   function get_max_uri_length() {
     return 1024;

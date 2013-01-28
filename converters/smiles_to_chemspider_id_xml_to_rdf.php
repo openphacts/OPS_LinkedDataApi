@@ -17,8 +17,8 @@ $inchiToCSIDRequest = 'http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi='.
 
 $ch = curl_init($inchiToCSIDRequest);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$response = curl_exec($ch);
-if ($response==false){
+$inchiToCSIDResponse = curl_exec($ch);
+if ($inchiToCSIDResponse==false){
     throw new ErrorException("Request: ".$externalServiceRequest." failed");
 }
 

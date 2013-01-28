@@ -1,0 +1,103 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix cs: <http://rdf.chemspider.com/#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api :API ;
+	rdfs:label "Chemspider structure search"@en;
+	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:variable <#searchOptions> ;
+	api:variable <#commonOptions> ;
+	api:variable <#searchResultOptions> ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return the result of an exact chemical structure search." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "ChemSpider Exact Structure Search" ;
+		api:description "Returns a chemspider URL corresponding to a given InChI string." ;
+		api:uriTemplate "/structure/exact?searchOptions.Molecule={smiles}" ;
+		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
+		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+
+<#searchOptions> api:name "Search Options" ;
+	api:label "searchOptions" ;
+	api:value "Possible search option values" .
+
+<#MatchType> api:name "MatchType" ;
+	api:label "MatchType" ;
+	api:value "0: ExactMatch ; 1: AllTautomers ; 2: SameSkeletonIncludingH ; 3: SameSkeletonExcludingH ; 4: AllIsomers" .
+
+<#Molecule> api:name "Molecule" ;
+	api:label "Molecule" ;
+	api:value "String" .
+
+
+<#commonOptions> api:name "commonOptions" ;
+	api:label "commonOptions";
+	api:value "Possible common option values" .
+
+<#Complexity> api:name "Complexity" ;
+	api:label "Complexity";
+	api:value "0: Any ; 1: Single ; 2: Multi" .
+
+<#Isotopic> api:name "Isotopic" ;
+	api:label "Isotopic" ;
+	api:value "0: Any ; 1: Labeled ; 2: NotLabeled" .
+
+<#HasSpectra> api:name "HasSpectra" ;
+	api:label "HasSpectra" ;
+	api:value "Boolean" .
+
+<#HasPatents> api:name "HasPatents" ;
+	api:label "HasPatents" ;
+	api:value "Boolean" .
+
+
+<#searchResultOptions> api:name "searchResultOptions" ;
+	api:label "Search Result Options";
+	api:value "Possible search result option values" .
+
+<#Limit> api:name "Limit" ;
+	api:label "Limit" ;
+	api:value "Integer" .
+
+<#Start> api:name "Start" ;
+	api:label "Start" ;
+	api:value "Integer" .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic a ?searchType ;
+		cs:commonSearchOptions#MatchType ?searchMatchType ; 
+		cs:commonSearchOptions#Molecule ?moleculeSmiles ;
+		cs:commonOptions#Complexity ?complexity ;
+		cs:commonOptions#Isotopic ?isotopic ;
+		cs:commonOptions#HasSpectra ?hasSpectra ;
+		cs:commonOptions#HasPatents ?hasPatents ;
+		cs:searchResultOptions#Limit ?limit ;
+		cs:searchResultOptions#Start ?start ;
+		cs:searchResultOptions#Length ?length .
+		" ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic cs:commonSearchOptions#Molecule ?moleculeSmiles .
+	OPTIONAL { ?primaryTopic cs:commonSearchOptions#MatchType ?searchMatchType }
+	OPTIONAL { ?primaryTopic cs:commonOptions#Complexity ?complexity }
+	OPTIONAL { ?primaryTopic cs:commonOptions#Isotopic ?isotopic }
+	OPTIONAL { ?primaryTopic cs:commonOptions#HasSpectra ?hasSpectra }
+	OPTIONAL { ?primaryTopic cs:commonOptions#HasPatents ?hasPatents }
+	OPTIONAL { ?primaryTopic cs:searchResultOptions#Limit ?limit }
+	OPTIONAL { ?primaryTopic cs:searchResultOptions#Start ?start }
+	OPTIONAL { ?primaryTopic cs:searchResultOptions#Length ?length }
+}".

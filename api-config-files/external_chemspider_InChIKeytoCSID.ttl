@@ -24,7 +24,7 @@
 <http://www.chemspider.com> api:label "ChemSpider" .
 
 <#inchi_key> api:name "inchi_key" ;
-	api:label "inchi_key";
+	api:label "inchikey";
 	api:value "A URLEncoded InChIKey string." .
 
 <#externalResponseViewer> a api:Viewer ;

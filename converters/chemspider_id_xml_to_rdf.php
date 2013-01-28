@@ -27,7 +27,7 @@ $fullCSID = CHEMSPIDER_PREFIX.$csid;
 $paramBindings = $this->ConfigGraph->getParamVariableBindings();
 
 $inputNode = $this->ConfigGraph->get_first_resource($this->ConfigGraph->getApiUri(), API.'variable');
-$paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'name');//'inchi' or 'inchi_key'
+$paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'label');//'inchi' or 'inchikey'
 $paramValue = $paramBindings[$paramName];                        
 
 /* For InChI To CSID we may want to extract the additional prefix 
