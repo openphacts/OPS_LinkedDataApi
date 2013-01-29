@@ -329,7 +329,7 @@ class LinkedDataApiResponse {
     
     function loadDataFromExternalService(){
         
-        $uriWithoutExtension = $this->ConfigGraph->getCompletedUriTemplate();
+        $uriWithoutExtension = $this->ConfigGraph->getOrderedUri();
         $graphName = hash("crc32", $uriWithoutExtension);
         
         $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
@@ -345,7 +345,6 @@ class LinkedDataApiResponse {
             
             //query the data store
             $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);//TODO use appropriate mime in the future
-            //$this->DataGraph->add_rdf($response->body);
             if ($response->is_success()){
                 $this->DataGraph->add_rdf($response->body);
                 
@@ -413,6 +412,7 @@ class LinkedDataApiResponse {
         //call the appropriate converter by checking api:externalResponseHandler
         $this->pageUri = $this->Request->getUriWithoutPageParam();
         $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'externalResponseHandler');
+        
         require $externalResponseHandler;
         
         return $rdfData;

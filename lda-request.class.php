@@ -3,6 +3,8 @@ class LinkedDataApiRequest {
     
     var $formatExtension = null;        
     var $pathWithoutExtension = null;
+    var $unreservedParams = null;
+    
     var $reservedParams = array(
         '_search', # a free text search query
         '_metadata', # is a comma separated list of names of metadata graphs to show: site,formats,views,all,execution
@@ -72,15 +74,20 @@ class LinkedDataApiRequest {
         }
         return false;
     }
+    
     function getUnreservedParams(){
+        if ($this->unreservedParams!=null){
+            return $this->unreservedParams;
+        }
+        
         $params = $this->getParams();
-        $unreservedParams = array();
+        $this->unreservedParams = array();
         foreach($params as $k => $v){
             if($k[0]!=='_' AND $k!=='callback' AND $v!==''){
-                $unreservedParams[$k] = $v;
+                $this->unreservedParams[$k] = $v;
             }
         }
-        return $unreservedParams;
+        return $this->unreservedParams;
     }
     
     function getParam($k){

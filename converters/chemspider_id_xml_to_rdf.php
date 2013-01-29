@@ -30,11 +30,6 @@ $inputNode = $this->ConfigGraph->get_first_resource($this->ConfigGraph->getApiUr
 $paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'label');//'inchi' or 'inchikey'
 $paramValue = $paramBindings[$paramName];                        
 
-/* For InChI To CSID we may want to extract the additional prefix 
-$inchiParam = $paramBindings['inchi']; //the full parameter is 'InChI=<inchi_value>'
-$prefixLength = strlen('InChI=');
-$inchi = substr($inchiParam['value'], $prefixLength);*/
-
 $this->DataGraph->add_literal_triple($fullCSID, CHEMSPIDER_PREFIX.'#'.$paramName, $paramValue['value']);
 
 $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the graph

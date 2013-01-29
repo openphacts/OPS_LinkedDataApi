@@ -26,22 +26,30 @@
 <http://www.chemspider.com> api:label "ChemSpider" .
 
 
-<#searchOptions> api:name "Search Options" ;
+<#searchOptions> api:name "searchOptions" ;
 	api:label "searchOptions" ;
-	api:value "Possible search option values" .
-
-<#MatchType> api:name "MatchType" ;
-	api:label "MatchType" ;
-	api:value "0: ExactMatch ; 1: AllTautomers ; 2: SameSkeletonIncludingH ; 3: SameSkeletonExcludingH ; 4: AllIsomers" .
+	api:value "Possible search option values" ;
+	api:subType <#Molecule> ;
+	api:subType <#MatchType> .
 
 <#Molecule> api:name "Molecule" ;
 	api:label "Molecule" ;
 	api:value "String" .
 
+<#MatchType> api:name "MatchType" ;
+	api:label "MatchType" ;
+	api:value "0: ExactMatch ; 1: AllTautomers ; 2: SameSkeletonIncludingH ; 3: SameSkeletonExcludingH ; 4: AllIsomers" .
+
+
+
 
 <#commonOptions> api:name "commonOptions" ;
 	api:label "commonOptions";
-	api:value "Possible common option values" .
+	api:value "Possible common option values" ;
+	api:subType <#Complexity> ;
+	api:subType <#Isotopic> ;
+	api:subType <#HasSpectra> ;
+	api:subType <#HasPatents> .
 
 <#Complexity> api:name "Complexity" ;
 	api:label "Complexity";
@@ -60,9 +68,13 @@
 	api:value "Boolean" .
 
 
+
 <#searchResultOptions> api:name "searchResultOptions" ;
 	api:label "Search Result Options";
-	api:value "Possible search result option values" .
+	api:value "Possible search result option values" ;
+	api:subType <#Limit> ;
+	api:subType <#Start> ;
+	api:subType <#Length> .
 
 <#Limit> api:name "Limit" ;
 	api:label "Limit" ;
@@ -71,6 +83,12 @@
 <#Start> api:name "Start" ;
 	api:label "Start" ;
 	api:value "Integer" .
+
+<#Length> api:name "Length" ;
+	api:label "Length" ;
+	api:value "Integer. How many results should be returned started the Start index. Default value: -1." .
+
+
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

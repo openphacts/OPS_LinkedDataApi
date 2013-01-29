@@ -17,6 +17,7 @@ class ConfigGraph extends PueliaGraph {
     private $_uriTemplate;
     private $_paramVariableBindings;
     private $_pathVariableBindings;
+    private $_apiConfigVariableBindings = null;
     private $_allVariableBindings;
     private $_requestFactory = null; 
     private $_formatters = null;
@@ -343,25 +344,69 @@ class ConfigGraph extends PueliaGraph {
         return $variableBindings;
     }
     
+    function getOrderedUri(){        
+        $orderedUnreservedParams = '';
+        $apiConfigVariableBindings = $this->getApiConfigVariableBindings();
+        $paramCount = count($this->_request->getUnreservedParams());
+        $counter = 0;
+        
+        foreach ($apiConfigVariableBindings as $name => $value){
+            foreach ($this->_request->getUnreservedParams() as $paramName => $paramValue){
+                if ($name===$paramName){
+                    if ($orderedUnreservedParams!==''){
+                        $orderedUnreservedParams .= '&';
+                    }
+                    $orderedUnreservedParams .= $name.'='.$paramValue; 
+                    $counter++;
+                    break;
+                }
+            }
+            if ($counter == $paramCount){//finished all the unreserved params in the request, no need to continue looping
+                break;
+            }
+        }
+        
+        $orderedUri = $this->_request->getPathWithoutExtension().'?'.$orderedUnreservedParams;
+        return $orderedUri;
+    }
+    
     function getApiConfigVariableBindings(){
+        if ($this->_apiConfigVariableBindings!=null){
+            return $this->_apiConfigVariableBindings;    
+        }
+        
         $endpointUri = $this->getEndpointUri();
         $endpointApiUris = $this->get_subjects_where_resource(API.'endpoint', $endpointUri);
-        $variableBindings = array();
+        $this->_apiConfigVariableBindings = array();
         foreach($endpointApiUris as $apiUri){
             foreach($this->get_resource_triple_values($apiUri, API.'variable') as $variableUri){
                 $name = $this->get_first_literal($variableUri, API.'name');
-                $value = $this->get_first_literal($variableUri, API.'value');
-                $variableBindings[$name]['value'] = $value;
-		$variableBindings[$name]['uri'] = $variableUri;
-                if($type = $this->get_first_resource($variableUri, API.'type')){
-                    $variableBindings[$name]['type'] = $type;                    
+                $subTypes = $this->get_subject_property_values($variableUri, API.'subType');
+                foreach ($subTypes as $subTypeUri){
+                    $subTypeName = $this->get_first_literal($subTypeUri['value'], API.'name');
+                    $fullName = $name.'.'.$subTypeName;
+                    
+                    $this->retrieveVariableProperties($fullName, $subTypeUri['value']);
                 }
-		if($sparql = $this->get_first_literal($variableUri, API.'filterVariable')){
-                    $variableBindings[$name]['sparqlVar'] = $sparql;
-                }
+                
+                $this->retrieveVariableProperties($name, $variableUri);
             }
         }
-        return $variableBindings;
+        return $this->_apiConfigVariableBindings;
+    }
+    
+    private function retrieveVariableProperties($name, $variableUri){
+        $value = $this->get_first_literal($variableUri, API.'value');
+        $this->_apiConfigVariableBindings[$name]['value'] = $value;
+        $this->_apiConfigVariableBindings[$name]['uri'] = $variableUri;
+        
+        if($type = $this->get_first_resource($variableUri, API.'type')){
+            $this->_apiConfigVariableBindings[$name]['type'] = $type;
+        }
+        
+        if($sparql = $this->get_first_literal($variableUri, API.'filterVariable')){
+            $this->_apiConfigVariableBindings[$name]['sparqlVar'] = $sparql;
+        }
     }
     
     function bindVariablesInValue($value, $variables, $valueType=false){
@@ -410,6 +455,10 @@ class ConfigGraph extends PueliaGraph {
     function getCompletedUriTemplate(){
         $bindings = array_merge($this->getPathVariableBindings(),
                                 $this->getParamVariableBindings());
+        
+        /*foreach ($this->getParamVariableBindings() as $name => $value){
+            echo $name." ".$value."\n";
+        }*/
         
         $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
         $filledInUriTemplate = $this->bindURLEncodedVariablesInValue($uriTemplate, $bindings);
