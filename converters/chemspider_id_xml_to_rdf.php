@@ -30,7 +30,7 @@ $inputNode = $this->ConfigGraph->get_first_resource($this->ConfigGraph->getApiUr
 $paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'label');//'inchi' or 'inchikey'
 $paramValue = $paramBindings[$paramName];                        
 
-$this->DataGraph->add_literal_triple($fullCSID, CHEMSPIDER_PREFIX.'#'.$paramName, $paramValue['value']);
+$this->DataGraph->add_literal_triple($fullCSID, $inputNode, $paramValue['value']);
 
 $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the graph
 

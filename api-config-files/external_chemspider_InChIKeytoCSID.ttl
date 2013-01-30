@@ -8,7 +8,7 @@
 <#chemspider> a api :API ;
 	rdfs:label "Chemical structure to ChemSpider URL"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
-	api:variable <#inchi_key> ;
+	api:variable chemspider:inchikey ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
@@ -23,8 +23,8 @@
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 
-<#inchi_key> api:name "inchi_key" ;
-	api:label "inchikey";
+chemspider:inchikey api:name "inchi_key" ;
+	api:label "inchi_key";
 	api:value "A URLEncoded InChIKey string." .
 
 <#externalResponseViewer> a api:Viewer ;
@@ -32,9 +32,9 @@
 	api:template "
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
-?primaryTopic chemspider:inchi_key ?inchi_key ." ;
+?primaryTopic chemspider:inchikey ?inchi_key ." ;
 
 	api:where "
 GRAPH <{result_hash}> {
-	?primaryTopic chemspider:inchi_key ?inchi_key .
+	?primaryTopic chemspider:inchikey ?inchi_key .
 }".

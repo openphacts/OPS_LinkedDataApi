@@ -8,7 +8,7 @@
 <#chemspider> a api :API ;
 	rdfs:label "Chemical structure to ChemSpider URL"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
-	api:variable <#inchi> ;
+	api:variable chemspider:inchi ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
@@ -23,7 +23,7 @@
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 
-<#inchi> api:name "inchi" ;
+chemspider:inchi api:name "inchi" ;
 	api:label "inchi";
 	api:value "A URLEncoded InChI string." .
 
