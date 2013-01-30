@@ -51,7 +51,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A ChEBI Class URI (URLEncoded)" .
 
 <#chebiMemberViewer> a api:Viewer ;
 	api:name "chebiMemberViewer";

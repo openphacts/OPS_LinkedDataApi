@@ -85,13 +85,13 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A target URI (URLEncoded)" .
 
 <#targetPharmacologyCountViewer> a api:Viewer ;
 	api:name "targetPharmacologyCountViewer" ;

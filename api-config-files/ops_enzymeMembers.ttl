@@ -49,7 +49,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "An Enzyme Class URI (URLEncoded)" .
 
 <#enzymeMemberViewer> a api:Viewer ;
 	api:name "enzymeMemberViewer";

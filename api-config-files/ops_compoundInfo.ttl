@@ -54,7 +54,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A compound URI (URLEncoded)" .
 
 <#compoundViewer> a api:Viewer ;
 	api:name "compoundViewer" ;

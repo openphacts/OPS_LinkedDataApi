@@ -73,13 +73,13 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A ChEBI Class URI (URLEncoded)" .
 
 <#chebiPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/chebi/pharmacology/pages?uri={uri}" ;
@@ -88,9 +88,9 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:variable <http://www.openphacts.org/units/Nanomolar> ;
 	api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
 	api:name "ChEBI Ontology Class Pharmacology Paginated" ;
-	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;
+	api:description "A page of items corresponding to acitivity values for a given ChEBI Ontology class" ;
 	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-	api:exampleRequestPath "http://localhost/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:selector [
 		api:where 
 "
@@ -219,4 +219,4 @@ _:b1 ops:concatenatedURIs ?target_uris ;
         	                a cheminf:CHEMINF_000367;
                 	        qudt:numericValue ?num_ro5_violations . }
 	        }
-	} } GROUP BY ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?item ?doi ?pmid ?equiv_assay ?equiv_target ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value" .
+	} } GROUP BY ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?item ?doi ?pmid ?equiv_assay ?equiv_target ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value " .

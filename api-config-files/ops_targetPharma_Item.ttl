@@ -46,7 +46,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Target Pharmacology Complete" ;
-		api:description "A complete representation of acitivity values in the LDC for a given target. Potentially large result. Currently hits a hard limit at 100 until we have a better RDF store." ;
+		api:description "A complete representation of acitivity values in the LDC for a given target. Potentially large result." ;
 		api:uriTemplate "/target/pharmacology?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:variable <http://www.openphacts.org/units/Micromolar> ;
@@ -90,13 +90,13 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A target URI (URLEncoded)" .
 
 <#targetPharmacologyViewer> a api:Viewer ;
 	api:name "targetPharmacologyViewer" ;
