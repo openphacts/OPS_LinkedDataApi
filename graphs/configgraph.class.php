@@ -441,15 +441,25 @@ class ConfigGraph extends PueliaGraph {
         return $filledInTemplate;
     }
     
-    function getCompletedExternalServiceTemplate(){
+    function getExternalServiceRequest(){
         //match api:uriTemplate and extract parameter
-        $bindings = $this->getAllVariableBindings();//TODO
+        $paramBindings = array_merge($this->getPathVariableBindings(),
+                    $this->getParamVariableBindings()); 
         
         //fill in api:externalRequestTemplate
         $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
-        $filledInExternalRequestTemplate = $this->bindVariablesInValue($externalRequestTemplate, $bindings, RDFS.'Resource');
+        $externalRequest = $this->bindVariablesInValue($externalRequestTemplate, $paramBindings, RDFS.'Resource');
         
-        return $filledInExternalRequestTemplate;
+        //add params not appearing in the uri template
+        $unreservedParams = $this->_request->getUnreservedParams();
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        foreach ($unreservedParams as $name => $value){
+            if (strpos($uriTemplate, $name)===FALSE){
+                $externalRequest .= '&'.$name.'='.$value;
+            }
+        }
+        
+        return $externalRequest;
     }
     
     function getCompletedUriTemplate(){

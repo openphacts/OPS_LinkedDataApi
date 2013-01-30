@@ -74,7 +74,8 @@ function pollStatus($requestId){
 
 
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
-define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/#');
+define('OPS_CHEMSPIDER_PREFIX', 'http://www.chemspider.com/api/');
+define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/');
 
 define('SEARCH_STATUS_UNKNOWN', 0);
 define('SEARCH_STATUS_CREATED', 1);
@@ -89,7 +90,7 @@ define('SEARCH_STATUS_TOO_MANY_RECORDS', 8);
 define('SEARCH_TIMEOUT', 300000000); //5 minutes
 define('POLLING_INTERVAL', 100000); //100ms
 
-$errorStatuses=array(SEARCH_STATUS_UNKNOWN, SEARCH_STATUS_SUSPENDED. SEARCH_STATUS_PARTIAL_RESULT_READY, SEARCH_STATUS_FAILED, SEARCH_STATUS_TOO_MANY_RECORDS);
+$errorStatuses=array(SEARCH_STATUS_UNKNOWN, SEARCH_STATUS_SUSPENDED, SEARCH_STATUS_PARTIAL_RESULT_READY, SEARCH_STATUS_FAILED, SEARCH_STATUS_TOO_MANY_RECORDS);
 
 $requestId = $response;
 
@@ -106,13 +107,13 @@ $this->DataGraph->add_literal_triple($resultBNode, RDF_TYPE, $searchType);
 $unreservedParameters = $this->Request->getUnreservedParams();
 foreach ($unreservedParameters as $name => $value){
     $processedName = str_replace('.', '#', $name);
-    $predicate = CHEMSPIDER_PREFIX.$processedName;
+    $predicate = OPS_CHEMSPIDER_PREFIX.$processedName;
 
     $this->DataGraph->add_literal_triple($resultBNode, $predicate, $value);
 }
 
 foreach ($decodedFinalResults as $elem){
-    $this->DataGraph->add_literal_triple($resultBNode, CHEMSPIDER_PREFIX.'result', $elem);
+    $this->DataGraph->add_resource_triple($resultBNode, OPS_CHEMSPIDER_PREFIX.'result', CHEMSPIDER_PREFIX.$elem);
 }
 
 $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the graph

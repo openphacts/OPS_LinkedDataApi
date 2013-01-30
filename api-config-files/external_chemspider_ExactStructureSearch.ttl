@@ -2,7 +2,6 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
-@prefix cs: <http://rdf.chemspider.com/#> .
 @prefix cs_api: <http://www.chemspider.com/api/> .
 @prefix cs_api_search: <http://www.chemspider.com/api/searchOptions#> .
 @prefix cs_api_result: <http://www.chemspider.com/api/resultOptions#> .
@@ -70,8 +69,8 @@ cs_api_common:HasPatents api:name "HasPatents" ;
 
 
 
-cs_api:resultOptions api:name "searchResultOptions" ;
-	api:label "Search Result Options";
+cs_api:resultOptions api:name "resultOptions" ;
+	api:label "resultOptions";
 	api:value "Possible search result option values" ;
 	api:subType cs_api_result:Limit ;
 	api:subType cs_api_result:Start ;
@@ -99,7 +98,7 @@ cs_api_result:Length api:name "Length" ;
   ?primaryTopic rdf:type ?searchType ;
 		cs_api_search:Molecule ?moleculeSmiles ;
 		cs_api_search:MatchType ?searchMatchType ; 
-		cs:result ?result ;
+		cs_api:result ?result ;
 		cs_api_common:Complexity ?complexity ;
 		cs_api_common:Isotopic ?isotopic ;
 		cs_api_common:HasSpectra ?hasSpectra ;
@@ -113,7 +112,7 @@ cs_api_result:Length api:name "Length" ;
 GRAPH <{result_hash}> {
 	?primaryTopic rdf:type ?searchType .
 	?primaryTopic cs_api_search:Molecule ?moleculeSmiles .
-	?primaryTopic cs:result ?result .
+	?primaryTopic cs_api:result ?result .
 	OPTIONAL { ?primaryTopic cs_api_search:MatchType ?searchMatchType }
 	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
 	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }

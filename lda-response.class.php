@@ -182,7 +182,10 @@ class LinkedDataApiResponse {
         } else {
           $credentials = false;
         }
-        $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
+        
+        $noCacheRequestFactory = new HttpRequestFactory();
+        $noCacheRequestFactory->read_from_cache(FALSE);
+        $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $noCacheRequestFactory);
         
         switch($this->ConfigGraph->getEndpointType()){
             case API.'ListEndpoint' : 
@@ -363,7 +366,7 @@ class LinkedDataApiResponse {
         }    
         
         //match api:uriTemplate, extract parameters and fill in api:externalRequestTemplate 
-        $externalServiceRequest = $this->ConfigGraph->getCompletedExternalServiceTemplate();
+        $externalServiceRequest = $this->ConfigGraph->getExternalServiceRequest();
         try{
             $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
         }
