@@ -8,7 +8,7 @@
 @prefix cs_api_common:  <http://www.chemspider.com/api/commonOptions#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-<#chemspider> a api :API ;
+<#chemspider> a api:API ;
 	rdfs:label "Chemspider structure search"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
 	api:variable cs_api:searchOptions ;
