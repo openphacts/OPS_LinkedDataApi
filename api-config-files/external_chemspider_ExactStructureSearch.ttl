@@ -95,27 +95,30 @@
 	api:template "
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
-		?primaryTopic a ?searchType ;
-		cs:commonSearchOptions#MatchType ?searchMatchType ; 
-		cs:commonSearchOptions#Molecule ?moleculeSmiles ;
-		cs:commonOptions#Complexity ?complexity ;
-		cs:commonOptions#Isotopic ?isotopic ;
-		cs:commonOptions#HasSpectra ?hasSpectra ;
-		cs:commonOptions#HasPatents ?hasPatents ;
-		cs:searchResultOptions#Limit ?limit ;
-		cs:searchResultOptions#Start ?start ;
-		cs:searchResultOptions#Length ?length .
+  ?primaryTopic rdf:type ?searchType ;
+		<http://rdf.chemspider.com/#searchOptions#Molecule> ?moleculeSmiles ;
+		<http://rdf.chemspider.com/#searchOptions#MatchType> ?searchMatchType ; 
+		cs:result ?result ;
+		<http://rdf.chemspider.com/#commonOptions#Complexity> ?complexity ;
+		<http://rdf.chemspider.com/#commonOptions#Isotopic> ?isotopic ;
+		<http://rdf.chemspider.com/#commonOptions#HasSpectra> ?hasSpectra ;
+		<http://rdf.chemspider.com/#commonOptions#HasPatents> ?hasPatents ;
+		<http://rdf.chemspider.com/#searchResultOptions#Limit> ?limit ;
+		<http://rdf.chemspider.com/#searchResultOptions#Start> ?start ;
+		<http://rdf.chemspider.com/#searchResultOptions#Length> ?length .
 		" ;
 
 	api:where "
 GRAPH <{result_hash}> {
-	?primaryTopic cs:commonSearchOptions#Molecule ?moleculeSmiles .
-	OPTIONAL { ?primaryTopic cs:commonSearchOptions#MatchType ?searchMatchType }
-	OPTIONAL { ?primaryTopic cs:commonOptions#Complexity ?complexity }
-	OPTIONAL { ?primaryTopic cs:commonOptions#Isotopic ?isotopic }
-	OPTIONAL { ?primaryTopic cs:commonOptions#HasSpectra ?hasSpectra }
-	OPTIONAL { ?primaryTopic cs:commonOptions#HasPatents ?hasPatents }
-	OPTIONAL { ?primaryTopic cs:searchResultOptions#Limit ?limit }
-	OPTIONAL { ?primaryTopic cs:searchResultOptions#Start ?start }
-	OPTIONAL { ?primaryTopic cs:searchResultOptions#Length ?length }
+	?primaryTopic rdf:type ?searchType .
+	?primaryTopic <http://rdf.chemspider.com/#searchOptions#Molecule> ?moleculeSmiles .
+	?primaryTopic cs:result ?result .
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchOptions#MatchType> ?searchMatchType }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#Complexity> ?complexity }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#Isotopic> ?isotopic }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#HasSpectra> ?hasSpectra }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#HasPatents> ?hasPatents }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchResultOptions#Limit> ?limit }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchResultOptions#Start> ?start }
+	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchResultOptions#Length> ?length }
 }".

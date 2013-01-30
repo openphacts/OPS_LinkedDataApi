@@ -443,7 +443,7 @@ class ConfigGraph extends PueliaGraph {
     
     function getCompletedExternalServiceTemplate(){
         //match api:uriTemplate and extract parameter
-        $bindings = $this->getAllVariableBindings();
+        $bindings = $this->getAllVariableBindings();//TODO
         
         //fill in api:externalRequestTemplate
         $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));

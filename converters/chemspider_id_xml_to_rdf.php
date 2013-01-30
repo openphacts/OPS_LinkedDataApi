@@ -11,7 +11,7 @@
 //
 
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
-define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/');
+define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/#');
 
 $xmlData = simplexml_load_string($response);
 

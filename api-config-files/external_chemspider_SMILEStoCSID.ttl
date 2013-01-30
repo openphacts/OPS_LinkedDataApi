@@ -32,11 +32,9 @@
 	api:template "
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
-?primaryTopic chemspider:smiles ?smiles .
-?primaryTopic ?p1 ?o1 . " ;
+?primaryTopic chemspider:smiles ?smiles ." ;
 
 	api:where "
 GRAPH <{result_hash}> {
 	?primaryTopic chemspider:smiles ?smiles .
-	?primaryTopic ?p1 ?o1 .
 }".

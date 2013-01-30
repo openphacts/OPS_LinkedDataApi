@@ -74,7 +74,7 @@ function pollStatus($requestId){
 
 
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
-define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/');
+define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/#');
 
 define('SEARCH_STATUS_UNKNOWN', 0);
 define('SEARCH_STATUS_CREATED', 1);
