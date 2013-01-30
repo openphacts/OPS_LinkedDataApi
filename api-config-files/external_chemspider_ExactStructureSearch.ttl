@@ -97,29 +97,29 @@ cs_api_result:Length api:name "Length" ;
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
   ?primaryTopic rdf:type ?searchType ;
-		<http://rdf.chemspider.com/#searchOptions#Molecule> ?moleculeSmiles ;
-		<http://rdf.chemspider.com/#searchOptions#MatchType> ?searchMatchType ; 
+		cs_api_search:Molecule ?moleculeSmiles ;
+		cs_api_search:MatchType ?searchMatchType ; 
 		cs:result ?result ;
-		<http://rdf.chemspider.com/#commonOptions#Complexity> ?complexity ;
-		<http://rdf.chemspider.com/#commonOptions#Isotopic> ?isotopic ;
-		<http://rdf.chemspider.com/#commonOptions#HasSpectra> ?hasSpectra ;
-		<http://rdf.chemspider.com/#commonOptions#HasPatents> ?hasPatents ;
-		<http://rdf.chemspider.com/#searchResultOptions#Limit> ?limit ;
-		<http://rdf.chemspider.com/#searchResultOptions#Start> ?start ;
-		<http://rdf.chemspider.com/#searchResultOptions#Length> ?length .
+		cs_api_common:Complexity ?complexity ;
+		cs_api_common:Isotopic ?isotopic ;
+		cs_api_common:HasSpectra ?hasSpectra ;
+		cs_api_common:HasPatents ?hasPatents ;
+		cs_api_result:Limit ?limit ;
+		cs_api_result:Start ?start ;
+		cs_api_result:Length ?length .
 		" ;
 
 	api:where "
 GRAPH <{result_hash}> {
 	?primaryTopic rdf:type ?searchType .
-	?primaryTopic <http://rdf.chemspider.com/#searchOptions#Molecule> ?moleculeSmiles .
+	?primaryTopic cs_api_search:Molecule ?moleculeSmiles .
 	?primaryTopic cs:result ?result .
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchOptions#MatchType> ?searchMatchType }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#Complexity> ?complexity }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#Isotopic> ?isotopic }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#HasSpectra> ?hasSpectra }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#commonOptions#HasPatents> ?hasPatents }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchResultOptions#Limit> ?limit }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchResultOptions#Start> ?start }
-	OPTIONAL { ?primaryTopic <http://rdf.chemspider.com/#searchResultOptions#Length> ?length }
+	OPTIONAL { ?primaryTopic cs_api_search:MatchType ?searchMatchType }
+	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
+	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
+	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }
+	OPTIONAL { ?primaryTopic cs_api_common:HasPatents ?hasPatents }
+	OPTIONAL { ?primaryTopic cs_api_result:Limit ?limit }
+	OPTIONAL { ?primaryTopic cs_api_result:Start ?start }
+	OPTIONAL { ?primaryTopic cs_api_result:Length ?length }
 }".
