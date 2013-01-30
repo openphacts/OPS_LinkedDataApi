@@ -3,6 +3,8 @@ class LinkedDataApiRequest {
     
     var $formatExtension = null;        
     var $pathWithoutExtension = null;
+    var $unreservedParams = null;
+    
     var $reservedParams = array(
         '_search', # a free text search query
         '_metadata', # is a comma separated list of names of metadata graphs to show: site,formats,views,all,execution
@@ -20,7 +22,6 @@ class LinkedDataApiRequest {
         '_callback', # for JSONP
 	'app_id',
 	'app_key',
-        
         );
     
     function __construct(){
@@ -33,6 +34,15 @@ class LinkedDataApiRequest {
         	$this->ifModifiedSince = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
         }
         $this->uri = $this->getUri();
+    }
+    
+    public static function eliminateDebugParams(){
+        $params = array('XDEBUG_SESSION_START', 'KEY');
+        foreach($params as $param){
+            $regex= '/([&?])'.$param.'=[^&]+(&|$)/';
+            $_SERVER['REQUEST_URI'] = rtrim(preg_replace($regex, '\1', $_SERVER['REQUEST_URI']), '?&');
+            $_SERVER['QUERY_STRING'] = rtrim(preg_replace($regex, '\1', $_SERVER['QUERY_STRING']), '?&');
+        }   
     }
     
     function getParams(){
@@ -64,15 +74,20 @@ class LinkedDataApiRequest {
         }
         return false;
     }
+    
     function getUnreservedParams(){
+        if ($this->unreservedParams!=null){
+            return $this->unreservedParams;
+        }
+        
         $params = $this->getParams();
-        $unreservedParams = array();
+        $this->unreservedParams = array();
         foreach($params as $k => $v){
             if($k[0]!=='_' AND $k!=='callback' AND $v!=='' AND $k!=='app_id' AND $k!=='app_key'){
                 $unreservedParams[$k] = $v;
             }
         }
-        return $unreservedParams;
+        return $this->unreservedParams;
     }
     
     function getParam($k){
@@ -169,31 +184,31 @@ class LinkedDataApiRequest {
     function getAcceptTypes($defaultTypes = array()){
         $header = $this->getAcceptHeader();
         $mimes = explode(',',$header);
-    	$accept_mimetypes = array();
-	
+        $accept_mimetypes = array();
+
         foreach($mimes as $mime){
-        $mime = trim($mime);
-    		$parts = explode(';q=', $mime);
-    		if(count($parts)>1){
-    			$accept_mimetypes[$parts[0]]=strval($parts[1]);
-    		}
-    		else {
-    			$accept_mimetypes[$mime]=1;
-    		}
-    	}
-  /* prefer html, then xhtml, then anything in the default array, to mimetypes with the same value. this is because WebKit browsers (Chrome, Safari, Android) currently prefer xml and even image/png to html */
-  $defaultTypes = array_merge(array('text/html', 'application/xhtml+xml'), $defaultTypes);
-	foreach($defaultTypes as $defaultType){
-		if(isset($accept_mimetypes[$defaultType])){	
-			$count_values = array_count_values($accept_mimetypes);
-			$defaultVal = $accept_mimetypes[$defaultType];
-			if($count_values[$defaultVal] > 1){
-				$accept_mimetypes[$defaultType]=strval(0.001+$accept_mimetypes[$defaultType]);
-			}
-		}
-  }
-    	arsort($accept_mimetypes);
-    	return array_keys($accept_mimetypes);
+            $mime = trim($mime);
+            $parts = explode(';q=', $mime);
+            if(count($parts)>1){
+                $accept_mimetypes[$parts[0]]=strval($parts[1]);
+            }
+            else {
+                $accept_mimetypes[$mime]=1;
+            }
+        }
+        /* prefer html, then xhtml, then anything in the default array, to mimetypes with the same value. this is because WebKit browsers (Chrome, Safari, Android) currently prefer xml and even image/png to html */
+        $defaultTypes = array_merge(array('text/html', 'application/xhtml+xml'), $defaultTypes);
+        foreach($defaultTypes as $defaultType){
+            if(isset($accept_mimetypes[$defaultType])){
+                $count_values = array_count_values($accept_mimetypes);
+                $defaultVal = $accept_mimetypes[$defaultType];
+                if($count_values[$defaultVal] > 1){
+                    $accept_mimetypes[$defaultType]=strval(0.001+$accept_mimetypes[$defaultType]);
+                }
+            }
+        }
+        arsort($accept_mimetypes);
+        return array_keys($accept_mimetypes);
     }
     
     function hasAcceptTypes(){
@@ -213,6 +228,9 @@ class LinkedDataApiRequest {
         return $this->getUriWithoutParam('_view');
     }
     
+    function getUriWithoutBase(){
+        return str_replace( $this->getBase(), '', $_SERVER['REQUEST_URI']);
+    }
     
     function getUriWithoutParam($params, $stripextension=false){
         if(is_string($params)){
@@ -254,6 +272,18 @@ class LinkedDataApiRequest {
     function getUriWithPageParam($pageno=false, $defaultparamvalue=1){
         return $this->getUriWithParam('_page', $pageno, $defaultparamvalue);
     }
+    
+    function getRequestUriWithoutFormatExtension(){
+        if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $_SERVER['REQUEST_URI'], $m)){
+            $ret = $m[1].$m[3];
+        }
+        else{//the uri does not have a format extension
+            $ret = $_SERVER['REQUEST_URI'];
+        }
+        
+        return $ret;
+    }
+    
     
     function getPageUriWithFormatExtension($uri, $extension){
         if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $uri, $m)){
