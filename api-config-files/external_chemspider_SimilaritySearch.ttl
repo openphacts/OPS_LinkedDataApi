@@ -9,8 +9,9 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#chemspider> a api:API ;
-	rdfs:label "Chemspider structure search"@en;
+	rdfs:label "ChemSpider structure search"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
 	api:variable cs_api:searchOptions ;
 	api:variable cs_api:commonOptions ;
 	api:variable cs_api:searchResultOptions ;

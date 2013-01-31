@@ -73,13 +73,13 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "An Enzyme Class URI (URLEncoded)" .
 
 <#enzymePharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/target/enzyme/pharmacology/pages?uri={uri}" ;
@@ -228,4 +228,4 @@ SELECT DISTINCT ?item ( GROUP_CONCAT ( DISTINCT ?equiv_target ; SEPARATOR = ' , 
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
 	}
-}} GROUP BY ?item ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi" .
+}} GROUP BY ?item ?equiv_compound ?compound_cs ?inchi ?inchi_key ?smiles ?num_ro5_violations ?compound_cw ?compound_name ?std_type ?relation ?std_value ?std_unit ?activity_value ?equiv_assay ?assay_organism ?assay_description ?node1 ?molweight ?pmid ?doi " .

@@ -78,7 +78,7 @@ api:value "One of the activity types listed at <a href=/pharmacology/filters/act
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
@@ -90,7 +90,7 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A ChEBI Class URI (URLEncoded)" .
 
 <#chebiPharmacologyCountViewer> a api:Viewer ;
 	api:name "chebiPharmacologyCountViewer" ;

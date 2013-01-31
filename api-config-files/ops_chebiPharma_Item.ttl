@@ -24,7 +24,7 @@
 @prefix bibo: <http://purl.org/ontology/bibo/> .
 
 <#chebi> a api:API ;
-        rdfs:label "ChEBI"@en ;
+        rdfs:label "ChEBI Ontology"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
@@ -46,7 +46,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "ChEBI Class Pharmacology Complete" ;
-		api:description "A complete representation of acitivity values in the LDC for a given ChEBI class. Potentially very large result." ;
+		api:description "A complete representation of acitivity values in the LDC for a given ChEBI Ontology class. Potentially very large result." ;
 		api:uriTemplate "/compound/chebi/pharmacology?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:variable <http://www.openphacts.org/units/Micromolar> ;
@@ -89,13 +89,13 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "A number" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A ChEBI Class URI (URLEncoded)" .
 
 <#chebiPharmacologyViewer> a api:Viewer ;
 	api:name "chebiPharmacologyViewer" ;

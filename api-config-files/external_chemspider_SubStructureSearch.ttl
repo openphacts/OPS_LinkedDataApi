@@ -9,8 +9,9 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#chemspider> a api:API ;
-	rdfs:label "Chemspider structure search"@en;
+	rdfs:label "ChemSpider structure search"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
 	api:variable cs_api:searchOptions ;
 	api:variable cs_api:commonOptions ;
 	api:variable cs_api:searchResultOptions ;
@@ -19,7 +20,7 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:name "ChemSpider SubStructure Search" ;
-		api:description "Returns a set of Chemspider Ids based on a SMILES input." ;
+		api:description "Returns a set of ChemSpider Ids based on a SMILES input." ;
 		api:uriTemplate "/structure/substructure?searchOptions.Molecule={smiles}" ;
 		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SubStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;

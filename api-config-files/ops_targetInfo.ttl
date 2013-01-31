@@ -52,7 +52,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A target URI (URLEncoded)" .
 
 <#targetViewer> a api:Viewer ;
 	api:name "targetViewer" ;
