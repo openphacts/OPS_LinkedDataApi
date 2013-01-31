@@ -1,8 +1,8 @@
 echo '{
-  "basePath": "http://api.2445580102272.proxy.3scale.net:80",
-  "apiVersion": "v1",
+  "basePath": "http://ops2.few.vu.nl:8080",
+  "apiVersion": "v1.1",
   "apis": [' 
-for file in ./ops_*.ttl
+for file in ./*.ttl
 do
 	echo '    {'
 	sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/' 
@@ -10,7 +10,9 @@ do
         {
           "httpMethod": "GET",'
 	sed -n '/a [[:print:]]*Endpoint/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/' 
+        sed -n '/a api:ExternalHTTPService/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/'
 	sed -n '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/;/,/'
+        sed -n '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/;/,/'
 	sed -n '/a api:API/,/rdfs:label/s/[[:space:]]*rdfs:label \([[:print:]]*\)"[[:print:]]*/          "group": \1"/p' $file | sed 's/$/ ,/'
         echo '          "parameters": ['
 	inputLine=`sed -n '/<#input>/p' $file`
@@ -41,7 +43,18 @@ do
 	vars=`sed -n 's/[[:space:]]*api:variable[[:space:]]*//p' $file | sed 's,[[:space:]]*;[[:space:]]*$,,'`
 	for var in `sed -n 's/[[:space:]]*api:variable[[:space:]]*//p' $file | sed 's,[[:space:]]*;[[:space:]]*$,,' | grep -v '/'`
 	do
-		if [[ "$var" != "<#input>" ]]
+                if [[ `echo $var | sed 's,:[[:print:]]*$,,'` == cs_api ]]
+                then    
+                        for sub_var in `sed -n "/^[[:space:]]*$var/,/^[[:space:]]*$/p" $file | sed -n 's,[[:space:]]*api:subType[[:space:]]*,,p'  | sed 's,[[:space:]]*.[[:space:]]*$,,'`
+                        do      
+				echo '            {'
+				echo '              "name": "'`echo $var | sed 's,^[[:print:]]*:,,'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
+				sed -n "/^[[:space:]]*$sub_var/,/api:value/s/[[:space:]]*[[:print:]]*api:value/              *description*: /p" $file | sed 's,*,",g' | sed 's/[[:space:]]*.[[:space:]]*$/ ,/'
+                                echo '              "paramType": "query",'
+                                echo '              "dataType": "string"'
+				echo '            },'
+                        done    
+		elif [[ "$var" != "<#input>" ]]
 		then
 			echo '            {'
 			sed -n "/^[[:space:]]*$var/s/[[:space:]]*[[:print:]]*api:name/              *name*: /p" $file | sed 's,*,",g' | sed 's/.$/,/'
