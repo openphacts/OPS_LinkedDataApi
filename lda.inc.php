@@ -42,6 +42,7 @@ function queryStringToParams($query){
     $params = array();
     foreach($pairs as $pair){
         if($tuple = explode('=', $pair) AND isset($tuple[1])){
+	    logDebug("Tuple0: ".urldecode($tuple[0])."; Tuple1: ".urldecode($tuple[1]));
             $params[urldecode($tuple[0])]=urldecode($tuple[1]);
         }
     }

@@ -84,7 +84,7 @@ class LinkedDataApiRequest {
         $this->unreservedParams = array();
         foreach($params as $k => $v){
             if($k[0]!=='_' AND $k!=='callback' AND $v!=='' AND $k!=='app_id' AND $k!=='app_key'){
-                $unreservedParams[$k] = $v;
+                $this->unreservedParams[$k] = $v;
             }
         }
         return $this->unreservedParams;

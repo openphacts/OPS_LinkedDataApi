@@ -349,7 +349,7 @@ class ConfigGraph extends PueliaGraph {
         $apiConfigVariableBindings = $this->getApiConfigVariableBindings();
         $paramCount = count($this->_request->getUnreservedParams());
         $counter = 0;
-        
+
         foreach ($apiConfigVariableBindings as $name => $value){
             foreach ($this->_request->getUnreservedParams() as $paramName => $paramValue){
                 if ($name===$paramName){
