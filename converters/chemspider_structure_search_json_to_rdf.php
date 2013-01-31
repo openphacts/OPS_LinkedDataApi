@@ -20,7 +20,7 @@ function getDecodedFinalResults($requestId){
 }
 
 
-function getSearchType($path){
+function getSearchType($path){//TODO get this from the config
     if (endsWith("exact", $path)){
         return "ExactStructureSearch";
     } else if (endsWith("substructure", $path)){
