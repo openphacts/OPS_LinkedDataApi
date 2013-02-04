@@ -19,8 +19,8 @@
 	api:description "An API configuration to return the result of a chemical substructure search." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "ChemSpider SubStructure Search" ;
-		api:description "Returns a set of ChemSpider Ids based on a SMILES input." ;
+		api:name "Chemical Structure Substructure Search" ;
+		api:description "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider." ;
 		api:uriTemplate "/structure/substructure?searchOptions.Molecule={smiles}" ;
 		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SubStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
@@ -42,7 +42,7 @@ cs_api_search:MatchTautomers api:name "MatchTautomers" ;
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
-	api:value "String" .
+	api:value "A SMILES string" .
 
 
 cs_api:commonOptions api:name "commonOptions" ;

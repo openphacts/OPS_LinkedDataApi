@@ -19,8 +19,8 @@
 	api:description "An API configuration to return the result of an exact chemical structure search." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "ChemSpider Exact Structure Search" ;
-		api:description "Returns a ChemSpider Id corresponding to a given SMILES string." ;
+		api:name "Chemical Structure Exact Search" ;
+		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
 		api:uriTemplate "/structure/exact?searchOptions.Molecule={smiles}" ;
 		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
@@ -38,7 +38,7 @@ cs_api:searchOptions api:name "searchOptions" ;
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
-	api:value "String" .
+	api:value "A SMILES string" .
 
 cs_api_search:MatchType api:name "MatchType" ;
 	api:label "MatchType" ;

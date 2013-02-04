@@ -11,7 +11,7 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
-@prefix sio: <http://semanticscience.org/resource/>
+@prefix sio: <http://semanticscience.org/resource/> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
@@ -40,7 +40,7 @@
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
 		api:viewer <#compoundViewer> ;
-		api:defaultViewer <#compoundViewer> . ] .
+		api:defaultViewer <#compoundViewer> ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .

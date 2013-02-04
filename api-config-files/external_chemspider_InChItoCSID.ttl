@@ -14,8 +14,8 @@
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Inchi to ChemSpider URL" ;
-		api:description "Returns a chemspider URL corresponding to a given InChI string." ;
+		api:name "Inchi to URL" ;
+		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider" ;
 		api:uriTemplate "/structure?inchi={inchi}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
 		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
