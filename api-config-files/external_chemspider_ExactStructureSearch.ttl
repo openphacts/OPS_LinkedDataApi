@@ -15,6 +15,7 @@
 	api:variable cs_api:searchOptions ;
 	api:variable cs_api:commonOptions ;
 	api:variable cs_api:resultOptions ;
+	api:variable cs_api_search:Molecule ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return the result of an exact chemical structure search." ;
 	api:endpoint [

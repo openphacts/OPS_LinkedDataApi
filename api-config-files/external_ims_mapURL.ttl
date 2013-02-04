@@ -1,0 +1,41 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api :API ;
+	rdfs:label "Mapping service betweem URLs"@en;
+	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:variable <#URL> ;
+	api:variable <#targetURISpace> ;
+	api:description "An API configuration to return a set of URLs associated to the input URL." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Map URLs" ;
+		api:description "Returns a set of URLs associated to the input URL." ;
+		api:uriTemplate "/mapURL?URL={URL}" ;
+		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9090/OPS-IMS/mapURL?URL={URL}" ;
+		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<#URL> api:name "URL" ;
+	api:label "URL";
+	api:value "An input URL to be mapped." .
+
+<#targetURISpace> api:name "targetURISpace" ;
+	api:label "targetURISpace";
+	api:value "Limits the results to ones with URLs in this/these URISpace(s) as a target." .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic skos:exactMatch ?url ." ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic skos:exactMatch ?url .
+}".

@@ -1,5 +1,6 @@
 <?php
 //the input data is in the $response variable in xml format
+//the output is put in $rdfData in NTriples format
 //Conversion example for InChI to CSID: 
 //Request: 
 // /structure/inchi=InChI%3D1S%2FC9H8O4%2Fc1-6(10)13-8-5-3-2-4-7(8)9(11)12%2Fh2-5H%2C1H3%2C(H%2C11%2C12)

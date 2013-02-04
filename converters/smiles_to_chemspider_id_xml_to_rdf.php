@@ -9,7 +9,7 @@ $ns = $xmlData->getDocNamespaces();
 if ($ns[''] !== CHEMSPIDER_NS){
     throw new Exception("Converter - Chemspider Id XML to RDF: namespace ".$ns['']." not expected");
 }
-//var_dump($xmlData);
+
 $inchi = $xmlData[0];
 
 //make request for InChI to CSID

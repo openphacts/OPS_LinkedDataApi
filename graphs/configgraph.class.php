@@ -414,7 +414,6 @@ class ConfigGraph extends PueliaGraph {
             if(($valueType==RDFS.'Resource' AND 
                     isset($props['source']) AND $props['source']=='request' 
                     AND $name != 'uri')) {
-                    //$name==='inchi'){//TODO check how this works for other services
                 # Antonis botch
                 $props['value'] = urlencode($props['value']);
             }
@@ -442,7 +441,6 @@ class ConfigGraph extends PueliaGraph {
     }
     
     function getExternalServiceRequest(){
-        //match api:uriTemplate and extract parameter
         $paramBindings = array_merge($this->getPathVariableBindings(),
                     $this->getParamVariableBindings()); 
         
@@ -465,10 +463,6 @@ class ConfigGraph extends PueliaGraph {
     function getCompletedUriTemplate(){
         $bindings = array_merge($this->getPathVariableBindings(),
                                 $this->getParamVariableBindings());
-        
-        /*foreach ($this->getParamVariableBindings() as $name => $value){
-            echo $name." ".$value."\n";
-        }*/
         
         $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
         $filledInUriTemplate = $this->bindURLEncodedVariablesInValue($uriTemplate, $bindings);

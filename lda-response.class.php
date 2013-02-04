@@ -333,7 +333,7 @@ class LinkedDataApiResponse {
     function loadDataFromExternalService(){
         
         $uriWithoutExtension = $this->ConfigGraph->getOrderedUri();
-	logDebug("Generating graph name from: {$uriWithoutExtension}");
+	    logDebug("Generating graph name from: {$uriWithoutExtension}");
         $graphName = hash("crc32", $uriWithoutExtension);
         
         $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
