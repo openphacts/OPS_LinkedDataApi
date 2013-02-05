@@ -7,12 +7,14 @@
 <#chemspider> a api :API ;
 	rdfs:label "Mapping service betweem URLs"@en;
 	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
 	api:variable <#URL> ;
 	api:variable <#targetURISpace> ;
 	api:description "An API configuration to return a set of URLs associated to the input URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:name "Map URLs" ;
+		api:enableCache true ;
 		api:description "Returns a set of URLs associated to the input URL." ;
 		api:uriTemplate "/mapURL?URL={URL}" ;
 		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9090/OPS-IMS/mapURL?URL={URL}" ;
@@ -26,7 +28,7 @@
 
 <#targetURISpace> api:name "targetURISpace" ;
 	api:label "targetURISpace";
-	api:value "Limits the results to ones with URLs in this/these URISpace(s) as a target." .
+	api:value "List of URI spaces separated by '|' characters. Restricts the results to ones which are targets in this/these URISpace(s)." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
