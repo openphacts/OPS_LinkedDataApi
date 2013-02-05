@@ -20,6 +20,8 @@ class LinkedDataApiResponse {
     var $SparqlWriter = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
+    var $useDatastore = false;
+    
     var $outputFormats = array(
 	
 	 'html' => array(
@@ -337,8 +339,7 @@ class LinkedDataApiResponse {
         $graphName = hash("crc32", $uriWithoutExtension);
         
         $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
-    
-        if ($checkDatastore == true){
+        if ($checkDatastore==true){
             //build query 
             $this->pageUri = $this->Request->getUriWithoutPageParam();
             $viewer = $this->getViewer();
@@ -368,6 +369,7 @@ class LinkedDataApiResponse {
         
         //match api:uriTemplate, extract parameters and fill in api:externalRequestTemplate 
         $externalServiceRequest = $this->ConfigGraph->getExternalServiceRequest();
+        logDebug("External service request: ".$externalServiceRequest);
         try{
             $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
         }
@@ -378,27 +380,45 @@ class LinkedDataApiResponse {
             exit;
         }
         
-        $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
+        if ($this->useDatastore){
+            $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
+        }
         
         //if we went to the external service we cache the path without extension
-        if ($checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){         
+        if ($this->decideToCacheResponse($checkDatastore)){         
             LinkedDataApiCache::cacheURI($uriWithoutExtension);
         }
     }
     
+    private function decideToCacheResponse($checkDatastore){
+        if ($this->useDatastore==true AND $checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE)
+            return true;
+        else
+            return false;
+    }
+    
     private function decideToCheckTripleStore($pathWithoutExtension){
-        //if caching is enabled
-        if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
-            if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
-                //we get the data from the datastore
+        
+        $this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
+        $this->useDatastore = $this->useDatastore==='true' ? true:false;
+        
+        if ($this->useDatastore == true){
+            //if caching is enabled
+            if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
+                if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
+                    // we get the data from the datastore
+                    $checkDatastore = true;
+                }
+                else{//we go directly to the external service
+                    $checkDatastore = false;
+                }
+            }
+            else{// try to get the data from the datastore
                 $checkDatastore = true;
             }
-            else{//we go directly to the external service
-                $checkDatastore = false;
-            }
         }
-        else{// try to get the data from the datastore
-            $checkDatastore = true;
+        else{
+            $checkDatastore = false;
         }
         
         return $checkDatastore;
