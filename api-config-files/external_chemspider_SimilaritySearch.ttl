@@ -20,6 +20,7 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:name "ChemSpider SubStructure Search" ;
+		api:enableCache true ;
 		api:description "Do a similarity search based on a SMILES input and filtering parameters." ;
 		api:uriTemplate "/structure/similarity?searchOptions.Molecule={smiles}" ;
 		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;

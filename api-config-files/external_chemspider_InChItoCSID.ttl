@@ -15,6 +15,7 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:name "Inchi to ChemSpider URL" ;
+		api:enableCache true ;
 		api:description "Returns a chemspider URL corresponding to a given InChI string." ;
 		api:uriTemplate "/structure?inchi={inchi}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;

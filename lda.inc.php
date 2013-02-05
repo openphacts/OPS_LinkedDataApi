@@ -49,6 +49,11 @@ function queryStringToParams($query){
 }
 
 
+function endsWith($needle, $haystack){
+    return (substr($haystack, -strlen($needle))===$needle);
+}
+
+
 function logError($message){
     $logger = Logger::getLogger('Puelia');
     $logger->error($message);

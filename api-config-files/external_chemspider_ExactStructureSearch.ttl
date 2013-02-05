@@ -21,6 +21,7 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:name "ChemSpider Exact Structure Search" ;
+		api:enableCache true ;
 		api:description "Returns a ChemSpider Id corresponding to a given SMILES string." ;
 		api:uriTemplate "/structure/exact?searchOptions.Molecule={smiles}" ;
 		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;

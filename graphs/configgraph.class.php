@@ -453,7 +453,10 @@ class ConfigGraph extends PueliaGraph {
         $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
         foreach ($unreservedParams as $name => $value){
             if (strpos($uriTemplate, $name)===FALSE){
-                $externalRequest .= '&'.$name.'='.$value;
+                $valTokens = explode('|', $value);
+                foreach ($valTokens as $token){
+                    $externalRequest .= '&'.$name.'='.$token;
+                }
             }
         }
         

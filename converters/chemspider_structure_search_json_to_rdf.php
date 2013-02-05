@@ -33,10 +33,6 @@ function getSearchType($path){//TODO get this from the config
     }
 }
 
-function endsWith($needle, $haystack){
-    return (substr($haystack, -strlen($needle))===$needle);
-}
-
 function pollStatus($requestId){
     $statusRequest='http://parts.chemspider.com/JSON.ashx?op=GetSearchStatus&rid='.$requestId;
     $statusResponse=null;
