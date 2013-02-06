@@ -93,10 +93,10 @@ class LinkedDataApiCache
 	{
 		if(!function_exists("memcache_connect")) return false;
 		$acceptableTypes = $request->getAcceptTypes();
-		$uri = $request->uri;
+		$uri = $request->getOrderedUriWithoutApiKeys();
 		foreach ($acceptableTypes as $mimetype)
 		{
-			$key = LinkedDataApiCache::cacheKey($uri, $mimetype);
+			$key = LinkedDataApiCache::cacheKey($uri, '*/*');//$mimetype);
 			$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 			$cachedObject = $mc->get($key);
 			if ($cachedObject)
@@ -120,7 +120,7 @@ class LinkedDataApiCache
 		$cacheableResponse->mimetype = $response->mimetype;
 		$cacheableResponse->body = $response->body;
 
-		$key = LinkedDataApiCache::cacheKey($request->uri, $cacheableResponse->mimetype);
+		$key = LinkedDataApiCache::cacheKey($request->getOrderedUriWithoutApiKeys(), '*/*');// $cacheableResponse->mimetype);
 		logDebug('Caching Response as '.$key.' with mimetype '.$cacheableResponse->mimetype);
 		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 		$mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);

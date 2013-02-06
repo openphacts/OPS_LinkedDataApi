@@ -1,7 +1,6 @@
 <?php
 
 define(CONCEPTWIKI_PREFIX, 'http://www.conceptwiki.org/concept/');
-define(OPS_API, 'http://www.openphacts.org/api#');
 
 function addLabelWithLanguage($node, $label, $dataGraph){
     $language=null;

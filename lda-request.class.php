@@ -4,8 +4,11 @@ class LinkedDataApiRequest {
     var $formatExtension = null;        
     var $pathWithoutExtension = null;
     var $unreservedParams = null;
+    var $params = null;
+    var $orderedUriWithoutApiKeys = null;
+    var $orderedUriNoExtensionReservedParams = null;
     
-    var $reservedParams = array(
+    static $reservedParams = array(
         '_search', # a free text search query
         '_metadata', # is a comma separated list of names of metadata graphs to show: site,formats,views,all,execution
         '_view',
@@ -19,9 +22,9 @@ class LinkedDataApiRequest {
         '_orderBy',# is a space-separated list of OrderConditions
         '_select',#
         '_lang', # is a comma-separated list of languages
-        '_callback', # for JSONP
-	'app_id',
-	'app_key',
+        'callback', # for JSONP
+	    'app_id',
+	    'app_key',
         );
     
     function __construct(){
@@ -42,15 +45,20 @@ class LinkedDataApiRequest {
             $regex= '/([&?])'.$param.'=[^&]+(&|$)/';
             $_SERVER['REQUEST_URI'] = rtrim(preg_replace($regex, '\1', $_SERVER['REQUEST_URI']), '?&');
             $_SERVER['QUERY_STRING'] = rtrim(preg_replace($regex, '\1', $_SERVER['QUERY_STRING']), '?&');
+            unset($_REQUEST[$param]);
         }   
     }
     
     function getParams(){
-        if(!empty($_SERVER['QUERY_STRING'])){
-            return queryStringToParams($_SERVER['QUERY_STRING']);            
-        } else {
-            return array();
+        if ($this->params!=null){
+            return $this->params;
         }
+        if(!empty($_SERVER['QUERY_STRING'])){
+            $this->params = queryStringToParams($_SERVER['QUERY_STRING']);            
+        } else {
+            $this->params = array();
+        }
+        return $this->params;
     }
     
     function hasNoCacheHeader(){
@@ -68,7 +76,7 @@ class LinkedDataApiRequest {
     function hasUnrecognisedReservedParams(){
         $params = $this->getParams();
         foreach($params as $k => $v){
-            if($k[0]=='_' AND !in_array($k, $this->reservedParams)){
+            if($k[0]=='_' AND !in_array($k, self::$reservedParams)){
                 return $k;
             }
         }
@@ -87,7 +95,56 @@ class LinkedDataApiRequest {
                 $this->unreservedParams[$k] = $v;
             }
         }
+        
+        uksort($this->unreservedParams, 'strcasecmp');
         return $this->unreservedParams;
+    }
+    
+    function getOrderedUriWithoutApiKeys(){
+        if ($this->orderedUriWithoutApiKeys!=null){
+            return $this->orderedUriWithoutApiKeys;
+        }
+    
+        $this->orderedUriWithoutApiKeys = $this->getPath();
+        $params = $this->getParams();
+        if (count($params) > 0){
+            $this->orderedUriWithoutApiKeys .= '?';
+            uksort($params, 'strcasecmp');//sort the parameters lexicographically by parameter name
+
+            foreach ($params as $paramName => $paramValue){
+                if ($paramName!=='app_id' AND $paramName!=='app_key'){
+                    if (substr($this->orderedUriWithoutApiKeys, -1) != '?'){
+                        $this->orderedUriWithoutApiKeys .= '&';
+                    }
+
+                    $this->orderedUriWithoutApiKeys .= $paramName.'='.$paramValue;
+                }
+            }
+        }
+        
+        return $this->orderedUriWithoutApiKeys;
+    }
+    
+    function getOrderedUriWithoutExtensionAndReservedParams(){
+        if ($this->orderedUriNoExtensionReservedParams!=null){
+            return $this->orderedUriNoExtensionReservedParams;
+        }
+    
+        $this->orderedUriNoExtensionReservedParams = $this->getPathWithoutExtension();
+        $params = $this->getUnreservedParams();
+        if (count($params) > 0){
+            $this->orderedUriNoExtensionReservedParams .= '?';
+
+            foreach ($params as $paramName => $paramValue){
+                if (substr($this->orderedUriNoExtensionReservedParams, -1) != '?'){
+                    $this->orderedUriNoExtensionReservedParams .= '&';
+                }
+
+                $this->orderedUriNoExtensionReservedParams .= $paramName.'='.$paramValue;
+            }
+        }
+        
+        return $this->orderedUriNoExtensionReservedParams;
     }
     
     function getParam($k){

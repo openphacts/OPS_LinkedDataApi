@@ -334,9 +334,9 @@ class LinkedDataApiResponse {
     
     function loadDataFromExternalService(){
         
-        $uriWithoutExtension = $this->ConfigGraph->getOrderedUri();
+        $uriWithoutExtension = $this->Request->getOrderedUriWithoutExtensionAndReservedParams();
 	    logDebug("Generating graph name from: {$uriWithoutExtension}");
-        $graphName = hash("crc32", $uriWithoutExtension);
+        $graphName = OPS_API.'/'.hash("crc32", $uriWithoutExtension);
         
         $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
         if ($checkDatastore==true){

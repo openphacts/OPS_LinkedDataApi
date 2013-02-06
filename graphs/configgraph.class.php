@@ -344,32 +344,6 @@ class ConfigGraph extends PueliaGraph {
         return $variableBindings;
     }
     
-    function getOrderedUri(){        
-        $orderedUnreservedParams = '';
-        $apiConfigVariableBindings = $this->getApiConfigVariableBindings();
-        $paramCount = count($this->_request->getUnreservedParams());
-        $counter = 0;
-
-        foreach ($apiConfigVariableBindings as $name => $value){
-            foreach ($this->_request->getUnreservedParams() as $paramName => $paramValue){
-                if ($name===$paramName){
-                    if ($orderedUnreservedParams!==''){
-                        $orderedUnreservedParams .= '&';
-                    }
-                    $orderedUnreservedParams .= $name.'='.$paramValue; 
-                    $counter++;
-                    break;
-                }
-            }
-            if ($counter == $paramCount){//finished all the unreserved params in the request, no need to continue looping
-                break;
-            }
-        }
-        
-        $orderedUri = $this->_request->getPathWithoutExtension().'?'.$orderedUnreservedParams;
-        return $orderedUri;
-    }
-    
     function getApiConfigVariableBindings(){
         if ($this->_apiConfigVariableBindings!=null){
             return $this->_apiConfigVariableBindings;    

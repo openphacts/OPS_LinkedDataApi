@@ -16,14 +16,14 @@ $this->DataGraph->add_literal_triple($resultBNode, RDF_TYPE, $searchType);
 $unreservedParameters = $this->Request->getUnreservedParams();
 foreach ($unreservedParameters as $name => $value){
     $predSuffix = $paramNameToPredicate[$name];
-    $this->DataGraph->add_literal_triple($resultBNode, OPS_API.$predSuffix, $value);
+    $this->DataGraph->add_literal_triple($resultBNode, OPS_API.'#'.$predSuffix, $value);
 }
 
 //link the resultBNode with the UUIDs and their tags
 $tagCounter = 0;
 foreach ($decodedResponse as $elem){
     $uuidNode = CONCEPTWIKI_PREFIX.$elem->{"uuid"};
-    $this->DataGraph->add_resource_triple($resultBNode, OPS_API.'result', $uuidNode);
+    $this->DataGraph->add_resource_triple($resultBNode, OPS_API.'#result', $uuidNode);
 
     foreach ($elem->{"labels"} as $label){
         addLabelWithLanguage($uuidNode, $label, $this->DataGraph);
@@ -31,9 +31,9 @@ foreach ($decodedResponse as $elem){
     
     foreach ($elem->{"tags"} as $tag){
         $tagBNode = '_:tagNode'.$tagCounter;
-        $this->DataGraph->add_resource_triple($uuidNode, OPS_API.'semanticTag', $tagBNode);
+        $this->DataGraph->add_resource_triple($uuidNode, OPS_API.'#semanticTag', $tagBNode);
         
-        $this->DataGraph->add_literal_triple($tagBNode, OPS_API.'uuid', $tag->{"uuid"});
+        $this->DataGraph->add_literal_triple($tagBNode, OPS_API.'#uuid', $tag->{"uuid"});
         
         foreach ($tag->{"labels"} as $tagLabel){
             addLabelWithLanguage($tagBNode, $tagLabel, $this->DataGraph);

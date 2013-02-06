@@ -34,6 +34,8 @@ define('OPEN', 'http://open.vocab.org/terms/');
 
 define('PUELIA_LOG_DIR', dirname(__FILE__).'/logs/');
 
+define('OPS_API', 'http://www.openphacts.org/api');
+
 require_once('lib/log4php/src/main/php/Logger.php');
 
 function queryStringToParams($query){
