@@ -26,6 +26,7 @@
 		api:uriTemplate "/structure/exact?searchOptions.Molecule={smiles}" ;
 		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
+		api:exampleRequestPath "/structure/exact?searchOptions.Molecule=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
