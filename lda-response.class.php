@@ -73,7 +73,7 @@ class LinkedDataApiResponse {
                 'ext' => 'tsv',
                 'view' => 'views/tsv.php',
                 'mimetypes' => array(
-                        'text/tab-seperated-values',
+                        'text/tab-separated-values',
                     ),
             ),
            
@@ -185,9 +185,9 @@ class LinkedDataApiResponse {
           $credentials = false;
         }
         
-        $noCacheRequestFactory = new HttpRequestFactory();
-        $noCacheRequestFactory->read_from_cache(FALSE);
-        $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $noCacheRequestFactory);
+        //$noCacheRequestFactory = new HttpRequestFactory();
+        //$noCacheRequestFactory->read_from_cache(FALSE);
+        $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
         
         switch($this->ConfigGraph->getEndpointType()){
             case API.'ListEndpoint' : 
