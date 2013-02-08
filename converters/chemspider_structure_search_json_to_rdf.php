@@ -20,7 +20,7 @@ function getDecodedFinalResults($requestId){
 }
 
 
-function getSearchType($path){
+function getSearchType($path){//TODO get this from the config
     if (endsWith("exact", $path)){
         return "ExactStructureSearch";
     } else if (endsWith("substructure", $path)){
@@ -31,10 +31,6 @@ function getSearchType($path){
     else{
         throw new ErrorException('Unknown search type');
     }
-}
-
-function endsWith($needle, $haystack){
-    return (substr($haystack, -strlen($needle))===$needle);
 }
 
 function pollStatus($requestId){

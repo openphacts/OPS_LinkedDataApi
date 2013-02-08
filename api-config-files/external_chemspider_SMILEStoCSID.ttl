@@ -14,11 +14,13 @@
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "SMILES to URL" ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
+		api:name "Smiles to ChemSpider URL" ;
+		api:enableCache true ;
 		api:uriTemplate "/structure?smiles={smiles}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/SMILESToInChI?smiles={smiles}" ;
 		api:externalResponseHandler "converters/smiles_to_chemspider_id_xml_to_rdf.php" ;
+		api:exampleRequestPath "/structure?smiles=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 

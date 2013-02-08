@@ -840,6 +840,8 @@ _SPARQL_;
      * @return string
      */
     function getViewQueryForExternalService($graphName, $pageUri, $viewerUri){
+        $pageUri = preg_replace('/\|/','%7C', $pageUri);
+        
         //get the template query from the config
         $template = $this->_config->getViewerTemplate($viewerUri);
         //fill in pageUri
