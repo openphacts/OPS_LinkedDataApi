@@ -53,7 +53,7 @@ class ConfigGraph extends PueliaGraph {
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'mimeType', 'application/rdf+xml');
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'name', 'rdf');
         $this->add_literal_triple(API.'RdfXmlFormatter', RDFS_LABEL, 'RDF/XML');
-        $this->add_literal_triple(API.'TsvFormatter', API.'mimeType', 'text/tsv');
+        $this->add_literal_triple(API.'TsvFormatter', API.'mimeType', 'text/tab-separated-values');
         $this->add_literal_triple(API.'TsvFormatter', API.'name', 'tsv');
         $this->add_literal_triple(API.'TsvFormatter', RDFS_LABEL, 'Comma Seperated Variables');
         $this->add_resource_triple(API.'JsonFormatter',  RDF.'type', API.'Formatter');

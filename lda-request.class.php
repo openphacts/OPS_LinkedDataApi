@@ -109,7 +109,7 @@ class LinkedDataApiRequest {
         $params = $this->getParams();
         if (count($params) > 0){
             $this->orderedUriWithoutApiKeys .= '?';
-            uksort($params, 'strcasecmp');//sort the parameters lexicographically by parameter name
+            uksort($params, 'strcasecmp');//sort the parameters lexicographically, case-insensitive by parameter name
 
             foreach ($params as $paramName => $paramValue){
                 if ($paramName!=='app_id' AND $paramName!=='app_key'){
@@ -238,11 +238,12 @@ class LinkedDataApiRequest {
         else return null;
     }
     
-    function getAcceptTypes($defaultTypes = array()){
+    function getAcceptTypes($paramTypes = array()){        
         $header = $this->getAcceptHeader();
         $mimes = explode(',',$header);
         $accept_mimetypes = array();
 
+        //build map between mimetypes and associated weights
         foreach($mimes as $mime){
             $mime = trim($mime);
             $parts = explode(';q=', $mime);
@@ -251,20 +252,42 @@ class LinkedDataApiRequest {
             }
             else {
                 $accept_mimetypes[$mime]=1;
-            }
+            }   
         }
-        /* prefer html, then xhtml, then anything in the default array, to mimetypes with the same value. this is because WebKit browsers (Chrome, Safari, Android) currently prefer xml and even image/png to html */
-        $defaultTypes = array_merge(array('text/html', 'application/xhtml+xml'), $defaultTypes);
-        foreach($defaultTypes as $defaultType){
-            if(isset($accept_mimetypes[$defaultType])){
-                $count_values = array_count_values($accept_mimetypes);
-                $defaultVal = $accept_mimetypes[$defaultType];
-                if($count_values[$defaultVal] > 1){
-                    $accept_mimetypes[$defaultType]=strval(0.001+$accept_mimetypes[$defaultType]);
+        if (empty($accept_mimetypes)){
+            $accept_mimetypes['*/*'] = 1;
+        }
+
+        $defaultTypes = array_merge(array('application/json', 'application/xml', 'text/turtle', 
+                                            'application/rdf+xml', 'application/x-rdf+json', 
+                                            'text/tab-separated-values', 'text/html', 'application/xhtml+xml'),
+                                            $paramTypes);
+        if (!empty($paramTypes)){
+            array_unique($defaultTypes);
+        }
+        
+        //expand the mimetype '*/*' to remaining values
+        if (isset($accept_mimetypes['*/*'])){
+            //$tempDefaults contains all the mimetypes which do not explicitly appear in the header
+            foreach ($defaultTypes as $defaultType){
+                if (!isset($accept_mimetypes[$defaultType])){
+                    $accept_mimetypes[$defaultType] = $accept_mimetypes['*/*'];
                 }
             }
+            
+            unset($accept_mimetypes['*/*']);
         }
-        arsort($accept_mimetypes);
+        
+        //give weight according to the order in the $defaultTypes array
+        foreach($defaultTypes as $defaultType){
+            $count_values = array_count_values($accept_mimetypes);
+            $defaultVal = $accept_mimetypes[$defaultType];
+            if($count_values[$defaultVal] > 1){
+                $accept_mimetypes[$defaultType]=strval(0.001*($count_values[$defaultVal]-1)+$accept_mimetypes[$defaultType]);
+            }
+        }
+        
+        arsort($accept_mimetypes);//sort descending according to weight
         return array_keys($accept_mimetypes);
     }
     

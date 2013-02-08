@@ -21,63 +21,6 @@ class LinkedDataApiResponse {
     var $DataGraph = false;
     var $SparqlEndpoint = false;
     var $useDatastore = false;
-    
-    var $outputFormats = array(
-	
-	 'html' => array(
-                'ext' => 'html',
-                'view' => 'views/php-templates/puelia-outer.php',
-                'mimetypes' => array(
-			'text/html', 'application/xhtml+xml'
-               )
-            ),
-      
-        'json' => array(
-                'ext' => 'json',
-                'view' => 'views/simple_json.php',
-                'mimetypes' => array(
-                        'application/json',
-                    ),
-            ),
-        'rdfjson' => array(
-                'ext' => 'rdfjson',
-                'view' => 'views/rdf_json.php',
-                'mimetypes' => array(
-                        'application/x-rdf+json',
-                    ),
-            ),
-        
-        'ttl' => array(
-                'ext' => 'ttl',
-                'view' => 'views/turtle.php',
-                'mimetypes' => array(
-                        'text/plain',
-                    ),
-            ),
-        
-        'rdf' => array(
-                'ext' => 'rdf',
-                'view' => 'views/rdf_xml.php',
-                'mimetypes' => array(
-                        'application/rdf+xml',
-                    ),
-            ),
-        'xml' => array(
-                'ext' => 'xml',
-                'view' => 'views/simple_xml.php',
-                'mimetypes' => array(
-                        'application/xml',
-                    ),
-            ),
-        'tsv' => array(
-                'ext' => 'tsv',
-                'view' => 'views/tsv.php',
-                'mimetypes' => array(
-                        'text/tab-separated-values',
-                    ),
-            ),
-           
-        );
         
     var $pageUri = false;
     var $selectQuery = '';
@@ -89,9 +32,11 @@ class LinkedDataApiResponse {
     var $overrideUserConfig= false;
     var $HttpRequestFactory=null;
     var $list_of_item_uris = null;
+    var $outputFormats;
 
     function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
-
+        global $outputFormats;
+        
         $this->Request = $request;
         $this->pageUri = $this->Request->getUriWithPageParam();
         $this->ConfigGraph = $ConfigGraph;
@@ -99,6 +44,7 @@ class LinkedDataApiResponse {
         $this->generatedTime = time();
         $this->lastModified = gmdate("D, d M Y H:i:s") . " GMT";
         $this->cacheable = false;
+        $this->outputFormats = $outputFormats;
         if($HttpRequestFactory){
           $this->HttpRequestFactory = $HttpRequestFactory;
         }
@@ -342,6 +288,7 @@ class LinkedDataApiResponse {
         if ($checkDatastore==true){
             //build query 
             $this->pageUri = $this->Request->getUriWithoutPageParam();
+            
             $viewer = $this->getViewer();
             $this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $viewer);
             if (LOG_VIEW_QUERIES) {
@@ -633,7 +580,7 @@ class LinkedDataApiResponse {
             $mimeTypes = $this->ConfigGraph->getDefaultMimeTypes();
             foreach($this->Request->getAcceptTypes($mimeTypes) as $acceptType){
                 foreach($this->outputFormats as $formatName => $props){
-                    if($props['ext'] == $acceptType || $acceptType == '*/*'){
+                    if($props['ext'] == $acceptType){
                         return $formatName;
                     }
                 }
