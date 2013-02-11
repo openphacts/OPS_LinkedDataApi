@@ -111,10 +111,8 @@ GRAPH <http://www.chemspider.com> {
 }
 OPTIONAL {
 GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	OPTIONAL {
-		?chembl_uri owl:equivalentClass ?equiv_compound .
-		?equiv_compound sio:CHEMINF_000200 [] .
-	}
+	?chembl_uri owl:equivalentClass ?equiv_compound .
+	?equiv_compound sio:CHEMINF_000200 [] .
 	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode1 .
 		?bNode1 a sio:CHEMINF_000042 ;
 			sio:SIO_000300 ?molformula. }
