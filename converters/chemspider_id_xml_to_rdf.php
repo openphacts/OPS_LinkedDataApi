@@ -25,13 +25,13 @@ $csid = $xmlData[0];
 $fullCSID = CHEMSPIDER_PREFIX.$csid;
 
 //extract inchi value from the request
-$paramBindings = $this->ConfigGraph->getParamVariableBindings();
-
 $inputNode = $this->ConfigGraph->get_first_resource($this->ConfigGraph->getApiUri(), API.'variable');
-$paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'label');//'inchi' or 'inchikey'
-$paramValue = $paramBindings[$paramName];                        
+$unreservedParameters = $this->Request->getUnreservedParams();
 
-$this->DataGraph->add_literal_triple($fullCSID, $inputNode, $paramValue['value']);
+$paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'label');//'inchi' or 'inchikey'
+$paramValue = $unreservedParameters[$paramName];                        
+
+$this->DataGraph->add_literal_triple($fullCSID, $inputNode, $paramValue);
 
 $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the graph
 
