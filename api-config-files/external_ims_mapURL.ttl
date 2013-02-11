@@ -6,17 +6,20 @@
 
 <#chemspider> a api :API ;
 	rdfs:label "Mapping service betweem URLs"@en;
-	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
 	api:variable <#URL> ;
 	api:variable <#targetURISpace> ;
 	api:description "An API configuration to return a set of URLs associated to the input URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:name "Map URLs" ;
+		api:enableCache true ;
 		api:description "Returns a set of URLs associated to the input URL." ;
 		api:uriTemplate "/mapURL?URL={URL}" ;
 		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9090/OPS-IMS/mapURL?URL={URL}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
+		api:exampleRequestPath "/mapURL?URL=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
@@ -26,7 +29,7 @@
 
 <#targetURISpace> api:name "targetURISpace" ;
 	api:label "targetURISpace";
-	api:value "Limits the results to ones with URLs in this/these URISpace(s) as a target." .
+	api:value "List of URI spaces separated by '|' characters. Restricts the results to ones which are targets in this/these URISpace(s)." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

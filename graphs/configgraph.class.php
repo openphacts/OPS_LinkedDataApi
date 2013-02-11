@@ -53,7 +53,7 @@ class ConfigGraph extends PueliaGraph {
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'mimeType', 'application/rdf+xml');
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'name', 'rdf');
         $this->add_literal_triple(API.'RdfXmlFormatter', RDFS_LABEL, 'RDF/XML');
-        $this->add_literal_triple(API.'TsvFormatter', API.'mimeType', 'text/tsv');
+        $this->add_literal_triple(API.'TsvFormatter', API.'mimeType', 'text/tab-separated-values');
         $this->add_literal_triple(API.'TsvFormatter', API.'name', 'tsv');
         $this->add_literal_triple(API.'TsvFormatter', RDFS_LABEL, 'Comma Seperated Variables');
         $this->add_resource_triple(API.'JsonFormatter',  RDF.'type', API.'Formatter');
@@ -344,32 +344,6 @@ class ConfigGraph extends PueliaGraph {
         return $variableBindings;
     }
     
-    function getOrderedUri(){        
-        $orderedUnreservedParams = '';
-        $apiConfigVariableBindings = $this->getApiConfigVariableBindings();
-        $paramCount = count($this->_request->getUnreservedParams());
-        $counter = 0;
-
-        foreach ($apiConfigVariableBindings as $name => $value){
-            foreach ($this->_request->getUnreservedParams() as $paramName => $paramValue){
-                if ($name===$paramName){
-                    if ($orderedUnreservedParams!==''){
-                        $orderedUnreservedParams .= '&';
-                    }
-                    $orderedUnreservedParams .= $name.'='.$paramValue; 
-                    $counter++;
-                    break;
-                }
-            }
-            if ($counter == $paramCount){//finished all the unreserved params in the request, no need to continue looping
-                break;
-            }
-        }
-        
-        $orderedUri = $this->_request->getPathWithoutExtension().'?'.$orderedUnreservedParams;
-        return $orderedUri;
-    }
-    
     function getApiConfigVariableBindings(){
         if ($this->_apiConfigVariableBindings!=null){
             return $this->_apiConfigVariableBindings;    
@@ -453,7 +427,10 @@ class ConfigGraph extends PueliaGraph {
         $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
         foreach ($unreservedParams as $name => $value){
             if (strpos($uriTemplate, $name)===FALSE){
-                $externalRequest .= '&'.$name.'='.$value;
+                $valTokens = explode('|', $value);
+                foreach ($valTokens as $token){
+                    $externalRequest .= '&'.$name.'='.$token;
+                }
             }
         }
         

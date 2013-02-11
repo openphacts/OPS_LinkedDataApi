@@ -7,18 +7,20 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
-	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable chemspider:inchikey ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "InchiKey to URL" ;
 		api:description "Returns a ChemSpider URL corresponding to an input InChIKey string. Driven by ChemSpider." ;
+		api:name "InchiKey to ChemSpider URL" ;
+		api:enableCache true ;
 		api:uriTemplate "/structure?inchi_key={inchi_key}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIKeyToCSID?inchi_key={inchi_key}" ;
 		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
+		api:exampleRequestPath "/structure?inchi_key=BSYNRYMUTXBXSQ-UHFFFAOYSA-N" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 

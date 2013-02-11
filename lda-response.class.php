@@ -20,62 +20,7 @@ class LinkedDataApiResponse {
     var $SparqlWriter = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
-    var $outputFormats = array(
-	
-	 'html' => array(
-                'ext' => 'html',
-                'view' => 'views/php-templates/puelia-outer.php',
-                'mimetypes' => array(
-			'text/html', 'application/xhtml+xml'
-               )
-            ),
-      
-        'json' => array(
-                'ext' => 'json',
-                'view' => 'views/simple_json.php',
-                'mimetypes' => array(
-                        'application/json',
-                    ),
-            ),
-        'rdfjson' => array(
-                'ext' => 'rdfjson',
-                'view' => 'views/rdf_json.php',
-                'mimetypes' => array(
-                        'application/x-rdf+json',
-                    ),
-            ),
-        
-        'ttl' => array(
-                'ext' => 'ttl',
-                'view' => 'views/turtle.php',
-                'mimetypes' => array(
-                        'text/plain',
-                    ),
-            ),
-        
-        'rdf' => array(
-                'ext' => 'rdf',
-                'view' => 'views/rdf_xml.php',
-                'mimetypes' => array(
-                        'application/rdf+xml',
-                    ),
-            ),
-        'xml' => array(
-                'ext' => 'xml',
-                'view' => 'views/simple_xml.php',
-                'mimetypes' => array(
-                        'application/xml',
-                    ),
-            ),
-        'tsv' => array(
-                'ext' => 'tsv',
-                'view' => 'views/tsv.php',
-                'mimetypes' => array(
-                        'text/tab-seperated-values',
-                    ),
-            ),
-           
-        );
+    var $useDatastore = false;
         
     var $pageUri = false;
     var $selectQuery = '';
@@ -87,9 +32,11 @@ class LinkedDataApiResponse {
     var $overrideUserConfig= false;
     var $HttpRequestFactory=null;
     var $list_of_item_uris = null;
+    var $outputFormats;
 
     function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
-
+        global $outputFormats;
+        
         $this->Request = $request;
         $this->pageUri = $this->Request->getUriWithPageParam();
         $this->ConfigGraph = $ConfigGraph;
@@ -97,6 +44,7 @@ class LinkedDataApiResponse {
         $this->generatedTime = time();
         $this->lastModified = gmdate("D, d M Y H:i:s") . " GMT";
         $this->cacheable = false;
+        $this->outputFormats = $outputFormats;
         if($HttpRequestFactory){
           $this->HttpRequestFactory = $HttpRequestFactory;
         }
@@ -183,9 +131,9 @@ class LinkedDataApiResponse {
           $credentials = false;
         }
         
-        $noCacheRequestFactory = new HttpRequestFactory();
-        $noCacheRequestFactory->read_from_cache(FALSE);
-        $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $noCacheRequestFactory);
+        //$noCacheRequestFactory = new HttpRequestFactory();
+        //$noCacheRequestFactory->read_from_cache(FALSE);
+        $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
         
         switch($this->ConfigGraph->getEndpointType()){
             case API.'ListEndpoint' : 
@@ -332,15 +280,15 @@ class LinkedDataApiResponse {
     
     function loadDataFromExternalService(){
         
-        $uriWithoutExtension = $this->ConfigGraph->getOrderedUri();
+        $uriWithoutExtension = $this->Request->getOrderedUriWithoutExtensionAndReservedParams();
 	    logDebug("Generating graph name from: {$uriWithoutExtension}");
-        $graphName = hash("crc32", $uriWithoutExtension);
+        $graphName = OPS_API.'/'.hash("crc32", $uriWithoutExtension);
         
         $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
-    
-        if ($checkDatastore == true){
+        if ($checkDatastore==true){
             //build query 
             $this->pageUri = $this->Request->getUriWithoutPageParam();
+            
             $viewer = $this->getViewer();
             $this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $viewer);
             if (LOG_VIEW_QUERIES) {
@@ -368,6 +316,7 @@ class LinkedDataApiResponse {
         
         //match api:uriTemplate, extract parameters and fill in api:externalRequestTemplate 
         $externalServiceRequest = $this->ConfigGraph->getExternalServiceRequest();
+        logDebug("External service request: ".$externalServiceRequest);
         try{
             $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
         }
@@ -378,27 +327,45 @@ class LinkedDataApiResponse {
             exit;
         }
         
-        $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
+        if ($this->useDatastore){
+            $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
+        }
         
         //if we went to the external service we cache the path without extension
-        if ($checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){         
+        if ($this->decideToCacheResponse($checkDatastore)){         
             LinkedDataApiCache::cacheURI($uriWithoutExtension);
         }
     }
     
+    private function decideToCacheResponse($checkDatastore){
+        if ($this->useDatastore==true AND $checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE)
+            return true;
+        else
+            return false;
+    }
+    
     private function decideToCheckTripleStore($pathWithoutExtension){
-        //if caching is enabled
-        if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
-            if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
-                //we get the data from the datastore
+        
+        $this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
+        $this->useDatastore = $this->useDatastore==='true' ? true:false;
+        
+        if ($this->useDatastore == true){
+            //if caching is enabled
+            if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
+                if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
+                    // we get the data from the datastore
+                    $checkDatastore = true;
+                }
+                else{//we go directly to the external service
+                    $checkDatastore = false;
+                }
+            }
+            else{// try to get the data from the datastore
                 $checkDatastore = true;
             }
-            else{//we go directly to the external service
-                $checkDatastore = false;
-            }
         }
-        else{// try to get the data from the datastore
-            $checkDatastore = true;
+        else{
+            $checkDatastore = false;
         }
         
         return $checkDatastore;
@@ -613,7 +580,7 @@ class LinkedDataApiResponse {
             $mimeTypes = $this->ConfigGraph->getDefaultMimeTypes();
             foreach($this->Request->getAcceptTypes($mimeTypes) as $acceptType){
                 foreach($this->outputFormats as $formatName => $props){
-                    if($props['ext'] == $acceptType || $acceptType == '*/*'){
+                    if($props['ext'] == $acceptType){
                         return $formatName;
                     }
                 }

@@ -34,7 +34,65 @@ define('OPEN', 'http://open.vocab.org/terms/');
 
 define('PUELIA_LOG_DIR', dirname(__FILE__).'/logs/');
 
+define('OPS_API', 'http://www.openphacts.org/api');
+
 require_once('lib/log4php/src/main/php/Logger.php');
+
+$outputFormats = array(
+        'html' => array(
+                'ext' => 'html',
+                'view' => 'views/php-templates/puelia-outer.php',
+                'mimetypes' => array(
+                        'text/html', 'application/xhtml+xml'
+                )
+        ),
+
+        'json' => array(
+                'ext' => 'json',
+                'view' => 'views/simple_json.php',
+                'mimetypes' => array(
+                        'application/json',
+                ),
+        ),
+        'rdfjson' => array(
+                'ext' => 'rdfjson',
+                'view' => 'views/rdf_json.php',
+                'mimetypes' => array(
+                        'application/x-rdf+json',
+                ),
+        ),
+
+        'ttl' => array(
+                'ext' => 'ttl',
+                'view' => 'views/turtle.php',
+                'mimetypes' => array(
+                        'text/turtle',
+                ),
+        ),
+
+        'rdf' => array(
+                'ext' => 'rdf',
+                'view' => 'views/rdf_xml.php',
+                'mimetypes' => array(
+                        'application/rdf+xml',
+                ),
+        ),
+        'xml' => array(
+                'ext' => 'xml',
+                'view' => 'views/simple_xml.php',
+                'mimetypes' => array(
+                        'application/xml',
+                ),
+        ),
+        'tsv' => array(
+                'ext' => 'tsv',
+                'view' => 'views/tsv.php',
+                'mimetypes' => array(
+                        'text/tab-separated-values',
+                ),
+        ),
+         
+);
 
 function queryStringToParams($query){
     $query = ltrim($query, '?');
@@ -46,6 +104,11 @@ function queryStringToParams($query){
         }
     }
     return $params;
+}
+
+
+function endsWith($needle, $haystack){
+    return (substr($haystack, -strlen($needle))===$needle);
 }
 
 

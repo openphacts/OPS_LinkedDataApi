@@ -33,10 +33,10 @@ class LinkedDataApiCache
     }
 
     public function load($id, $doNotTestCacheValidity = FALSE, $doNotUnserialize = FALSE) {
-        logDebug("Loading from memcache $id");
         if(!$this->connection) $this->connection = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
         if(@$tmp = $this->connection->get($id)){
           if (is_array($tmp)) {
+              logDebug("Returned valid response from cache for id: ".$id);
               return $tmp[0];
           }
         }
@@ -92,8 +92,10 @@ class LinkedDataApiCache
 	public static function hasCachedResponse(LinkedDataApiRequest $request)
 	{
 		if(!function_exists("memcache_connect")) return false;
-		$acceptableTypes = $request->getAcceptTypes();
-		$uri = $request->uri;
+	
+		$acceptableTypes = self::getAcceptableTypes($request);
+		$uri = $request->getOrderedUriWithoutApiKeys();
+		
 		foreach ($acceptableTypes as $mimetype)
 		{
 			$key = LinkedDataApiCache::cacheKey($uri, $mimetype);
@@ -109,6 +111,25 @@ class LinkedDataApiCache
 		logDebug('No suitable cached responses found');
 		return false;
 	}
+	
+	private static function getAcceptableTypes($request){
+	    global $outputFormats;
+	    
+	    $extension = $request->getFormatExtension();
+	    if ($extension!=false){
+	        $acceptableTypes = $outputFormats[$extension]['mimetypes'];
+	    }
+	    else {
+	        $formatParam = $request->getParam('_format');
+	        if ($formatParam!=null){
+	            $acceptableTypes = $outputFormats[$formatParam]['mimetypes'];
+	        }
+	        else{
+	            $acceptableTypes = $request->getAcceptTypes();
+	        }
+	    }
+	    return $acceptableTypes;
+	}
 
 	public static function cacheResponse(LinkedDataApiRequest $request, LinkedDataApiResponse $response)
 	{
@@ -120,7 +141,7 @@ class LinkedDataApiCache
 		$cacheableResponse->mimetype = $response->mimetype;
 		$cacheableResponse->body = $response->body;
 
-		$key = LinkedDataApiCache::cacheKey($request->uri, $cacheableResponse->mimetype);
+		$key = LinkedDataApiCache::cacheKey($request->getOrderedUriWithoutApiKeys(), $cacheableResponse->mimetype);
 		logDebug('Caching Response as '.$key.' with mimetype '.$cacheableResponse->mimetype);
 		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 		$mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
