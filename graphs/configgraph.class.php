@@ -415,8 +415,7 @@ class ConfigGraph extends PueliaGraph {
     }
     
     function getExternalServiceRequest(){
-        $paramBindings = array_merge($this->getPathVariableBindings(),
-                    $this->getParamVariableBindings()); 
+        $paramBindings = $this->getRequestVariableBindings();
         
         //fill in api:externalRequestTemplate
         $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));

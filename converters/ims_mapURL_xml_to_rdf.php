@@ -7,11 +7,7 @@
 
 $xmlData = simplexml_load_string($response);
 if ($xmlData===false){
-    $errorString = "Failed loading XML result from IMS: ";
-    foreach(libxml_get_errors() as $error) {
-        $errorString .= "\t".$error->message;
-    }
-    throw new ErrorException($errorString);
+    throw new ErrorException("Error. External service returned: ".$response);
 }
 
 $unreservedParameters = $this->Request->getUnreservedParams();

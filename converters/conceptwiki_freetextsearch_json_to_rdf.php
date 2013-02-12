@@ -8,6 +8,9 @@ $paramNameToPredicate = array( 'q' => 'searchTerm',
                             'uuid' => 'tagUUID' );
 
 $decodedResponse = json_decode($response);
+if ($decodedResponse===FALSE OR $decodedResponse===NULL){
+    throw new ErrorException("Error decoding external service response: ".$response);
+}
 
 $searchType = getSearchType($this->Request->getPathWithoutExtension());
 $resultBNode = '_:searchResult';
@@ -51,7 +54,7 @@ $this->DataGraph->add_resource_triple($this->pageUri, FOAF.'primaryTopic', $resu
 $this->DataGraph->add_resource_triple($resultBNode , FOAF.'isPrimaryTopicOf', $this->pageUri);
 $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
 
-function getSearchType($path){//TODO get this from the config
+function getSearchType($path){
     if (endsWith("freetext", $path)){
         return "Freetext Search";
     }

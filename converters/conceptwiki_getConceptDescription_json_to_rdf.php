@@ -3,6 +3,9 @@
 require 'converters/conceptwiki_util.inc.php';
 
 $decodedResponse = json_decode($response);
+if ($decodedResponse===FALSE OR $decodedResponse===NULL){
+    throw new ErrorException("Error decoding external service response: ".$response);
+}
 
 $unreservedParameters = $this->Request->getUnreservedParams();
 $conceptWikiURL = CONCEPTWIKI_PREFIX.$unreservedParameters['uuid'];

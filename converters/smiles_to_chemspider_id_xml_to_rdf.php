@@ -4,6 +4,9 @@ define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
 
 //extract inchi value from SMILES to InChI response
 $xmlData = simplexml_load_string($response);
+if ($xmlData==false){
+    throw new Exception("Error. External service returned: ".$response);
+}
 
 $ns = $xmlData->getDocNamespaces();
 if ($ns[''] !== CHEMSPIDER_NS){
@@ -18,6 +21,7 @@ $inchiToCSIDRequest = 'http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi='.
 $ch = curl_init($inchiToCSIDRequest);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
+curl_close($ch);
 if ($response==false){
     throw new ErrorException("Request: ".$externalServiceRequest." failed");
 }

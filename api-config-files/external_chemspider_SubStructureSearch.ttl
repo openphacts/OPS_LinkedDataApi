@@ -22,8 +22,8 @@
 		api:description "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider." ;
 		api:name "ChemSpider SubStructure Search" ;
 		api:enableCache true ;
-		api:uriTemplate "/structure/substructure?searchOptions.Molecule={smiles}" ;
-		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SubStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={smiles}" ;
+		api:uriTemplate "/structure/substructure?searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SubStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/structure/substructure?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O" ;
 		api:viewer <#externalResponseViewer> ;

@@ -15,6 +15,9 @@ define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
 define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/');
 
 $xmlData = simplexml_load_string($response);
+if ($xmlData==false){
+    throw new ErrorException("Error. External service returned: ".$response);
+}
 
 $ns = $xmlData->getDocNamespaces();
 if ($ns[''] !== CHEMSPIDER_NS){

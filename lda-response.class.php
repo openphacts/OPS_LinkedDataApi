@@ -323,6 +323,7 @@ class LinkedDataApiResponse {
         catch(Exception $e){
             logError("Error while loading data from external service: ".$e->getMessage());
             $this->setStatusCode(HTTP_Internal_Server_Error);
+            $this->errorMessages[]=$e->getMessage();
             $this->serve();
             exit;
         }
@@ -376,6 +377,7 @@ class LinkedDataApiResponse {
         $ch = curl_init($externalServiceRequest);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
+        curl_close($ch);
         if ($response==false){
             throw new ErrorException("Request: ".$externalServiceRequest." failed");
         }

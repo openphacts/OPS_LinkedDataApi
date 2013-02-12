@@ -1,73 +1,7 @@
 <?php
 
-
-function getDecodedFinalResults($requestId){
-    //make request for getting final results
-    $finalRequest='http://parts.chemspider.com/JSON.ashx?op=GetSearchResult&rid='.$requestId;
-    $ch = curl_init($finalRequest);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $finalResponse = curl_exec($ch);
-    if ($finalResponse==false){
-        throw new ErrorException("Request: ".$finalRequest." failed");
-    }
-
-    $decodedFinalResponse=json_decode($finalResponse);
-    if ($decodedFinalResponse==null){
-        throw new ErrorException("Bad JSON returned from ChemSpider: ".$finalResponse);
-    }
-
-    return $decodedFinalResponse;
-}
-
-
-function getSearchType($path){//TODO get this from the config
-    if (endsWith("exact", $path)){
-        return "ExactStructureSearch";
-    } else if (endsWith("substructure", $path)){
-        return "SubstructureSearch";
-    } else if (endsWith("similarity", $path)){
-        return "SimilaritySearch";
-    }
-    else{
-        throw new ErrorException('Unknown search type');
-    }
-}
-
-function pollStatus($requestId){
-    $statusRequest='http://parts.chemspider.com/JSON.ashx?op=GetSearchStatus&rid='.$requestId;
-    $statusResponse=null;
-
-    $timeoutCounter = 0;
-    do {
-        if ($statusResponse!=null){
-            if ($timeoutCounter==SEARCH_TIMEOUT){
-                throw new ErrorException("Search for ".$this->Request->getUri()." timed out");
-            }
-            usleep(POLLING_INTERVAL);
-            $timeoutCounter += POLLING_INTERVAL;
-        }
-
-        $ch = curl_init($statusRequest);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $statusResponse = curl_exec($ch);
-        if ($statusResponse==false){
-            throw new ErrorException("Request: ".$statusResponse." failed");
-        }
-
-        $decodedStatusResponse=json_decode($statusResponse);
-        if ($decodedStatusResponse==null){
-            throw new ErrorException("Bad JSON returned from ChemSpider: ".$statusResponse);
-        }
-
-        $status=$decodedStatusResponse->{'Status'};
-        if (in_array($status, $errorStatuses)){
-            throw new ErrorException("Error status returned from ChemSpider: ".$status);
-        }
-    } while ($status!=SEARCH_STATUS_RESULT_READY);
-
-}
-
-
+define('SEARCH_STATUS_REQUEST_TEMPLATE', 'http://parts.chemspider.com/JSON.ashx?op=GetSearchStatus&rid=');
+define('SEARCH_RESULTS_REQUEST_TEMPLATE', 'http://parts.chemspider.com/JSON.ashx?op=GetSearchResult&rid=');
 
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
 define('OPS_CHEMSPIDER_PREFIX', 'http://www.chemspider.com/api/');
@@ -118,6 +52,77 @@ $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the gra
 $this->DataGraph->add_resource_triple($this->pageUri, FOAF.'primaryTopic', $resultBNode);
 $this->DataGraph->add_resource_triple($resultBNode , FOAF.'isPrimaryTopicOf', $this->pageUri);
 $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
+
+
+
+function getDecodedFinalResults($requestId){
+    //make request for getting final results
+    $finalRequest=SEARCH_RESULTS_REQUEST_TEMPLATE.$requestId;
+    $ch = curl_init($finalRequest);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $finalResponse = curl_exec($ch);
+    if ($finalResponse==false){
+        throw new ErrorException("Failed retrieving search final results from ChemSpider: ".$finalRequest);
+    }
+
+    $decodedFinalResponse=json_decode($finalResponse);
+    if ($decodedFinalResponse===FALSE OR $decodedFinalResponse===NULL){
+        throw new ErrorException("Bad JSON returned from ChemSpider: ".$finalResponse);
+    }
+
+    return $decodedFinalResponse;
+}
+
+
+function getSearchType($path){
+    if (endsWith("exact", $path)){
+        return "ExactStructureSearch";
+    } else if (endsWith("substructure", $path)){
+        return "SubstructureSearch";
+    } else if (endsWith("similarity", $path)){
+        return "SimilaritySearch";
+    }
+    else{
+        throw new ErrorException('Unknown search type');
+    }
+}
+
+function pollStatus($requestId){
+    $statusRequest=SEARCH_STATUS_REQUEST_TEMPLATE.$requestId;
+    $statusResponse=null;
+
+    $timeoutCounter = 0;
+    $ch = curl_init($statusRequest);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    do {
+        if ($statusResponse!=null){
+            if ($timeoutCounter==SEARCH_TIMEOUT){
+                throw new ErrorException("Search timed out after waiting for ".(SEARCH_TIMEOUT/1000000/60)." minutes");
+            }
+            usleep(POLLING_INTERVAL);
+            $timeoutCounter += POLLING_INTERVAL;
+        }
+
+        $statusResponse = curl_exec($ch);
+        if ($statusResponse==false){
+            throw new ErrorException("Polling for search status to ChemSpider failed: ".$statusResponse);
+        }
+
+        $decodedStatusResponse=json_decode($statusResponse);
+        if ($decodedStatusResponse===FALSE OR $decodedStatusResponse===NULL){
+            throw new ErrorException("Bad JSON returned from ChemSpider: ".$statusResponse);
+        }
+
+        $status=$decodedStatusResponse->{'Status'};
+        if (in_array($status, $errorStatuses)){
+            throw new ErrorException("Error status returned from ChemSpider: ".$status);
+        }
+    } while ($status!=SEARCH_STATUS_RESULT_READY);
+
+    curl_close($ch);
+}
+
 
 
 
