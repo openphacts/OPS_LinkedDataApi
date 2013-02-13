@@ -70,24 +70,25 @@ class SparqlWriter {
 		$orderBy['orderBy']='ORDER BY ?item';
 	    }
 	    $filterGraph = $this->getFilterGraph();
-            $addToSelect = preg_replace('/ORDER BY/','',$orderBy['orderBy']);
-	    $addToSelect = preg_replace('/DESC\(/i','',$addToSelect);
-            $addToSelect = preg_replace('/\)/','',$addToSelect);
-            $addToSelect = preg_replace('/\?item/','',$addToSelect);
+#            $addToSelect = preg_replace('/ORDER BY/','',$orderBy['orderBy']);
+#	    $addToSelect = preg_replace('/DESC\(/i','',$addToSelect);
+#            $addToSelect = preg_replace('/\)/','',$addToSelect);
+#            $addToSelect = preg_replace('/\?item/','',$addToSelect);
 #            $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
 #Antonis            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
-	    $template = substr($template,0, strrpos($template, "}"));
-	    if (stripos($template, 'SELECT')!==false) {
+#	    $template = substr($template,0, strrpos($template, "}"));
+#	    if (stripos($template, 'SELECT')!==false) {
 		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
-		$sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$template} {$orderBy['orderBy']} } } LIMIT {$limit} OFFSET {$offset}";
-	    }
-	    else {
-	        $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} {$orderBy['orderBy']} } } LIMIT {$limit} OFFSET {$offset}";
-	    }
+		$sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$template} } {$orderBy['orderBy']}  LIMIT {$limit} OFFSET {$offset}";
+#	    }
+#	    else {
+#	        $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} {$orderBy['orderBy']} } } LIMIT {$limit} OFFSET {$offset}";
+#	    }
 	    $ops_uri = $this->_request->getParam('uri');
 	    $sparql = str_replace('?ops_item', '<'.$ops_uri.'>', $sparql);
 	    $ims = new OpsIms();
 	    $formatter = new VirtuosoFormatter();
+#	    echo $formatter->formatQuery($ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri));
 	    return $formatter->formatQuery($ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri));
         } else {
             return false;
@@ -697,62 +698,29 @@ _SPARQL_;
         AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
         AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
             $query='Something went wrong';
-            $limit="";
-            $offset="";
-            $filterGraph = $this->getFilterGraph();
-            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-            if ($this->_config->getEndpointType() == API.'ListEndpoint') {
-                $limit =" LIMIT ".$this->getLimit();
-                $offset =" OFFSET ".$this->getOffset();
-                $orderBy = $this->getOrderBy();
-                if (empty($orderBy['orderBy'])) {
-                    $orderBy['orderBy']='ORDER BY ?item';
-                }
-
-                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-                if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
-                    $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) .
-                    "{ {$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
-                    "{$orderBy['orderBy']}  {$limit} {$offset} } }";
-                }
-                else {
-                    $query .= "{$filterGraph} } {$orderBy['orderBy']} {$limit} {$offset} ";
-                }
-            }
-            else {
-                $orderBy = $this->getOrderBy();
-                if (empty($orderBy['orderBy']) AND stripos($query, "SELECT ") !== false) {
-                    $orderBy['orderBy']='ORDER BY ?item';
-                }
-
-                if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
-                    $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT ")) + 1) .
-                    "{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) . "}}";
-                }
-                else {
-                    $query.="{$filterGraph}} {$orderBy['orderBy']}";
-                }
-            }
-            
+            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
             $ims = new OpsIms();
+	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
+	    $expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+	    foreach($uriList as $uri) {
+		$expandedQuery .= "?item = <{$uri}> || ";
+	    }
+	    $expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
+	    $expandedQuery .= ") }";
             $formatter = new VirtuosoFormatter();
-            return $formatter->formatQuery($ims->expandQuery($query , $ops_uri));
-            
+            return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
-            #Antonis
-            #                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
-            #                  foreach($uriList as $describeUri){
-            #                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
-            #                  }
-            #                  $uriSetFilter.= ")\n";
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
             $ims = new OpsIms();
+            $expandedQuery = $ims->expandQuery($query, $ops_uri);
+            $expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+            foreach($uriList as $uri) {
+                $expandedQuery .= "?item = <{$uri}> || ";
+            }
+            $expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
+            $expandedQuery .= ") }";
             $formatter = new VirtuosoFormatter();
-            return $formatter->formatQuery($ims->expandQuery($query, $ops_uri));
-            /*
-             FILTER doesn't work so well with all triplestores, could do it by adding incrementers to every variable in the pattern which increment for ever loop of the URI list. If do so, it would be good to change the propertypath->sparql code to map to a plain pattern which is then passed to the same code as this is, to add the incrementers
-
-            */
+            return $formatter->formatQuery($expandedQuery);
         } else if($viewerUri==API.'describeViewer' AND strlen($this->_request->getParam('_properties')) === 0 ){
             return 'DESCRIBE <'.implode('> <', $uriList).'>'.$fromClause;
         } else {
