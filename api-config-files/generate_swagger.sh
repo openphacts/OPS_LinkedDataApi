@@ -109,7 +109,7 @@ do
             },
             {
               "name": "_pageSize",
-              "description": "Your access application key",
+              "description": "The desired page size.",
               "dataType": "integer",
               "paramType": "query"
             },'
