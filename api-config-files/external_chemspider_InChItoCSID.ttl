@@ -14,8 +14,8 @@
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider" ;
-		api:name "Inchi to ChemSpider URL" ;
+		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
+		api:name "Inchi to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?inchi={inchi}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
@@ -28,7 +28,7 @@
 
 chemspider:inchi api:name "inchi" ;
 	api:label "inchi";
-	api:value "A URLEncoded InChI string." .
+	api:value "An InChI string." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

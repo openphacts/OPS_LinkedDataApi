@@ -10,12 +10,12 @@
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#uuid> ;
-	api:description "An API configuration to map free text to a ConceptWiki URL." ;
+	api:description "An API configuration to map free text to a concept URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Get Concept description" ;
+		api:name "Get concept description" ;
 		api:enableCache false ;
-		api:description "Get the description of a concept based on a Concept URL." ;
+		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
 		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
 		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;

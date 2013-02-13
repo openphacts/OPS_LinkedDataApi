@@ -6,18 +6,18 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#conceptWiki> a api :API ;
-	rdfs:label "Concept Wiki search"@en;
+	rdfs:label "Concept Wiki services"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#q> ;
 	api:variable <#limit> ;
 	api:variable <#uuid> ;
-	api:description "An API configuration to map free text to a ConceptWiki URL." ;
+	api:description "An API configuration to map free text to a concept URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Map free text to a ConceptWiki URL based on semantig tag" ;
+		api:name "Map free text to a concept URL based on semantig tag" ;
 		api:enableCache false ;
-		api:description "Search for a set of ConceptWiki URLs based on free text and an input tag, which specifies the semantic type." ;
+		api:description "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki." ;
 		api:uriTemplate "/search/byTag?q={q}&uuid={uuid}" ;
 		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search/byTag?q={q}&uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;

@@ -11,11 +11,11 @@
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#smiles> ;
 	api:dataset <http://www.chemspider.com> ;
-	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
+	api:description "An API configuration to return a ChemSpider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
-		api:name "Smiles to ChemSpider URL" ;
+		api:name "SMILES to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?smiles={smiles}" ;
 		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/SMILESToInChI?smiles={smiles}" ;
@@ -28,7 +28,7 @@
 
 <#smiles> api:name "smiles" ;
 	api:label "smiles";
-	api:value "A URLEncoded SMILES string." .
+	api:value "A SMILES string." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
