@@ -22,9 +22,10 @@ class LinkedDataApiRequest {
         '_orderBy',# is a space-separated list of OrderConditions
         '_select',#
         '_lang', # is a comma-separated list of languages
+        '_callback', # for JSONP
         'callback', # for JSONP
-	    'app_id',
-	    'app_key',
+	'app_id',
+	'app_key',
         );
     
     function __construct(){

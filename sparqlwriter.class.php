@@ -701,24 +701,28 @@ _SPARQL_;
             $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
             $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    $expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
-	    foreach($uriList as $uri) {
-		$expandedQuery .= "?item = <{$uri}> || ";
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint') {
+	    	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+	   	foreach($uriList as $uri) {
+			$expandedQuery .= "?item = <{$uri}> || ";
+	    	}
+	    	$expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
+	    	$expandedQuery .= ") }";
 	    }
-	    $expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
-	    $expandedQuery .= ") }";
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
-            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri);
-            $expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
-            foreach($uriList as $uri) {
-                $expandedQuery .= "?item = <{$uri}> || ";
-            }
-            $expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
-            $expandedQuery .= ") }";
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint') {
+            	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+            	foreach($uriList as $uri) {
+                	$expandedQuery .= "?item = <{$uri}> || ";
+            	}
+            	$expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
+            	$expandedQuery .= ") }";
+	    }
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
         } else if($viewerUri==API.'describeViewer' AND strlen($this->_request->getParam('_properties')) === 0 ){
