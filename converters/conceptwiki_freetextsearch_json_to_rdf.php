@@ -24,6 +24,8 @@ foreach ($unreservedParameters as $name => $value){
 
 //link the resultBNode with the UUIDs and their tags
 $tagCounter = 0;
+$urlCounter = 0;
+//TODO add language
 foreach ($decodedResponse as $elem){
     $uuidNode = CONCEPTWIKI_PREFIX.$elem->{"uuid"};
     $this->DataGraph->add_resource_triple($resultBNode, OPS_API.'#result', $uuidNode);
@@ -31,6 +33,8 @@ foreach ($decodedResponse as $elem){
     foreach ($elem->{"labels"} as $label){
         addLabelWithLanguage($uuidNode, $label, $this->DataGraph);
     } 
+    
+    $this->DataGraph->add_literal_triple($uuidNode, OPS_API.'#match', $elem->{'match'});
     
     foreach ($elem->{"tags"} as $tag){
         $tagBNode = '_:tagNode'.$tagCounter;
@@ -42,9 +46,33 @@ foreach ($decodedResponse as $elem){
             addLabelWithLanguage($tagBNode, $tagLabel, $this->DataGraph);
         }
         
+        $this->DataGraph->add_literal_triple($tagBNode, OPS_API.'#deleted', $tag->{'deleted'});
+        
         $tagCounter++;
     }
     
+    /*foreach ($elem->{"urls"} as $url){
+        $this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $url->{'value'});
+        
+        $lastSlashPos = strrpos ( $url->{'value'} , '/');
+        $scheme = substr($url->{'value'}, 0, $lastSlashPos+1);
+        $this->DataGraph->add_resource_triple($url->{'value'}, SKOS.'inScheme', $scheme);
+        
+        if ($url->{'type'} === 'PREFERRED'){
+            $this->DataGraph->add_resource_triple($scheme, RDF_TYPE, CONCEPTWIKI_PREFIX.'preferredScheme');
+        }
+        else {
+            $this->DataGraph->add_resource_triple($scheme, RDF_TYPE, CONCEPTWIKI_PREFIX.'alternativeScheme');
+        }
+    }*/
+    
+    foreach ($elem->{"urls"} as $url){
+        $urlBNode = '_:urlNode'.$urlCounter;
+        $this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $urlBNode);
+        $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#url', $url->{'value'});
+        $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#matchType', $url->{'type'});
+        $urlCounter++;
+    }
 }
 
 $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the graph
