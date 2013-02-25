@@ -1,0 +1,39 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+
+<#dataSources> a api:API ;
+        rdfs:label "Data Sources"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:vocabulary <http://vocab.deri.ie/void> ;
+	api:description "An API configuration to return information about the loaded data sources" ;
+	api:endpoint [ 
+		a api:ListEndpoint ;
+		api:name "Data Sources" ;
+		api:description "Returns information about currently loaded data sources.";
+		api:uriTemplate "/dataSources" ;
+		api:selector [
+			api:where "GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
+					{ ?description rdf:type void:DatasetDescription . 
+  					?description foaf:primaryTopic ?item .  }  " ;	] ;
+		api:defaultPageSize "200" ;
+		api:viewer <#dataSourcesViewer> ;
+		api:defaultViewer <#dataSourcesViewer> ] .
+
+<#dataSourcesViewer> a api:Viewer ;
+	api:name "dataSourcesViewer" ;
+	api:template 
+"?item foaf:isPrimaryTopicOf ?description .
+?item dcterms:title ?title .
+?item void:triples ?tripleNo .";
+	api:where
+"GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
+{ ?description foaf:primaryTopic ?item .
+  ?item dcterms:title ?title .
+  ?item void:triples ?tripleNo .
+}" .
