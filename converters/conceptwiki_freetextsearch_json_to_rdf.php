@@ -40,14 +40,7 @@ foreach ($decodedResponse as $elem){
         $tagBNode = '_:tagNode'.$tagCounter;
         $this->DataGraph->add_resource_triple($uuidNode, OPS_API.'#semanticTag', $tagBNode);
         
-        $this->DataGraph->add_literal_triple($tagBNode, OPS_API.'#uuid', $tag->{"uuid"});
-        
-        foreach ($tag->{"labels"} as $tagLabel){
-            addLabelWithLanguage($tagBNode, $tagLabel, $this->DataGraph);
-        }
-        
-        $this->DataGraph->add_literal_triple($tagBNode, OPS_API.'#deleted', $tag->{'deleted'});
-        
+        addConceptWithLabels($tagBNode, $tag, $this->DataGraph);
         $tagCounter++;
     }
     

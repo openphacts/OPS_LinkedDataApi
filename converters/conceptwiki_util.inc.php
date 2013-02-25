@@ -16,5 +16,16 @@ function addLabelWithLanguage($node, $label, $dataGraph){
     }
 }
 
+function addConceptWithLabels($bNode, $jsonElement, $dataGraph){
+    $dataGraph->add_resource_triple($bNode, OPS_API.'#uuid', $jsonElement->{'uuid'});
+    foreach($jsonElement->{'labels'} as $label){
+        addLabelWithLanguage($bNode, $label, $dataGraph);
+    }
+     
+    $dataGraph->add_literal_triple($bNode, OPS_API.'#deleted',
+            (bool)$jsonElement->{'deleted'} ? 'true' : 'false',
+            null, XSD.'boolean');
+}
+
 
 ?>
