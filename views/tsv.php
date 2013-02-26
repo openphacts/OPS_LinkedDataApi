@@ -10,6 +10,12 @@ switch($this->ConfigGraph->getEndpointType()){
         $array = json_decode($json, true);
 	writeOutput(getDataForList($array['result']['items']));
         break;
+    /*case API.'ExternalHTTPService' :
+	$pageUri = $this->Request->getUriWithPageParam();
+        $json = $DataGraph->to_simple_json($pageUri) ;
+        $array = json_decode($json, true);
+        writeOutput(getDataForList($array['result']['items']));
+        break;*/
     case API.'ItemEndpoint' :
     default:
         $pageUri = $this->Request->getUri();

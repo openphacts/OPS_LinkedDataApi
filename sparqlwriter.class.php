@@ -79,7 +79,10 @@ class SparqlWriter {
 #	    $template = substr($template,0, strrpos($template, "}"));
 #	    if (stripos($template, 'SELECT')!==false) {
 		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
-		$sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$template} } {$orderBy['orderBy']}  LIMIT {$limit} OFFSET {$offset}";
+		$sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$template} } {$orderBy['orderBy']}";
+		if (strcasecmp($limit,"all")!=0) { 
+			$sparql.="  LIMIT {$limit} OFFSET {$offset}";
+		}
 #	    }
 #	    else {
 #	        $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} {$orderBy['orderBy']} } } LIMIT {$limit} OFFSET {$offset}";
@@ -694,14 +697,15 @@ _SPARQL_;
 
         $fromClause = $this->getFromClause();
         #Antonis botch
+	$limit = $this->getLimit();
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
         AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
         AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
             $query='Something went wrong';
-            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
+            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/GRAPH/i',  $this->getFilterGraph() . "\n GRAPH", $whereGraph ) . " }"));
             $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    if ($this->_config->getEndpointType() == API.'ListEndpoint') {
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
 	    	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
 	   	foreach($uriList as $uri) {
 			$expandedQuery .= "?item = <{$uri}> || ";
@@ -712,10 +716,10 @@ _SPARQL_;
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
-            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->getFilterGraph()} {$this->_config->getViewerWhere($viewerUri)}  }");
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    if ($this->_config->getEndpointType() == API.'ListEndpoint') {
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
             	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
             	foreach($uriList as $uri) {
                 	$expandedQuery .= "?item = <{$uri}> || ";
