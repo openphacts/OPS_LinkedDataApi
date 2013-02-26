@@ -24,13 +24,39 @@ foreach ($decodedResponse->{"tags"} as $tag){
     $tagCounter++;
 }
 
-//add urls
+//add urls with notations
 $urlCounter = 0;
 foreach ($decodedResponse->{"urls"} as $url){
     $urlBNode = '_:urlNode'.$urlCounter;
     $this->DataGraph->add_resource_triple($conceptWikiURL, SKOS.'exactMatch', $urlBNode);
     $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#url', $url->{'value'});
     $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#matchType', $url->{'type'});
+    
+    $lastPos = strrpos ( $url->{'value'} , '#');
+    if ($lastPos === FALSE){
+        $lastPos = strrpos ( $url->{'value'} , '/');
+    }
+    if ($lastPos === FALSE){
+        continue;
+    }
+    
+    $codeFromURL = substr($url->{'value'}, $lastPos+1);
+    foreach ($decodedResponse->{"notations"} as $notation){
+        if ($notation->{'code'} === $codeFromURL){
+            foreach ($notation->{'sources'} as $source){
+                $sourceURL = CONCEPTWIKI_PREFIX.$source->{'uuid'};
+                $this->DataGraph->add_resource_triple($urlBNode, VOID.'inDataset', $sourceURL);
+                foreach($source->{'labels'} as $label){
+                    addLabelWithLanguage($sourceURL, $label, $this->DataGraph);
+                }
+                $this->DataGraph->add_literal_triple($sourceURL, CONCEPTWIKI_PREFIX.'#deleted', 
+                        (bool)$source->{'deleted'} ? 'true' : 'false',
+                        null, XSD.'boolean');
+            } 
+            break;
+        }
+    }
+    
     $urlCounter++;
 }
 
@@ -39,31 +65,6 @@ foreach ($decodedResponse->{"notes"} as $note){
     if ($note->{"type"} === 'DEFINITION'){
         $this->DataGraph->add_literal_triple($conceptWikiURL, SKOS.'definition', $note->{'text'});//add language
     }
-}
-
-//add notations:  skos:notation bNode
-//            bNode ops_api:code ..
-//            bNode ops_api:source sourceBNode
-//                sourceBNode ops_api:uuid ..
-//                sourceBNode skos:prefLabel ..
-//                sourceBNode skos:altLabel ..
-//                sourceBNode ops_api:deleted ..
-$notationCounter = 0;
-$sourceCounter = 0;
-foreach ($decodedResponse->{"notations"} as $notation){
-    $notationBNode = '_:notation'.$notationCounter;
-    $this->DataGraph->add_resource_triple($conceptWikiURL, SKOS.'notation', $notationBNode);
-
-    $this->DataGraph->add_resource_triple($notationBNode, OPS_API.'#code', $notation->{'code'});
-    foreach ($notation->{"sources"} as $source){
-        $sourceBNode = '_:sourceBNode'.$sourceCounter;
-        $this->DataGraph->add_resource_triple($notationBNode, OPS_API.'#source', $sourceBNode);
-        
-        addConceptWithLabels($sourceBNode, $source, $this->DataGraph);                   
-        $sourceCounter++;
-    }
-    
-    $notationCounter++;
 }
 
 
