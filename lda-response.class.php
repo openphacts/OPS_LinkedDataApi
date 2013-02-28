@@ -211,35 +211,35 @@ class LinkedDataApiResponse {
 
     function loadDataFromList(){
         $list = $this->getListOfUris();
-        $viewerUri = $this->getViewer();
-        logDebug("Viewer URI is $viewerUri");
-        $this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $viewerUri);
-        if (LOG_VIEW_QUERIES) {
-          logViewQuery( $this->Request, $this->viewQuery);
-        }
-        $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-        if($response->is_success()){
-            $rdf = $response->body;
-            if(isset($response->headers['content-type'])){
-              if(strpos($response->headers['content-type'], 'turtle')){
-                  $this->DataGraph->add_turtle($rdf);
-              } else {
-                  $this->DataGraph->add_rdf($rdf);
-              }
-            } else {
-              $this->DataGraph->add_rdf($rdf);
-            }
-
-            $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-            $this->listUri = $listUri;
-            $pageUri = $this->Request->getUriWithPageParam();
-            $currentPage = $this->Request->getPage();
-            $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
-            $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
-            $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
-            if($label = $this->ConfigGraph->getPageTitle()){
-              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-            }
+	if (!empty($list)) {
+        	$viewerUri = $this->getViewer();
+        	logDebug("Viewer URI is $viewerUri");
+        	$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $viewerUri);
+        	if (LOG_VIEW_QUERIES) {
+        	  logViewQuery( $this->Request, $this->viewQuery);
+        	}
+        	$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
+        	if($response->is_success()){
+        	    $rdf = $response->body;
+        	    if(isset($response->headers['content-type'])){
+        	      if(strpos($response->headers['content-type'], 'turtle')){
+        	          $this->DataGraph->add_turtle($rdf);
+        	      } else {
+        	          $this->DataGraph->add_rdf($rdf);
+        	      }
+        	    } else {
+        	      $this->DataGraph->add_rdf($rdf);
+        	    }
+           	 $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
+           	 $this->listUri = $listUri;
+           	 $pageUri = $this->Request->getUriWithPageParam();
+            	 $currentPage = $this->Request->getPage();
+	         $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
+        	 $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
+        	 $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
+            	 if($label = $this->ConfigGraph->getPageTitle()){
+			$this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
+	         }
             $this->DataGraph->add_resource_triple($listUri, DCT.'hasPart', $pageUri);
             $this->DataGraph->add_resource_triple($pageUri, DCT.'isPartOf', $listUri);
             $this->DataGraph->add_resource_triple($pageUri, XHV.'first', $this->Request->getUriWithPageParam(1));
@@ -274,7 +274,7 @@ class LinkedDataApiResponse {
             $this->setStatusCode(HTTP_Internal_Server_Error);
             $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
             
-        }
+        } }
         
     }
     

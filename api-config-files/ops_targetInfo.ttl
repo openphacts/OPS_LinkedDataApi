@@ -38,7 +38,7 @@
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/target?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F00059958-a045-4581-9dc5-e5a08bb0c291";
 		api:viewer <#targetViewer> ;
-		api:defaultViewer <#targetViewer> . ] .
+		api:defaultViewer <#targetViewer> ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
@@ -121,7 +121,6 @@ OPTIONAL {
 		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
 		OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
 	}
-	} } GROUP BY ?equiv_target ?target_type ?description ?db_uri ?cellularLocations ?molecularWeight ?numberOfResidues ?theoreticalPi ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb 
-}
-";
+	} GROUP BY ?equiv_target ?target_type ?description ?db_uri ?cellularLocations ?molecularWeight ?numberOfResidues ?theoreticalPi ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb } 
+}";
 
