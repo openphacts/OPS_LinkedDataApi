@@ -6,6 +6,8 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
 
 <#dataSources> a api:API ;
         rdfs:label "Data Sources"@en ;
@@ -14,34 +16,34 @@
 	api:vocabulary <http://rdfs.org/ns/void#> ;
 	api:description "An API configuration to return information about the loaded data sources" ;
 	api:endpoint [ 
-		a api:ListEndpoint ;
+		a api:ItemEndpoint ;
 		api:name "Data Sources" ;
+		api:itemTemplate "http://www.openphacts.org/linked_data_cache" ;
 		api:description "Returns information about currently loaded data sources." ;
 		api:uriTemplate "/sources" ;
-		api:selector [
-			api:where "GRAPH <http://www.openphacts.org/api/datasetDescriptors> 			
-					{ ?item rdf:type void:Dataset .  }  " ;	] ;
-		api:defaultPageSize "200" ;
 		api:viewer <#dataSourcesViewer> ;
 		api:defaultViewer <#dataSourcesViewer> ] .
 
 <#dataSourcesViewer> a api:Viewer ;
 	api:name "dataSourcesViewer" ;
 	api:template 
-"?item foaf:isPrimaryTopicOf ?description .
-?item dcterms:title ?title .
-?item void:subset ?subset .
-?item prov:wasDerivedFrom ?derivedFrom .
-?item void:triples ?tripleNo .
-?item void:dataDump ?dataDump .
-?item foaf:homepage ?homepage .";
+"<http://www.openphacts.org/linked_data_cache> a void:Dataset ;
+                                       void:subset ?top_dataset .
+?top_dataset foaf:isPrimaryTopicOf ?description .
+?dataset dcterms:title ?title .
+?dataset void:subset ?subset .
+?dataset prov:wasDerivedFrom ?derivedFrom .
+?dataset void:triples ?tripleNo .
+?dataset void:dataDump ?dataDump .
+?dataset foaf:homepage ?homepage .";
 	api:where
 "GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
-{ OPTIONAL {?item dcterms:title ?title . }
-  OPTIONAL { ?description foaf:primaryTopic ?item . }
-  OPTIONAL { ?item void:subset ?subset . } 
-  OPTIONAL { ?item prov:wasDerivedFrom ?derivedFrom . } 
-  OPTIONAL { ?item void:dataDump ?dataDump . }
-  OPTIONAL { ?item void:triples ?tripleNo . }
-  OPTIONAL { ?item foaf:homepage ?homepage . }
+{ ?dataset a void:Dataset .
+?description foaf:primaryTopic ?top_dataset .
+OPTIONAL { ?dataset dcterms:title ?title . }
+OPTIONAL { ?dataset void:subset ?subset . } 
+OPTIONAL { ?dataset prov:wasDerivedFrom ?derivedFrom . } 
+OPTIONAL { ?dataset void:dataDump ?dataDump . }
+OPTIONAL { ?dataset void:triples ?tripleNo . }
+OPTIONAL { ?dataset foaf:homepage ?homepage . }
 }" .
