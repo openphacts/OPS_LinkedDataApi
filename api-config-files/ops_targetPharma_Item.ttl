@@ -149,7 +149,7 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	OPTIONAL { ?activity_uri chembl:relation ?relation }
 	OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
 	OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
-        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
+        OPTIONAL { ?activity_uri chembl-ops:normalisedValue ?activity_value }
 	OPTIONAL { ?activity_uri cito:citesAsDataSource ?doi_internal .
                 OPTIONAL { ?doi_internal owl:sameAs ?doi }
                 OPTIONAL { ?doi_internal bibo:pmid ?pmid }

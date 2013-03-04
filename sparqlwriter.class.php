@@ -702,7 +702,7 @@ _SPARQL_;
         AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
         AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
             $query='Something went wrong';
-            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/GRAPH/i',  $this->getFilterGraph() . "\n GRAPH", $whereGraph ) . " }"));
+            $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/GRAPH/i',  $this->getFilterGraph() . "\n GRAPH", $whereGraph , 1) . " }"));
             $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
 	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
