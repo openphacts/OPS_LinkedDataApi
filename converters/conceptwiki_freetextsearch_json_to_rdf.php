@@ -25,7 +25,7 @@ foreach ($unreservedParameters as $name => $value){
 //link the resultBNode with the UUIDs and their tags
 $tagCounter = 0;
 $urlCounter = 0;
-//TODO add language
+
 foreach ($decodedResponse as $elem){
     $uuidNode = CONCEPTWIKI_PREFIX.$elem->{"uuid"};
     $this->DataGraph->add_resource_triple($resultBNode, OPS_API.'#result', $uuidNode);
@@ -43,21 +43,6 @@ foreach ($decodedResponse as $elem){
         addConceptWithLabels($tagBNode, $tag, $this->DataGraph);
         $tagCounter++;
     }
-    
-    /*foreach ($elem->{"urls"} as $url){
-        $this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $url->{'value'});
-        
-        $lastSlashPos = strrpos ( $url->{'value'} , '/');
-        $scheme = substr($url->{'value'}, 0, $lastSlashPos+1);
-        $this->DataGraph->add_resource_triple($url->{'value'}, SKOS.'inScheme', $scheme);
-        
-        if ($url->{'type'} === 'PREFERRED'){
-            $this->DataGraph->add_resource_triple($scheme, RDF_TYPE, CONCEPTWIKI_PREFIX.'preferredScheme');
-        }
-        else {
-            $this->DataGraph->add_resource_triple($scheme, RDF_TYPE, CONCEPTWIKI_PREFIX.'alternativeScheme');
-        }
-    }*/
     
     foreach ($elem->{"urls"} as $url){
         $urlBNode = '_:urlNode'.$urlCounter;
