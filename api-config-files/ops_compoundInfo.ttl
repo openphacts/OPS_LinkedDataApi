@@ -36,6 +36,15 @@
 		a api:ItemEndpoint ;
 		api:name "Compound Information" ;
 		api:description "Returns information about a single compound that corresponds to {uri}.";
+		api:resultDescription "Concept URI: exactMatch(+), prefLabel(1), inDataset(1) .
+				       Chemspider URI: smiles(1), inchi(1), inchikey(1), logp(1), hba(1), hbd(1), ro5_violations(1), psa(1), inDataset(1) .
+				       DrugBank URI: biotransformation(1), description(1), proteinBinding(1), toxicity(1), meltingPoint(1), inDataset(1) .
+				?ops_item skos:exactMatch ?equiv_compound . 
+				?equiv_compound ?bNode1 ?molformula ;
+						?bNode2 ?molweight ;
+						?bNode3 ?mw_freebase ;
+						?bNode4 ?rtb ;
+						void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>." ;
 		api:uriTemplate "/compound?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
