@@ -187,6 +187,14 @@ class LinkedDataApiResponse {
         if($response->is_success()){
             $rdf = $response->body;
             $this->DataGraph->add_rdf($rdf);
+            
+            if ($this->DataGraph->is_empty()){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("Data not found in the triple store");
+                $this->serve();
+                return;
+            }
+            
             #	    echo $uri;
             $this->DataGraph->add_resource_triple($pageUri, FOAF.'primaryTopic', $uri);
             $label = $this->DataGraph->get_first_literal($uri, SKOS.'prefLabel');
@@ -243,6 +251,14 @@ class LinkedDataApiResponse {
         	    } else {
         	      $this->DataGraph->add_rdf($rdf);
         	    }
+        	    
+        	    if ($this->DataGraph->is_empty()){
+        	        $this->setStatusCode(HTTP_Not_Found);
+        	        logError("Data not found in the triple store");
+        	        $this->serve();
+        	        return;
+        	    }
+        	    
            	 $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
            	 $this->listUri = $listUri;
            	 $pageUri = $this->Request->getUriWithPageParam();
@@ -288,6 +304,12 @@ class LinkedDataApiResponse {
             $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
             
         } }
+        else{//empty list returned from selector
+            $this->setStatusCode(HTTP_Not_Found);
+            logError("Data not found in the triple store");
+            $this->serve();
+            return;
+        }
         
     }
     
