@@ -46,6 +46,7 @@
 		a api:ItemEndpoint ;
 		api:name "Enzyme Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given EC class" ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #33FF66\"> ops:enzymePharmacologyTotalResults ?count </span>." ;
 		api:uriTemplate "/target/enzyme/pharmacology/count?uri={uri}" ;
         	api:itemTemplate "{uri}" ;
 		api:variable <http://www.openphacts.org/units/Micromolar> ;

@@ -17,10 +17,6 @@
 		api:name "Map free text to a concept URL" ;
 		api:enableCache false ;
 		api:description "Returns a set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
-		api:resultsDescription "Primary topic: result(+), searchTerm(1), type(1), limit(1) .
-					Concept URL: prefLabel(+), altLabel(+), match(1), semanticTag(+), exactMatch(+) .
-				        Semantic Tag Blank Node: uuid(1), prefLabel(1), deleted(1) .
-				        Matching URL Blank Node: url(1), matchType(1) ." ;
 		api:uriTemplate "/search/freetext?q={q}" ;
 		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search?q={q}" ;
 		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;
