@@ -10,6 +10,8 @@ require_once 'lib/moriarty/moriarty.inc.php';
 require_once 'lib/moriarty/sparqlservice.class.php';
 require_once 'lib/moriarty/credentials.class.php';
 require_once 'graphs/linkeddataapigraph.class.php';
+require_once 'parameter_property_mapper.class.php';
+require_once 'sanitization_handler.class.php';
 require_once 'sparqlwriter.class.php';
 
 class LinkedDataApiResponse {
@@ -18,6 +20,8 @@ class LinkedDataApiResponse {
     var $Request = false;
     var $ConfigGraph = false;
     var $SparqlWriter = false;
+    var $SanitizationHandler = false;
+    var $ParameterPropertyMapper = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
     var $useDatastore = false;
@@ -87,17 +91,26 @@ class LinkedDataApiResponse {
                 $this->serve();
             }
             
-            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request);            
+            $this->ParameterPropertyMapper = new ParameterPropertyMapper($this->ConfigGraph);
+            $this->SanitizationHandler = new SanitizationHandler($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
+            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
-            if($this->SparqlWriter->hasUnknownPropertiesFromRequest()){
+            
+            if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
                 $this->errorMessages[]="Unknown Properties in Request: {$param}";
                 $this->setStatusCode(HTTP_Bad_Request);
                 $this->serve();
-            } else if($this->SparqlWriter->hasUnknownPropertiesFromConfig($viewerUri)){
-                $this->setStatusCode(HTTP_Internal_Server_Error);
-                $unknownProps = implode(', ', $this->SparqlWriter->getUnknownPropertiesFromConfig());
+            } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
+                $this->setStatusCode(HTTP_Bad_Request);
+                $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
+                logError($msg);
+                $this->errorMessages[]=$msg;
+                $this->serve();
+            } else if (!$this->SanitizationHandler->hasValidURIParameters()){
+                $this->setStatusCode(HTTP_Bad_Request);
+                $msg = "URIs in the request not well formed";
                 logError($msg);
                 $this->errorMessages[]=$msg;
                 $this->serve();
@@ -825,7 +838,7 @@ class LinkedDataApiResponse {
 	}
 
 	function addTermBindingsToExecution($propertyPath) {
-	    $propertyNamesWithUris = $this->SparqlWriter->mapParamNameToProperties($propertyPath);
+	    $propertyNamesWithUris = $this->ParameterPropertyMapper->mapParamNameToProperties($propertyPath);
 	    foreach($propertyNamesWithUris as $propertyName=>$uri) {
 	        $termName = '_:term_'.$propertyName;
 	        $this->DataGraph->add_resource_triple('_:execution', API.'termBinding', $termName);
