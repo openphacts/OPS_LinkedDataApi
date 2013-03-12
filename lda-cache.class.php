@@ -116,7 +116,7 @@ class LinkedDataApiCache
 	    global $outputFormats;
 	    
 	    $extension = $request->getFormatExtension();
-	    if ($extension!=false){
+	    if ($extension!==false AND $extension!='ico'){
 	        $acceptableTypes = $outputFormats[$extension]['mimetypes'];
 	    }
 	    else {
@@ -210,7 +210,8 @@ class LinkedDataApiCache
 	private static function cacheKey($requestUri, $mimetype)
 	{
 		$key  = $requestUri;
-		$key .= trim($mimetype);
+		if (isset($mimetype))
+			$key .= trim($mimetype);
 		return md5($key);
 	}
 	
