@@ -7,6 +7,7 @@ class Response304
 	public function __construct($response)
 	{
 		$this->response = $response; 
+		$this->cacheable = false;
 	}
 	
 	public function serve()

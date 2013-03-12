@@ -106,10 +106,39 @@ function queryStringToParams($query){
     return $params;
 }
 
+function startsWith($haystack, $needle)
+{
+    return !strncmp($haystack, $needle, strlen($needle));
+}
+
 
 function endsWith($needle, $haystack){
     return (substr($haystack, -strlen($needle))===$needle);
 }
+
+function validateURI($uri){
+    $supportedSchemes=array('http', 'https', 'ftp', 'doi', 'mailto', 'attachment', 'about', 'cvs', 'dns', 'file', 'geo', 'git', 'ldap', 'ldaps', 'res', 'sftp', 'smb', 'ssh', 'svn');
+    $pattern='@^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?@';
+    preg_match($pattern, $uri, $matches);
+
+    $scheme = $matches[2];
+    if (empty($scheme)){
+        $uri = urldecode($uri);
+        preg_match($pattern, $uri, $matches);
+        $scheme = $matches[2];
+    }
+
+    if (!in_array($scheme, $supportedSchemes)){
+        return FALSE;
+    }
+
+    if (!startsWith($matches[3], '//')){
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
 
 
 function logError($message){

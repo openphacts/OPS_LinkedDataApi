@@ -45,7 +45,7 @@
 	api:description "An API configuration to return information about members if Enzyme Classification classes." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Enzyme Pharmacology Complete" ;
+		api:name "Enzyme Pharmacology Complete (DEPRECATED)" ;
 		api:description "A complete representation of acitivity values in the LDC for a given Enzyme Class. Potentially extremely large result. Example will use up 2GB of RAM in Chrome." ;
 		api:uriTemplate "/target/enzyme/pharmacology?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;

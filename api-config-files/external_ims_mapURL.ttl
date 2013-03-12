@@ -4,7 +4,7 @@
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-<#chemspider> a api :API ;
+<#chemspider> a api:API ;
 	rdfs:label "Mapping service betweem URLs"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;

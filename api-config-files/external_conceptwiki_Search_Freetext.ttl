@@ -5,7 +5,7 @@
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-<#conceptWiki> a api :API ;
+<#conceptWiki> a api:API ;
 	rdfs:label "Concept Wiki services"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;

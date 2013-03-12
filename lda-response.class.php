@@ -21,7 +21,7 @@ class LinkedDataApiResponse {
     var $DataGraph = false;
     var $SparqlEndpoint = false;
     var $useDatastore = false;
-        
+    var $cacheable = false;    
     var $pageUri = false;
     var $selectQuery = '';
     var $viewQuery = '';
@@ -36,7 +36,6 @@ class LinkedDataApiResponse {
 
     function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
         global $outputFormats;
-        
         $this->Request = $request;
         $this->pageUri = $this->Request->getUriWithPageParam();
         $this->ConfigGraph = $ConfigGraph;
@@ -49,7 +48,7 @@ class LinkedDataApiResponse {
           $this->HttpRequestFactory = $HttpRequestFactory;
         }
     }
-    
+
     function serveConfigGraph(){
         $this->overrideUserConfig=true;
         $api = API;
