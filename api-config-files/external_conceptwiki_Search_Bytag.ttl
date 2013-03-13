@@ -15,7 +15,7 @@
 	api:description "An API configuration to map free text to a concept URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Map free text to a concept URL based on semantig tag" ;
+		api:name "Map free text to a concept URL based on semantic tag" ;
 		api:enableCache false ;
 		api:description "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki." ;
 		api:uriTemplate "/search/byTag?q={q}&uuid={uuid}" ;
