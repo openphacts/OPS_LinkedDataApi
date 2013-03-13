@@ -304,8 +304,6 @@ class LinkedDataApiResponse {
             
         } }
         else{//empty list returned from selector
-            $this->setStatusCode(HTTP_Not_Found);
-            logError("Data not found in the triple store");
             $this->serve();
             return;
         }
@@ -548,9 +546,15 @@ class LinkedDataApiResponse {
                 $xml = $response->body;
                 $results = $this->SparqlEndpoint->parse_select_results($xml);
             }
-
-            foreach($results as $row){
-                if(isset($row['item'])) $list[]=$row['item']['value'];
+            
+            if (empty($results)){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("The selector did not find data in the triple store");
+            }
+            else {
+                foreach($results as $row){
+                    if(isset($row['item'])) $list[]=$row['item']['value'];
+                }
             }
 
         } else {

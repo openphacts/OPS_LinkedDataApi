@@ -404,16 +404,6 @@ _SPARQL_;
                 );
         }
         
-        /*nMOVED TO SANITIZATION foreach($propertyLists as $propertyList){
-            $properties = $propertyList['property-list'];
-            foreach($properties as $name => $uri){
-              if(!$uri){
-                    if($source == 'request') $this->_unknownPropertiesFromRequestParameter[]=$name;
-                    else if($source == 'config') $this->_unknownPropertiesFromConfig[]=$name;
-                    else throw new Exception("source parameter for sortToOrderBy must be 'request' or 'config'");
-                }    
-            }           
-        } */
         return $this->propertyNameListToOrderBySparql($propertyLists);
     }
     
