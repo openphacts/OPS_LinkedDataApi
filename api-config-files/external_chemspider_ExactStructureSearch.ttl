@@ -21,17 +21,17 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33FF66\"> rdf:type ?searchType </span>;
-		<span style=\"BACKGROUND-COLOR: #33FF66\"> cs_api_search:Molecule ?moleculeSmiles </span>;
-		<span style=\"BACKGROUND-COLOR: #33FF66\"> cs_api:result ?result </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_search:MatchType ?searchMatchType </span>; 
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_common:Complexity ?complexity </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_common:Isotopic ?isotopic </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_common:HasSpectra ?hasSpectra </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_common:HasPatents ?hasPatents </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_result:Limit ?limit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_result:Start ?start </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFF66\"> cs_api_result:Length ?length </span>." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?moleculeSmiles </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api:result ?result </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:MatchType ?searchMatchType </span>; 
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span>." ;
 
 		api:name "Chemical Structure Exact Search" ;
 		api:enableCache true ;

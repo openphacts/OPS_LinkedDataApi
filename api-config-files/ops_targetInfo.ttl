@@ -34,30 +34,30 @@
 		a api:ItemEndpoint ;
 		api:name "Target Information" ;
 		api:description "Returns information about a single target that corresponds to {uri}.";
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #33FF66\"> skos:exactMatch ?cw_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #33FF66\"> skos:exactMatch ?uniprot_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> skos:exactMatch ?equiv_target </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> skos:exactMatch ?db_uri </span>.
-?cw_uri <span style=\"BACKGROUND-COLOR: #33FF66\"> skos:prefLabel ?target_name </span>;
-	<span style=\"BACKGROUND-COLOR: #33FF66\"> void:inDataset <http://www.conceptwiki.org> </span>.
-?uniprot_uri <span style=\"BACKGROUND-COLOR: #33FF66\"> uniprot:existence ?existence </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> uniprot:organism ?organism </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> uniprot:sequence ?sequence </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> uniprot:Function_Annotation ?function </span>;
-	<span style=\"BACKGROUND-COLOR: #FF9966\"> uniprot:classifiedWith ?class </span>;
-	<span style=\"BACKGROUND-COLOR: #FF9966\"> uniprot:alternativeName ?alt_names </span>;
-	<span style=\"BACKGROUND-COLOR: #FF9966\"> rdfs:seeAlso ?target_pdb </span>;
-        <span style=\"BACKGROUND-COLOR: #33FF66\"> void:inDataset <http://purl.uniprot.org> </span> .
-?equiv_target <span style=\"BACKGROUND-COLOR: #FF9966\"> chembl:hasKeyword ?keywords </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> chembl:hasDescription ?description </span>;
-	<span style=\"BACKGROUND-COLOR: #FF9966\"> rdfs:subClassOf ?target_type </span>;
-	<span style=\"BACKGROUND-COLOR: #FF9966\"> rdfs:label ?synonyms </span>;	
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> void:inDataset <http://data.kasabi.com/dataset/chembl-rdf></span>.
-?db_uri <span style=\"BACKGROUND-COLOR: #FFFF66\"> drugbank:cellularLocation ?cellularLocations </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> drugbank:molecularWeight ?molecularWeight </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> drugbank:numberOfResidues ?numberOfResidues </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFF66\"> drugbank:theoreticalPi ?theoreticalPi </span>; 
-        <span style=\"BACKGROUND-COLOR: #FFFF66\"> void:inDataset <http://linkedlifedata.com/resource/drugbank></span>." ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_uri </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?equiv_target </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.
+?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.conceptwiki.org> </span>.
+?uniprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:existence ?existence </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_names </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://purl.uniprot.org> </span> .
+?equiv_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasKeyword ?keywords </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?description </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:subClassOf ?target_type </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonyms </span>;	
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://data.kasabi.com/dataset/chembl-rdf></span>.
+?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; 
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank></span>." ;
 
 		api:uriTemplate "/target?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
@@ -94,25 +94,24 @@
 	uniprot:sequence ?sequence ;
 	uniprot:Function_Annotation ?function ;
 	uniprot:classifiedWith ?class ;
-	uniprot:alternativeName ?alt_names ;
+	uniprot:alternativeName ?alt_name ;
 	rdfs:seeAlso ?target_pdb ;
         void:inDataset <http://purl.uniprot.org> .
-?equiv_target chembl:hasKeyword ?keywords ;
+?equiv_target chembl:hasKeyword ?keyword ;
 	chembl:hasDescription ?description ;
 	rdfs:subClassOf ?target_type ;
 	rdfs:label ?synonyms ;	
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
-?db_uri drugbank:cellularLocation ?cellularLocations ;
+?db_uri drugbank:cellularLocation ?cellularLocation ;
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
 	drugbank:theoreticalPi ?theoreticalPi ; 
         void:inDataset <http://linkedlifedata.com/resource/drugbank>.
 " ;
 	api:where "
-GRAPH <http://www.conceptwiki.org> {
+	GRAPH <http://www.conceptwiki.org> {
 		?cw_uri skos:prefLabel ?target_name.
 	}
-{ SELECT ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb (GROUP_CONCAT( DISTINCT ?alt_name ; SEPARATOR=' , ' ) as ?alt_names) {
 	GRAPH <http://purl.uniprot.org> {
 	?uniprot_uri uniprot:existence ?existence .
 	OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
@@ -127,19 +126,15 @@ GRAPH <http://www.conceptwiki.org> {
 	OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb .
 		?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
 	}
-} GROUP BY ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb }
 OPTIONAL {
-         { SELECT ?db_uri (GROUP_CONCAT( DISTINCT ?cellularLocation ; SEPARATOR=' , ') as ?cellularLocations ) ?molecularWeight ?numberOfResidues ?theoreticalPi {
          GRAPH <http://linkedlifedata.com/resource/drugbank> {
 		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
 		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
 		OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
 		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
         }
-	} GROUP BY ?db_uri ?molecularWeight ?numberOfResidues ?theoreticalPi }
 }
 OPTIONAL {
-	{ SELECT ?equiv_target ?target_type ?description (GROUP_CONCAT( DISTINCT ?keyword ; SEPARATOR=' , ') as ?keywords ) (GROUP_CONCAT( DISTINCT ?synonym ; SEPARATOR=' , ' ) as ?synonyms) {
 	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
 		?chembl_uri owl:equivalentClass ?equiv_target .
 		OPTIONAL { ?chembl_uri chembl:hasKeyword ?keyword . }
@@ -147,6 +142,5 @@ OPTIONAL {
 		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
 		OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
 	}
-	} GROUP BY ?equiv_target ?target_type ?description ?db_uri ?cellularLocations ?molecularWeight ?numberOfResidues ?theoreticalPi ?uniprot_uri ?existence ?organism ?sequence ?function ?class ?target_pdb } 
 }".
 
