@@ -203,8 +203,7 @@ GRAPH <http://www.conceptwiki.org> {
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
 	api:where 
-"{       
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		owl:equivalentClass ?equiv_assay .
 	?chembl_uri owl:equivalentClass ?equiv_target .
@@ -241,5 +240,4 @@ GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?target_name .
 	?compound_cw skos:exactMatch ?compound_cs ; 
 		skos:prefLabel ?compound_name .
-}
-}}" .
+}" .
