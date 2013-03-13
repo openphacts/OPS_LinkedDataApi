@@ -1,5 +1,5 @@
 echo '{
-  "basePath": "http://ops2.few.vu.nl:8080",
+  "basePath": "https://ops2.few.vu.nl",
   "apiVersion": "v1.1",
   "apis": [' 
 for file in ./*.ttl
@@ -11,8 +11,8 @@ do
           "httpMethod": "GET",'
 	sed -n '/a [[:print:]]*Endpoint/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/' 
         sed -n '/a api:ExternalHTTPService/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/'
-	sed -n '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/;/,/'
-        sed -n '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/;/,/'
+	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:template/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:template/SPARQL response template: <br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":'
+	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:template/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:template/SPARQL response template: <br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' | sed 's/<br>[[:space:]]*$/",/'
 	sed -n '/a api:API/,/rdfs:label/s/[[:space:]]*rdfs:label \([[:print:]]*\)"[[:print:]]*/          "group": \1"/p' $file | sed 's/$/ ,/'
         echo '          "parameters": ['
 	inputLine=`sed -n '/<#input>/p' $file`
