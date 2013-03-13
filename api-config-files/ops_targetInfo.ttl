@@ -77,7 +77,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A target URI (URLEncoded)" ;
+	api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ;
 	rdfs:range rdfs:Resource .
 
 <#targetViewer> a api:Viewer ;

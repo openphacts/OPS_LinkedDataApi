@@ -25,7 +25,7 @@
 
 <#uuid> api:name "uuid" ;
 	api:label "uuid";
-	api:value "UUID of the concept; required." .
+	api:value "UUID of the concept; required. E.g. 8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" .

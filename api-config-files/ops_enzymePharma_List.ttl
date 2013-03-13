@@ -62,12 +62,12 @@ chembl:organism api:name "assay_organism" ;
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?item";
-api:value "One of the activity types listed at <a href=/pharmacology/filters/activities>/pharmacology/filters/activities</a>" ;
+	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
  
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50 <a href=/pharmacology/filters/units/IC50>/pharmacology/filters/units/IC50</a>" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -79,7 +79,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "An Enzyme Class URI (URLEncoded)" ;
+	api:value "An Enzyme Class URI. e.g.: http://purl.uniprot.org/enzyme/1.1.1.-" ;
 	rdfs:range rdfs:Resource .
 
 <#enzymePharmacologyListEndpoint> a api:ListEndpoint ;

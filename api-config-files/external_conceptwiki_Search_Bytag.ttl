@@ -27,11 +27,11 @@
 
 <#q> api:name "q" ;
 	api:label "q";
-	api:value "Query; required. Minimum length is 3 characters." .
+	api:value "Query; required. Minimum length is 3 characters. E.g. water" .
 
 <#uuid> api:name "uuid" ;
 	api:label "uuid";
-	api:value "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results." .
+	api:value "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197" .
 
 <#limit> api:name "limit" ;
 	api:label "limit";

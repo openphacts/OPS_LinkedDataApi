@@ -31,7 +31,7 @@
 
 <#targetURISpace> api:name "targetURISpace" ;
 	api:label "targetURISpace";
-	api:value "List of URI spaces separated by '|' characters. Restricts the results to ones which are targets in this/these URISpace(s)." .
+	api:value "List of URI spaces separated by '|' characters. Restricts the results to targets in this/these URISpace(s). The URI space of a URL is the one defined when the mapping is loaded. E.g. http://www.conceptwiki.org/concept/" .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

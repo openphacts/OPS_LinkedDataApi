@@ -51,7 +51,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "An Enzyme Class URI (URLEncoded)" ;
+	api:value "An Enzyme Class URI. e.g.: http://purl.uniprot.org/enzyme/1.1.1.-" ;
 	rdfs:range rdfs:Resource .
 
 <#enzymeMemberViewer> a api:Viewer ;

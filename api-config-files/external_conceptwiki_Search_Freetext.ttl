@@ -26,7 +26,7 @@
 
 <#q> api:name "q" ;
 	api:label "q";
-	api:value "Query; required. Mininum length is 3 characters." .
+	api:value "Query; required. Mininum length is 3 characters. E.g. water" .
 
 <#limit> api:name "limit" ;
 	api:label "limit";

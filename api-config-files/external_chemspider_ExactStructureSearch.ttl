@@ -69,19 +69,19 @@ cs_api:commonOptions api:name "commonOptions" ;
 
 cs_api_common:Complexity api:name "Complexity" ;
 	api:label "Complexity";
-	api:value "0: Any ; 1: Single ; 2: Multi" .
+	api:value "(Not supported at the moment) 0: Any ; 1: Single ; 2: Multi" .
 
 cs_api_common:Isotopic api:name "Isotopic" ;
 	api:label "Isotopic" ;
-	api:value "0: Any ; 1: Labeled ; 2: NotLabeled" .
+	api:value "(Not supported at the moment) 0: Any ; 1: Labeled ; 2: NotLabeled" .
 
 cs_api_common:HasSpectra api:name "HasSpectra" ;
 	api:label "HasSpectra" ;
-	api:value "Boolean" .
+	api:value "(Not supported at the moment) Boolean" .
 
 cs_api_common:HasPatents api:name "HasPatents" ;
 	api:label "HasPatents" ;
-	api:value "Boolean" .
+	api:value "(Not supported at the moment) Boolean" .
 
 
 
