@@ -67,7 +67,7 @@ function getDecodedFinalResults($requestId){
 
     $decodedFinalResponse=json_decode($finalResponse);
     if ($decodedFinalResponse===FALSE OR $decodedFinalResponse===NULL){
-        throw new ErrorException("Bad JSON returned from ChemSpider: ".$finalResponse);
+        throw new ErrorException("Unexpected results returned from ChemSpider: ".$finalResponse);
     }
 
     return $decodedFinalResponse;
@@ -111,7 +111,7 @@ function pollStatus($requestId){
 
         $decodedStatusResponse=json_decode($statusResponse);
         if ($decodedStatusResponse===FALSE OR $decodedStatusResponse===NULL){
-            throw new ErrorException("Bad JSON returned from ChemSpider: ".$statusResponse);
+            throw new ErrorException("Unexpected response returned from ChemSpider: ".$statusResponse);
         }
 
         $status=$decodedStatusResponse->{'Status'};

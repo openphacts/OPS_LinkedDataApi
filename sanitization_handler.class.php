@@ -37,6 +37,18 @@ class SanitizationHandler{
         return TRUE;
     }
     
+    /*
+     * Example: https://www.example.com/foo/?bar=baz&inga=42&quux
+     * We get the following 'matches' array:
+     * [0]=> "https://www.example.com/foo/?bar=baz&inga=42&quux"
+      [1]=> "https:"
+      [2]=> "https"
+      [3]=> "//www.example.com"
+      [4]=> "www.example.com"
+      [5]=> "/foo/"
+      [6]=> "?bar=baz&inga=42&quux"
+      [7]=> "bar=baz&inga=42&quux"
+     */
     function validateURI($uri){
         $supportedSchemes=array('http', 'https', 'ftp', 'doi', 'mailto', 'attachment', 'about', 'cvs', 'dns', 'file', 'geo', 'git', 'ldap', 'ldaps', 'res', 'sftp', 'smb', 'ssh', 'svn');
         $pattern='@^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?@';
@@ -54,6 +66,10 @@ class SanitizationHandler{
         }
     
         if (!startsWith($matches[3], '//')){
+            return FALSE;
+        }
+        
+        if (count($matches)==8 && !startsWith($matches[6], '?')){
             return FALSE;
         }
     

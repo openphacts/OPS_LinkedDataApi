@@ -354,6 +354,12 @@ class LinkedDataApiResponse {
         logDebug("External service request: ".$externalServiceRequest);
         try{
             $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
+            if (empty($rdfData)){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("Data not found");
+                $this->serve();
+                return;
+            }
         }
         catch(Exception $e){
             logError("Error while loading data from external service: ".$e->getMessage());
