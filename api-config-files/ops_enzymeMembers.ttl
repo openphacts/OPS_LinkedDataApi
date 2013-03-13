@@ -39,8 +39,8 @@
 		a api:ItemEndpoint ;
 		api:name "Get Enzyme Classification Class Members" ;
 		api:description "A representation of all members of a given Enzyme Class." ;
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #339966\"> ops:has_member ?member </span>.
-?member <span style=\"BACKGROUND-COLOR: #33FF66\"> uniprot:name ?member_name </span>." ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:has_member ?member </span>.
+?member <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:name ?member_name </span>." ;
 		api:uriTemplate "/target/enzyme/members?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/target/enzyme/members?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-";

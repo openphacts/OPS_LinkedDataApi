@@ -15,7 +15,7 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33FF66\"> chemspider:smiles ?smiles </span>." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>." ;
 
 		api:name "SMILES to URL" ;
 		api:enableCache true ;

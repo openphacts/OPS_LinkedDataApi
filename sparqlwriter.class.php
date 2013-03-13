@@ -81,7 +81,7 @@ class SparqlWriter {
 #	    $template = substr($template,0, strrpos($template, "}"));
 #	    if (stripos($template, 'SELECT')!==false) {
 		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
-		$sparql= "SELECT DISTINCT ?item { WHERE {" .  "{$template} } {$orderBy['orderBy']}";
+		$sparql= "SELECT DISTINCT ?item WHERE {" .  "{$template} } {$orderBy['orderBy']}";
 		if (strcasecmp($limit,"all")!=0) { 
 			$sparql.="  LIMIT {$limit} OFFSET {$offset}";
 		}

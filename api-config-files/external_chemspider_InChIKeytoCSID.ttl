@@ -15,7 +15,7 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input InChIKey string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33FF66\"> chemspider:inchikey ?inchi_key </span>." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key </span>." ;
 		api:name "InchiKey to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?inchi_key={inchi_key}" ;
