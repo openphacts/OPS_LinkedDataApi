@@ -6,13 +6,15 @@ class SparqlWriter {
     
     private $_config;
     private $_request;
+    private $_parameterPropertyMapper;
     
     var $_unknownPropertiesFromRequestParameter = array();
     var $_unknownPropertiesFromConfig = array();
     
-    function __construct($config, $request){
+    function __construct($config, $request, $parameterPropertyMapper){
         $this->_config = $config;
         $this->_request = $request;
+        $this->_parameterPropertyMapper = $parameterPropertyMapper;
     }
     
     function addPrefixesToQuery($query){
@@ -255,9 +257,9 @@ _SPARQL_;
         $defaultLangs = $this->getDefaultSelectLangs();
         foreach($paramsArray as $k => $v){
             
-            $prefix = $this->prefixFromParamName($k);
-            $propertiesList = $this->mapParamNameToProperties($k);
-            $propertyNames = $this->paramNameToPropertyNames($k);
+            $prefix = $this->_parameterPropertyMapper->prefixFromParamName($k);
+            $propertiesList = $this->_parameterPropertyMapper->mapParamNameToProperties($k);
+            $propertyNames = $this->_parameterPropertyMapper->paramNameToPropertyNames($k);
             $counter=0;
             $name = $propertyNames[0];
             $varName = $name;
@@ -364,129 +366,9 @@ _SPARQL_;
         return '<'.$uri.'>';
     }
     
-    function paramNameToPropertyNames($name){
-        #remove min-/max-
-	$nameArray = $this->splitPrefixAndName($name);
-        $name = $nameArray['name'];
-        #split on dot
-        $splitNames = explode('.', $name);
-        return $splitNames;
-    }
-    
-    function mapParamNameToProperties($name){
-        $splitNames = $this->paramNameToPropertyNames($name);
-        $list = array();
-        foreach($splitNames as $sn){
-            $uri = $this->getConfigGraph()->getUriForVocabPropertyLabel($sn);
-            $list[$sn] = $uri;
-        }
-        return $list;
-    }
-    
-    function splitPrefixAndName($name){
-        $prefixes = array('min', 'max', 'minEx', 'maxEx', 'name', 'exists', 'lang', 'true', 'false');
-        foreach($prefixes as $prefix){
-            if(strpos($name, $prefix.'-')===0){
-                $name =  substr($name, strlen($prefix.'-'));
-                return array(
-                    'name' => $name,
-                    'prefix' => $prefix,
-                    );
-            }
-        }
-        return array('name' => $name, 'prefix' => false);
-    }
-    
-    function prefixFromParamName($name){
-        $a = $this->splitPrefixAndName($name);
-        return $a['prefix'];
-    }
-    
     function getOffset(){
         $pageNo = $this->_request->getPage();
         return ($pageNo - 1 ) * $this->getLimit();
-    }
-    
-    function getUnknownPropertiesFromRequest(){
-        if($this->hasUnknownPropertiesFromRequest()){
-            return $this->_unknownPropertiesFromRequestParameter;
-        } else {
-            return false;
-        }
-    }
-
-    function getUnknownPropertiesFromConfig(){
-        if($this->hasUnknownPropertiesFromConfig()){
-            return $this->_unknownPropertiesFromConfig;
-        } else {
-            return false;
-        }
-    }
-    
-    function hasUnknownPropertiesFromRequest(){
-        
-        if(!empty($this->_unknownPropertiesFromRequestParameter)){
-            return true;
-        }
-        foreach($this->_request->getUnreservedParams() as $k => $v){
-            $propertyNames = $this->paramNameToPropertyNames($k);
-            $propertyNamesWithUris = $this->mapParamNameToProperties($k);
-            foreach($propertyNames as $pn){
-#Antonis
-                  if(empty($propertyNamesWithUris[$pn]) && $pn!=='XDEBUG_SESSION_START' && $pn!=='KEY' ){
-                        $this->_unknownPropertiesFromRequestParameter[]=$pn;
-                    }
-            }
-        }
-        $this->getOrderBy();//?
-
-        try{
-            $chain = $this->getConfigGraph()->getRequestPropertyChainArray();
-        } catch (UnknownPropertyException $e){
-            $this->_unknownPropertiesFromRequestParameter[]=$e->getMessage();
-        }
-
-        if(!empty($this->_unknownPropertiesFromRequestParameter)){
-            return true;
-        }
-
-        return false;
-    }
-    
-    function hasUnknownPropertiesFromConfig($viewerUri=false){
-
-        if(!empty($this->_unknownPropertiesFromConfig)){
-              return true;
-        }
-        
-        $filters = $this->getConfigGraph()->getAllFilters();
-        foreach($filters as $filter){
-            $paramsArray = queryStringToParams($filter);
-            foreach(array_keys($paramsArray) as $paramName){
-                $propertyNames = $this->paramNameToPropertyNames($paramName);
-                $propertyNamesWithUris = $this->mapParamNameToProperties($paramName);
-                foreach($propertyNames as $pn){
-                    if(empty($propertyNamesWithUris[$pn])){
-                        $this->_unknownPropertiesFromConfig[]=$pn;
-                    }
-                }
-            }
-            
-        }
-        $this->getOrderBy();
- 
-        if($viewerUri){
-        try{
-                $chain = $this->getConfigGraph()->getViewerDisplayPropertiesValueAsPropertyChainArray($viewerUri);
-            } catch (Exception $e){
-                $this->_unknownPropertiesFromConfig[]=$e->getMessage();
-            }
-        }
-        if(!empty($this->_unknownPropertiesFromConfig)){
-              return true;
-        }
-        
-        return false;
     }
     
     
@@ -518,11 +400,11 @@ _SPARQL_;
             $sortName = ltrim($sortName, '-');
             $propertyLists[]= array(
                     'sort-order' => $ascOrDesc,
-                    'property-list'=> $this->mapParamNameToProperties($sortName),
+                    'property-list'=> $this->_parameterPropertyMapper->mapParamNameToProperties($sortName),
                 );
         }
         
-        foreach($propertyLists as $propertyList){
+        /*nMOVED TO SANITIZATION foreach($propertyLists as $propertyList){
             $properties = $propertyList['property-list'];
             foreach($properties as $name => $uri){
               if(!$uri){
@@ -531,7 +413,7 @@ _SPARQL_;
                     else throw new Exception("source parameter for sortToOrderBy must be 'request' or 'config'");
                 }    
             }           
-        } 
+        } */
         return $this->propertyNameListToOrderBySparql($propertyLists);
     }
     

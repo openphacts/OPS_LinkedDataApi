@@ -52,7 +52,8 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A target URI (URLEncoded)" .
+	api:value "A target URI (URLEncoded)" ;
+	rdfs:range rdfs:Resource .
 
 <#targetViewer> a api:Viewer ;
 	api:name "targetViewer" ;

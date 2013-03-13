@@ -79,7 +79,8 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A target URI (URLEncoded)" .
+	api:value "A target URI (URLEncoded)" ;
+	rdfs:range rdfs:Resource .
 
 <#targetPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/target/pharmacology/pages?uri={uri}" ;

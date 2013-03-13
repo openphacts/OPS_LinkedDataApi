@@ -80,7 +80,8 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A compound URI (URLEncoded)" .
+	api:value "A compound URI (URLEncoded)" ;
+	rdfs:range rdfs:Resource .
 
 <#compoundPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/pharmacology/pages?uri={uri}" ;

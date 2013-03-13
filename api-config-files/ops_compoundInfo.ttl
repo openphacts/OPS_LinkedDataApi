@@ -54,7 +54,8 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A compound URI (URLEncoded)" .
+	api:value "A compound URI (URLEncoded)" ;
+	rdfs:range rdfs:Resource .  
 
 <#compoundViewer> a api:Viewer ;
 	api:name "compoundViewer" ;

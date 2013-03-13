@@ -51,7 +51,8 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI (URLEncoded)".
+	api:value "A ChEBI Class URI (URLEncoded)" ;
+	rdfs:range rdfs:Resource .
 
 <#chebiClassViewer> a api:Viewer ;
 	api:name "chebiClassViewer";

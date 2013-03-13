@@ -10,6 +10,8 @@ require_once 'lib/moriarty/moriarty.inc.php';
 require_once 'lib/moriarty/sparqlservice.class.php';
 require_once 'lib/moriarty/credentials.class.php';
 require_once 'graphs/linkeddataapigraph.class.php';
+require_once 'parameter_property_mapper.class.php';
+require_once 'sanitization_handler.class.php';
 require_once 'sparqlwriter.class.php';
 
 class LinkedDataApiResponse {
@@ -18,6 +20,8 @@ class LinkedDataApiResponse {
     var $Request = false;
     var $ConfigGraph = false;
     var $SparqlWriter = false;
+    var $SanitizationHandler = false;
+    var $ParameterPropertyMapper = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
     var $useDatastore = false;
@@ -86,17 +90,26 @@ class LinkedDataApiResponse {
                 $this->serve();
             }
             
-            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request);            
+            $this->ParameterPropertyMapper = new ParameterPropertyMapper($this->ConfigGraph);
+            $this->SanitizationHandler = new SanitizationHandler($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
+            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
-            if($this->SparqlWriter->hasUnknownPropertiesFromRequest()){
+            
+            if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
                 $this->errorMessages[]="Unknown Properties in Request: {$param}";
                 $this->setStatusCode(HTTP_Bad_Request);
                 $this->serve();
-            } else if($this->SparqlWriter->hasUnknownPropertiesFromConfig($viewerUri)){
-                $this->setStatusCode(HTTP_Internal_Server_Error);
-                $unknownProps = implode(', ', $this->SparqlWriter->getUnknownPropertiesFromConfig());
+            } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
+                $this->setStatusCode(HTTP_Bad_Request);
+                $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
+                logError($msg);
+                $this->errorMessages[]=$msg;
+                $this->serve();
+            } else if (!$this->SanitizationHandler->hasValidURIParameters()){
+                $this->setStatusCode(HTTP_Bad_Request);
+                $msg = "URIs in the request not well formed";
                 logError($msg);
                 $this->errorMessages[]=$msg;
                 $this->serve();
@@ -173,6 +186,14 @@ class LinkedDataApiResponse {
         if($response->is_success()){
             $rdf = $response->body;
             $this->DataGraph->add_rdf($rdf);
+            
+            if ($this->DataGraph->is_empty()){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("Data not found in the triple store");
+                $this->serve();
+                return;
+            }
+            
             #	    echo $uri;
             $this->DataGraph->add_resource_triple($pageUri, FOAF.'primaryTopic', $uri);
             $label = $this->DataGraph->get_first_literal($uri, SKOS.'prefLabel');
@@ -229,6 +250,14 @@ class LinkedDataApiResponse {
         	    } else {
         	      $this->DataGraph->add_rdf($rdf);
         	    }
+        	    
+        	    if ($this->DataGraph->is_empty()){
+        	        $this->setStatusCode(HTTP_Not_Found);
+        	        logError("Data not found in the triple store");
+        	        $this->serve();
+        	        return;
+        	    }
+        	    
            	 $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
            	 $this->listUri = $listUri;
            	 $pageUri = $this->Request->getUriWithPageParam();
@@ -274,6 +303,12 @@ class LinkedDataApiResponse {
             $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
             
         } }
+        else{//empty list returned from selector
+            $this->setStatusCode(HTTP_Not_Found);
+            logError("Data not found in the triple store");
+            $this->serve();
+            return;
+        }
         
     }
     
@@ -318,6 +353,12 @@ class LinkedDataApiResponse {
         logDebug("External service request: ".$externalServiceRequest);
         try{
             $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
+            if (empty($rdfData)){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("Data not found");
+                $this->serve();
+                return;
+            }
         }
         catch(Exception $e){
             logError("Error while loading data from external service: ".$e->getMessage());
@@ -824,7 +865,7 @@ class LinkedDataApiResponse {
 	}
 
 	function addTermBindingsToExecution($propertyPath) {
-	    $propertyNamesWithUris = $this->SparqlWriter->mapParamNameToProperties($propertyPath);
+	    $propertyNamesWithUris = $this->ParameterPropertyMapper->mapParamNameToProperties($propertyPath);
 	    foreach($propertyNamesWithUris as $propertyName=>$uri) {
 	        $termName = '_:term_'.$propertyName;
 	        $this->DataGraph->add_resource_triple('_:execution', API.'termBinding', $termName);

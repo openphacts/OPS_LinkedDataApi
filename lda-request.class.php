@@ -150,8 +150,12 @@ class LinkedDataApiRequest {
     
     function getParam($k){
         $params = $this->getParams();
-        if(isset($params[$k])) return $params[$k];
-        else return null;
+        if(isset($params[$k])){
+            return $params[$k];
+        }
+        else{
+            return null;
+        }
     }
     
     function getInstallSubDir(){

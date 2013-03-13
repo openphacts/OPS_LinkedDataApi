@@ -60,7 +60,7 @@ cs_api:commonOptions api:name "commonOptions" ;
 	api:subType cs_api_common:HasSpectra ;
 	api:subType cs_api_common:HasPatents .
 
-cs_api_common:Complexity> api:name "Complexity" ;
+cs_api_common:Complexity api:name "Complexity" ;
 	api:label "Complexity";
 	api:value "0: Any ; 1: Single ; 2: Multi" .
 
