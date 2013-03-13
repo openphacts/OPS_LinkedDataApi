@@ -9,6 +9,9 @@ $xmlData = simplexml_load_string($response);
 if ($xmlData===false){
     throw new ErrorException("Error. External service returned: ".$response);
 }
+if ($xmlData->count()==0){
+    throw new EmptyResponseException("No results returned from the IMS");
+}
 
 $unreservedParameters = $this->Request->getUnreservedParams();
 $inputURL = $unreservedParameters["URL"];

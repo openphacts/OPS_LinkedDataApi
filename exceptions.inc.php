@@ -7,4 +7,8 @@ class ConfigGraphException extends Exception {
 
 }
 class UnknownPropertyException extends Exception {}
+
+class TimeoutException extends Exception {}
+
+class EmptyResponseException extends Exception {}
 ?>

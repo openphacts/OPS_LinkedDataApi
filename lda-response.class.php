@@ -5,6 +5,7 @@ define('HTTP_OK', 'HTTP/1.1 200 OK');
 define('HTTP_Not_Found', 'HTTP/1.1 404 Not Found');
 define('HTTP_Internal_Server_Error', 'HTTP/1.1 500 Internal Server Error');
 define('HTTP_Bad_Request', 'HTTP/1.1 400 Bad Request');
+define('HTTP_Gateway_Timeout', 'HTTP/1.1 504 Gateway Timeout');
 
 require_once 'lib/moriarty/moriarty.inc.php';
 require_once 'lib/moriarty/sparqlservice.class.php';
@@ -351,12 +352,20 @@ class LinkedDataApiResponse {
         logDebug("External service request: ".$externalServiceRequest);
         try{
             $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
-            if (empty($rdfData)){
-                $this->setStatusCode(HTTP_Not_Found);
-                logError("Data not found");
-                $this->serve();
-                return;
-            }
+        }
+        catch (EmptyResponseException $e){
+            logError("EmptyResponseException: ".$e->getMessage());
+            $this->setStatusCode(HTTP_Not_Found);
+            $this->errorMessages[]=$e->getMessage();
+            $this->serve();
+            exit;
+        }
+        catch (TimeoutException $e){
+            logError("TimeoutException: ".$e->getMessage());
+            $this->setStatusCode(HTTP_Gateway_Timeout);
+            $this->errorMessages[]=$e->getMessage();
+            $this->serve();
+            exit;
         }
         catch(Exception $e){
             logError("Error while loading data from external service: ".$e->getMessage());
@@ -951,6 +960,9 @@ class LinkedDataApiResponse {
 	                break;
 	            case HTTP_Not_Found :
 	                require 'views/errors/404.php';
+	                break;
+	            case HTTP_Gateway_Timeout :
+	                require 'views/errors/504.php';
 	                break;
 	        }
 	        exit;
