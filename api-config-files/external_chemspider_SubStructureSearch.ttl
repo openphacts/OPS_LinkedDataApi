@@ -52,7 +52,7 @@ cs_api:searchOptions api:name "searchOptions" ;
 
 cs_api_search:MatchTautomers api:name "MatchTautomers" ;
 	api:label "MatchTautomers" ;
-	api:value "Search exactly for the given tautomeric form and ignore others. Not supported at the moment . Boolean" .
+	api:value "(Not supported at the moment) Search exactly for the given tautomeric form and ignore others. Not supported at the moment . Boolean" .
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
