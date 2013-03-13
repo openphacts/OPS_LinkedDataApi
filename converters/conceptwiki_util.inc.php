@@ -1,6 +1,6 @@
 <?php
 
-define(CONCEPTWIKI_PREFIX, 'http://www.conceptwiki.org/concept/');
+define('CONCEPTWIKI_PREFIX', 'http://www.conceptwiki.org/concept/');
 
 function addLabelWithLanguage($node, $label, $dataGraph){
     $language=null;

@@ -41,6 +41,11 @@
 		a api:ItemEndpoint ;
 		api:name "Get ChEBI Ontology Class" ;
 		api:description "A representation of a given ChEBI Ontology Class, its parent and siblings." ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #339966\"> rdfs:subClassOf ?parent </span>;
+	<span style=\"BACKGROUND-COLOR: #33FF66\"> rdfs:label ?item_name </span>;
+	<span style=\"BACKGROUND-COLOR: #339966\"> ops:sibling ?sibling </span>.
+?sibling <span style=\"BACKGROUND-COLOR: #33FF66\"> rdfs:label ?sibling_name </span>.
+?parent <span style=\"BACKGROUND-COLOR: #33FF66\"> rdfs:label ?parent_name</span>";
 		api:uriTemplate "/compound/chebi/node?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound/chebi/node?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_16114";

@@ -42,6 +42,7 @@
 		a api:ItemEndpoint ;
 		api:name "ChEBI Class Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given ChEBI Ontology class." ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #33FF66\"> ops:chebiPharmacologyTotalResults ?count </span>." ;
 		api:uriTemplate "/compound/chebi/pharmacology/count?uri={uri}" ;
 		api:variable <http://www.openphacts.org/units/Micromolar> ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;

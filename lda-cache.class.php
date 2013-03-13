@@ -166,7 +166,7 @@ class LinkedDataApiCache
 	    
 	    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 	    
-	    $key = LinkedDataApiCache::cacheKey($uri);
+	    $key = LinkedDataApiCache::cacheKey($uri, '');
 	    $cachedObject = $mc->get($key);
 	    if ($cachedObject)
 	    {
