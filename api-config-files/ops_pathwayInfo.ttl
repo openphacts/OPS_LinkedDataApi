@@ -51,7 +51,8 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A Pathway URI (URLEncoded)" .
+	api:value "A Pathway URI (URLEncoded)" ;
+	rdfs:range rdfs:Resource .
 
 <#pathwayViewer> a api:Viewer ;
 	api:name "pathwayViewer" ;

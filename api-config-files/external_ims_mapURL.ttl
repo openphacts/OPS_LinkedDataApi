@@ -25,7 +25,8 @@
 
 <#URL> api:name "URL" ;
 	api:label "URL";
-	api:value "An input URL to be mapped." .
+	api:value "An input URL to be mapped." ;
+	rdfs:range rdfs:Resource .
 
 <#targetURISpace> api:name "targetURISpace" ;
 	api:label "targetURISpace";
