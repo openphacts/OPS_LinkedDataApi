@@ -27,7 +27,9 @@ $requestId = $response;
 pollStatus($requestId);
 
 $decodedFinalResults = getDecodedFinalResults($requestId);
-
+if (empty($decodedFinalResults)){
+    throw new EmptyResponseException("No results retrieved from Chemspider.");
+}
 
 //add Data To DataGraph
 $searchType = getSearchType($this->Request->getPathWithoutExtension());
@@ -98,7 +100,7 @@ function pollStatus($requestId){
     do {
         if ($statusResponse!=null){
             if ($timeoutCounter==SEARCH_TIMEOUT){
-                throw new ErrorException("Search timed out after waiting for ".(SEARCH_TIMEOUT/1000000/60)." minutes");
+                throw new TimeoutException("Search timed out after waiting for ".(SEARCH_TIMEOUT/1000000/60)." minutes");
             }
             usleep(POLLING_INTERVAL);
             $timeoutCounter += POLLING_INTERVAL;
