@@ -29,7 +29,7 @@
 
 chemspider:inchikey api:name "inchi_key" ;
 	api:label "inchi_key";
-	api:value "An InChIKey string." .
+	api:value "An InChIKey string. E.g. BSYNRYMUTXBXSQ-UHFFFAOYSA-N" .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

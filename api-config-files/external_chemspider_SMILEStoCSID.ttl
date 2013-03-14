@@ -30,7 +30,7 @@
 
 <#smiles> api:name "smiles" ;
 	api:label "smiles";
-	api:value "A SMILES string." .
+	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

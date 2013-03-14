@@ -11,8 +11,8 @@ do
           "httpMethod": "GET",'
 	sed -n '/a [[:print:]]*Endpoint/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/' 
         sed -n '/a api:ExternalHTTPService/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/'
-	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:template/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:template/SPARQL response template: <br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":'
-	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:template/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:template/SPARQL response template: <br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' | sed 's/<br>[[:space:]]*$/",/'
+	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:resultsDescription/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:resultsDescription/<hr>Response template: <hr><br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' |  sed 's|</span>[[:space:]]*[.;,]*[[:space:]]*",[[:print:]]*$|</span><br><br><hr>",|' | sed 's/<br>[[:space:]]*$/<hr>",/'
+	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:resultsDescription/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:resultsDescription/<hr>Response template: <hr><br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' | sed 's|</span>[[:space:]]*[.;,]*[[:space:]]*",[[:print:]]*$|</span><br><br><hr>",|' | sed 's/<br>[[:space:]]*$/<hr>",/'
 	sed -n '/a api:API/,/rdfs:label/s/[[:space:]]*rdfs:label \([[:print:]]*\)"[[:print:]]*/          "group": \1"/p' $file | sed 's/$/ ,/'
         echo '          "parameters": ['
 	inputLine=`sed -n '/<#input>/p' $file`
@@ -51,6 +51,10 @@ do
 				echo '              "name": "'`echo $var | sed 's,^[[:print:]]*:,,'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
 				sed -n "/^[[:space:]]*$sub_var/,/api:value/s/[[:space:]]*[[:print:]]*api:value/              *description*: /p" $file | sed 's,*,",g' | sed 's/[[:space:]]*.[[:space:]]*$/ ,/'
                                 echo '              "paramType": "query",'
+				if [[ "$sub_var" == "cs_api_search:Molecule" ]]
+				then
+					echo '              "required": true,'
+				fi
                                 echo '              "dataType": "string"'
 				echo '            },'
                         done    
@@ -94,7 +98,11 @@ do
                                 echo '              "paramType": "query"'
 			else 
 				echo '              "paramType": "query",'
-				echo '              "dataType": "string"'
+				if [[ "$var" == "<#smiles>" || "$var" == "<#uuid>" || "$var" == "<#q>" || "$var" == "<#URL>" || "$var" == "chemspider:inchikey" || "$var" == "chemspider:inchi" ]]
+				then
+					echo '              "required": true,'
+				fi
+                                echo '              "dataType": "string"'
 			fi
 	        	echo '            },'
 		fi
@@ -109,7 +117,7 @@ do
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size.",
+              "description": "The desired page size. Set to 'all' to retrieve all results in a single page.",
               "dataType": "integer",
               "paramType": "query"
             },'
