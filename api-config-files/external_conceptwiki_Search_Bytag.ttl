@@ -1,0 +1,41 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#conceptWiki> a api:API ;
+	rdfs:label "Concept Wiki services"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#q> ;
+	api:variable <#limit> ;
+	api:variable <#uuid> ;
+	api:description "An API configuration to map free text to a concept URL." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Map free text to a concept URL based on semantic tag" ;
+		api:enableCache false ;
+		api:description "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki." ;
+		api:uriTemplate "/search/byTag?q={q}&uuid={uuid}" ;
+		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search/byTag?q={q}&uuid={uuid}" ;
+		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;
+		api:exampleRequestPath "/search/byTag?q=water&uuid=07a84994-e464-4bbf-812a-a4b96fa3d197" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<#q> api:name "q" ;
+	api:label "q";
+	api:value "Query; required. Minimum length is 3 characters. E.g. water" .
+
+<#uuid> api:name "uuid" ;
+	api:label "uuid";
+	api:value "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197" .
+
+<#limit> api:name "limit" ;
+	api:label "limit";
+	api:value "Limits the number of results; optional. Minimum value is 1, maximum value is common sense. Default value is 10." .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" .

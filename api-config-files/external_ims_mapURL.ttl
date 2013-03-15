@@ -1,0 +1,46 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "Mapping service betweem URLs"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#URL> ;
+	api:variable <#targetURISpace> ;
+	api:description "An API configuration to return a set of URLs associated to the input URL." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Map URLs" ;
+		api:enableCache true ;
+		api:description "Returns a set of URLs associated to the input URL." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?url </span>." ;
+		api:uriTemplate "/mapURL?URL={URL}" ;
+		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9090/OPS-IMS/mapURL?URL={URL}" ;
+		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
+		api:exampleRequestPath "/mapURL?URL=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<#URL> api:name "URL" ;
+	api:label "URL";
+	api:value "An input URL to be mapped." ;
+	rdfs:range rdfs:Resource .
+
+<#targetURISpace> api:name "targetURISpace" ;
+	api:label "targetURISpace";
+	api:value "List of URI spaces separated by '|' characters. Restricts the results to targets in this/these URISpace(s). The URI space of a URL is the one defined when the mapping is loaded. E.g. http://www.conceptwiki.org/concept/" .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic skos:exactMatch ?url ." ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic skos:exactMatch ?url .
+}".

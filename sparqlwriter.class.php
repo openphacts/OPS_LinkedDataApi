@@ -1,30 +1,35 @@
 <?php
 require_once 'graphs/vocabularygraph.class.php';
+require_once 'ops_ims.class.php';
+require_once 'virtuosoformatter.class.php';
 class SparqlWriter {
     
     private $_config;
     private $_request;
+    private $_parameterPropertyMapper;
     
     var $_unknownPropertiesFromRequestParameter = array();
     var $_unknownPropertiesFromConfig = array();
     
-    function __construct($config, $request){
+    function __construct($config, $request, $parameterPropertyMapper){
         $this->_config = $config;
         $this->_request = $request;
+        $this->_parameterPropertyMapper = $parameterPropertyMapper;
     }
     
     function addPrefixesToQuery($query){
-    	  $prefixesString='';	
+        $prefixesString='';
         $prefixes = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
-	  preg_match_all('/([a-zA-Z_\-]+)\:[a-zA-Z0-9_\-]+/', $query, $matches);
-	  foreach($matches[1] as $prefix){
-		  if(isset($prefixes[$prefix])){
-			$ns = $prefixes[$prefix];
-			$prefixesString.="PREFIX {$prefix}: <{$ns}>\n";
-			unset($prefixes[$prefix]);
-		  }
-	  }
-	  return $prefixesString.$query;
+        preg_match_all('/([a-zA-Z_\-]+)\:[a-zA-Z0-9_\-]+/', $query, $matches);
+        
+        foreach($matches[1] as $prefix){
+            if(isset($prefixes[$prefix])){
+                $ns = $prefixes[$prefix];
+                $prefixesString.="PREFIX {$prefix}: <{$ns}>\n";
+                unset($prefixes[$prefix]);
+            }
+        }
+        return $prefixesString.$query;
     }
     
     function getLimit(){
@@ -67,16 +72,29 @@ class SparqlWriter {
 		$orderBy['orderBy']='ORDER BY ?item';
 	    }
 	    $filterGraph = $this->getFilterGraph();
-            $addToSelect = preg_replace('/ORDER BY/','',$orderBy['orderBy']);
-	    $addToSelect = preg_replace('/DESC\(/i','',$addToSelect);
-            $addToSelect = preg_replace('/\)/','',$addToSelect);
-            $addToSelect = preg_replace('/\?item/','',$addToSelect);
+#            $addToSelect = preg_replace('/ORDER BY/','',$orderBy['orderBy']);
+#	    $addToSelect = preg_replace('/DESC\(/i','',$addToSelect);
+#            $addToSelect = preg_replace('/\)/','',$addToSelect);
+#            $addToSelect = preg_replace('/\?item/','',$addToSelect);
 #            $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
 #Antonis            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
-	    $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} } {$orderBy['orderBy']} LIMIT {$limit} OFFSET {$offset}";
+#	    $template = substr($template,0, strrpos($template, "}"));
+#	    if (stripos($template, 'SELECT')!==false) {
+		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
+		$sparql= "SELECT DISTINCT ?item WHERE {" .  "{$template} } {$orderBy['orderBy']}";
+		if (strcasecmp($limit,"all")!=0) { 
+			$sparql.="  LIMIT {$limit} OFFSET {$offset}";
+		}
+#	    }
+#	    else {
+#	        $sparql= "SELECT DISTINCT ?item {$addToSelect} WHERE {" .  "{$filterGraph} {$template} {$orderBy['orderBy']} } } LIMIT {$limit} OFFSET {$offset}";
+#	    }
 	    $ops_uri = $this->_request->getParam('uri');
 	    $sparql = str_replace('?ops_item', '<'.$ops_uri.'>', $sparql);
-	    return $sparql;	
+	    $ims = new OpsIms();
+	    $formatter = new VirtuosoFormatter();
+#	    echo $formatter->formatQuery($ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri));
+	    return $formatter->formatQuery($ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri));
         } else {
             return false;
         }
@@ -239,9 +257,9 @@ _SPARQL_;
         $defaultLangs = $this->getDefaultSelectLangs();
         foreach($paramsArray as $k => $v){
             
-            $prefix = $this->prefixFromParamName($k);
-            $propertiesList = $this->mapParamNameToProperties($k);
-            $propertyNames = $this->paramNameToPropertyNames($k);
+            $prefix = $this->_parameterPropertyMapper->prefixFromParamName($k);
+            $propertiesList = $this->_parameterPropertyMapper->mapParamNameToProperties($k);
+            $propertyNames = $this->_parameterPropertyMapper->paramNameToPropertyNames($k);
             $counter=0;
             $name = $propertyNames[0];
             $varName = $name;
@@ -348,129 +366,9 @@ _SPARQL_;
         return '<'.$uri.'>';
     }
     
-    function paramNameToPropertyNames($name){
-        #remove min-/max-
-	$nameArray = $this->splitPrefixAndName($name);
-        $name = $nameArray['name'];
-        #split on dot
-        $splitNames = explode('.', $name);
-        return $splitNames;
-    }
-    
-    function mapParamNameToProperties($name){
-        $splitNames = $this->paramNameToPropertyNames($name);
-        $list = array();
-        foreach($splitNames as $sn){
-            $uri = $this->getConfigGraph()->getUriForVocabPropertyLabel($sn);
-            $list[$sn] = $uri;
-        }
-        return $list;
-    }
-    
-    function splitPrefixAndName($name){
-        $prefixes = array('min', 'max', 'minEx', 'maxEx', 'name', 'exists', 'lang', 'true', 'false');
-        foreach($prefixes as $prefix){
-            if(strpos($name, $prefix.'-')===0){
-                $name =  substr($name, strlen($prefix.'-'));
-                return array(
-                    'name' => $name,
-                    'prefix' => $prefix,
-                    );
-            }
-        }
-        return array('name' => $name, 'prefix' => false);
-    }
-    
-    function prefixFromParamName($name){
-        $a = $this->splitPrefixAndName($name);
-        return $a['prefix'];
-    }
-    
     function getOffset(){
         $pageNo = $this->_request->getPage();
         return ($pageNo - 1 ) * $this->getLimit();
-    }
-    
-    function getUnknownPropertiesFromRequest(){
-        if($this->hasUnknownPropertiesFromRequest()){
-            return $this->_unknownPropertiesFromRequestParameter;
-        } else {
-            return false;
-        }
-    }
-
-    function getUnknownPropertiesFromConfig(){
-        if($this->hasUnknownPropertiesFromConfig()){
-            return $this->_unknownPropertiesFromConfig;
-        } else {
-            return false;
-        }
-    }
-    
-    function hasUnknownPropertiesFromRequest(){
-        
-        if(!empty($this->_unknownPropertiesFromRequestParameter)){
-            return true;
-        }
-        foreach($this->_request->getUnreservedParams() as $k => $v){
-            $propertyNames = $this->paramNameToPropertyNames($k);
-            $propertyNamesWithUris = $this->mapParamNameToProperties($k);
-            foreach($propertyNames as $pn){
-#Antonis
-                  if(empty($propertyNamesWithUris[$pn])){
-                        $this->_unknownPropertiesFromRequestParameter[]=$pn;
-                    }
-            }
-        }
-        $this->getOrderBy();
-
-        try{
-            $chain = $this->getConfigGraph()->getRequestPropertyChainArray();
-        } catch (UnknownPropertyException $e){
-            $this->_unknownPropertiesFromRequestParameter[]=$e->getMessage();
-        }
-
-        if(!empty($this->_unknownPropertiesFromRequestParameter)){
-            return true;
-        }
-
-        return false;
-    }
-    
-    function hasUnknownPropertiesFromConfig($viewerUri=false){
-
-        if(!empty($this->_unknownPropertiesFromConfig)){
-              return true;
-        }
-        
-        $filters = $this->getConfigGraph()->getAllFilters();
-        foreach($filters as $filter){
-            $paramsArray = queryStringToParams($filter);
-            foreach(array_keys($paramsArray) as $paramName){
-                $propertyNames = $this->paramNameToPropertyNames($paramName);
-                $propertyNamesWithUris = $this->mapParamNameToProperties($paramName);
-                foreach($propertyNames as $pn){
-                    if(empty($propertyNamesWithUris[$pn])){
-                        $this->_unknownPropertiesFromConfig[]=$pn;
-                    }
-                }
-            }
-            
-        }
-        $this->getOrderBy();
- 
-        if($viewerUri){
-        try{
-                $chain = $this->getConfigGraph()->getViewerDisplayPropertiesValueAsPropertyChainArray($viewerUri);
-            } catch (Exception $e){
-                $this->_unknownPropertiesFromConfig[]=$e->getMessage();
-            }
-        }
-        if(!empty($this->_unknownPropertiesFromConfig)){
-              return true;
-        }
-        
-        return false;
     }
     
     
@@ -502,20 +400,10 @@ _SPARQL_;
             $sortName = ltrim($sortName, '-');
             $propertyLists[]= array(
                     'sort-order' => $ascOrDesc,
-                    'property-list'=> $this->mapParamNameToProperties($sortName),
+                    'property-list'=> $this->_parameterPropertyMapper->mapParamNameToProperties($sortName),
                 );
         }
         
-        foreach($propertyLists as $propertyList){
-            $properties = $propertyList['property-list'];
-            foreach($properties as $name => $uri){
-              if(!$uri){
-                    if($source == 'request') $this->_unknownPropertiesFromRequestParameter[]=$name;
-                    else if($source == 'config') $this->_unknownPropertiesFromConfig[]=$name;
-                    else throw new Exception("source parameter for sortToOrderBy must be 'request' or 'config'");
-                }    
-            }           
-        } 
         return $this->propertyNameListToOrderBySparql($propertyLists);
     }
     
@@ -603,47 +491,71 @@ _SPARQL_;
     function getFilterGraph() {
 	$params = $this->_request->getParams();
 	$vars = $this->_config->getApiConfigVariableBindings();
+	$ep_vars = $this->_config->getEndpointConfigVariableBindings();
 	$filterGraph = "{\n";
-#	print_r($params);
-#	print_r($vars);
+	//print_r($params);
+	//print_r($vars);
+	//print_r($ep_vars);
 	$count=1;
 	foreach ($params as $param_name => $param_value) {
 	   if ($param_name != 'uri'){
 		foreach ($vars as $var_name => $var_props) {
-			if ($param_name==$var_name AND $param_value !=""){
-		           if (stripos($param_value , "|")!== false){
-				$token = strtok($param_value,'|');
-				$filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
-				$token=strtok('|');
-				while ($token != false){
-					$filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
-					$token=strtok('|');
-				}
-			   }
-			   else {
-				$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> "' . $param_value  . '"' . ". } ";	
-			   }
-			}
-			elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
-				$filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-				$filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ') }';
-				$count++;  
-			}
-			elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
-                                $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-                                $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ' ) }';
-                                $count++;  
-                        }
-			elseif (stripos($param_name,"minEx-")!==false AND substr($param_name,6) == $var_name){
-                                $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-                                $filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' ) }';
-                                $count++;  
-                        }
-			elseif (stripos($param_name,"maxEx-")!==false AND substr($param_name,6) == $var_name){
-                                $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-                                $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' ) }';
-                                $count++;  
-                        }
+		    if ($param_name==$var_name AND $param_value !=""){
+		        if (stripos($param_value , "|")!== false){
+		            $token = strtok($param_value,'|');
+		            $filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
+		            $token=strtok('|');
+		            while ($token != false){
+		                if (isset($ep_vars[$param_value]['uri'])) {
+		                    $token = '<' . $ep_vars[$token]['uri'] . '>';
+		                }
+		                else {
+		                    if (is_numeric($token)) {
+		                        $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+		                    }
+		                    else {
+		                        $token = '"' . $token  . '"';
+		                    }
+		                }
+		                $filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> ' . $token  . "}";
+		                $token=strtok('|');
+		            }
+		        }
+		        else {
+		            if (isset($ep_vars[$param_value]['uri'])) {
+		                $param_value = '<' . $ep_vars[$param_value]['uri'] . '>';
+		            }
+		            else {
+		                if (is_numeric($param_value)) {
+		                    $param_value = '"' . $param_value  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+		                }
+		                else {
+		                    $param_value = '"' . $param_value  . '"';
+		                }
+		            }
+		            $filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> ' . $param_value  . ". } ";
+		        }
+		    }
+		    elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
+		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+		        $filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ') }';
+		        $count++;
+		    }
+		    elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
+		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+		        $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ' ) }';
+		        $count++;
+		    }
+		    elseif (stripos($param_name,"minEx-")!==false AND substr($param_name,6) == $var_name){
+		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+		        $filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' ) }';
+		        $count++;
+		    }
+		    elseif (stripos($param_name,"maxEx-")!==false AND substr($param_name,6) == $var_name){
+		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
+		        $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' ) }';
+		        $count++;
+		    }
 		}
 	   }
 	}
@@ -652,128 +564,150 @@ _SPARQL_;
 		return $filterGraph;
 	}
     }
-   
+       
     function getViewQueryForUriList($uriList, $viewerUri){
-        
+
         $fromClause = $this->getFromClause();
-#Antonis botch
-        if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template) 
-		AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
-		AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
-			$query='Something went wrong';
-			$limit="";
-			$offset="";
-			$filterGraph = $this->getFilterGraph();
-			$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-			if ($this->_config->getEndpointType() == API.'ListEndpoint') {
-				$limit =" LIMIT ".$this->getLimit();
-			        $offset =" OFFSET ".$this->getOffset();
-				$orderBy = $this->getOrderBy();
- 		                if (empty($orderBy['orderBy'])) {
-		   	             $orderBy['orderBy']='ORDER BY ?item';
-            			}
-
-				$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} "));
-				if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
-                        	        $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT "))) . 
-						"{ {$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) .
-						"{$orderBy['orderBy']}  {$limit} {$offset} } }";
-                        	}
-				else {
-        	                        $query .= "{$filterGraph} } {$orderBy['orderBy']} {$limit} {$offset} ";
-				}
-			}
-			else {
-			   $orderBy = $this->getOrderBy();
-	                   if (empty($orderBy['orderBy']) AND stripos($query, "SELECT ") !== false) {
-		                $orderBy['orderBy']='ORDER BY ?item';
-		           }
-
-                           if (stripos($query, "SELECT ") !== false AND stripos($query, "CONSTRUCT ") !== false){
-                                $query = substr($query,0,stripos($query, "{", strrpos($query, "SELECT ")) + 1) .
-                                       "{$filterGraph}" . substr($query,stripos($query, "{", strrpos($query, "SELECT "))) . "}}"; 
-			   }
-			   else {
-				$query.="{$filterGraph}} {$orderBy['orderBy']}";
-			   }
-			}
-			return $query;
+        #Antonis botch
+	$limit = $this->getLimit();
+        if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
+        AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
+        AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
+            $query='Something went wrong';
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint'){
+                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " .  $whereGraph  . " }"));
+	    }
+	    else {	
+            	$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/GRAPH/i',  $this->getFilterGraph() . "\n GRAPH", $whereGraph , 1) . " }"));
+	    }
+            $ims = new OpsIms();
+	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
+	    	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+	   	foreach($uriList as $uri) {
+			$expandedQuery .= "?item = <{$uri}> || ";
+	    	}
+	    	$expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
+	    	$expandedQuery .= ") }";
+	    }
+            $formatter = new VirtuosoFormatter();
+            return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
-#Antonis
-#                  $uriSetFilter = "FILTER( ?item = <http://puelia.example.org/fake-uri/x> ";
-#                  foreach($uriList as $describeUri){
-#                      $uriSetFilter.= "|| ?item = <{$describeUri}> \n";
-#                  }
-#                  $uriSetFilter.= ")\n";
-                  return $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
-                  /* 
-                    FILTER doesn't work so well with all triplestores, could do it by adding incrementers to every variable in the pattern which increment for ever loop of the URI list. If do so, it would be good to change the propertypath->sparql code to map to a plain pattern which is then passed to the same code as this is, to add the incrementers 
-                    
-                  */
+            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+            $ims = new OpsIms();
+            $expandedQuery = $ims->expandQuery($query, $ops_uri);
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
+            	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+            	foreach($uriList as $uri) {
+                	$expandedQuery .= "?item = <{$uri}> || ";
+            	}
+            	$expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
+            	$expandedQuery .= ") }";
+	    }
+            $formatter = new VirtuosoFormatter();
+            return $formatter->formatQuery($expandedQuery);
         } else if($viewerUri==API.'describeViewer' AND strlen($this->_request->getParam('_properties')) === 0 ){
             return 'DESCRIBE <'.implode('> <', $uriList).'>'.$fromClause;
         } else {
             $namespaces = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
             $conditionsGraph = '';
             $whereGraph = '';
-            $chains = $this->getViewerPropertyChains($viewerUri);            
+            $chains = $this->getViewerPropertyChains($viewerUri);
             $props = array();
             foreach($chains as $chain) {
-              $props =  $this->mapPropertyChainToStructure($chain, $props);
+                $props =  $this->mapPropertyChainToStructure($chain, $props);
             }
             foreach ($uriList as $position => $uri) {
-              if ($position) {
-                $whereGraph .= " UNION\n";
-              }
-              $conditionsGraph .= "\n    # constructing properties of {$uri} \n";
-              $whereGraph .= "\n  # identifying properties of {$uri} \n";
-              $counter = 0;
-              foreach ($props as $prop => $substruct) {
-                if ($counter) {
-                  $whereGraph .= "UNION {\n";
-                } else {
-                  $whereGraph .= "  {\n";
+                if ($position) {
+                    $whereGraph .= " UNION\n";
                 }
-                $propvar = $substruct['var'] . '_' . $position;
-                $invProps = false;
-            
-                if ($prop == API.'allProperties') {
-                  $triple = "    <{$uri}> {$propvar}_prop {$propvar} .\n";
-                } else {
-                  if($invProps = $this->getConfigGraph()->getInverseOfProperty($prop)){
-                    $inverseTriple="#Inverse Mappings \n\n";
-                    foreach($invProps as $no => $invProp){
-                      $invPropQnameOrUri = $this->qnameOrUri($invProp, $namespaces);
-                      $inverseTriple.= "{\n   {$propvar} {$invPropQnameOrUri} <{$uri}>  . \n ";
-                      if (array_key_exists('props', $substruct)) {
-                        $inverseTriple .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
-                      }
-                      $inverseTriple .= "}"; 
-                      if($no!=(count($invProps)-1)){
-                        $inverseTriple.= " UNION ";
-                      }
+                $conditionsGraph .= "\n    # constructing properties of {$uri} \n";
+                $whereGraph .= "\n  # identifying properties of {$uri} \n";
+                $counter = 0;
+                foreach ($props as $prop => $substruct) {
+                    if ($counter) {
+                        $whereGraph .= "UNION {\n";
+                    } else {
+                        $whereGraph .= "  {\n";
                     }
+                    $propvar = $substruct['var'] . '_' . $position;
+                    $invProps = false;
+
+                    if ($prop == API.'allProperties') {
+                        $triple = "    <{$uri}> {$propvar}_prop {$propvar} .\n";
+                    } else {
+                        if($invProps = $this->getConfigGraph()->getInverseOfProperty($prop)){
+                            $inverseTriple="#Inverse Mappings \n\n";
+                            foreach($invProps as $no => $invProp){
+                                $invPropQnameOrUri = $this->qnameOrUri($invProp, $namespaces);
+                                $inverseTriple.= "{\n   {$propvar} {$invPropQnameOrUri} <{$uri}>  . \n ";
+                                if (array_key_exists('props', $substruct)) {
+                                    $inverseTriple .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
+                                }
+                                $inverseTriple .= "}";
+                                if($no!=(count($invProps)-1)){
+                                    $inverseTriple.= " UNION ";
+                                }
+                            }
+                        }
+                         
+                        $propQnameOrUri = $this->qnameOrUri($prop, $namespaces);
+                        $triple = "    <{$uri}> {$propQnameOrUri} {$propvar} .\n";
+                    }
+
+                    $whereGraph .= ($invProps)? $inverseTriple :  $triple;
+                    $conditionsGraph .= $triple;
+                    if (array_key_exists('props', $substruct)) {
+                        if(!$invProps) $whereGraph .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
+                        $conditionsGraph .= $this->mapPropertyStructureToConstructGraph($substruct, $position, $namespaces);
+                    }
+                    $whereGraph .= "  } ";
+                    $counter += 1;
                 }
-                 
-                  $propQnameOrUri = $this->qnameOrUri($prop, $namespaces);
-                  $triple = "    <{$uri}> {$propQnameOrUri} {$propvar} .\n";
-                }
-                
-                $whereGraph .= ($invProps)? $inverseTriple :  $triple;
-                $conditionsGraph .= $triple;
-                if (array_key_exists('props', $substruct)) {
-                  if(!$invProps) $whereGraph .= $this->mapPropertyStructureToWhereGraph($substruct, $position, $namespaces);
-                  $conditionsGraph .= $this->mapPropertyStructureToConstructGraph($substruct, $position, $namespaces);
-                }
-                $whereGraph .= "  } ";
-                $counter += 1;
-              }
             }
-            
+
             return $this->addPrefixesToQuery("CONSTRUCT { {$conditionsGraph}} $fromClause WHERE { {$whereGraph}\n}\n");
-            
+
         }
+
+    }
+    
+    /**
+     * Builds the query that inserts data into a graph
+     *
+     * @param string $rdfData
+     * @param string $graphName
+     * @return string
+     */
+    function getInsertQueryForExternalServiceData($rdfData, $graphName){
+        $query = "INSERT IN GRAPH <{$graphName}>{".$rdfData."}";
+    
+        return $query;
+    }
+    
+    /**
+     * Build query that retrieves all the information from a certain graph
+     * 
+     * @param string $graphName
+     * @param string $viewerUri
+     * @return string
+     */
+    function getViewQueryForExternalService($graphName, $pageUri, $viewerUri){
+        $pageUri = preg_replace('/\|/','%7C', $pageUri);
         
+        //get the template query from the config
+        $template = $this->_config->getViewerTemplate($viewerUri);
+        //fill in pageUri
+        $template = str_replace("{pageUri}", '<'.$pageUri.'>', $template);
+        
+        //get the where template from the config
+        $whereGraphTemplate = $this->_config->getViewerWhere($viewerUri);
+        //fill in the graph name
+        $whereGraph = str_replace("{result_hash}", $graphName, $whereGraphTemplate);
+        
+        $query = "CONSTRUCT { {$template} } WHERE { {$whereGraph} }";
+        $finalQuery = $this->addPrefixesToQuery($query);
+        return $finalQuery;
     }
     
     function mapPropertyStructureToWhereGraph($structure, $uriPosition, $namespaces) {

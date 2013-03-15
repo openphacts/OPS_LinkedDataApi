@@ -20,12 +20,13 @@
 
 <#chebi> a api:API ;
         rdfs:label "ChEBI Ontology"@en ;
-        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
+ 	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -41,15 +42,28 @@
 		a api:ItemEndpoint ;
 		api:name "ChEBI Class Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given ChEBI Ontology class." ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:chebiPharmacologyTotalResults ?count </span>." ;
 		api:uriTemplate "/compound/chebi/pharmacology/count?uri={uri}" ;
+		api:variable <http://www.openphacts.org/units/Micromolar> ;
+		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Nanomolar> ;
+		api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
         	api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#chebiPharmacologyCountViewer> ; 
 		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://www.chemspider.com> api:label "ChemSpider" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -60,18 +74,25 @@ chembl:organism api:name "assay_organism" ;
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?activity_uri";
-	api:value "One of: 'IC50' , 'Activity' " ;
+	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?activity_uri";
 	a rdf:Property .
 
+chembl-ops:normalisedUnit api:name "activity_unit" ;
+        api:label "activity_unit" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
+        api:filterVariable "?activity_uri";
+        a rdf:Property .
+
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	rdfs:range rdfs:Resource .
 
 <#chebiPharmacologyCountViewer> a api:Viewer ;
 	api:name "chebiPharmacologyCountViewer" ;

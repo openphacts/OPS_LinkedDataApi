@@ -1,0 +1,139 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix cs_api: <http://www.chemspider.com/api/> .
+@prefix cs_api_search: <http://www.chemspider.com/api/searchOptions#> .
+@prefix cs_api_result: <http://www.chemspider.com/api/resultOptions#> .
+@prefix cs_api_common: <http://www.chemspider.com/api/commonOptions#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "ChemSpider structure search"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable cs_api:searchOptions ;
+	api:variable cs_api:commonOptions ;
+	api:variable cs_api:resultOptions ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return the result of an exact chemical structure search." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?moleculeSmiles </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api:result ?result </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:MatchType ?searchMatchType </span>; 
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span>." ;
+
+		api:name "Chemical Structure Exact Search" ;
+		api:enableCache true ;
+		api:uriTemplate "/structure/exact?searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
+		api:exampleRequestPath "/structure/exact?searchOptions.Molecule=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+
+cs_api:searchOptions api:name "searchOptions" ;
+	api:label "searchOptions" ;
+	api:value "Possible search option values" ;
+	api:subType cs_api_search:Molecule ;
+	api:subType cs_api_search:MatchType .
+
+cs_api_search:Molecule api:name "Molecule" ;
+	api:label "Molecule" ;
+	api:value "A SMILES string. E.g. CNC(=O)c1cc(ccn1)Oc2ccc(cc2)NC(=O)Nc3ccc(c(c3)C(F)(F)F)Cl" .
+
+cs_api_search:MatchType api:name "MatchType" ;
+	api:label "MatchType" ;
+	api:value "0: ExactMatch ; 1: AllTautomers ; 2: SameSkeletonIncludingH ; 3: SameSkeletonExcludingH ; 4: AllIsomers" .
+
+cs_api:commonOptions api:name "commonOptions" ;
+	api:label "commonOptions";
+	api:value "Possible common option values" ;
+	api:subType cs_api_common:Complexity ;
+	api:subType cs_api_common:Isotopic ;
+	api:subType cs_api_common:HasSpectra ;
+	api:subType cs_api_common:HasPatents .
+
+cs_api_common:Complexity api:name "Complexity" ;
+	api:label "Complexity";
+	api:value "(Not supported at the moment) 0: Any ; 1: Single ; 2: Multi" .
+
+cs_api_common:Isotopic api:name "Isotopic" ;
+	api:label "Isotopic" ;
+	api:value "(Not supported at the moment) 0: Any ; 1: Labeled ; 2: NotLabeled" .
+
+cs_api_common:HasSpectra api:name "HasSpectra" ;
+	api:label "HasSpectra" ;
+	api:value "(Not supported at the moment) Boolean" .
+
+cs_api_common:HasPatents api:name "HasPatents" ;
+	api:label "HasPatents" ;
+	api:value "(Not supported at the moment) Boolean" .
+
+
+
+cs_api:resultOptions api:name "resultOptions" ;
+	api:label "resultOptions";
+	api:value "Possible search result option values" ;
+	api:subType cs_api_result:Limit ;
+	api:subType cs_api_result:Start ;
+	api:subType cs_api_result:Length .
+
+cs_api_result:Limit api:name "Limit" ;
+	api:label "Limit" ;
+	api:value "Integer" .
+
+cs_api_result:Start api:name "Start" ;
+	api:label "Start" ;
+	api:value "Integer" .
+
+cs_api_result:Length api:name "Length" ;
+	api:label "Length" ;
+	api:value "Integer. How many results should be returned starting from Start index. Default value: -1." .
+
+
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+  ?primaryTopic rdf:type ?searchType ;
+		cs_api_search:Molecule ?moleculeSmiles ;
+		cs_api_search:MatchType ?searchMatchType ; 
+		cs_api:result ?result ;
+		cs_api_common:Complexity ?complexity ;
+		cs_api_common:Isotopic ?isotopic ;
+		cs_api_common:HasSpectra ?hasSpectra ;
+		cs_api_common:HasPatents ?hasPatents ;
+		cs_api_result:Limit ?limit ;
+		cs_api_result:Start ?start ;
+		cs_api_result:Length ?length .
+		" ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic rdf:type ?searchType .
+	?primaryTopic cs_api_search:Molecule ?moleculeSmiles .
+	?primaryTopic cs_api:result ?result .
+	OPTIONAL { ?primaryTopic cs_api_search:MatchType ?searchMatchType }
+	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
+	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
+	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }
+	OPTIONAL { ?primaryTopic cs_api_common:HasPatents ?hasPatents }
+	OPTIONAL { ?primaryTopic cs_api_result:Limit ?limit }
+	OPTIONAL { ?primaryTopic cs_api_result:Start ?start }
+	OPTIONAL { ?primaryTopic cs_api_result:Length ?length }
+}".

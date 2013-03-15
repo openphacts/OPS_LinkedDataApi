@@ -3,7 +3,12 @@ class LinkedDataApiRequest {
     
     var $formatExtension = null;        
     var $pathWithoutExtension = null;
-    var $reservedParams = array(
+    var $unreservedParams = null;
+    var $params = null;
+    var $orderedUriWithoutApiKeys = null;
+    var $orderedUriNoExtensionReservedParams = null;
+    
+    static $reservedParams = array(
         '_search', # a free text search query
         '_metadata', # is a comma separated list of names of metadata graphs to show: site,formats,views,all,execution
         '_view',
@@ -18,7 +23,9 @@ class LinkedDataApiRequest {
         '_select',#
         '_lang', # is a comma-separated list of languages
         '_callback', # for JSONP
-        
+        'callback', # for JSONP
+	'app_id',
+	'app_key',
         );
     
     function __construct(){
@@ -33,12 +40,26 @@ class LinkedDataApiRequest {
         $this->uri = $this->getUri();
     }
     
+    public static function eliminateDebugParams(){
+        $params = array('XDEBUG_SESSION_START', 'KEY');
+        foreach($params as $param){
+            $regex= '/([&?])'.$param.'=[^&]+(&|$)/';
+            $_SERVER['REQUEST_URI'] = rtrim(preg_replace($regex, '\1', $_SERVER['REQUEST_URI']), '?&');
+            $_SERVER['QUERY_STRING'] = rtrim(preg_replace($regex, '\1', $_SERVER['QUERY_STRING']), '?&');
+            unset($_REQUEST[$param]);
+        }   
+    }
+    
     function getParams(){
-        if(!empty($_SERVER['QUERY_STRING'])){
-            return queryStringToParams($_SERVER['QUERY_STRING']);            
-        } else {
-            return array();
+        if ($this->params!=null){
+            return $this->params;
         }
+        if(!empty($_SERVER['QUERY_STRING'])){
+            $this->params = queryStringToParams($_SERVER['QUERY_STRING']);            
+        } else {
+            $this->params = array();
+        }
+        return $this->params;
     }
     
     function hasNoCacheHeader(){
@@ -56,27 +77,85 @@ class LinkedDataApiRequest {
     function hasUnrecognisedReservedParams(){
         $params = $this->getParams();
         foreach($params as $k => $v){
-            if($k[0]=='_' AND !in_array($k, $this->reservedParams)){
+            if($k[0]=='_' AND !in_array($k, self::$reservedParams)){
                 return $k;
             }
         }
         return false;
     }
+    
     function getUnreservedParams(){
+        if ($this->unreservedParams!=null){
+            return $this->unreservedParams;
+        }
+        
         $params = $this->getParams();
-        $unreservedParams = array();
+        $this->unreservedParams = array();
         foreach($params as $k => $v){
-            if($k[0]!=='_' AND $k!=='callback' AND $v!==''){
-                $unreservedParams[$k] = $v;
+            if($k[0]!=='_' AND $k!=='callback' AND $v!=='' AND $k!=='app_id' AND $k!=='app_key'){
+                $this->unreservedParams[$k] = $v;
             }
         }
-        return $unreservedParams;
+        
+        uksort($this->unreservedParams, 'strcasecmp');
+        return $this->unreservedParams;
+    }
+    
+    function getOrderedUriWithoutApiKeys(){
+        if ($this->orderedUriWithoutApiKeys!=null){
+            return $this->orderedUriWithoutApiKeys;
+        }
+    
+        $this->orderedUriWithoutApiKeys = $this->getPath();
+        $params = $this->getParams();
+        if (count($params) > 0){
+            $this->orderedUriWithoutApiKeys .= '?';
+            uksort($params, 'strcasecmp');//sort the parameters lexicographically, case-insensitive by parameter name
+
+            foreach ($params as $paramName => $paramValue){
+                if ($paramName!=='app_id' AND $paramName!=='app_key'){
+                    if (substr($this->orderedUriWithoutApiKeys, -1) != '?'){
+                        $this->orderedUriWithoutApiKeys .= '&';
+                    }
+
+                    $this->orderedUriWithoutApiKeys .= $paramName.'='.$paramValue;
+                }
+            }
+        }
+        
+        return $this->orderedUriWithoutApiKeys;
+    }
+    
+    function getOrderedUriWithoutExtensionAndReservedParams(){
+        if ($this->orderedUriNoExtensionReservedParams!=null){
+            return $this->orderedUriNoExtensionReservedParams;
+        }
+    
+        $this->orderedUriNoExtensionReservedParams = $this->getPathWithoutExtension();
+        $params = $this->getUnreservedParams();
+        if (count($params) > 0){
+            $this->orderedUriNoExtensionReservedParams .= '?';
+
+            foreach ($params as $paramName => $paramValue){
+                if (substr($this->orderedUriNoExtensionReservedParams, -1) != '?'){
+                    $this->orderedUriNoExtensionReservedParams .= '&';
+                }
+
+                $this->orderedUriNoExtensionReservedParams .= $paramName.'='.$paramValue;
+            }
+        }
+        
+        return $this->orderedUriNoExtensionReservedParams;
     }
     
     function getParam($k){
         $params = $this->getParams();
-        if(isset($params[$k])) return $params[$k];
-        else return null;
+        if(isset($params[$k])){
+            return $params[$k];
+        }
+        else{
+            return null;
+        }
     }
     
     function getInstallSubDir(){
@@ -164,34 +243,57 @@ class LinkedDataApiRequest {
         else return null;
     }
     
-    function getAcceptTypes($defaultTypes = array()){
+    function getAcceptTypes($paramTypes = array()){        
         $header = $this->getAcceptHeader();
         $mimes = explode(',',$header);
-    	$accept_mimetypes = array();
-	
+        $accept_mimetypes = array();
+
+        //build map between mimetypes and associated weights
         foreach($mimes as $mime){
-        $mime = trim($mime);
-    		$parts = explode(';q=', $mime);
-    		if(count($parts)>1){
-    			$accept_mimetypes[$parts[0]]=strval($parts[1]);
-    		}
-    		else {
-    			$accept_mimetypes[$mime]=1;
-    		}
-    	}
-  /* prefer html, then xhtml, then anything in the default array, to mimetypes with the same value. this is because WebKit browsers (Chrome, Safari, Android) currently prefer xml and even image/png to html */
-  $defaultTypes = array_merge(array('text/html', 'application/xhtml+xml'), $defaultTypes);
-	foreach($defaultTypes as $defaultType){
-		if(isset($accept_mimetypes[$defaultType])){	
-			$count_values = array_count_values($accept_mimetypes);
-			$defaultVal = $accept_mimetypes[$defaultType];
-			if($count_values[$defaultVal] > 1){
-				$accept_mimetypes[$defaultType]=strval(0.001+$accept_mimetypes[$defaultType]);
-			}
-		}
-  }
-    	arsort($accept_mimetypes);
-    	return array_keys($accept_mimetypes);
+            $mime = trim($mime);
+            $parts = explode(';q=', $mime);
+            if(count($parts)>1){
+                $accept_mimetypes[$parts[0]]=strval($parts[1]);
+            }
+            else {
+                $accept_mimetypes[$mime]=1;
+            }   
+        }
+        if (empty($accept_mimetypes)){
+            $accept_mimetypes['*/*'] = 1;
+        }
+
+        $defaultTypes = array_merge(array('application/json', 'application/xml', 'text/turtle', 
+                                            'application/rdf+xml', 'application/x-rdf+json', 
+                                            'text/tab-separated-values', 'text/html', 'application/xhtml+xml'),
+                                            $paramTypes);
+        if (!empty($paramTypes)){
+            array_unique($defaultTypes);
+        }
+        
+        //expand the mimetype '*/*' to remaining values
+        if (isset($accept_mimetypes['*/*'])){
+            //$tempDefaults contains all the mimetypes which do not explicitly appear in the header
+            foreach ($defaultTypes as $defaultType){
+                if (!isset($accept_mimetypes[$defaultType])){
+                    $accept_mimetypes[$defaultType] = $accept_mimetypes['*/*'];
+                }
+            }
+            
+            unset($accept_mimetypes['*/*']);
+        }
+        
+        //give weight according to the order in the $defaultTypes array
+        foreach($defaultTypes as $defaultType){
+            $count_values = array_count_values($accept_mimetypes);
+            $defaultVal = $accept_mimetypes[$defaultType];
+            if($count_values[$defaultVal] > 1){
+                $accept_mimetypes[$defaultType]=strval(0.001*($count_values[$defaultVal]-1)+$accept_mimetypes[$defaultType]);
+            }
+        }
+        
+        arsort($accept_mimetypes);//sort descending according to weight
+        return array_keys($accept_mimetypes);
     }
     
     function hasAcceptTypes(){
@@ -211,6 +313,9 @@ class LinkedDataApiRequest {
         return $this->getUriWithoutParam('_view');
     }
     
+    function getUriWithoutBase(){
+        return str_replace( $this->getBase(), '', $_SERVER['REQUEST_URI']);
+    }
     
     function getUriWithoutParam($params, $stripextension=false){
         if(is_string($params)){
@@ -252,6 +357,18 @@ class LinkedDataApiRequest {
     function getUriWithPageParam($pageno=false, $defaultparamvalue=1){
         return $this->getUriWithParam('_page', $pageno, $defaultparamvalue);
     }
+    
+    function getRequestUriWithoutFormatExtension(){
+        if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $_SERVER['REQUEST_URI'], $m)){
+            $ret = $m[1].$m[3];
+        }
+        else{//the uri does not have a format extension
+            $ret = $_SERVER['REQUEST_URI'];
+        }
+        
+        return $ret;
+    }
+    
     
     function getPageUriWithFormatExtension($uri, $extension){
         if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $uri, $m)){

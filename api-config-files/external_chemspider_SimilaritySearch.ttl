@@ -1,0 +1,144 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix cs_api:  <http://www.chemspider.com/api/> .
+@prefix cs_api_search:  <http://www.chemspider.com/api/searchOptions#> .
+@prefix cs_api_result:  <http://www.chemspider.com/api/searchResultOptions#> .
+@prefix cs_api_common:  <http://www.chemspider.com/api/commonOptions#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "ChemSpider structure search"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable cs_api:searchOptions ;
+	api:variable cs_api:commonOptions ;
+	api:variable cs_api:searchResultOptions ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return the result of a chemical similarity search." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Chemical Structure Similarity Search" ;
+		api:description "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;
+		<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?similarMolecule </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Threshold ?searchThreshold </span>; 
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:SimilarityType ?searchSimilarityType </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span>." ;
+
+		api:enableCache true ;
+		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "http://parts.chemspider.com/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
+		api:exampleRequestPath "/structure/similarity?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O&searchOptions.Threshold=0.99&searchOptions.SimilarityType=Tanimoto&resultOptions.Limit=100" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+
+cs_api:searchOptions api:name "searchOptions" ;
+	api:label "searchOptions" ;
+	api:value "Possible search option values" ;
+	api:subType cs_api_search:Molecule ;
+	api:subType cs_api_search:SimilarityType ;
+	api:subType cs_api_search:Threshold .
+
+cs_api_search:SimilarityType api:name "SimilarityType" ;
+	api:label "SimilarityType" ;
+	api:value "0: Tanimoto ; 1: Tversky ; 2: Euclidian" .
+
+cs_api_search:Molecule api:name "Molecule" ;
+	api:label "Molecule" ;
+	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
+
+cs_api_search:Threshold api:name "Threshold" ;
+	api:label "Threshold" ;
+	api:value "Double <= 1.0" .
+
+
+cs_api:commonOptions api:name "commonOptions" ;
+	api:label "commonOptions";
+	api:value "Possible common option values" ;
+	api:subType cs_api_common:Complexity ;
+	api:subType cs_api_common:Isotopic ;
+	api:subType cs_api_common:HasSpectra ;
+	api:subType cs_api_common:HasPatents .
+
+cs_api_common:Complexity api:name "Complexity" ;
+        api:label "Complexity";
+        api:value "(Not supported at the moment) 0: Any ; 1: Single ; 2: Multi" .
+
+cs_api_common:Isotopic api:name "Isotopic" ;
+        api:label "Isotopic" ;
+        api:value "(Not supported at the moment) 0: Any ; 1: Labeled ; 2: NotLabeled" .
+
+cs_api_common:HasSpectra api:name "HasSpectra" ;
+        api:label "HasSpectra" ;
+        api:value "(Not supported at the moment) Boolean" .
+
+cs_api_common:HasPatents api:name "HasPatents" ;
+        api:label "HasPatents" ;
+        api:value "(Not supported at the moment) Boolean" .
+
+cs_api:searchResultOptions api:name "resultOptions" ;
+	api:label "resultOptions";
+	api:value "Possible search result option values" ;
+	api:subType cs_api_result:Limit ;
+	api:subType cs_api_result:Start ;
+	api:subType cs_api_result:Length .
+
+cs_api_result:Limit api:name "Limit" ;
+	api:label "Limit" ;
+	api:value "Integer. Search limit. Specefy how many results return back during the search. Default value: -1 ." .
+
+cs_api_result:Start api:name "Start" ;
+	api:label "Start" ;
+	api:value "Integer. Return results starting the index. Default value: 0" .
+
+cs_api_result:Length api:name "Length" ;
+	api:label "Length" ;
+	api:value "Integer. How many results should be returned starting from Start index. Default value: -1." .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+	{pageUri} foaf:primaryTopic ?primaryTopic .
+	?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+	?primaryTopic rdf:type ?searchType ;
+		cs_api_search:Molecule ?moleculeSmiles ;
+		cs_api:result ?result ;
+		cs_api_search:Threshold ?searchThreshold ; 
+		cs_api_search:SimilarityType ?searchSimilarityType ;
+		cs_api_common:Complexity ?complexity ;
+		cs_api_common:Isotopic ?isotopic ;
+		cs_api_common:HasSpectra ?hasSpectra ;
+		cs_api_common:HasPatents ?hasPatents ;
+		cs_api_result:Limit ?limit ;
+		cs_api_result:Start ?start ;
+		cs_api_result:Length ?length .
+		" ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic rdf:type ?searchType .
+	?primaryTopic cs_api_search:Molecule ?moleculeSmiles .
+	?primaryTopic cs_api:result ?result .
+	OPTIONAL { ?primaryTopic cs_api_search:Threshold ?searchThreshold }
+	OPTIONAL { ?primaryTopic cs_api_search:SimilarityType ?searchSimilarityType }
+	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
+	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
+	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }
+	OPTIONAL { ?primaryTopic cs_api_common:HasPatents ?hasPatents }
+	OPTIONAL { ?primaryTopic cs_api_result:Limit ?limit }
+	OPTIONAL { ?primaryTopic cs_api_result:Start ?start }
+	OPTIONAL { ?primaryTopic cs_api_result:Length ?length }
+}".

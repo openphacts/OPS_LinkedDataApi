@@ -5,11 +5,14 @@ define('HTTP_OK', 'HTTP/1.1 200 OK');
 define('HTTP_Not_Found', 'HTTP/1.1 404 Not Found');
 define('HTTP_Internal_Server_Error', 'HTTP/1.1 500 Internal Server Error');
 define('HTTP_Bad_Request', 'HTTP/1.1 400 Bad Request');
+define('HTTP_Gateway_Timeout', 'HTTP/1.1 504 Gateway Timeout');
 
 require_once 'lib/moriarty/moriarty.inc.php';
 require_once 'lib/moriarty/sparqlservice.class.php';
 require_once 'lib/moriarty/credentials.class.php';
 require_once 'graphs/linkeddataapigraph.class.php';
+require_once 'parameter_property_mapper.class.php';
+require_once 'sanitization_handler.class.php';
 require_once 'sparqlwriter.class.php';
 
 class LinkedDataApiResponse {
@@ -18,58 +21,12 @@ class LinkedDataApiResponse {
     var $Request = false;
     var $ConfigGraph = false;
     var $SparqlWriter = false;
+    var $SanitizationHandler = false;
+    var $ParameterPropertyMapper = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
-    var $outputFormats = array(
-	
-	 'html' => array(
-                'ext' => 'html',
-                'view' => 'views/php-templates/puelia-outer.php',
-                'mimetypes' => array(
-			'text/html', 'application/xhtml+xml'
-               )
-            ),
-      
-        'json' => array(
-                'ext' => 'json',
-                'view' => 'views/simple_json.php',
-                'mimetypes' => array(
-                        'application/json',
-                    ),
-            ),
-        'rdfjson' => array(
-                'ext' => 'rdfjson',
-                'view' => 'views/rdf_json.php',
-                'mimetypes' => array(
-                        'application/x-rdf+json',
-                    ),
-            ),
-        
-        'ttl' => array(
-                'ext' => 'ttl',
-                'view' => 'views/turtle.php',
-                'mimetypes' => array(
-                        'text/plain',
-                    ),
-            ),
-        
-        'rdf' => array(
-                'ext' => 'rdf',
-                'view' => 'views/rdf_xml.php',
-                'mimetypes' => array(
-                        'application/rdf+xml',
-                    ),
-            ),
-        'xml' => array(
-                'ext' => 'xml',
-                'view' => 'views/simple_xml.php',
-                'mimetypes' => array(
-                        'application/xml',
-                    ),
-            ),
-           
-        );
-        
+    var $useDatastore = false;
+    var $cacheable = false;    
     var $pageUri = false;
     var $selectQuery = '';
     var $viewQuery = '';
@@ -80,9 +37,10 @@ class LinkedDataApiResponse {
     var $overrideUserConfig= false;
     var $HttpRequestFactory=null;
     var $list_of_item_uris = null;
+    var $outputFormats;
 
     function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
-
+        global $outputFormats;
         $this->Request = $request;
         $this->pageUri = $this->Request->getUriWithPageParam();
         $this->ConfigGraph = $ConfigGraph;
@@ -90,11 +48,12 @@ class LinkedDataApiResponse {
         $this->generatedTime = time();
         $this->lastModified = gmdate("D, d M Y H:i:s") . " GMT";
         $this->cacheable = false;
+        $this->outputFormats = $outputFormats;
         if($HttpRequestFactory){
           $this->HttpRequestFactory = $HttpRequestFactory;
         }
     }
-    
+
     function serveConfigGraph(){
         $this->overrideUserConfig=true;
         $api = API;
@@ -117,7 +76,6 @@ class LinkedDataApiResponse {
     }
     
     function process(){
-
         try{
             if($param = $this->Request->hasUnrecognisedReservedParams()){
                 logError("Bad Request: Unrecognised Unreserved Param: {$param}");
@@ -133,17 +91,26 @@ class LinkedDataApiResponse {
                 $this->serve();
             }
             
-            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request);            
+            $this->ParameterPropertyMapper = new ParameterPropertyMapper($this->ConfigGraph);
+            $this->SanitizationHandler = new SanitizationHandler($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
+            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
-            if($this->SparqlWriter->hasUnknownPropertiesFromRequest()){
+            
+            if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
                 $this->errorMessages[]="Unknown Properties in Request: {$param}";
                 $this->setStatusCode(HTTP_Bad_Request);
                 $this->serve();
-            } else if($this->SparqlWriter->hasUnknownPropertiesFromConfig($viewerUri)){
-                $this->setStatusCode(HTTP_Internal_Server_Error);
-                $unknownProps = implode(', ', $this->SparqlWriter->getUnknownPropertiesFromConfig());
+            } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
+                $this->setStatusCode(HTTP_Bad_Request);
+                $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
+                logError($msg);
+                $this->errorMessages[]=$msg;
+                $this->serve();
+            } else if (!$this->SanitizationHandler->hasValidURIParameters()){
+                $this->setStatusCode(HTTP_Bad_Request);
+                $msg = "URIs in the request not well formed";
                 logError($msg);
                 $this->errorMessages[]=$msg;
                 $this->serve();
@@ -155,12 +122,12 @@ class LinkedDataApiResponse {
             $this->serve();
         }
         
-        
         $requestUri = $this->Request->getUri();
 
         $endpointUri = $this->ConfigGraph->getEndpointUri();
         $this->endpointUrl = $endpointUri;
-        if(strpos($this->endpointUrl, '_:')===0) $this->endpointUrl = CONFIG_URL;
+        if(strpos($this->endpointUrl, '_:')===0) 
+            $this->endpointUrl = CONFIG_URL;
         
         try {
             $sparqlEndpointUri = $this->ConfigGraph->getSparqlEndpointUri();
@@ -176,8 +143,10 @@ class LinkedDataApiResponse {
         } else {
           $credentials = false;
         }
+        
+        //$noCacheRequestFactory = new HttpRequestFactory();
+        //$noCacheRequestFactory->read_from_cache(FALSE);
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
-
         
         switch($this->ConfigGraph->getEndpointType()){
             case API.'ListEndpoint' : 
@@ -187,12 +156,22 @@ class LinkedDataApiResponse {
             case API.'ItemEndpoint' :
                 $this->loadDataFromItem();
                 break;
+            case API.'ExternalHTTPService' :
+                $this->loadDataFromExternalService();
+                break;
+            default:{
+                $this->setStatusCode(HTTP_Internal_Server_Error);
+                logError("Unsupported Endpoint Type");
+                $apiUri = $this->ConfigGraph->getApiUri();
+                $this->errorMessages[]=" The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
+                $this->serve();
+                break;
+            }           
         }
         
         $this->addMetadataToPage();
         
     }
-    
 
     function loadDataFromItem(){
         $uri = $this->ConfigGraph->getCompletedItemTemplate();
@@ -200,43 +179,49 @@ class LinkedDataApiResponse {
         $viewerUri = $this->getViewer();
         $this->viewQuery  = $this->SparqlWriter->getViewQueryForUri($uri, $viewerUri);
         if (LOG_VIEW_QUERIES) {
-          logViewQuery($this->Request, $this->viewQuery);
+            logViewQuery($this->Request, $this->viewQuery);
         }
+        
         $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
         $pageUri = $this->Request->getUriWithoutPageParam();
         if($response->is_success()){
             $rdf = $response->body;
             $this->DataGraph->add_rdf($rdf);
-#	    echo $uri;
+            
+            if ($this->DataGraph->is_empty()){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("Data not found in the triple store");
+                $this->serve();
+                return;
+            }
+            
+            #	    echo $uri;
             $this->DataGraph->add_resource_triple($pageUri, FOAF.'primaryTopic', $uri);
             $label = $this->DataGraph->get_first_literal($uri, SKOS.'prefLabel');
-#            if(!empty($label) || $label = $this->DataGraph->get_label($uri)){
-#              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-#            }
- 
+            #            if(!empty($label) || $label = $this->DataGraph->get_label($uri)){
+            #              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
+            #            }
+
             $this->DataGraph->add_resource_triple($uri , FOAF.'isPrimaryTopicOf', $pageUri);
             $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
-			if($datasetUri = $this->ConfigGraph->getDatasetUri()){
-#            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
-              $voidRequest = $this->HttpRequestFactory->make('GET', $datasetUri);
-              $voidRequest->set_accept(PUELIA_RDF_ACCEPT_MIMES);
-              $voidResponse = $voidRequest->execute();
-              if($voidResponse->is_success()){
-                $voidGraph = new SimpleGraph();
-                $base = array_shift(explode('#',$datasetUri));
-                $voidGraph->add_rdf($voidResponse->body, $base) ;
-                if($licenseUri = $voidGraph->get_first_resource($datasetUri, DCT.'license')){
-                  $this->DataGraph->add_resource_triple($this->Request->getUri(), DCT.'license', $licenseUri);
+            if($datasetUri = $this->ConfigGraph->getDatasetUri()){
+                #            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);
+                $voidRequest = $this->HttpRequestFactory->make('GET', $datasetUri);
+                $voidRequest->set_accept(PUELIA_RDF_ACCEPT_MIMES);
+                $voidResponse = $voidRequest->execute();
+                if($voidResponse->is_success()){
+                    $voidGraph = new SimpleGraph();
+                    $base = array_shift(explode('#',$datasetUri));
+                    $voidGraph->add_rdf($voidResponse->body, $base) ;
+                    if($licenseUri = $voidGraph->get_first_resource($datasetUri, DCT.'license')){
+                        $this->DataGraph->add_resource_triple($this->Request->getUri(), DCT.'license', $licenseUri);
+                    } else {
+                        logDebug($datasetUri.' has no dct:license');
+                    }
                 } else {
-                  logDebug($datasetUri.' has no dct:license');
+                    logDebug("VoID document could not be fetched from {$datasetUri}");
                 }
-              } else {
-                logDebug("VoID document could not be fetched from {$datasetUri}");
-              }
-
-			}
-
-
+            }
         } else {
             logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             $this->setStatusCode(HTTP_Internal_Server_Error);
@@ -245,97 +230,45 @@ class LinkedDataApiResponse {
         $this->pageUri = $pageUri;
     }
 
-
-    function addRelatedPages(){
-      $viewerUri = $this->getViewer();
-      if($list = $this->getListOfUris() and is_array($list)){
-      foreach($list as $itemUri){
-        if($relatedPages = $this->ConfigGraph->getViewerRelatedPagesForItemUri($viewerUri, $itemUri)){
-          foreach($relatedPages as $pageUri => $label){
-            $this->DataGraph->add_resource_triple($itemUri, PUELIA.'related', $pageUri);
-            $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-          }
-        }
-      }
-      }
-    }
-
-    function addSiteMetadata(){
-      
-      $apiLiteralProperties = array(
-       DCT.'description',
-        API.'base'
-      );
-      $apiResourceProperties = array(
-        FOAF.'logo',
-        XHTML.'icon',
-        PUELIA.'javascript',
-        XHTML.'stylesheet',
-      );
-
-      $siteUri = $this->ConfigGraph->getApiUri();
-      $this->DataGraph->add_resource_triple($this->pageUri , PUELIA.'site', $siteUri);
-      $this->DataGraph->add_literal_triple($siteUri, RDFS_LABEL, $this->ConfigGraph->get_label($siteUri));
-      foreach($apiLiteralProperties as $p){
-        if($v = $this->ConfigGraph->get_first_literal($siteUri, $p)){
-          $this->DataGraph->add_literal_triple($siteUri, $p, $v);
-        }
-      }
-      foreach($apiResourceProperties as $p){
-        if($v = $this->ConfigGraph->get_first_resource($siteUri, $p)){
-           $this->DataGraph->add_resource_triple($siteUri, $p, $v);
-        }
-      }
-
-      $pathsAndLabels = $this->ConfigGraph->getUriTemplatesWithoutVariables();
-      $paths = array_keys($pathsAndLabels);
-
-      foreach($paths  as $no => $path){
-        $fullLink = $this->Request->getBaseAndSubDir().$path.'?_page=1';
-        $label = $pathsAndLabels[$path];
-        $this->DataGraph->add_literal_triple($fullLink, RDFS_LABEL, $label);
-
-        foreach($paths as $noB => $pathB){
-          if(strpos($path, $pathB)===0 AND $path!=$pathB){
-            $this->DataGraph->add_resource_triple($this->Request->getBaseAndSubDir().$pathB.'?_page=1', PUELIA.'link', $fullLink);
-            continue 2;
-          }
-        }
-        $this->DataGraph->add_resource_triple($siteUri, PUELIA.'link', $fullLink);
-      }
-    }
-
     function loadDataFromList(){
         $list = $this->getListOfUris();
-        $viewerUri = $this->getViewer();
-        logDebug("Viewer URI is $viewerUri");
-        $this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $viewerUri);
-        if (LOG_VIEW_QUERIES) {
-          logViewQuery( $this->Request, $this->viewQuery);
-        }
-        $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-        if($response->is_success()){
-            $rdf = $response->body;
-            if(isset($response->headers['content-type'])){
-              if(strpos($response->headers['content-type'], 'turtle')){
-                  $this->DataGraph->add_turtle($rdf);
-              } else {
-                  $this->DataGraph->add_rdf($rdf);
-              }
-            } else {
-              $this->DataGraph->add_rdf($rdf);
-            }
-
-            $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-            $this->listUri = $listUri;
-            $pageUri = $this->Request->getUriWithPageParam();
-            $currentPage = $this->Request->getPage();
-            $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
-            $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
-            $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
-            if($label = $this->ConfigGraph->getPageTitle()){
-              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-            }
+	if (!empty($list)) {
+        	$viewerUri = $this->getViewer();
+        	logDebug("Viewer URI is $viewerUri");
+        	$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $viewerUri);
+        	if (LOG_VIEW_QUERIES) {
+        	  logViewQuery( $this->Request, $this->viewQuery);
+        	}
+        	$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
+        	if($response->is_success()){
+        	    $rdf = $response->body;
+        	    if(isset($response->headers['content-type'])){
+        	      if(strpos($response->headers['content-type'], 'turtle')){
+        	          $this->DataGraph->add_turtle($rdf);
+        	      } else {
+        	          $this->DataGraph->add_rdf($rdf);
+        	      }
+        	    } else {
+        	      $this->DataGraph->add_rdf($rdf);
+        	    }
+        	    
+        	    if ($this->DataGraph->is_empty()){
+        	        $this->setStatusCode(HTTP_Not_Found);
+        	        logError("Data not found in the triple store");
+        	        $this->serve();
+        	        return;
+        	    }
+        	    
+           	 $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
+           	 $this->listUri = $listUri;
+           	 $pageUri = $this->Request->getUriWithPageParam();
+            	 $currentPage = $this->Request->getPage();
+	         $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
+        	 $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
+        	 $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
+            	 if($label = $this->ConfigGraph->getPageTitle()){
+			$this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
+	         }
             $this->DataGraph->add_resource_triple($listUri, DCT.'hasPart', $pageUri);
             $this->DataGraph->add_resource_triple($pageUri, DCT.'isPartOf', $listUri);
             $this->DataGraph->add_resource_triple($pageUri, XHV.'first', $this->Request->getUriWithPageParam(1));
@@ -370,13 +303,158 @@ class LinkedDataApiResponse {
             $this->setStatusCode(HTTP_Internal_Server_Error);
             $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
             
+        } }
+        else{//empty list returned from selector
+            $this->serve();
+            return;
         }
         
     }
     
+    function loadDataFromExternalService(){
+        
+        $uriWithoutExtension = $this->Request->getOrderedUriWithoutExtensionAndReservedParams();
+	    logDebug("Generating graph name from: {$uriWithoutExtension}");
+        $graphName = OPS_API.'/'.hash("crc32", $uriWithoutExtension);
+        
+        $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
+        if ($checkDatastore==true){
+            //build query 
+            $this->pageUri = $this->Request->getUriWithoutPageParam();
+            
+            $viewer = $this->getViewer();
+            $this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $viewer);
+            if (LOG_VIEW_QUERIES) {
+                logViewQuery($this->Request, $this->viewQuery);
+            }
+            
+            //query the data store
+            $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);//TODO use appropriate mime in the future
+            if ($response->is_success()){
+                $this->DataGraph->add_rdf($response->body);
+                
+                if (!$this->DataGraph->is_empty()){//no data returned       
+                    $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
+                    //we have data in the datastore, so serve it directly
+                    return;
+                }
+                else{
+                    logDebug("Data not found at: {$this->SparqlEndpoint->uri}, going to external service");
+                }
+            }
+            else{
+                logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+            }          
+        }    
+        
+        //match api:uriTemplate, extract parameters and fill in api:externalRequestTemplate 
+        $externalServiceRequest = $this->ConfigGraph->getExternalServiceRequest();
+        logDebug("External service request: ".$externalServiceRequest);
+        try{
+            $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
+        }
+        catch (EmptyResponseException $e){
+            logError("EmptyResponseException: ".$e->getMessage());
+            $this->setStatusCode(HTTP_Not_Found);
+            $this->errorMessages[]=$e->getMessage();
+            $this->serve();
+            exit;
+        }
+        catch (TimeoutException $e){
+            logError("TimeoutException: ".$e->getMessage());
+            $this->setStatusCode(HTTP_Gateway_Timeout);
+            $this->errorMessages[]=$e->getMessage();
+            $this->serve();
+            exit;
+        }
+        catch(Exception $e){
+            logError("Error while loading data from external service: ".$e->getMessage());
+            $this->setStatusCode(HTTP_Internal_Server_Error);
+            $this->errorMessages[]=$e->getMessage();
+            $this->serve();
+            exit;
+        }
+        
+        if ($this->useDatastore){
+            $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
+        }
+        
+        //if we went to the external service we cache the path without extension
+        if ($this->decideToCacheResponse($checkDatastore)){         
+            LinkedDataApiCache::cacheURI($uriWithoutExtension);
+        }
+    }
+    
+    private function decideToCacheResponse($checkDatastore){
+        if ($this->useDatastore==true AND $checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE)
+            return true;
+        else
+            return false;
+    }
+    
+    private function decideToCheckTripleStore($pathWithoutExtension){
+        
+        $this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
+        $this->useDatastore = $this->useDatastore==='true' ? true:false;
+        
+        if ($this->useDatastore == true){
+            //if caching is enabled
+            if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
+                if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
+                    // we get the data from the datastore
+                    $checkDatastore = true;
+                }
+                else{//we go directly to the external service
+                    $checkDatastore = false;
+                }
+            }
+            else{// try to get the data from the datastore
+                $checkDatastore = true;
+            }
+        }
+        else{
+            $checkDatastore = false;
+        }
+        
+        return $checkDatastore;
+    }
+    
+    private function retrieveRDFDataFromExternalService($externalServiceRequest, $rdfData){
+        //make request to external service
+        $ch = curl_init($externalServiceRequest);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        if ($response==false){
+            throw new ErrorException("Request: ".$externalServiceRequest." failed");
+        }
+        
+        //call the appropriate converter by checking api:externalResponseHandler
+        $this->pageUri = $this->Request->getUriWithoutPageParam();
+        $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'externalResponseHandler');
+        
+        require $externalResponseHandler;
+        
+        return $rdfData;
+    }
+    
+    private function insertRDFDataIntoTripleStore($graphName, $rdfData){
+        //insert new RDF data in the triple store
+        $insertQuery = $this->SparqlWriter->getInsertQueryForExternalServiceData($rdfData, $graphName);
+        
+        $response = $this->SparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
+        if(!$response->is_success()){
+            logError("Endpoint returned {$response->status_code} {$response->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+            //even if insert fails we go ahead an give the data to the client
+        }
+        else{
+            logDebug("Created new graph: ".$graphName." for the request ".$this->Request->getUri());
+        }
+    }
     
     function getViewer(){
-        if($this->viewer) return $this->viewer;
+        if($this->viewer)
+            return $this->viewer;
 
         if($name = $this->Request->getView()){
             logDebug("Viewer Name from Request is $name");
@@ -390,12 +468,12 @@ class LinkedDataApiResponse {
             }
         } else {
             if($this->viewerUri = $this->ConfigGraph->getEndpointDefaultViewer()){
-              logDebug("Endpoint Default Viewer is $this->viewerUri");
+                logDebug("Endpoint Default Viewer is $this->viewerUri");
                 return $this->viewerUri;
             } else if($this->viewerUri = $this->ConfigGraph->getApiDefaultViewer()){
-              logDebug("API Default Viewer is $this->viewerUri");
+                logDebug("API Default Viewer is $this->viewerUri");
                 return $this->viewerUri;
-            } else {
+            } else {//TODO shouldn't this also check endpoint:viewer /
                 logDebug("returning default viewer");
                 return  API.'describeViewer';
             }
@@ -403,43 +481,43 @@ class LinkedDataApiResponse {
     }
     
     function getListOfUrisFromSearchEndpoint(){
-      // get searchindexendpoint
-      $rssTextSearchIndex = $this->ConfigGraph->getRssTextSearchIndex();
-      // construct url with search parameter
-      $searchQuery = $this->Request->getParam('_search');
-      $filterstring = implode('&', $this->ConfigGraph->getAllFilters());
-      foreach($this->Request->getUnreservedParams() as $k => $v){
-          list($k, $v) = array(urlencode($k), urlencode($v));
-          $filterstring.="&{$k}={$v}";
+        // get searchindexendpoint
+        $rssTextSearchIndex = $this->ConfigGraph->getRssTextSearchIndex();
+        // construct url with search parameter
+        $searchQuery = $this->Request->getParam('_search');
+        $filterstring = implode('&', $this->ConfigGraph->getAllFilters());
+        foreach($this->Request->getUnreservedParams() as $k => $v){
+            list($k, $v) = array(urlencode($k), urlencode($v));
+            $filterstring.="&{$k}={$v}";
         }
 
-      $params = queryStringToParams($filterstring);
-      $query_filter='';
-      foreach($params as $k => $v){
-        if($uri = $this->ConfigGraph->getUriForVocabPropertyLabel($v)){
-          $v = $uri;
+        $params = queryStringToParams($filterstring);
+        $query_filter='';
+        foreach($params as $k => $v){
+            if($uri = $this->ConfigGraph->getUriForVocabPropertyLabel($v)){
+                $v = $uri;
+            }
+            $query_filter.=' '.$k.':'.addcslashes($v, ':');
         }
-        $query_filter.=' '.$k.':'.addcslashes($v, ':');
-      }
-      $queryUri = $rssTextSearchIndex.'?query='.urlencode($searchQuery.$query_filter);
-      logDebug($queryUri);
-      $request = $this->HttpRequestFactory->make('GET', $queryUri);
-      $request->set_accept(PUELIA_RDF_ACCEPT_MIMES);
-      // do request
-      $response = $request->execute();
-      if($response->is_success()){
-        $ListGraph =  new PueliaGraph();
-        $ListGraph->add_rdf($response->body);
-        //get Sequence
-        $SequenceUri = $ListGraph->get_first_resource($queryUri, RSS_ITEMS);
-        $this->list_of_item_uris = $ListGraph->get_sequence_values($SequenceUri);
-        return $this->list_of_item_uris;
-      } else {
+        $queryUri = $rssTextSearchIndex.'?query='.urlencode($searchQuery.$query_filter);
+        logDebug($queryUri);
+        $request = $this->HttpRequestFactory->make('GET', $queryUri);
+        $request->set_accept(PUELIA_RDF_ACCEPT_MIMES);
+        // do request
+        $response = $request->execute();
+        if($response->is_success()){
+            $ListGraph =  new PueliaGraph();
+            $ListGraph->add_rdf($response->body);
+            //get Sequence
+            $SequenceUri = $ListGraph->get_first_resource($queryUri, RSS_ITEMS);
+            $this->list_of_item_uris = $ListGraph->get_sequence_values($SequenceUri);
+            return $this->list_of_item_uris;
+        } else {
             logError("Endpoint returned {$response->status_code} {$response->body} Search Query URI: {$queryUri}");
             $this->setStatusCode(HTTP_Internal_Server_Error);
             $this->errorMessages[]="The endpoint used for this search did not return a successful response.";
         }
-      return array();
+        return array();
     }
 
 #Antonis botch
@@ -451,7 +529,7 @@ class LinkedDataApiResponse {
     function getListOfUrisFromSparqlEndpoint(){
         $list = array();
         try {
-            $this->selectQuery = $this->SparqlWriter->getSelectQueryForUriList(); 
+            $this->selectQuery = $this->SparqlWriter->getSelectQueryForUriList();
             if(LOG_SELECT_QUERIES){
                 logSelectQuery($this->Request, $this->selectQuery);
             }
@@ -461,32 +539,38 @@ class LinkedDataApiResponse {
             $this->errorMessages[]="There was a problem generating the SPARQL query for this request. There may be a configuration error.";
             $this->serve();
         }
-#Antonis botch
-        logDebug($this->selectQuery); 
+        #Antonis botch
+        logDebug($this->selectQuery);
         $response = $this->SparqlEndpoint->query($this->selectQuery, PUELIA_SPARQL_ACCEPT_MIMES);
-        
+
         if($response->is_success()){
-          $body = trim($response->body);
-          if($body[0]=='{')//is JSON
-             {
+            $body = trim($response->body);
+            if($body[0]=='{')//is JSON
+            {
                 $sparqlResults = json_decode($response->body, true);
                 $results = $sparqlResults['results']['bindings'];
-            } 
-            else // is XML 
+            }
+            else // is XML
             {
                 $xml = $response->body;
                 $results = $this->SparqlEndpoint->parse_select_results($xml);
             }
             
-            foreach($results as $row){
-                if(isset($row['item'])) $list[]=$row['item']['value'];
+            if (empty($results)){
+                $this->setStatusCode(HTTP_Not_Found);
+                logError("The selector did not find data in the triple store");
             }
-            
+            else {
+                foreach($results as $row){
+                    if(isset($row['item'])) $list[]=$row['item']['value'];
+                }
+            }
+
         } else {
             logError("Endpoint returned {$response->status_code} {$response->body} Select Query <<<{$this->selectQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             $this->setStatusCode(HTTP_Internal_Server_Error);
             $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-            
+
         }
         $this->list_of_item_uris = $list;
         return $list;
@@ -494,28 +578,29 @@ class LinkedDataApiResponse {
     }
     
     function getListOfUris(){
-      
-      if($this->list_of_item_uris) return $this->list_of_item_uris;
+
+        if($this->list_of_item_uris) 
+            return $this->list_of_item_uris;
 
         switch($this->ConfigGraph->getEndpointType()){
-#Antonis botch
-	    case API.'OPSListEndpoint' :
-		$this->list_of_item_uris = $this->getDummyListOfUris();
-		break;
-            case API.'ListEndpoint' : 
+            #Antonis botch
+            case API.'OPSListEndpoint' :
+                $this->list_of_item_uris = $this->getDummyListOfUris();
+                break;
+            case API.'ListEndpoint' :
                 $this->list_of_item_uris = $this->getListOfUrisFromSparqlEndpoint();
                 break;
             case PUELIA.'SearchEndpoint' :
                 $this->list_of_item_uris = $this->getListOfUrisFromSearchEndpoint();
                 break;
             default:
-              return false;
-              break;
+                return false;
+                break;
         }
 
         return $this->list_of_item_uris;
     }
-    
+
     function setStatusCode($code){
         $this->statusCode = $code;
     }
@@ -550,7 +635,7 @@ class LinkedDataApiResponse {
             $mimeTypes = $this->ConfigGraph->getDefaultMimeTypes();
             foreach($this->Request->getAcceptTypes($mimeTypes) as $acceptType){
                 foreach($this->outputFormats as $formatName => $props){
-                    if($props['ext'] == $acceptType || $acceptType == '*/*'){
+                    if($props['ext'] == $acceptType){
                         return $formatName;
                     }
                 }
@@ -609,7 +694,65 @@ class LinkedDataApiResponse {
       }		
 	}
 	
+	function addRelatedPages(){
+	    $viewerUri = $this->getViewer();
+	    if($list = $this->getListOfUris() and is_array($list)){
+	        foreach($list as $itemUri){
+	            if($relatedPages = $this->ConfigGraph->getViewerRelatedPagesForItemUri($viewerUri, $itemUri)){
+	                foreach($relatedPages as $pageUri => $label){
+	                    $this->DataGraph->add_resource_triple($itemUri, PUELIA.'related', $pageUri);
+	                    $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
+	                }
+	            }
+	        }
+	    }
+	}
 	
+	function addSiteMetadata(){
+	
+	    $apiLiteralProperties = array(
+	            DCT.'description',
+	            API.'base'
+	    );
+	    $apiResourceProperties = array(
+	            FOAF.'logo',
+	            XHTML.'icon',
+	            PUELIA.'javascript',
+	            XHTML.'stylesheet',
+	    );
+	
+	    $siteUri = $this->ConfigGraph->getApiUri();
+	    $this->DataGraph->add_resource_triple($this->pageUri , PUELIA.'site', $siteUri);
+	    $this->DataGraph->add_literal_triple($siteUri, RDFS_LABEL, $this->ConfigGraph->get_label($siteUri));
+	    foreach($apiLiteralProperties as $p){
+	        if($v = $this->ConfigGraph->get_first_literal($siteUri, $p)){
+	            $this->DataGraph->add_literal_triple($siteUri, $p, $v);
+	        }
+	    }
+	    foreach($apiResourceProperties as $p){
+	        if($v = $this->ConfigGraph->get_first_resource($siteUri, $p)){
+	            $this->DataGraph->add_resource_triple($siteUri, $p, $v);
+	        }
+	    }
+	
+	    $pathsAndLabels = $this->ConfigGraph->getUriTemplatesWithoutVariables();
+	    $paths = array_keys($pathsAndLabels);
+	
+	    foreach($paths  as $no => $path){
+	        $fullLink = $this->Request->getBaseAndSubDir().$path.'?_page=1';
+	        $label = $pathsAndLabels[$path];
+	        $this->DataGraph->add_literal_triple($fullLink, RDFS_LABEL, $label);
+	
+	        foreach($paths as $noB => $pathB){
+	            if(strpos($path, $pathB)===0 AND $path!=$pathB){
+	                $this->DataGraph->add_resource_triple($this->Request->getBaseAndSubDir().$pathB.'?_page=1', PUELIA.'link', $fullLink);
+	                continue 2;
+	            }
+	        }
+	        $this->DataGraph->add_resource_triple($siteUri, PUELIA.'link', $fullLink);
+	    }
+	}
+		
 	function addFormattersMetadata(){
 		$currentFormat = $this->getOutputFormat();
 		foreach($this->ConfigGraph->getFormatters() as $formatName => $formatUri){
@@ -734,180 +877,204 @@ class LinkedDataApiResponse {
       
 	}
 
-  function addTermBindingsToExecution($propertyPath) {
-    $propertyNamesWithUris = $this->SparqlWriter->mapParamNameToProperties($propertyPath);
-    foreach($propertyNamesWithUris as $propertyName=>$uri) {
-      $termName = '_:term_'.$propertyName;
-      $this->DataGraph->add_resource_triple('_:execution', API.'termBinding', $termName);
-      $this->DataGraph->add_literal_triple($termName, API.'label', $propertyName);
-      $this->DataGraph->add_resource_triple($termName, API.'property', $uri);
-    }
-  }
-
-
+	function addTermBindingsToExecution($propertyPath) {
+	    $propertyNamesWithUris = $this->ParameterPropertyMapper->mapParamNameToProperties($propertyPath);
+	    foreach($propertyNamesWithUris as $propertyName=>$uri) {
+	        $termName = '_:term_'.$propertyName;
+	        $this->DataGraph->add_resource_triple('_:execution', API.'termBinding', $termName);
+	        $this->DataGraph->add_literal_triple($termName, API.'label', $propertyName);
+	        $this->DataGraph->add_resource_triple($termName, API.'property', $uri);
+	    }
+	}
 
   
-  function getFormatter(){
-      if($format = $this->Request->getParam('_format')){
-          if($this->ConfigGraph->getApiContentNegotiation()==API.'parameterBased'){
-              if($this->ConfigGraph->apiSupportsFormat($format)){
-                  return $format;
-              } else {
-                  logError("Bad Request when selecting formatter: {$format}");
-                  $this->errorMessages[]="Sorry. This API does not support {$format}";
-                  $this->setStatusCode(HTTP_Bad_Request);
-                  $this->serve();
-              }
-          }
-          else {
-              logError("This API does not support parameter based format selection.");
-              $this->errorMessages[]="This API does not support parameter based format selection. Try content-negotiation.";
-              $this->setStatusCode(HTTP_Bad_Request);
-              $this->serve();              
-          }
-      } else if($this->Request->hasFormatExtension()) { 
-          $extension = $this->Request->getFormatExtension();
-          if($this->extensionIsSupported($extension)){
-                return $extension;
-          } else {
-              $this->errorMessages[]="Sorry, the '$extension' extension is not supported here.";
-              $this->setStatusCode(HTTP_Unsupported_Media_Type);
-              return false;
-          } 
-          
-       } else if($this->Request->hasAcceptTypes()){
-         logDebug("Doing content-negotiation");
-         $configFormatters = $this->ConfigGraph->getFormatters();
-         $configFormatterNames = array_reverse(array_keys($configFormatters));
-            foreach($this->Request->getAcceptTypes($this->ConfigGraph->getDefaultMimeTypes()) as $acceptType){
-              logDebug("request accept type: '{$acceptType}'");
-              foreach($configFormatterNames as $formatName){
-                    $formatterUri = $configFormatters[$formatName];
-                    logDebug("try formatter: $formatterUri");
-                    $formatterMimetypes = $this->ConfigGraph->getMimeTypesOfFormatter($formatterUri);
-                    if(in_array($acceptType, $formatterMimetypes)){
-			logDebug("$acceptType matches $formatterUri");
-                        return $formatName;
-                    }
-                }
-            }
-        }
-        
-        if($formatUri = $this->ConfigGraph->getEndpointDefaultFormatter()) { 
-            return $this->ConfigGraph->get_first_literal($formatUri, API.'name');
-        } else if($formatUri = $this->ConfigGraph->getApiDefaultFormatter()){ 
-            return $this->ConfigGraph->get_first_literal($formatUri, API.'name');
-        }
-        return 'json';
-        
-  }
+	function getFormatter(){
+	    if($format = $this->Request->getParam('_format')){
+	        if($this->ConfigGraph->getApiContentNegotiation()==API.'parameterBased'){
+	            if($this->ConfigGraph->apiSupportsFormat($format)){
+	                return $format;
+	            } else {
+	                logError("Bad Request when selecting formatter: {$format}");
+	                $this->errorMessages[]="Sorry. This API does not support {$format}";
+	                $this->setStatusCode(HTTP_Bad_Request);
+	                $this->serve();
+	            }
+	        }
+	        else {
+	            logError("This API does not support parameter based format selection.");
+	            $this->errorMessages[]="This API does not support parameter based format selection. Try content-negotiation.";
+	            $this->setStatusCode(HTTP_Bad_Request);
+	            $this->serve();
+	        }
+	    } else if($this->Request->hasFormatExtension()) {
+	        $extension = $this->Request->getFormatExtension();
+	        if($this->extensionIsSupported($extension)){
+	            return $extension;
+	        } else {
+	            $this->errorMessages[]="Sorry, the '$extension' extension is not supported here.";
+	            $this->setStatusCode(HTTP_Unsupported_Media_Type);
+	            return false;
+	        }
+
+	    } else if($this->Request->hasAcceptTypes()){
+	        logDebug("Doing content-negotiation");
+	        $configFormatters = $this->ConfigGraph->getFormatters();
+	        $configFormatterNames = array_reverse(array_keys($configFormatters));
+	        foreach($this->Request->getAcceptTypes($this->ConfigGraph->getDefaultMimeTypes()) as $acceptType){
+	            logDebug("request accept type: '{$acceptType}'");
+	            foreach($configFormatterNames as $formatName){
+	                $formatterUri = $configFormatters[$formatName];
+	                logDebug("try formatter: $formatterUri");
+	                $formatterMimetypes = $this->ConfigGraph->getMimeTypesOfFormatter($formatterUri);
+	                if(in_array($acceptType, $formatterMimetypes)){
+	                    logDebug("$acceptType matches $formatterUri");
+	                    return $formatName;
+	                }
+	            }
+	        }
+	    }
+
+	    if($formatUri = $this->ConfigGraph->getEndpointDefaultFormatter()) {
+	        return $this->ConfigGraph->get_first_literal($formatUri, API.'name');
+	    } else if($formatUri = $this->ConfigGraph->getApiDefaultFormatter()){
+	        return $this->ConfigGraph->get_first_literal($formatUri, API.'name');
+	    }
+	    return 'json';
+
+	}
   
-  function serve(){
-              $Request = $this->Request;
-              header($this->statusCode);
-              
-              if($this->statusCode == HTTP_OK){
-                  try {
+	function serve(){
+	    $Request = $this->Request;
+	    header($this->statusCode);
+	    
+	    if($this->statusCode != HTTP_OK){
+	        header("Content-Type: text/html");
+	        switch($this->statusCode){
+	            case HTTP_Unsupported_Media_Type:
+	            case HTTP_Bad_Request :
+	                require 'views/errors/400.php';
+	                break;
+	            default:
+	            case HTTP_Internal_Server_Error :
+	                require 'views/errors/500.php';
+	                break;
+	            case HTTP_Not_Found :
+	                require 'views/errors/404.php';
+	                break;
+	            case HTTP_Gateway_Timeout :
+	                require 'views/errors/504.php';
+	                break;
+	        }
+	        exit;
+	    }
 
-                  $outputFormat = $this->getFormatter();
-          
+	    //statusCode is HTTP_OK
+	    try {
+	        $outputFormat = $this->getFormatter();
+	        if(!$outputFormat){
+	            throw new Exception("No output format provided");
+	        }
+	        
+	        if(!$mimetype = $this->ConfigGraph->getMimetypesOfFormatterByName($outputFormat)){
+	            if(isset( $this->outputFormats[$outputFormat])) 
+	                $mimetype = $this->outputFormats[$outputFormat]['mimetypes'];
+	            else 
+	                $mimetype= array('text/html');
+	        }
+	        $mimetype = $mimetype[0];
+	        $this->mimetype = $mimetype;
 
-                  if(!$outputFormat){
-                      throw new Exception("No output format provided");
-                  }
-                if(!$mimetype = $this->ConfigGraph->getMimetypesOfFormatterByName($outputFormat)){
-                    if(isset( $this->outputFormats[$outputFormat])) $mimetype = $this->outputFormats[$outputFormat]['mimetypes'];
-		    else $mimetype= array('text/html');
-                }
-                $mimetype = $mimetype[0];
-                $this->mimetype = $mimetype;
+	        $endpointType = $this->ConfigGraph->getEndpointType();
+	        switch($endpointType){
+	            case API.'ListEndpoint' :
+	                #Antonis botch
+	            case API.'OPSListEndpoint':
+	            case PUELIA.'SearchEndpoint':
+	                $pageUri = $this->Request->getUriWithPageParam();
+	                break;
+	            case API.'ItemEndpoint': case API.'ExternalHTTPService':
+	                $pageUri = $this->Request->getUri();
+	                break;
+	            default:
+	                throw new ConfigGraphException("<{$endpointType}> is not an implemented Endpoint type");
+	        }
 
-                $endpointType = $this->ConfigGraph->getEndpointType();
-                switch($endpointType){
-                    case API.'ListEndpoint' :
-#Antonis botch
-		    case API.'OPSListEndpoint':
-                    case PUELIA.'SearchEndpoint':
-                        $pageUri = $this->Request->getUriWithPageParam();
-                        break;
-                    case API.'ItemEndpoint' :
-                        $pageUri = $this->Request->getUri();
-                        break;
-                    default:
-                      throw new ConfigGraphException("<{$endpointType}> is not an implemented Endpoint type");
-                }
-                
-                if($this->overrideUserConfig AND isset($this->outputFormats[$outputFormat])){
-                        logDebug('Override User Config is set to :'.$this->overrideUserConfig);
-                        $viewFile = $this->outputFormats[$outputFormat]['view'];
-                        $mimetype = $this->outputFormats[$outputFormat]['mimetypes'][0];
-                        $this->mimetype = $mimetype;    
-                    }
-                else if($this->ConfigGraph->getFormatterTypeByName($outputFormat)== API.'XsltFormatter'){
-                  logDebug("XSLT Formatter chosen");
-                    $viewFile = 'views/xslt.php';
-                    $styleSheetFile = $this->ConfigGraph->getXsltStylesheetOfFormatterByName($outputFormat);
-                    require $viewFile;
-                    die;
-                } else if($this->ConfigGraph->getFormatterTypeByName($outputFormat)== PUELIA.'PhpFormatter') {
-                    logDebug("PhpFormatter chosen");
-                    $formatterUri = $this->ConfigGraph->getFormatterUriByName($outputFormat);
-                    $innerTemplate = $this->ConfigGraph->get_first_literal($formatterUri, PUELIA.'innerTemplate');
-                    $outerTemplate = $this->ConfigGraph->get_first_literal($formatterUri, PUELIA.'outerTemplate');
-                    require $outerTemplate;
-                    die;
-                }
-                 else if(isset($this->outputFormats[$outputFormat])) {
-                    $viewFile = $this->outputFormats[$outputFormat]['view'];
-                } else {
-                  throw new Exception("{$outputFormat} is not an accepted output format");
-                }
-            } 
-        catch(Exception $e){
-            logError("Error when serving response: ".$e->getMessage());
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->serve();
-        }
-        header("Content-Type: {$mimetype}");
-        header("Last-Modified: {$this->lastModified}");
-		header("x-served-from-cache: false");
-        $DataGraph = $this->getDataGraph();
-        try {
-            ob_start();
-            require $viewFile;
-            $page = ob_get_clean();
-            $this->eTag = md5($page);
-			header("ETag: {$this->eTag}");
-            $this->body = $page;
-            echo $page;
-            $this->cacheable = true;
-        } catch (Exception $e){
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="Sorry, Puelia experienced an error trying to serve this page.";
-            logError('Error from Response:serve() '.$e->getMessage());
-            $this->serve();
-            exit;
-        }
-      } else {
-          header("Content-Type: text/html");
-          switch($this->statusCode){
-              case HTTP_Unsupported_Media_Type:
-              case HTTP_Bad_Request :
-                require 'views/errors/400.php';
-                break;
-              default:
-              case HTTP_Internal_Server_Error :
-                require 'views/errors/500.php';
-                break;
-              case HTTP_Not_Found :
-                require 'views/errors/404.php';
-                break;
-              
-          }
-          exit;
-      }
-      
-  }  
+	        if($this->overrideUserConfig AND isset($this->outputFormats[$outputFormat])){
+	            logDebug('Override User Config is set to :'.$this->overrideUserConfig);
+	            $viewFile = $this->outputFormats[$outputFormat]['view'];
+	            $mimetype = $this->outputFormats[$outputFormat]['mimetypes'][0];
+	            $this->mimetype = $mimetype;
+	        }
+	        else if($this->ConfigGraph->getFormatterTypeByName($outputFormat)== API.'XsltFormatter'){
+	            logDebug("XSLT Formatter chosen");
+	            $viewFile = 'views/xslt.php';
+	            $styleSheetFile = $this->ConfigGraph->getXsltStylesheetOfFormatterByName($outputFormat);
+	            require $viewFile;
+	            die;
+	        } else if($this->ConfigGraph->getFormatterTypeByName($outputFormat)== PUELIA.'PhpFormatter') {
+	            logDebug("PhpFormatter chosen");
+	            $formatterUri = $this->ConfigGraph->getFormatterUriByName($outputFormat);
+	            //not used $innerTemplate = $this->ConfigGraph->get_first_literal($formatterUri, PUELIA.'innerTemplate');
+	            $outerTemplate = $this->ConfigGraph->get_first_literal($formatterUri, PUELIA.'outerTemplate');
+	            require $outerTemplate;
+	            die;
+	        }
+	        else if(isset($this->outputFormats[$outputFormat])) {
+	            $viewFile = $this->outputFormats[$outputFormat]['view'];
+	        } else {
+	            throw new Exception("{$outputFormat} is not an accepted output format");
+	        }
+	    }
+	    catch(Exception $e){
+	        logError("Error when serving response: ".$e->getMessage());
+	        $this->setStatusCode(HTTP_Internal_Server_Error);
+	        $this->serve();
+	    }
+	    
+	    $this->serveHTTPSuccessPage($mimetype, $viewFile, $Request);
+	}
+	
+	function serveHTTPSuccessPage($mimetype, $viewFile, $Request){
+	    header("Content-Type: {$mimetype}");
+	    header("Last-Modified: {$this->lastModified}");
+	    header("x-served-from-cache: false");
+	    $DataGraph = $this->getDataGraph();
+	    
+	    try {
+	        ob_start();
+	        require $viewFile;
+	        $page = ob_get_clean();
+	        $this->eTag = md5($page);
+	        header("ETag: {$this->eTag}");
+	        $this->body = $page;
+	        echo $page;
+	        $this->cacheable = true;
+	    } catch (Exception $e){
+	        $this->setStatusCode(HTTP_Internal_Server_Error);
+	        $this->errorMessages[]="Sorry, Puelia experienced an error trying to serve this page.";
+	        logError('Error from Response:serve() '.$e->getMessage());
+	        $this->serve();
+	        exit;
+	    }
+	}
+	    
+	function handleHTTPErrors(){
+	    header("Content-Type: text/html");
+	    switch($this->statusCode){
+	        case HTTP_Unsupported_Media_Type:
+	        case HTTP_Bad_Request :
+	            require 'views/errors/400.php';
+	            break;
+	        default:
+	        case HTTP_Internal_Server_Error :
+	            require 'views/errors/500.php';
+	            break;
+	        case HTTP_Not_Found :
+	            require 'views/errors/404.php';
+	            break;
+	    
+	    }
+	}
     
     function getDataGraph(){
         return $this->DataGraph;

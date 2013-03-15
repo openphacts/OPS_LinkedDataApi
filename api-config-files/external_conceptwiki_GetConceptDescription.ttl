@@ -1,0 +1,31 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#conceptWiki> a api:API ;
+	rdfs:label "Concept Wiki services"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#uuid> ;
+	api:description "An API configuration to map free text to a concept URL." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Get concept description" ;
+		api:enableCache false ;
+		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
+		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
+		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
+		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;
+		api:exampleRequestPath "/getConceptDescription?uuid=8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<#uuid> api:name "uuid" ;
+	api:label "uuid";
+	api:value "UUID of the concept; required. E.g. 8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" .

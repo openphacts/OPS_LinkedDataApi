@@ -9,6 +9,8 @@ require_once 'graphs/configgraph.class.php';
 require_once 'responses/Response304.class.php';
 Logger::configure("puelia.logging.properties");
 
+LinkedDataApiRequest::eliminateDebugParams();
+
 $HttpRequestFactory = new HttpRequestFactory();
 
 if(function_exists('memcache_connect')){
@@ -67,59 +69,62 @@ else
 	keep the config graph that matches the request, and keep a 'complete' configgraph to serve if none match
     */
   $CompleteConfigGraph = new ConfigGraph(null, $Request, $HttpRequestFactory);
-	foreach($files as $file){
-	  //logDebug("Iterating over files in /api-config: $file"); 
-		if($ConfigGraph = LinkedDataApiCache::hasCachedConfig($file)){
-			logDebug("Found Cached Config {$file}");
-			$CompleteConfigGraph->add_graph($ConfigGraph);
-			$ConfigGraph->setRequest($Request);
-
-		} else {
-			logDebug("Checking Config file: $file");
-			$rdf = file_get_contents($file);
-			$CompleteConfigGraph->add_rdf($rdf);
-			$ConfigGraph =  new ConfigGraph(null, $Request, $HttpRequestFactory);
-      $ConfigGraph->add_rdf($rdf);
-      $errors = $ConfigGraph->get_parser_errors();
-      if(!empty($errors)){
-          foreach($ConfigGraph->get_parser_errors() as $errorList){
-            foreach($errorList as $errorMsg){
-              logDebug('Error parsing '.$file.'  '.$errorMsg);
-            }
+  foreach($files as $file){
+      //logDebug("Iterating over files in /api-config: $file");
+      if($ConfigGraph = LinkedDataApiCache::hasCachedConfig($file)){
+          logDebug("Found Cached Config {$file}");
+          $CompleteConfigGraph->add_graph($ConfigGraph);
+          $ConfigGraph->setRequest($Request);
+      } else {
+          logDebug("Checking Config file: $file");
+          $rdf = file_get_contents($file);
+          $CompleteConfigGraph->add_rdf($rdf);
+          $ConfigGraph =  new ConfigGraph(null, $Request, $HttpRequestFactory);
+          $ConfigGraph->add_rdf($rdf);
+          $errors = $ConfigGraph->get_parser_errors();
+          if(!empty($errors)){
+              foreach($ConfigGraph->get_parser_errors() as $errorList){
+                  foreach($errorList as $errorMsg){
+                      logDebug('Error parsing '.$file.'  '.$errorMsg);
+                  }
+              }
           }
+          logDebug("Caching $file");
+          LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
       }
-			logDebug("Caching $file");
-			LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
-		}
-		$ConfigGraph->init();
-		if($selectedEndpointUri = $ConfigGraph->getEndpointUri()){
-			logDebug("Endpoint Uri Selected: $selectedEndpointUri");
-			unset($CompleteConfigGraph);
-		    	$Response =  new LinkedDataApiResponse($Request, $ConfigGraph, $HttpRequestFactory);
+      
+      $ConfigGraph->init();
+      if($selectedEndpointUri = $ConfigGraph->getEndpointUri()){
+          logDebug("Endpoint Uri Selected: $selectedEndpointUri");
+          unset($CompleteConfigGraph);
+          $Response =  new LinkedDataApiResponse($Request, $ConfigGraph, $HttpRequestFactory);
         		$Response->process();
-			break;
-		} else if($docPath = $ConfigGraph->dataUriToEndpointItem($Request->getUri())){
-      logDebug("Redirecting ".$Request->getUri()." to {$docPath}");
-			header("Location: $docPath", 303);
-			exit;
-		}
-	}
-	if(!isset($selectedEndpointUri)){	
-		logDebug("No Endpoint Selected");
-	    $Response =  new LinkedDataApiResponse($Request, $CompleteConfigGraph);
-	    if($Request->getPathWithoutExtension()==$Request->getInstallSubDir().CONFIG_PATH){
-		logDebug("Serving ConfigGraph");
-	        $Response->serveConfigGraph();
-	    } else {
-		    logDebug("URI Requested:" . $Request->getPathWithoutExtension());
-	        $Response->process();
-	    }
+        		break;
+      } else if($docPath = $ConfigGraph->dataUriToEndpointItem($Request->getUri())){
+          logDebug("Redirecting ".$Request->getUri()." to {$docPath}");
+          header("Location: $docPath", 303);
+          exit;
+      }
+  }
 
-	}
+  if(!isset($selectedEndpointUri)){
+      logDebug("No Endpoint Selected");
+      $Response =  new LinkedDataApiResponse($Request, $CompleteConfigGraph);
+
+      if($Request->getPathWithoutExtension()==$Request->getInstallSubDir().CONFIG_PATH){
+          logDebug("Serving ConfigGraph");
+          $Response->serveConfigGraph();
+      } else {
+          logDebug("URI Requested:" . $Request->getPathWithoutExtension());
+          $Response->process();
+      }
+
+  }
 }
 
 $Response->serve();
-if (defined("PUELIA_SERVE_FROM_CACHE") AND  $Response->cacheable)
+if (defined("PUELIA_SERVE_FROM_CACHE") AND  PUELIA_SERVE_FROM_CACHE
+        AND !$Request->hasNoCacheHeader() AND $Response->cacheable)
 {
 	LinkedDataApiCache::cacheResponse($Request, $Response);
 }

@@ -1,0 +1,45 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "ChemSpider structure search"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#smiles> ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return a ChemSpider URL corresponding to a chemical structure." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>." ;
+
+		api:name "SMILES to URL" ;
+		api:enableCache true ;
+		api:uriTemplate "/structure?smiles={smiles}" ;
+		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/SMILESToInChI?smiles={smiles}" ;
+		api:externalResponseHandler "converters/smiles_to_chemspider_id_xml_to_rdf.php" ;
+		api:exampleRequestPath "/structure?smiles=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+<#smiles> api:name "smiles" ;
+	api:label "smiles";
+	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic chemspider:smiles ?smiles ." ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic chemspider:smiles ?smiles .
+}".

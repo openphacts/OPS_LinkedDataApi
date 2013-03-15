@@ -1,0 +1,44 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "ChemSpider structure search"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable chemspider:inchikey ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:description "Returns a ChemSpider URL corresponding to an input InChIKey string. Driven by ChemSpider." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key </span>." ;
+		api:name "InchiKey to URL" ;
+		api:enableCache true ;
+		api:uriTemplate "/structure?inchi_key={inchi_key}" ;
+		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIKeyToCSID?inchi_key={inchi_key}" ;
+		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
+		api:exampleRequestPath "/structure?inchi_key=BSYNRYMUTXBXSQ-UHFFFAOYSA-N" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+chemspider:inchikey api:name "inchi_key" ;
+	api:label "inchi_key";
+	api:value "An InChIKey string. E.g. BSYNRYMUTXBXSQ-UHFFFAOYSA-N" .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic chemspider:inchikey ?inchi_key ." ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic chemspider:inchikey ?inchi_key .
+}".

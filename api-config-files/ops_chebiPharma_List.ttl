@@ -26,12 +26,13 @@
 
 <#chebi> a api:API ;
         rdfs:label "ChEBI Ontology"@en ;
-        api:sparqlEndpoint <http://localhost:8183/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
+ 	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
@@ -47,6 +48,10 @@
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
 chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -57,41 +62,109 @@ chembl:organism api:name "assay_organism" ;
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?item";
-	api:value "One of: 'IC50' , 'Activity' " ;
+	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
+	a rdf:Property .
+
+chembl-ops:normalisedUnit api:name "activity_unit" ;
+        api:label "activity_unit" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:filterVariable "?item";
 	a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
-	api:value "An activity value, in mg/mL for IC50 and uM for Potency" ;
+	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A URLEncoded input URI. It will replace any SPARQL variables named ?ops_item" .
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	rdfs:range rdfs:Resource .
 
 <#chebiPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/chebi/pharmacology/pages?uri={uri}" ;
+	api:variable <http://www.openphacts.org/units/Micromolar> ;
+	api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+	api:variable <http://www.openphacts.org/units/Nanomolar> ;
+	api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
 	api:name "ChEBI Ontology Class Pharmacology Paginated" ;
-	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;
+	api:description "A page of items corresponding to acitivity values for a given ChEBI Ontology class" ;
+	api:resultsDescription "[] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.
+?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;
+        <span style=\"BACKGROUND-COLOR: #FFCC99\"> cito:citesAsDataSource ?doi </span>;
+        <span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
+?equiv_assay <span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:hasTarget ?equiv_target </span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organism ?assay_organism </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
+?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>. 
+?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>.
+?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.
+?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;
+		<span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?class </span>.
+?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.
+?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;
+<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>." ;
+
 	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&assay_organism=Mus%20musculus";
+	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:selector [
 		api:where 
-"
-GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-	?subclass rdfs:subClassOf ?ops_item .
+"GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
+	?class rdfs:subClassOf ?ops_item
+ }
+ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+        ?compound_chembl skos:exactMatch ?class ;
+        	owl:equivalentClass ?equiv_compound .
+                ?equiv_compound skos:exactMatch ?compound_cs .
+        ?item chembl:forMolecule ?compound_chembl ;
+                chembl:onAssay ?assay_uri .
+        ?assay_uri chembl:hasTarget ?target_uri ;
+                owl:equivalentClass ?equiv_assay .
+        ?target_uri owl:equivalentClass ?equiv_target.
+        OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+        OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
+        OPTIONAL { ?target_uri dc:title ?target_name }
+        OPTIONAL { ?target_uri chembl:organism ?target_organism . }
+        OPTIONAL { ?item chembl:type ?std_type }
+        OPTIONAL { ?item chembl:relation ?relation }
+        OPTIONAL { ?item chembl:standardValue ?std_value }
+        OPTIONAL { ?item chembl:standardUnits ?std_unit }
+        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
+        OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
+        	OPTIONAL { ?doi_internal owl:sameAs ?doi }
+        	OPTIONAL { ?doi_internal bibo:pmid ?pmid }
+        }
+        OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?bNode1 .
+                ?bNode1 a sio:CHEMINF_000198 ;
+                sio:SIO_000300 ?molweight. }
 }
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-	?compound_chembl skos:exactMatch ?subclass ;
-		owl:equivalentClass ?equiv_compound .
-	?equiv_compound skos:exactMatch ?compound_cs .
-	?item chembl:forMolecule ?compound_chembl ;
-		chembl:onAssay ?assay_uri .
-	?assay_uri chembl:hasTarget ?target_uri ;
-		owl:equivalentClass ?equiv_assay .
-	?target_uri owl:equivalentClass ?equiv_target .
-	
+GRAPH <http://www.conceptwiki.org> {
+        ?compound_cw skos:exactMatch ?compound_cs ;
+                skos:prefLabel ?compound_name .
+}
+GRAPH <http://www.chemspider.com> {
+        ?compound_cs chemspider:smiles ?smiles ;
+                chemspider:inchi ?inchi ;
+                chemspider:inchikey ?inchiKey .
+        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+                	a cheminf:CHEMINF_000367;
+                	qudt:numericValue ?num_ro5_violations . }
+	?compound_cs chemspider:inchikey ?inchiKey .
 }" ;
 	] ;
 	api:defaultViewer <#chebiPharmacologyListViewer> .
@@ -110,14 +183,14 @@ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
         cito:citesAsDataSource ?doi ;
         bibo:pmid ?pmid ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?equiv_assay chembl:hasTarget _:b1 ;
+?equiv_assay chembl:hasTarget ?equiv_target ;
         chembl:organism ?assay_organism ;
 	chembl:hasDescription ?assay_description ;
         void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-_:b1 ops:concatenatedURIs ?target_uris ;
-	dc:title ?target_names ;
-	ops:target_organisms ?target_organisms . 
-?equiv_compound skos:exactMatch ?compound_cw .
+?equiv_target dc:title ?target_name ;
+	ops:target_organism ?target_organism . 
+?equiv_compound skos:exactMatch ?compound_cw ;
+		skos:exactMatch ?class .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
 ?equiv_compound skos:exactMatch ?compound_cs .
@@ -130,8 +203,6 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 " ;
 	api:where "
-{       
-	SELECT DISTINCT ?item ?doi ?pmid ?equiv_compound ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?std_type ?relation ?std_value ?std_unit ?equiv_assay ?assay_organism (GROUP_CONCAT(DISTINCT ?equiv_target; SEPARATOR=' , ') AS ?target_uris) (GROUP_CONCAT(DISTINCT ?target_name ; SEPARATOR=' , ') AS ?target_names) (GROUP_CONCAT(DISTINCT ?target_organism ; SEPARATOR=' , ') AS ?target_organisms) ?bNode1 ?molweight ?bNode2 ?activity_value {
 		GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
 		        ?class rdfs:subClassOf ?ops_item
 		}
@@ -152,6 +223,7 @@ _:b1 ops:concatenatedURIs ?target_uris ;
                         OPTIONAL { ?item chembl:relation ?relation }
                         OPTIONAL { ?item chembl:standardValue ?std_value }
                         OPTIONAL { ?item chembl:standardUnits ?std_unit }
+                        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
 			OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
 				OPTIONAL { ?doi_internal owl:sameAs ?doi }
 				OPTIONAL { ?doi_internal bibo:pmid ?pmid }
@@ -171,5 +243,4 @@ _:b1 ops:concatenatedURIs ?target_uris ;
 	                OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
         	                a cheminf:CHEMINF_000367;
                 	        qudt:numericValue ?num_ro5_violations . }
-	        }
-	} } GROUP BY ?equiv_compound ?equiv_assay ?assay_description ?compound_cs ?compound_cw ?compound_name ?smiles ?inchi ?inchiKey ?num_ro5_violations ?item ?doi ?pmid ?equiv_assay ?equiv_target ?assay_organism ?target_organism ?std_type ?relation ?std_value ?std_unit ?bNode1 ?molweight ?bNode2 ?activity_value" .
+	        }" .

@@ -1,0 +1,45 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "ChemSpider structure search"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable chemspider:inchi ;
+	api:dataset <http://www.chemspider.com> ;
+	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>. " ;
+
+		api:name "Inchi to URL" ;
+		api:enableCache true ;
+		api:uriTemplate "/structure?inchi={inchi}" ;
+		api:externalRequestTemplate "http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi={inchi}" ;
+		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
+		api:exampleRequestPath "/structure?inchi=InChI%3D1S%2FC22H44N2%2Fc1-5-10-21(11-6-2)12-14-22(15-13-21)16-19-24(20-22)18-9-17-23(7-3)8-4%2Fh5-20H2%2C1-4H3" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<http://www.chemspider.com> api:label "ChemSpider" .
+
+chemspider:inchi api:name "inchi" ;
+	api:label "inchi";
+	api:value "An InChI string. E.g. InChI=1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)" .
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic chemspider:inchi ?inchi ." ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic chemspider:inchi ?inchi .
+}".

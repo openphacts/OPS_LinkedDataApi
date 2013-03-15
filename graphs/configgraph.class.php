@@ -17,6 +17,7 @@ class ConfigGraph extends PueliaGraph {
     private $_uriTemplate;
     private $_paramVariableBindings;
     private $_pathVariableBindings;
+    private $_apiConfigVariableBindings = null;
     private $_allVariableBindings;
     private $_requestFactory = null; 
     private $_formatters = null;
@@ -52,12 +53,15 @@ class ConfigGraph extends PueliaGraph {
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'mimeType', 'application/rdf+xml');
         $this->add_literal_triple(API.'RdfXmlFormatter', API.'name', 'rdf');
         $this->add_literal_triple(API.'RdfXmlFormatter', RDFS_LABEL, 'RDF/XML');
+        $this->add_literal_triple(API.'TsvFormatter', API.'mimeType', 'text/tab-separated-values');
+        $this->add_literal_triple(API.'TsvFormatter', API.'name', 'tsv');
+        $this->add_literal_triple(API.'TsvFormatter', RDFS_LABEL, 'Comma Seperated Variables');
         $this->add_resource_triple(API.'JsonFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'XmlFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'RdfXmlFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'TurtleFormatter',  RDF.'type', API.'Formatter');
         $this->add_resource_triple(API.'RdfJsonFormatter',  RDF.'type', API.'Formatter');
-
+	$this->add_resource_triple(API.'TsvFormatter',  RDF.'type', API.'Formatter');
 
         //built-in viewer: basic
         $this->add_resource_triple(API.'basicViewer', RDF_TYPE, API.'Viewer');
@@ -82,13 +86,13 @@ class ConfigGraph extends PueliaGraph {
 
 	/* added so Config Can be reused between Requests */
 
-	function setRequest($Request){
-		$this->_request = $Request;
-  }
+    function setRequest($Request){
+        $this->_request = $Request;
+    }
 
-  function getRequest(){
-    return $this->_request;
-  }
+    function getRequest(){
+        return $this->_request;
+    }
 
 
     function init(){
@@ -284,9 +288,9 @@ class ConfigGraph extends PueliaGraph {
      * @author Keith Alexander
      **/
     function pathTemplateMatches( $template, $path){
-	if(substr($template, -1,1)!='/'){ #trailing slash optional unless specified in template
-		$path = rtrim($path, '/');
-	}
+        if(substr($template, -1,1)!='/'){ #trailing slash optional unless specified in template
+            $path = rtrim($path, '/');
+        }
         preg_match_all(uriTemplateVariableRegex, $template, $ms);
         $templateVariables = array();
         $uriTemplateRegex = $template;
@@ -299,7 +303,8 @@ class ConfigGraph extends PueliaGraph {
         if(preg_match('@^'.$uriTemplateRegex.'$@', $path, $pathMatches)){
             $variableValuesFromPath = array();
             foreach($templateVariables as $n => $templateVariable){
-                $variableValuesFromPath[$templateVariable] = array('value'=> urldecode($pathMatches[$n+1]), 'source' => 'request');
+                $variableValuesFromPath[$templateVariable] = array('value'=> urldecode($pathMatches[$n+1]), 
+                                                                    'source' => 'request');
             }
             return $variableValuesFromPath;
         } else {
@@ -329,47 +334,72 @@ class ConfigGraph extends PueliaGraph {
             $name = $this->get_first_literal($variableUri, API.'name');
             $value = $this->get_first_literal($variableUri, API.'value');
             $variableBindings[$name]['value'] = $value;
-#Antonis botch
-	    $variableBindings[$name]['uri'] = $variableUri;	
+            #Antonis botch
+            $variableBindings[$name]['uri'] = $variableUri;
             if($type = $this->get_first_resource($variableUri, API.'type')){
-                $variableBindings[$name]['type'] = $type;                    
+                $variableBindings[$name]['type'] = $type;
             }
-	   
+
         }
         return $variableBindings;
-        
     }
     
     function getApiConfigVariableBindings(){
+        if ($this->_apiConfigVariableBindings!=null){
+            return $this->_apiConfigVariableBindings;    
+        }
+        
         $endpointUri = $this->getEndpointUri();
         $endpointApiUris = $this->get_subjects_where_resource(API.'endpoint', $endpointUri);
-        $variableBindings = array();
+        $this->_apiConfigVariableBindings = array();
         foreach($endpointApiUris as $apiUri){
             foreach($this->get_resource_triple_values($apiUri, API.'variable') as $variableUri){
                 $name = $this->get_first_literal($variableUri, API.'name');
-                $value = $this->get_first_literal($variableUri, API.'value');
-                $variableBindings[$name]['value'] = $value;
-		$variableBindings[$name]['uri'] = $variableUri;
-                if($type = $this->get_first_resource($variableUri, API.'type')){
-                    $variableBindings[$name]['type'] = $type;                    
+                $subTypes = $this->get_subject_property_values($variableUri, API.'subType');
+                foreach ($subTypes as $subTypeUri){
+                    $subTypeName = $this->get_first_literal($subTypeUri['value'], API.'name');
+                    $fullName = $name.'.'.$subTypeName;
+                    
+                    $this->retrieveVariableProperties($fullName, $subTypeUri['value']);
                 }
-		if($sparql = $this->get_first_literal($variableUri, API.'filterVariable')){
-                    $variableBindings[$name]['sparqlVar'] = $sparql;
-                }
+                
+                $this->retrieveVariableProperties($name, $variableUri);
             }
         }
-        return $variableBindings;
+        return $this->_apiConfigVariableBindings;
+    }
+    
+    private function retrieveVariableProperties($name, $variableUri){
+        $value = $this->get_first_literal($variableUri, API.'value');
+        $this->_apiConfigVariableBindings[$name]['value'] = $value;
+        $this->_apiConfigVariableBindings[$name]['uri'] = $variableUri;
+        
+        if($type = $this->get_first_resource($variableUri, API.'type')){
+            $this->_apiConfigVariableBindings[$name]['type'] = $type;
+        }
+        
+        if($sparql = $this->get_first_literal($variableUri, API.'filterVariable')){
+            $this->_apiConfigVariableBindings[$name]['sparqlVar'] = $sparql;
+        }
     }
     
     function bindVariablesInValue($value, $variables, $valueType=false){
-      foreach($variables as $name => $props){
-        if($valueType==RDFS.'Resource'
-          AND isset($props['source']) 
-          AND $props['source']=='request'
-	  AND $name != 'uri'){ 
-# Antonis botch
+        foreach($variables as $name => $props){
+            if(($valueType==RDFS.'Resource' AND 
+                    isset($props['source']) AND $props['source']=='request' 
+                    AND $name != 'uri')) {
+                # Antonis botch
+                $props['value'] = urlencode($props['value']);
+            }
+            
+            $value = str_replace('{'.$name.'}', $props['value'], $value);
+        }
+        return $value;
+    }
+    
+    function bindURLEncodedVariablesInValue($value, $variables){
+        foreach($variables as $name => $props){
             $props['value'] = urlencode($props['value']);
-          }
             $value = str_replace('{'.$name.'}', $props['value'], $value);
         }
         return $value;
@@ -377,10 +407,42 @@ class ConfigGraph extends PueliaGraph {
     
     function getCompletedItemTemplate(){
         $itemTemplate = $this->getEndpointItemTemplate();
-	$bindings = $this->getAllProcessedVariableBindings();
-#	print_r($bindings);
+        $bindings = $this->getAllProcessedVariableBindings();
+        #	print_r($bindings);
+        
         $filledInTemplate = $this->bindVariablesInValue($itemTemplate, $bindings, RDFS.'Resource' );
         return $filledInTemplate;
+    }
+    
+    function getExternalServiceRequest(){
+        $paramBindings = $this->getRequestVariableBindings();
+        
+        //fill in api:externalRequestTemplate
+        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
+        $externalRequest = $this->bindVariablesInValue($externalRequestTemplate, $paramBindings, RDFS.'Resource');
+        
+        //add params not appearing in the uri template
+        $unreservedParams = $this->_request->getUnreservedParams();
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        foreach ($unreservedParams as $name => $value){
+            if (strpos($uriTemplate, $name)===FALSE){
+                $valTokens = explode('|', $value);
+                foreach ($valTokens as $token){
+                    $externalRequest .= '&'.$name.'='.$token;
+                }
+            }
+        }
+        
+        return $externalRequest;
+    }
+    
+    function getCompletedUriTemplate(){
+        $bindings = array_merge($this->getPathVariableBindings(),
+                                $this->getParamVariableBindings());
+        
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        $filledInUriTemplate = $this->bindURLEncodedVariablesInValue($uriTemplate, $bindings);
+        return $filledInUriTemplate;
     }
 
 
@@ -394,39 +456,40 @@ class ConfigGraph extends PueliaGraph {
 
 
     function dataUriToEndpointItem($dataUri){
-      if($results = $this->getMatchesFromDataUri( $dataUri ) ){
-          $result= $results[0]; # we can only return one URI
-          $uriTemplate = $result['uriTemplate'];
-          $matches = $result['matches'];
-					$endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');		
-					return $endpointItem;
-				} else {
-          return false;
+        if($results = $this->getMatchesFromDataUri( $dataUri ) ){
+            $result= $results[0]; # we can only return one URI
+            $uriTemplate = $result['uriTemplate'];
+            $matches = $result['matches'];
+            $endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');
+            return $endpointItem;
+        } else {
+            return false;
         }
     }
 
     function getMatchesFromDataUri($dataUri){
-      $return = array();
-   	  $subjects = $this->get_subjects_of_type(API.'ItemEndpoint');		
-  	  foreach($subjects as $s){
-	  	  foreach($this->get_subject_properties($s) as $p){
-		  	  if($p==API.'itemTemplate'){
-			  	  $itemTemplate = $this->get_first_literal($s, $p);
-				    $dataPath = parse_url($dataUri, PHP_URL_PATH);
-				    $uriTemplate = $this->get_first_literal($s, API.'uriTemplate');		
-            $itemPathTemplate = parse_url($itemTemplate, PHP_URL_PATH);
-				    if($matches = $this->pathTemplateMatches($itemPathTemplate, $dataPath )){
-              $return[]= array(
-                'matches' => $matches,
-                'uriTemplate' => $uriTemplate,
-                'endpointUri' => $s,
-              );
-			    	  }
-			      }
-		      }
-	      }
-      if(!empty($return)) return $return;
-  	  return false;
+        $return = array();
+        $subjects = $this->get_subjects_of_type(API.'ItemEndpoint');
+        foreach($subjects as $s){
+            foreach($this->get_subject_properties($s) as $p){
+                if($p==API.'itemTemplate'){
+                    $itemTemplate = $this->get_first_literal($s, $p);
+                    $dataPath = parse_url($dataUri, PHP_URL_PATH);
+                    $uriTemplate = $this->get_first_literal($s, API.'uriTemplate');
+                    $itemPathTemplate = parse_url($itemTemplate, PHP_URL_PATH);
+                    if($matches = $this->pathTemplateMatches($itemPathTemplate, $dataPath )){
+                        $return[]= array(
+                                'matches' => $matches,
+                                'uriTemplate' => $uriTemplate,
+                                'endpointUri' => $s,
+                        );
+                    }
+                }
+            }
+        }
+        if(!empty($return)) 
+            return $return;
+        return false;
     }
 
     function getRequestVariableBindings(){
@@ -450,12 +513,12 @@ class ConfigGraph extends PueliaGraph {
     
     function getAllProcessedVariableBindings(){
         $bindings = $this->getAllVariableBindings();
-#        print_r($bindings);
-	foreach($bindings as $name => $value){
+        #        print_r($bindings);
+        foreach($bindings as $name => $value){
             #if($name==='callback'){
             #    throw new ConfigGraphException("'callback' is reserved and cannot be used as a variable name");
             #}
-          $bindings[$name]['value']  = $this->processVariableBinding($name, $bindings);
+            $bindings[$name]['value']  = $this->processVariableBinding($name, $bindings);
         }
         return $bindings;
     }
@@ -471,14 +534,14 @@ class ConfigGraph extends PueliaGraph {
           $val = '';
         }
         
-        if(isset($bindings[$name]['type'])){
-          $type = $bindings[$name]['type'];
-        } else {
-          $type = RDFS.'Literal';
-        }
-        
         $varNames = $this->variableNamesInValue($val);
         if(is_array($varNames)){
+            if(isset($bindings[$name]['type'])){
+                $type = $bindings[$name]['type'];
+            } else {
+                $type = RDFS.'Literal';
+            }
+            
             foreach($varNames as $var){
                 $bindings[$var]['value'] = $this->processVariableBinding($var, $bindings, $history);
             }
@@ -501,16 +564,16 @@ class ConfigGraph extends PueliaGraph {
     function getAllVariableBindings(){
         if(empty($this->_allVariableBindings)){
             $this->_allVariableBindings = array_merge(
-                $this->getApiConfigVariableBindings(),
-                $this->getPathVariableBindings(),
-                $this->getParamVariableBindings(),
-		$this->getEndpointConfigVariableBindings(),
-                $this->getRequestVariableBindings()
-#                $this->getEndpointConfigVariableBindings()
+                    $this->getApiConfigVariableBindings(),
+                    $this->getPathVariableBindings(),
+                    $this->getParamVariableBindings(),
+                    $this->getEndpointConfigVariableBindings(),
+                    $this->getRequestVariableBindings()
+                    #                $this->getEndpointConfigVariableBindings()
             );
         }
-        return  $this->_allVariableBindings;
         
+        return  $this->_allVariableBindings;
     }
     
     function getEndpointItemTemplate(){
@@ -701,24 +764,31 @@ class ConfigGraph extends PueliaGraph {
     }
     
     function getEndpointType(){
-        if(!$this->getEndpointUri()) return false;
+        if(!$this->getEndpointUri()) 
+            return false;
+
+        $endpointType = $this->get_first_resource($this->getEndpointUri(), RDF_TYPE);
         
+        /*TODO check with Antonis
         if($types = $this->get_resource_triple_values($this->getEndpointUri(), RDF_TYPE)){
             if(in_array(API.'ItemEndpoint', $types)){
                 return API.'ItemEndpoint';
             } else if(in_array(API.'ListEndpoint', $types)){
                 return API.'ListEndpoint';
             } else if(in_array(PUELIA.'SearchEndpoint', $types)){
-              return PUELIA.'SearchEndpoint';
-#Antonis botch
+                return PUELIA.'SearchEndpoint';
+                #Antonis botch
             } else if(in_array(API.'OPSListEndpoint', $types)){
-              return API.'OPSListEndpoint';
-	    }
+                return API.'OPSListEndpoint';
+            }
+        }*/
+        if ($endpointType==null){
+            $itemTemplate = $this->getEndpointItemTemplate();
+            if(!empty($itemTemplate)){
+                return API.'ItemEndpoint';
+            }
         }
-        $itemTemplate = $this->getEndpointItemTemplate();
-        if(!empty($itemTemplate)){
-            return API.'ItemEndpoint';
-        } 
+        return $endpointType;
     }
     
     function getDisplayPropertiesOfViewer($viewerUri){
@@ -859,6 +929,7 @@ class ConfigGraph extends PueliaGraph {
             'ttl' => API.'TurtleFormatter',
             'json' => API.'JsonFormatter',
             'xml' => API.'XmlFormatter',
+	    'tsv' => API.'TsvFormatter'
             );
         foreach($this->get_resource_triple_values($this->getApiUri(), API.'formatter') as $formatterUri){
             $name = $this->get_first_literal($formatterUri, API.'name');
@@ -957,28 +1028,29 @@ class ConfigGraph extends PueliaGraph {
     }
 
     function getViewerRelatedPagesForItemUri($viewerUri, $itemUri){
+        $base = $this->getRequest()->getBaseAndSubDir();
+        # get variable bindings from item endpoint
+        $result = $this->getMatchesFromDataUri($itemUri);
+        if(empty($result)) return false;
+        $endpointUri = $result[0]['endpointUri'];
+        $matches = $result[0]['matches'];
 
-      $base = $this->getRequest()->getBaseAndSubDir();
-      # get variable bindings from item endpoint
-      $result = $this->getMatchesFromDataUri($itemUri);
-      if(empty($result)) return false;
-      $endpointUri = $result[0]['endpointUri'];
-      $matches = $result[0]['matches'];
-
-      $relatedPages = array();
-      $relatedEndpoints = $this->getRelatedEndpointsForViewer($viewerUri);
-      foreach($relatedEndpoints as $relatedEndpoint){
-        $uriTemplate = $this->get_first_literal($relatedEndpoint, API.'uriTemplate');
-        $endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');
-        if(!$this->variableNamesInValue($endpointItem)){
-          $relatedUri = $base . $endpointItem;
-          $pageLabel = $this->get_first_literal($relatedEndpoint, API.'label');
-          $completedLabel = $this->bindVariablesInValue($pageLabel, $matches);
-          if(empty($pageLabel)) $completedLabel = $this->get_label($endpointUri);
-          $relatedPages[$relatedUri] = $completedLabel;
+        $relatedPages = array();
+        $relatedEndpoints = $this->getRelatedEndpointsForViewer($viewerUri);
+        
+        foreach($relatedEndpoints as $relatedEndpoint){
+            $uriTemplate = $this->get_first_literal($relatedEndpoint, API.'uriTemplate');
+            $endpointItem =  $this->bindVariablesInValue($uriTemplate, $matches, RDFS.'Resource');
+            
+            if(!$this->variableNamesInValue($endpointItem)){
+                $relatedUri = $base . $endpointItem;
+                $pageLabel = $this->get_first_literal($relatedEndpoint, API.'label');
+                $completedLabel = $this->bindVariablesInValue($pageLabel, $matches);
+                if(empty($pageLabel)) $completedLabel = $this->get_label($endpointUri);
+                $relatedPages[$relatedUri] = $completedLabel;
+            }
         }
-      }
-      return $relatedPages;
+        return $relatedPages;
     }
 
     function getUriTemplatesWithoutVariables(){

@@ -1,0 +1,49 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+
+<#dataSources> a api:API ;
+        rdfs:label "Data Sources"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:vocabulary <http://rdfs.org/ns/void#> ;
+	api:description "An API configuration to return information about the loaded data sources" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Data Sources" ;
+		api:itemTemplate "http://www.openphacts.org/linked_data_cache" ;
+		api:description "(UNDER DEVELOPMENT) Returns information about currently loaded data sources." ;
+		api:uriTemplate "/sources" ;
+		api:viewer <#dataSourcesViewer> ;
+		api:defaultViewer <#dataSourcesViewer> ] .
+
+<#dataSourcesViewer> a api:Viewer ;
+	api:name "dataSourcesViewer" ;
+	api:template 
+"<http://www.openphacts.org/linked_data_cache> a void:Dataset ;
+                                       void:subset ?top_dataset .
+?top_dataset foaf:isPrimaryTopicOf ?description .
+?dataset dcterms:title ?title .
+?dataset void:subset ?subset .
+?dataset prov:wasDerivedFrom ?derivedFrom .
+?dataset void:triples ?tripleNo .
+?dataset void:dataDump ?dataDump .
+?dataset foaf:homepage ?homepage .";
+	api:where
+"GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
+{ ?dataset a void:Dataset .
+?description foaf:primaryTopic ?top_dataset .
+OPTIONAL { ?dataset dcterms:title ?title . }
+OPTIONAL { ?dataset void:subset ?subset . } 
+OPTIONAL { ?dataset prov:wasDerivedFrom ?derivedFrom . } 
+OPTIONAL { ?dataset void:dataDump ?dataDump . }
+OPTIONAL { ?dataset void:triples ?tripleNo . }
+OPTIONAL { ?dataset foaf:homepage ?homepage . }
+}" .

@@ -1,0 +1,69 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
+@prefix qudt: <http://qudt.org/schema/qudt#> .
+
+<#filters> a api:API ;
+        rdfs:label "Pharmacology Filters"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:vocabulary <http://rdf.chemspider.com/#> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:vocabulary <http://www.openphacts.org/api#> ;
+	api:vocabulary <http://qudt.org/schema/qudt#> ;
+	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
+	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Units for activity type" ;
+		api:description "A list of units that activities of the specified type have been normalised to." ;
+		api:resultsDescription "?act_type <span style=\"BACKGROUND-COLOR: #33CC99\"> qudt:unit ?unit </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. 
+?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label</span>." ;
+		api:uriTemplate "/pharmacology/filters/units/{act_name}" ;
+        	api:itemTemplate "http://www.openphacts.org/chembl/onto/#{act_name}" ;
+		api:variable _:act_type	; 
+		api:exampleRequestPath "/pharmacology/filters/units/IC50";
+		api:viewer <#pharmacologyFiltersUnitViewer> ; 
+		api:defaultViewer <#pharmacologyFiltersUnitViewer> . ] .
+
+_:act_type api:name "act_type" ;
+	api:value "http://www.openphacts.org/chembl/onto/#{act_name}" ;
+	api:type rdfs:Resource .
+
+<http://www.openphacts.org/api#> api:label "ops" .
+<http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://qudt.org/schema/qudt#> api:label "qudt" .
+
+<#pharmacologyFiltersUnitViewer> a api:Viewer ;
+	api:name "pharmacologyFiltersUnitViewer" ;
+	api:template 
+"?act_type qudt:unit ?unit ;
+	rdfs:label ?act_label . 
+?unit rdfs:label ?unit_label" ; 
+	api:where
+"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+	?act_type rdfs:label ?act_label .
+	?act_unit a ?act_type ;
+		qudt:unit ?unit .
+	OPTIONAL { ?unit rdfs:label ?unit_label }
+}" .

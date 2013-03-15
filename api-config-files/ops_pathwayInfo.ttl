@@ -1,0 +1,90 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix sio: <http://semanticscience.org/resource/>
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix wp: <http://vocabularies.wikipathways.org/wp#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+
+<#pathway> a api:API ;
+        rdfs:label "Pathway"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable <#input> ; 
+	api:dataset <http://www.wikipathways.org> ;
+	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
+	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
+	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
+	api:vocabulary <http://purl.org/dc/terms/> ;
+	api:description "An API configuration to return information about compounds" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Pathway Information" ;
+		api:description "Returns information about a single pathway that corresponds to {uri}.";
+		api:uriTemplate "/pathway?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/pathway?uri=http%3A%2F%2Frdf.wikipathways.org%2FWP1019_r48131";
+		api:viewer <#pathwayViewer> ;
+		api:defaultViewer <#pathwayViewer> . ] .
+
+<http://www.wikipathways.org> api:label "WikiPathways" .
+
+<http://vocabularies.wikipathways.org/wp#> api:label "wikipathways" .
+<http://xmlns.com/foaf/0.1/> api:label "foaf" .
+<http://purl.org/dc/elements/1.1/> api:label "dc" .
+<http://purl.org/dc/terms/> api:label "dcterms" .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "A Pathway URI. e.g.: http://rdf.wikipathways.org/WP1019_r48131" ;
+	rdfs:range rdfs:Resource .
+
+<#pathwayViewer> a api:Viewer ;
+	api:name "pathwayViewer" ;
+	api:template 
+"?ops_item dc:title ?title ; 
+	wp:organism ?organism_uri ; 
+	foaf:page ?page ;
+	dc:identifier ?identifier ;
+	dcterms:description ?description ;
+	wp:pathwayOntology ?ontology ;
+	dcterms:hasPart ?reference ;
+	dcterms:hasPart ?metabolite ;
+	dcterms:hasPart ?gene_product;
+	void:inDataset <http://www.wikipathways.org> .
+?organism_uri rdfs:label ?organism . 
+?reference a wp:PublicationReference .
+?metabolite a wp:Metabolite .
+?gene_product a wp:GeneProduct .
+";
+	api:where
+"GRAPH <http://www.wikipathways.org> {
+	?ops_item dc:title ?title ; 
+		wp:organism ?organism_uri ; 
+		foaf:page ?page ;
+		dc:identifier ?identifier . 
+	?organism_uri rdfs:label ?organism . 
+	OPTIONAL { ?ops_item dcterms:description ?description }
+	OPTIONAL { ?ops_item wp:pathwayOntology ?ontology }
+	OPTIONAL { ?reference dcterms:isPartOf ?ops_item ;
+			a wp:PublicationReference }
+	OPTIONAL { ?metabolite dcterms:isPartOf ?ops_item ;
+			a wp:Metabolite }
+	OPTIONAL { ?gene_product dcterms:isPartOf ?ops_item ;
+			a wp:GeneProduct }
+}" .

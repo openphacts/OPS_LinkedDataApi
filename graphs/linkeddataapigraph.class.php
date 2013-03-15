@@ -53,54 +53,53 @@ class LinkedDataApiGraph extends PueliaGraph {
     }
     
     function _resource_to_simple_json_object($uri, $subjectUri, $propertyUri=false, $parentUris){
-         if(
-                !in_array($uri, $parentUris)
-        )
+        if(!in_array($uri, $parentUris))
         {
-        $parentUris[]=$uri;        
-        $index = $this->get_index();
-        $properties = $this->get_subject_properties($uri);
-        $resource = array();
-        if($this->node_is_blank($uri)){
-            if(count($this->get_subjects_where_object($uri)) > 1){
-                $bnodeNewId = 'node'.$this->getNewNodeNumber();
-                $bnodeIdIndex[$uri] = $bnodeNewId;
-                $resource['_id'] = $uri;
+            $parentUris[]=$uri;
+            $index = $this->get_index();
+            $properties = $this->get_subject_properties($uri);
+            $resource = array();
+            if($this->node_is_blank($uri)){
+                if(count($this->get_subjects_where_object($uri)) > 1){
+                    $bnodeNewId = 'node'.$this->getNewNodeNumber();
+                    $bnodeIdIndex[$uri] = $bnodeNewId;
+                    $resource['_id'] = $uri;
+                }
+            } else if(!empty($uri)) {
+                $resource['_about'] = $uri;
             }
-        } else if(!empty($uri)) {
-            $resource['_about'] = $uri;
-        }
-        sort($properties);
-        foreach($properties as $propertyUri){
+            sort($properties);
+            foreach($properties as $propertyUri){
                 $objects = $index[$uri][$propertyUri];
                 $jsonPropertyName = $this->get_short_name_for_uri($propertyUri);
-                $val = $this->get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris);
-                $resource[$jsonPropertyName] = $val;
-        }
+                $val = $this->get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
+                if ($val!=null){
+                    $resource[$jsonPropertyName] = $val;
+                }
+            }
 
-        if(!empty($resource)) return $resource;
-    } else {
-        return $uri;
+            if(!empty($resource)) return $resource;
+        } else {
+            return $uri;
+        }    
     }
     
-}
     
-    
-    function get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris){
+    function get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, &$resource){
 
         if(count($objects) > 1 OR $this->propertyIsMultiValued($propertyUri)){
             $returnArray = array();
             foreach($objects as $object){
-                $val = $this->map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris);
+                $val = $this->map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
                 if($val!==null) $returnArray[]=$val;
             }
             return $returnArray;
         } else {
-            return $this->map_rdf_value_to_json_value($objects[0], $propertyUri, $subjectUri, $parentUris);
+            return $this->map_rdf_value_to_json_value($objects[0], $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
         }
     }
     
-    function map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris){
+    function map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, &$resource){
         $target = array();
         
         if($object['type']!=='literal') $subject_properties = $this->get_subject_properties($object['value']);
@@ -149,11 +148,18 @@ class LinkedDataApiGraph extends PueliaGraph {
                 if($val!==null) $target[]=$val;
             }
         } else if(!empty($subject_properties)){
-            $target=$this->_resource_to_simple_json_object($object['value'], $subjectUri, $propertyUri, $parentUris);
-            
+            $target=$this->_resource_to_simple_json_object($object['value'], $subjectUri, $propertyUri, $parentUris);           
         } else if($object['type'] =='bnode' AND empty($subject_properties)) {
             $target = new BlankObject();
-        } else {
+        } else if (!empty($object['lang'])){
+            if ($object['lang'] === 'en'){
+                $resource[$jsonPropertyName] = $object['value'];
+            }
+            $jsonWithLanguageProperty = $jsonPropertyName.'_'.$object['lang'];
+            $resource[$jsonWithLanguageProperty] = $object['value'];
+            return null;
+        }
+        else {
             $target = $object['value'];
         }
         return $target;
