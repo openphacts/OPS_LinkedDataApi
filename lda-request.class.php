@@ -84,6 +84,16 @@ class LinkedDataApiRequest {
         return false;
     }
     
+    function hasEmptyParamValues(){
+    	$params = $this->getParams();
+    	foreach($params as $k => $v){
+    		if($v===''){
+    			return $k;
+    		}
+    	}
+    	return false;
+    }
+    
     function getUnreservedParams(){
         if ($this->unreservedParams!=null){
             return $this->unreservedParams;

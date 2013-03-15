@@ -78,10 +78,16 @@ class LinkedDataApiResponse {
     function process(){
         try{
             if($param = $this->Request->hasUnrecognisedReservedParams()){
-                logError("Bad Request: Unrecognised Unreserved Param: {$param}");
-                $this->errorMessages[]="Unrecognised Unreserved Param: {$param}";
+                logError("Bad Request: Unrecognised reserved Param: {$param}");
+                $this->errorMessages[]="Unrecognised reserved Param: {$param}";
                 $this->setStatusCode(HTTP_Bad_Request);
                 $this->serve();
+            }
+            else if ($param=$this->Request->hasEmptyParamValues()){
+            	logError("Bad Request: Empty value not accepted for parameter: {$param}");
+            	$this->errorMessages[]="Empty value not accepted for parameter: {$param}";
+            	$this->setStatusCode(HTTP_Bad_Request);
+            	$this->serve();
             }
             
             $endpointUri = $this->ConfigGraph->getEndpointUri();
