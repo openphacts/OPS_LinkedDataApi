@@ -15,7 +15,6 @@
 	api:variable cs_api:searchOptions ;
 	api:variable cs_api:commonOptions ;
 	api:variable cs_api:resultOptions ;
-	api:variable cs_api_search:Molecule ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return the result of an exact chemical structure search." ;
 	api:endpoint [
@@ -53,7 +52,7 @@ cs_api:searchOptions api:name "searchOptions" ;
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
-	api:value "A SMILES string" .
+	api:value "A SMILES string. E.g. CNC(=O)c1cc(ccn1)Oc2ccc(cc2)NC(=O)Nc3ccc(c(c3)C(F)(F)F)Cl" .
 
 cs_api_search:MatchType api:name "MatchType" ;
 	api:label "MatchType" ;
@@ -102,7 +101,7 @@ cs_api_result:Start api:name "Start" ;
 
 cs_api_result:Length api:name "Length" ;
 	api:label "Length" ;
-	api:value "Integer. How many results should be returned started the Start index. Default value: -1." .
+	api:value "Integer. How many results should be returned starting from Start index. Default value: -1." .
 
 
 

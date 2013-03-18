@@ -24,7 +24,7 @@ $errorStatuses=array(SEARCH_STATUS_UNKNOWN, SEARCH_STATUS_SUSPENDED, SEARCH_STAT
 
 $requestId = $response;
 
-pollStatus($requestId);
+pollStatus($requestId, $errorStatuses);
 
 $decodedFinalResults = getDecodedFinalResults($requestId);
 if (empty($decodedFinalResults)){
@@ -89,7 +89,7 @@ function getSearchType($path){
     }
 }
 
-function pollStatus($requestId){
+function pollStatus($requestId, $errorStatuses){
     $statusRequest=SEARCH_STATUS_REQUEST_TEMPLATE.$requestId;
     $statusResponse=null;
 

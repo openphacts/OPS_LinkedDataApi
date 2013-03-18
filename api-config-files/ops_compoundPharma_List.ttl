@@ -102,28 +102,28 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> cito:citesAsDataSource ?doi </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
 ?equiv_assay <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTarget ?equiv_target </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl-ops:organism ?assay_organism </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description  </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
 ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:organism ?target_organism </span>. 
 ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.conceptwiki.org/> </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.
 ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.
 ?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://rdf.chemspider.com/> </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.
 ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> </span>.
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
 ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span>";
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span>";
 	
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&activity_unit=micromolar&assay_organism=Mus%20musculus";

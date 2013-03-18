@@ -39,7 +39,7 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?equiv_target </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.conceptwiki.org> </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
 ?uniprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:existence ?existence </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;
@@ -47,17 +47,17 @@
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_names </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://purl.uniprot.org> </span> .
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .
 ?equiv_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasKeyword ?keywords </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?description </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:subClassOf ?target_type </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonyms </span>;	
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://data.kasabi.com/dataset/chembl-rdf></span>.
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt;</span>.
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; 
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank></span>." ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span>." ;
 
 		api:uriTemplate "/target?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;

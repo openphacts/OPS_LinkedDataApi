@@ -114,9 +114,9 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;
         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://rdf.chemspider.com/> </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.
 ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.conceptwiki.org/> </span>." ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>." ;
 
 	api:exampleRequestPath "/target/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.1.1";
 	api:exampleRequestPath "/target/enzyme/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.1.2&activity_type=IC50&maxEx-activity_value=10000&minEx-activity_value=1000&assay_organism=Homo%20sapiens&activity_unit=nanomolar";

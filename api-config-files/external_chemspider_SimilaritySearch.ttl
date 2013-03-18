@@ -58,11 +58,11 @@ cs_api_search:SimilarityType api:name "SimilarityType" ;
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
-	api:value "A SMILES string" .
+	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
 
 cs_api_search:Threshold api:name "Threshold" ;
 	api:label "Threshold" ;
-	api:value "Single" .
+	api:value "Double <= 1.0" .
 
 
 cs_api:commonOptions api:name "commonOptions" ;
@@ -106,7 +106,7 @@ cs_api_result:Start api:name "Start" ;
 
 cs_api_result:Length api:name "Length" ;
 	api:label "Length" ;
-	api:value "Integer. How many results should be returned started the Start index. Default value: -1." .
+	api:value "Integer. How many results should be returned starting from Start index. Default value: -1." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
