@@ -44,12 +44,14 @@ foreach ($decodedResponse as $elem){
         $tagCounter++;
     }
     
-    foreach ($elem->{"urls"} as $url){
-        $urlBNode = '_:urlNode'.$urlCounter;
-        $this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $urlBNode);
-        $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#url', $url->{'value'});
-        $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#matchType', $url->{'type'});
-        $urlCounter++;
+    if (isset($elem->{"urls"})){
+    	foreach ($elem->{"urls"} as $url){
+    		$urlBNode = '_:urlNode'.$urlCounter;
+    		$this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $urlBNode);
+    		$this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#url', $url->{'value'});
+    		$this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#matchType', $url->{'type'});
+    		$urlCounter++;
+    	}
     }
 }
 
