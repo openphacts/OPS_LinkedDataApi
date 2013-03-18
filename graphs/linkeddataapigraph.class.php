@@ -73,7 +73,7 @@ class LinkedDataApiGraph extends PueliaGraph {
                 $objects = $index[$uri][$propertyUri];
                 $jsonPropertyName = $this->get_short_name_for_uri($propertyUri);
                 $val = $this->get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
-                if ($val!=null || $val==0){
+                if ($val!=null || $val===0){
                     $resource[$jsonPropertyName] = $val;
                 }
             }
