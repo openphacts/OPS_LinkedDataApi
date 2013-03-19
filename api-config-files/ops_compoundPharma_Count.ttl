@@ -16,7 +16,12 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
-@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#>
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
@@ -100,20 +105,43 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:template 
 "?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
-"{ SELECT (COUNT(?activity_uri) AS ?count) {
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-		?activity_uri chembl:forMolecule ?chembl_uri;
-			chembl:onAssay ?assay_uri . 
-		?chembl_uri owl:equivalentClass ?equiv_compound .
-		        ?equiv_compound sio:CHEMINF_000200 [] . 
-			?assay_uri owl:equivalentClass ?equiv_assay .
-	} 
-	GRAPH <http://www.conceptwiki.org> {
-               	?cw_uri skos:prefLabel ?compound_name.
-        }
-	GRAPH <http://www.chemspider.com> {
+"{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
+	 GRAPH <http://www.conceptwiki.org> {
+                ?cw_uri skos:prefLabel ?compound_name.
+         }
+         GRAPH <http://www.chemspider.com> {
                 ?cs_uri chemspider:smiles ?smiles ;
-	                chemspider:inchi ?inchi ;
-                      	chemspider:inchikey ?inchiKey .
-	}
+                        chemspider:inchi ?inchi ;
+                        chemspider:inchikey ?inchiKey .
+                OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+                	        a cheminf:CHEMINF_000367;
+                                qudt:numericValue ?num_ro5_violations . }
+         }
+         GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+                ?item chembl:forMolecule ?chembl_uri ;
+                        chembl:onAssay ?assay_uri .
+                ?chembl_uri owl:equivalentClass ?equiv_compound .
+                ?equiv_compound sio:CHEMINF_000200 [] .
+                ?assay_uri owl:equivalentClass ?equiv_assay .
+                OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri .
+                        ?target_uri owl:equivalentClass ?equiv_target
+                        OPTIONAL { ?target_uri dc:title ?target_name }
+                        OPTIONAL { ?target_uri chembl:organism ?target_organism }
+                }
+                OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+                OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
+                OPTIONAL { ?item chembl:type ?std_type }
+                OPTIONAL { ?item chembl:relation ?relation }
+                OPTIONAL { ?item chembl:standardValue ?std_value }
+                OPTIONAL { ?item chembl:standardUnits ?std_unit }
+                OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value}
+                OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
+                	OPTIONAL { ?doi_internal owl:sameAs ?doi }
+               	 	OPTIONAL { ?doi_internal bibo:pmid ?pmid }
+                }
+                OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode1 .
+                        ?bNode1 a sio:CHEMINF_000198 ;
+                                sio:SIO_000300 ?molweight. }
+                ?item chembl:forMolecule ?chembl_uri 
+         } 
 } }" .
