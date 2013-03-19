@@ -25,11 +25,12 @@
 @prefix bibo: <http://purl.org/ontology/bibo/> .
 
 <#compound> a api:API ;
-        rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
-        api:contentNegotiation api:parameterBased ;
+    rdfs:label "Compound"@en ;
+    api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+    api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
-        api:variable <#input> ; 
+	api:variable _:targetOrganism ;
+    api:variable <#input> ; 
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
  	api:variable chembl-ops:normalisedUnit ;
@@ -58,13 +59,19 @@ chembl:organism api:name "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
 	api:filterVariable "?assay_uri";
 	a rdf:Property .
+	
+_:targetOrganism api:name "target_organism" ;
+ 	api:label "target_organism" ;
+ 	api:value "A literal target organism in ChEMBL." ;
+ 	api:filterVariable "?target_uri";
+ 	rdfs:subPropertyOf chembl:organism ;
+ 	a rdf:Property .
 
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?item";
 	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
-
  
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;

@@ -486,83 +486,108 @@ _SPARQL_;
         return $this->getViewQueryForUriList(array($uri), $viewerUri);
     }
 
-
-#Antonis 
     function getFilterGraph() {
-	$params = $this->_request->getParams();
-	$vars = $this->_config->getApiConfigVariableBindings();
-	$ep_vars = $this->_config->getEndpointConfigVariableBindings();
-	$filterGraph = "{\n";
-	//print_r($params);
-	//print_r($vars);
-	//print_r($ep_vars);
-	$count=1;
-	foreach ($params as $param_name => $param_value) {
-	   if ($param_name != 'uri'){
-		foreach ($vars as $var_name => $var_props) {
-		    if ($param_name==$var_name AND $param_value !=""){
-		        if (stripos($param_value , "|")!== false){
-		            $token = strtok($param_value,'|');
-		            $filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> "' . $token  . '"' . "}";
-		            $token=strtok('|');
-		            while ($token != false){
-		                if (isset($ep_vars[$param_value]['uri'])) {
-		                    $token = '<' . $ep_vars[$token]['uri'] . '>';
-		                }
-		                else {
-		                    if (is_numeric($token)) {
-		                        $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
-		                    }
-		                    else {
-		                        $token = '"' . $token  . '"';
-		                    }
-		                }
-		                $filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $var_props['uri'] . '> ' . $token  . "}";
-		                $token=strtok('|');
-		            }
-		        }
-		        else {
-		            if (isset($ep_vars[$param_value]['uri'])) {
-		                $param_value = '<' . $ep_vars[$param_value]['uri'] . '>';
-		            }
-		            else {
-		                if (is_numeric($param_value)) {
-		                    $param_value = '"' . $param_value  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
-		                }
-		                else {
-		                    $param_value = '"' . $param_value  . '"';
-		                }
-		            }
-		            $filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $var_props['uri'] . '> ' . $param_value  . ". } ";
-		        }
-		    }
-		    elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
-		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-		        $filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ') }';
-		        $count++;
-		    }
-		    elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
-		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-		        $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' || ?' . $var_name . ' = ' . $param_value . ' ) }';
-		        $count++;
-		    }
-		    elseif (stripos($param_name,"minEx-")!==false AND substr($param_name,6) == $var_name){
-		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-		        $filterGraph .= " . FILTER( ?" . $var_name . ' > ' . $param_value . ' ) }';
-		        $count++;
-		    }
-		    elseif (stripos($param_name,"maxEx-")!==false AND substr($param_name,6) == $var_name){
-		        $filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $var_props['uri'] . '> ?' . $var_name ;
-		        $filterGraph .= " . FILTER( ?" . $var_name . ' < ' . $param_value . ' ) }';
-		        $count++;
-		    }
-		}
-	   }
-	}
-	if ($filterGraph != "{\n"){
-		$filterGraph .= "\n}";
-		return $filterGraph;
-	}
+    	$params = $this->_request->getParams();
+    	$vars = $this->_config->getApiConfigVariableBindings();
+    	$ep_vars = $this->_config->getEndpointConfigVariableBindings();
+    	$filterGraph = "{\n";
+    	
+    	$count=1;//TODO ??
+    	foreach ($params as $param_name => $param_value) {
+    		if ($param_name != 'uri'){
+    			foreach ($vars as $var_name => $var_props) {
+    				if ($param_name==$var_name AND $param_value !=""){
+    					$filterPredicate = $this->findSuperProperty($var_props['uri']);
+
+    					if (stripos($param_value , "|")!== false){
+    						$this->getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, $filterGraph);
+    					}
+    					else {
+    						$this->getFilterGraphForParamValue($param_value, $filterPredicate, $var_props, $ep_vars, $filterGraph);
+    					}
+    				}
+    				elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '>', FALSE, $filterGraph); 					
+       					$count++;
+    				}
+    				elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '<', FALSE, $filterGraph); 					
+       					$count++;
+    				}
+    				elseif (stripos($param_name,"minEx-")!==false AND substr($param_name,6) == $var_name){
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '>', TRUE, $filterGraph); 					
+       					$count++;
+    				}
+    				elseif (stripos($param_name,"maxEx-")!==false AND substr($param_name,6) == $var_name){
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '<', TRUE, $filterGraph);
+    				  	$count++;
+    				}
+    			}
+    		}
+    	}
+    	if ($filterGraph != "{\n"){
+    		$filterGraph .= "\n}";
+    		return $filterGraph;
+    	}
+    }
+    
+    private function getFilterForBoundaryValue($var_props, $var_name, $param_value, $relation, $isExclusive = FALSE, &$filterGraph){
+    	$filterPredicate = $this->findSuperProperty($var_props['uri']);
+    	
+    	$filterGraph .= "{ " . $var_props['sparqlVar'] . " <" . $filterPredicate . '> ?' . $var_name ;
+    	$filterGraph .= " . FILTER( ?" . $var_name . ' '.$relation.' ' . $param_value ;
+    	
+    	if ($isExclusive===FALSE){
+    		$filterGraph .= ' || ?' . $var_name . ' = ' . $param_value;
+    	}
+  
+    	$filterGraph .= ' ) }';
+    }
+    
+    private function getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, &$filterGraph){
+    	$token = strtok($param_value,'|');
+    	$filterGraph.="{ " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> "' . $token  . '"' . "}";
+    	$token=strtok('|');
+    	while ($token != false){
+    		if (isset($ep_vars[$param_value]['uri'])) {
+    			$token = '<' . $ep_vars[$token]['uri'] . '>';
+    		}
+    		else {
+    			if (is_numeric($token)) {
+    				$token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+    			}
+    			else {
+    				$token = '"' . $token  . '"';
+    			}
+    		}
+    		$filterGraph.="UNION { " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token  . "}";
+    		$token=strtok('|');
+    	}
+    }
+    
+    private function getFilterGraphForParamValue($param_value, $filterPredicate, $var_props, $ep_vars, &$filterGraph){
+    	if (isset($ep_vars[$param_value]['uri'])) {
+    		$param_value = '<' . $ep_vars[$param_value]['uri'] . '>';
+    	}
+    	else {
+    		if (is_numeric($param_value)) {
+    			$param_value = '"' . $param_value  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+    		}
+    		else {
+    			$param_value = '"' . $param_value  . '"';
+    		}
+    	}
+    	$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". } ";
+    }
+    
+    private function findSuperProperty($variableURI){
+    	$current = $parent = $variableURI;
+    	while ($parent!==null){
+    		$current = $parent;
+    		$parent = $this->_config->get_first_resource($current, RDFS.'subPropertyOf');
+    	}
+    
+    	return $current;
     }
        
     function getViewQueryForUriList($uriList, $viewerUri){
