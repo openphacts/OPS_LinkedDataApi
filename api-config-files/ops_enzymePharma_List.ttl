@@ -151,15 +151,18 @@ chembl-ops:normalisedValue api:name "activity_value" ;
                 ?node1 a sio:CHEMINF_000198 ;
                         sio:SIO_000300 ?molweight }
         }
+GRAPH <http://www.chemspider.com> {
                 ?compound_cs chemspider:inchi ?inchi;
                         chemspider:inchikey ?inchi_key;
                         chemspider:smiles ?smiles .
                 OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
                         a cheminf:CHEMINF_000367;
                         qudt:numericValue ?num_ro5_violations . }
-
+}
+GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_cs ;
                         skos:prefLabel ?compound_name .
+}
         " ;
 	] ;
 	api:defaultViewer <#enzymePharmacologyListViewer> .
@@ -222,13 +225,15 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 		?node1 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight }
 }
+GRAPH <http://www.chemspider.com> {
 		?compound_cs chemspider:inchi ?inchi;
 			chemspider:inchikey ?inchi_key;
 			chemspider:smiles ?smiles . 
 	        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
         	        a cheminf:CHEMINF_000367;
                 	qudt:numericValue ?num_ro5_violations . }
-
+}
+GRAPH <http://www.conceptwiki.org> {
 		?compound_cw skos:exactMatch ?compound_cs ; 
 			skos:prefLabel ?compound_name .
-	" .
+}" .
