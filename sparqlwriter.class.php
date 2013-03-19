@@ -82,7 +82,7 @@ class SparqlWriter {
 #	    if (stripos($template, 'SELECT')!==false) {
 		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
 		$sparql= "SELECT DISTINCT ?item WHERE {" .  "{$template} } {$orderBy['orderBy']}";
-		if (strcasecmp($limit,"all")!=0) { 
+		if (strcasecmp($limit,"all")!==0) { 
 			$sparql.="  LIMIT {$limit} OFFSET {$offset}";
 		}
 #	    }
@@ -582,7 +582,7 @@ _SPARQL_;
 	    }
             $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
 	    	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
 	   	foreach($uriList as $uri) {
 			$expandedQuery .= "?item = <{$uri}> || ";
@@ -596,7 +596,7 @@ _SPARQL_;
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!=0) {
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
             	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
             	foreach($uriList as $uri) {
                 	$expandedQuery .= "?item = <{$uri}> || ";
