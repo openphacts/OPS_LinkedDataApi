@@ -105,7 +105,8 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
-?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>;
+?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;
@@ -185,7 +186,8 @@ GRAPH <http://www.conceptwiki.org> {
 	chembl:organism ?assay_organism ;
 	chembl:hasDescription ?assay_description ;
         void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
-?equiv_target ops:target_organism ?target_organism ;
+?equiv_target dc:title ?target_name_chembl ;
+	ops:target_organism ?target_organism ;
 	skos:exactMatch ?cw_uri ;
 	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?cw_uri skos:prefLabel ?target_name ;
@@ -211,6 +213,7 @@ GRAPH <http://www.conceptwiki.org> {
 		chembl:forMolecule ?compound_chembl .
 	?compound_chembl owl:equivalentClass ?equiv_compound . 
 	?equiv_compound skos:exactMatch ?compound_cs .
+        OPTIONAL { ?chembl_uri dc:title ?target_name_chembl }
 	OPTIONAL { ?chembl_uri chembl:organism ?target_organism }
 	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
 	OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
