@@ -24,6 +24,7 @@
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
         api:variable <#input> ; 
+	api:variable _:targetOrganism ;
 	api:variable chembl:type;
 	api:variable chembl-ops:normalisedValue ;
  	api:variable chembl-ops:normalisedUnit ;
@@ -69,6 +70,13 @@ chembl:organism api:name "assay_organism" ;
 	api:label "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
 	api:filterVariable "?assay_uri";
+	a rdf:Property .
+
+_:targetOrganism api:name "target_organism" ;
+	api:label "target_organism" ;
+	api:value "A literal target organism in ChEMBL." ;
+	api:filterVariable "?target_uri";
+	rdfs:subPropertyOf chembl:organism ;
 	a rdf:Property .
 
 chembl:type api:name "activity_type" ;
