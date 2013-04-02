@@ -165,7 +165,7 @@ do
               "paramType": "query"
             },
             {
-              "name": "callback",
+              "name": "_callback",
               "description": "For JSONP",
               "dataType": "string",
               "paramType": "query"
