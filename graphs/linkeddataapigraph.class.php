@@ -73,7 +73,7 @@ class LinkedDataApiGraph extends PueliaGraph {
                 $objects = $index[$uri][$propertyUri];
                 $jsonPropertyName = $this->get_short_name_for_uri($propertyUri);
                 $val = $this->get_simple_json_property_value($objects, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
-                if ($val!=null || $val===0){
+                if ($val!=null || $val===0 || count($val)!=0){
                     $resource[$jsonPropertyName] = $val;
                 }
             }
@@ -89,17 +89,53 @@ class LinkedDataApiGraph extends PueliaGraph {
 
         if(count($objects) > 1 OR $this->propertyIsMultiValued($propertyUri)){
             $returnArray = array();
-            foreach($objects as $object){
-                $val = $this->map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
+            foreach($objects as $object){      
+                $val = $this->check_language_tag_and_map_RDF_value_to_JSON_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, &$resource);
                 if($val!==null) $returnArray[]=$val;
             }
             return $returnArray;
         } else {
-            return $this->map_rdf_value_to_json_value($objects[0], $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
+            return $this->check_language_tag_and_map_RDF_value_to_JSON_value($objects[0], $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
         }
     }
     
-    function map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, &$resource){
+    private function check_language_tag_and_map_RDF_value_to_JSON_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, &$resource){
+        if (empty($object['lang'])){
+            $val = $this->map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName);
+            return $val;
+        }
+        else{//we have a language tag
+            //modify property name
+            $jsonPropertyNameWithTag = $jsonPropertyName.'_'.$object['lang'];
+            $val = $this->map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyNameWithTag);
+            
+            $this->add_single_value_or_convert_to_array($val, $jsonPropertyNameWithTag, $resource);
+        
+            if ($object['lang'] === 'en'){//for the English tags also add the property without suffix
+                $this->add_single_value_or_convert_to_array($object['value'], $jsonPropertyName, $resource);
+            }
+            
+            return null;
+        }
+    }
+    
+    private function add_single_value_or_convert_to_array($val, $jsonPropertyName, &$resource){
+        //if it is the first element for this language, add it
+        //otherwise build an array
+        if (count($resource[$jsonPropertyName])==0){
+            $resource[$jsonPropertyName] = $val;
+        }
+        else{
+            if (count($resource[$jsonPropertyName])==1){
+                $firstElem = $resource[$jsonPropertyName];
+                $resource[$jsonPropertyName] = array();
+                $resource[$jsonPropertyName][] = $firstElem;
+            }
+            $resource[$jsonPropertyName][] = $val;
+        }
+    }
+    
+    function map_rdf_value_to_json_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName){
         $target = array();
         
         if($object['type']!=='literal') $subject_properties = $this->get_subject_properties($object['value']);
@@ -151,14 +187,7 @@ class LinkedDataApiGraph extends PueliaGraph {
             $target=$this->_resource_to_simple_json_object($object['value'], $subjectUri, $propertyUri, $parentUris);           
         } else if($object['type'] =='bnode' AND empty($subject_properties)) {
             $target = new BlankObject();
-        } else if (!empty($object['lang'])){
-            if ($object['lang'] === 'en'){
-                $resource[$jsonPropertyName] = $object['value'];
-            }
-            $jsonWithLanguageProperty = $jsonPropertyName.'_'.$object['lang'];
-            $resource[$jsonWithLanguageProperty] = $object['value'];
-            return null;
-        }
+        } 
         else {
             $target = $object['value'];
         }
