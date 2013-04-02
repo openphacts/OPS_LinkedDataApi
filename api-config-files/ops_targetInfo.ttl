@@ -128,9 +128,9 @@
 	}
 OPTIONAL {
          GRAPH <http://linkedlifedata.com/resource/drugbank> {
+                OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
 		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
 		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
-		OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
 		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
         }
 }
