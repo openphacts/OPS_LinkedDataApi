@@ -48,7 +48,7 @@ do
                         for sub_var in `sed -n "/^[[:space:]]*$var/,/^[[:space:]]*$/p" $file | sed -n 's,[[:space:]]*api:subType[[:space:]]*,,p'  | sed 's,[[:space:]]*.[[:space:]]*$,,'`
                         do      
 				echo '            {'
-				echo '              "name": "'`echo $var | sed 's,^[[:print:]]*:,,'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
+				echo '              "name": "'`sed -n "/$var[[:space:]]*api:name/p" $file | sed 's/[[:print:]]*[[:space:]][[:space:]]*"//' | sed 's/"[[:print:]]*//'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
 				sed -n "/^[[:space:]]*$sub_var/,/api:value/s/[[:space:]]*[[:print:]]*api:value/              *description*: /p" $file | sed 's,*,",g' | sed 's/[[:space:]]*.[[:space:]]*$/ ,/'
                                 echo '              "paramType": "query",'
 				if [[ "$sub_var" == "cs_api_search:Molecule" ]]
