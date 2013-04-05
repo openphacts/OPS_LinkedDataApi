@@ -122,7 +122,7 @@ class LinkedDataApiGraph extends PueliaGraph {
     private function add_single_value_or_convert_to_array($val, $jsonPropertyName, &$resource){
         //if it is the first element for this language, add it
         //otherwise build an array
-        if (count($resource[$jsonPropertyName])==0){
+        if (!isset($resource[$jsonPropertyName])){
             $resource[$jsonPropertyName] = $val;
         }
         else{
