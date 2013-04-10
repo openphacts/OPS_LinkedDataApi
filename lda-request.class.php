@@ -173,7 +173,12 @@ class LinkedDataApiRequest {
     }
     
     function getBase(){
-        return 'http://'.$_SERVER['SERVER_NAME'];
+	if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+                return $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$_SERVER['SERVER_NAME'];
+	}
+	else {
+       		return 'http://'.$_SERVER['SERVER_NAME'];
+	}
     }
 
     function getServerName(){
