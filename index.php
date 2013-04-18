@@ -57,6 +57,11 @@ if (
 }
 else
 {
+	if (!(defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE
+                                    AND !$Request->hasNoCacheHeader())){
+        	$HttpRequestFactory->read_from_cache(FALSE);
+    	}
+
 	logDebug("Generating fresh response");
 
   $files = glob('api-config-files/*.ttl');
