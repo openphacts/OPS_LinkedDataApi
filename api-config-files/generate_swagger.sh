@@ -1,6 +1,6 @@
 echo '{
-  "basePath": "https://ops2.few.vu.nl",
-  "apiVersion": "v1.1",
+  "basePath": "https://beta.openphacts.org",
+  "apiVersion": "v1.2",
   "apis": [' 
 for file in ./*.ttl
 do
