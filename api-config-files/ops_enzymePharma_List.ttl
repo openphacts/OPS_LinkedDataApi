@@ -207,7 +207,10 @@ GRAPH <http://www.conceptwiki.org> {
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
 	api:where 
-"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+"       GRAPH <http://purl.uniprot.org/enzyme/inference> {
+                ?subclass rdfs:subClassOf ?ops_item
+        }
+        GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
 	?target_chembl skos:exactMatch ?subclass ;
 		owl:equivalentClass ?equiv_target . 
 	?assay_uri chembl:hasTarget ?target_chembl ;
