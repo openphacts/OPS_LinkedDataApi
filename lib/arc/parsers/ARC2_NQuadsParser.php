@@ -1,13 +1,21 @@
 <?php
 
+ARC2::inc('TurtleParser');
+
 class ARC2_NQuadsParser extends ARC2_TurtleParser{
     
+	private $graphArray = array();
+	
     function __construct($a, &$caller) {
         parent::__construct($a, $caller);
     }
     
+    function __init() {/* reader */
+    	parent::__init();
+    }
+    
     function parse($path, $data = '', $iso_fallback = false) {
-        $this->setDefaultPrefixes();
+        //$this->setDefaultPrefixes();
         /* reader */
         if (!$this->v('reader')) {
             ARC2::inc('Reader');
@@ -30,11 +38,17 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
             do {
                 $proceed = 0;
                 
-                if ((list($sub_r, $sub_v, $more_triples, $sub_v2) = $this->xQuadsBlock($sub_v)) && is_array($sub_r)) {
+                if ((list($sub_r, $sub_v, $sub_v2) = $this->xQuadsBlock($sub_v)) && is_array($sub_r)) {
                     $proceed = 1;
                     $loops = 0;
-                    foreach ($sub_r as $t) {
-                        $this->addT($t);
+                    foreach ($sub_r as $graphName => $triples) {
+                    	if (isset($this->graphArray[$graphName])){
+                    		$this->graphArray[$graphName] = array_merge($this->graphArray[$graphName], $triples);
+                    	}
+                    	else{
+                    		$this->graphArray[$graphName] = $triples;
+                    	}
+                        //$this->addT($t);
                     }
                 }
             } while ($proceed);
@@ -45,11 +59,12 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                 break;
             }
         }
-        foreach ($more_triples as $t) {
+        /*foreach ($more_triples as $graphName => $triples) {
+        	$graphArray[$graphName] = array_merge($graphArray[$graphName], $triples);
             $this->addT($t);
-        }
-        $sub_v = count($more_triples) ? $sub_v2 : $sub_v;
-        $buffer = $sub_v;
+        }*/
+        //$sub_v = count($more_triples) ? $sub_v2 : $sub_v;
+        //$buffer = $sub_v;
         $this->unparsed_code = $buffer;
         $this->reader->closeStream();
         unset($this->reader);
@@ -78,7 +93,7 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                     $state = 2;
                     $proceed = 1;
                 }
-                elseif ((list($sub_r, $sub_v) = $this->xCollection($sub_v)) && $sub_r) {
+                /*elseif ((list($sub_r, $sub_v) = $this->xCollection($sub_v)) && $sub_r) {
                     $t['s'] = $sub_r['id'];
                     $t['s_type'] = $sub_r['type'];
                     $pre_r = array_merge($pre_r, $sub_r['triples']);
@@ -87,7 +102,7 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                     if ($sub_r = $this->x('\.', $sub_v)) {
                         $this->addError('DOT after subject found.');
                     }
-                }
+                }*/
                 elseif ((list($sub_r, $sub_v) = $this->xBlankNodePropertyList($sub_v)) && $sub_r) {
                     $t['s'] = $sub_r['id'];
                     $t['s_type'] = $sub_r['type'];
@@ -126,11 +141,10 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                     $t['o_type'] = $sub_r['type'];
                     $t['o_lang'] = $this->v('lang', '', $sub_r);
                     $t['o_datatype'] = $this->v('datatype', '', $sub_r);
-                    $pre_r[] = $t;
                     $state = 4;
                     $proceed = 1;
                 }
-                elseif ((list($sub_r, $sub_v) = $this->xCollection($sub_v)) && $sub_r) {
+                /*elseif ((list($sub_r, $sub_v) = $this->xCollection($sub_v)) && $sub_r) {
                     $t['o'] = $sub_r['id'];
                     $t['o_type'] = $sub_r['type'];
                     $pre_r = array_merge($pre_r, array($t), $sub_r['triples']);
@@ -143,15 +157,16 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                     $pre_r = array_merge($pre_r, array($t), $sub_r['triples']);
                     $state = 4;
                     $proceed = 1;
-                }
+                }*/
             }
             if ($state == 4){/* expecting context */
                 if ((list($sub_r, $sub_v) = $this->xVarOrTerm($sub_v)) && $sub_r) {
                     if ($sub_r['type'] == 'bnode') {
                         $this->addError('Blank node used as graph name');
                     }
-                    $t['c'] = $sub_r['value'];
-                    $t['c_type'] = $sub_r['type'];
+                    $r[$sub_r['value']][] = $t;
+                    //$t['c_type'] = $sub_r['type'];
+                    //$pre_r[] = $t;
                     $state = 5;
                     $proceed = 1;
                 }
@@ -160,14 +175,14 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                 if ($sub_r = $this->x('\.', $sub_v)) {
                     $sub_v = $sub_r[1];
                     $buffer = $sub_v;
-                    $r = array_merge($r, $pre_r);
+                    //$r = array_merge($r, $pre_r);
                     $pre_r = array();
                     $state = 1;
                     $proceed = 1;
                 }
             }
         } while ($proceed);
-        return count($r) ? array($r, $buffer, $pre_r, $sub_v) : array(0, $buffer, $pre_r, $sub_v);
+        return count($r) ? array($r, $buffer, $sub_v) : array(0, $buffer, $sub_v);
     }
 }
 
