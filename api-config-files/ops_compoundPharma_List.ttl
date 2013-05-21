@@ -196,7 +196,8 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	chembl:hasDescription ?assay_description  ;
         void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
 ?equiv_target dc:title ?target_name ;
-	chembl-ops:organism ?target_organism . 
+	ops:target_organism ?target_organism ;
+        void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> . 
 ?equiv_compound skos:exactMatch ?cw_uri .
 ?cw_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
