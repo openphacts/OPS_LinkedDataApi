@@ -108,7 +108,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:citesAsDataSource ?doi </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://data.kasabi</span>.com/dataset/chembl-rdf> </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi/dataset/chembl-rdf&gt; </span>;
 	<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:hasTarget ?equiv_target </span>.
 ?equiv_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>.

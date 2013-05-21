@@ -13,7 +13,7 @@
 	api:description "An API configuration to return a set of URLs associated to the input URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Map URLs" ;
+		api:name "Map URL" ;
 		api:enableCache true ;
 		api:description "Returns a set of URLs associated to the input URL." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?url </span>." ;

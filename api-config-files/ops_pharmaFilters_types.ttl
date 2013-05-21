@@ -36,7 +36,7 @@
 		a api:ItemEndpoint ;
 		api:name "Activity types" ;
 		api:description "A list of activities type which have been normalised" ;
-		api:resultsDescription "<http://data.kasabi.com/dataset/chembl-rdf> <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.
+		api:resultsDescription "&lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.
 ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label</span>." ;
 		api:uriTemplate "/pharmacology/filters/activities" ;
         	api:itemTemplate "http://data.kasabi.com/dataset/chembl-rdf" ;
