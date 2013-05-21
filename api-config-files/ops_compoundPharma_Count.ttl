@@ -86,7 +86,7 @@ _:targetOrganism api:name "target_organism" ;
 
 chembl:type api:name "activity_type" ;
 	api:label "activity_type" ;
-	api:filterVariable "?activity_uri";
+	api:filterVariable "?item";
         api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
@@ -94,13 +94,13 @@ chembl:type api:name "activity_type" ;
 chembl-ops:normalisedUnit api:name "activity_unit" ;
         api:label "activity_unit" ;
         api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
-        api:filterVariable "?activity_uri";
+        api:filterVariable "?item";
         a rdf:Property .
 
 chembl-ops:normalisedValue api:name "activity_value" ;
 	api:label "activity_value" ;
 	api:value "Return activity values equal to this number." ;
-	api:filterVariable "?activity_uri";
+	api:filterVariable "?item";
 	a rdf:Property .
 
 <#input> api:name "uri" ;
