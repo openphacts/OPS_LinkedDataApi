@@ -641,7 +641,7 @@ class SimpleGraph {
   }
 
 
-  private function _add_arc2_triple_list(&$triples) {
+  public function _add_arc2_triple_list(&$triples) {
     $bnode_index = array();
 
     // We can safely preserve bnode labels if the graph is empty, otherwise we need to rewrite them
