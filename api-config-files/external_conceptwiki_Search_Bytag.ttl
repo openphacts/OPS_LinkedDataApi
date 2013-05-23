@@ -18,6 +18,7 @@
 		a api:ExternalHTTPService ;
 		api:name "Map free text to a concept URL based on semantic tag" ;
 		api:enableCache false ;
+		api:description "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID ;
@@ -35,7 +36,7 @@
 ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType ." ;
 
-		api:description "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki." ;
+		
 		api:uriTemplate "/search/byTag?q={q}&uuid={uuid}" ;
 		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search/byTag?q={q}&uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;

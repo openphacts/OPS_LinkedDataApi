@@ -16,6 +16,7 @@
 		a api:ExternalHTTPService ;
 		api:name "Get concept description" ;
 		api:enableCache false ;
+		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
 		api:resultsDescription "?conceptURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;			
@@ -31,7 +32,7 @@
 ?sourceURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?sourcePrefLabel </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>." ;
 
-		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
+		
 		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
 		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;
