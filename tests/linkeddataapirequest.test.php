@@ -1,5 +1,5 @@
 <?php
-require_once '../lda-request.class.php';
+require_once 'lda-request.class.php';
 
 class LinkedDataApiRequestTest extends PHPUnit_Framework_TestCase {
 
@@ -23,39 +23,35 @@ class LinkedDataApiRequestTest extends PHPUnit_Framework_TestCase {
     
     function test_getAcceptTypes(){
 	
-        $_SERVER['HTTP_ACCEPT'] = 'application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5';
-	$expected = array('application/xhtml+xml','application/xml','image/png','text/html','text/plain','*/*');
+        $_SERVER['HTTP_ACCEPT'] = 'application/xml,application/xhtml+xml,text/html;q=0.9,
+                */*;q=0.5';
+	$expected = array('application/xml', 'application/xhtml+xml', 'text/html',
+	       'application/json', 'text/turtle', 'application/rdf+xml', 'application/x-rdf+json', 'text/tab-separated-values' );
 	$actual = $this->Request->getAcceptTypes();
 	$this->assertEquals($expected, $actual);
     }
 
     function test_getAcceptTypes_any23_acceptHeader(){
-     $_SERVER['HTTP_ACCEPT'] = 'text/csv;q=0.1, text/html;q=0.3, application/xhtml+xml;q=0.3, text/rdf+nq;q=0.1, text/nq;q=0.1, text/nquads;q=0.1, text/n-quads;q=0.1, text/nt;q=0.1, text/ntriples;q=0.1, text/plain;q=0.1, text/rdf+n3, text/n3, application/n3, application/x-turtle, application/turtle, text/turtle, application/rdf+xml, text/rdf, text/rdf+xml, application/rdf';
-$expected =  array (
-  0 => 'application/turtle',
-  1 => 'text/turtle',
-  2 => 'application/x-turtle',
-  3 => 'text/rdf+n3',
-  4 => 'text/n3',
-  5 => 'application/rdf+xml',
-  6 => 'text/rdf',
-  7 => 'application/n3',
-  8 => 'application/rdf',
-  9 => 'text/rdf+xml',
-  10 => 'text/html',
-  11 => 'application/xhtml+xml',
-  12 => 'text/plain',
-  13 => 'text/nq',
-  14 => 'text/rdf+nq',
-  15 => 'text/nquads',
-  16 => 'text/n-quads',
-  17 => 'text/ntriples',
-  18 => 'text/nt',
-  19 => 'text/csv',
-);
-		$actual = $this->Request->getAcceptTypes();
-	$this->assertEquals($expected, $actual);
-
+        /*'application/json', 'application/xml', 'text/turtle',
+        'application/rdf+xml', 'application/x-rdf+json',
+        'text/tab-separated-values', 'text/html', 'application/xhtml+xml'*/
+                
+        $_SERVER['HTTP_ACCEPT'] = 'text/tab-separated-values;q=0.1, text/html;q=0.3,
+                application/x-rdf+json;q=0.2, application/xhtml+xml;q=0.3, 
+                text/turtle, application/rdf+xml, application/xml, application/json';
+         
+        $expected =  array (
+                0 => 'application/json',
+                1 => 'application/xml',
+                2 => 'text/turtle',
+                3 => 'application/rdf+xml',
+                4 => 'text/html',
+                5 => 'application/xhtml+xml',
+                6 => 'application/x-rdf+json',
+                7 => 'text/tab-separated-values',
+        );
+        $actual = $this->Request->getAcceptTypes();        
+        $this->assertEquals($expected, $actual);
     }
 
     function test_hasFormatExtension(){
@@ -73,7 +69,6 @@ $expected =  array (
     function test_getFormatExtension(){
         $this->assertEquals('rdf', $this->Request->getFormatExtension());
     }
-
 
     function test_getPathWithoutExtension(){
         $this->assertEquals('/Mountains/Ben_Nevis', $this->Request->getPathWithoutExtension());
@@ -142,6 +137,7 @@ $expected =  array (
         $this->assertFalse($actual, "there are no unrecognised params starting with _");
         $_SERVER['REQUEST_URI'] = '/Mountains/Ben_Nevis.rdf?_foo=bar&_view=stupid';
         $_SERVER['QUERY_STRING'] = '_foo=bar';
+        $this->Request = new LinkedDataApiRequest();
         $actual = $this->Request->hasUnrecognisedReservedParams();
         $this->assertEquals($actual, '_foo', "there are unrecognised params starting with _, namely _foo");
         
@@ -149,8 +145,10 @@ $expected =  array (
     
     function test_hasNoCacheHeader(){
         $_SERVER['HTTP_CACHE_CONTROL'] = 'no-cache';
+        $this->Request = new LinkedDataApiRequest();
         $this->assertTrue($this->Request->hasNoCacheHeader());
         $_SERVER['HTTP_CACHE_CONTROL'] = 'please-cache';
+        $this->Request = new LinkedDataApiRequest();
         $this->assertFalse($this->Request->hasNoCacheHeader(), "should return false because cache-control header does not have no-cache value");
         
     }

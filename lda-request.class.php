@@ -1,4 +1,7 @@
 <?php
+
+require_once 'lda.inc.php';
+
 class LinkedDataApiRequest {
     
     var $formatExtension = null;        
