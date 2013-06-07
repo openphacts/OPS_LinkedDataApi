@@ -12,7 +12,7 @@
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix uniprot: <http://purl.uniprot.org/core/> .
 
@@ -85,7 +85,7 @@
 	api:template 
 "?ops_item skos:exactMatch ?cw_uri ;
 	skos:exactMatch ?uniprot_uri ;
-	skos:exactMatch ?equiv_target ;
+	skos:exactMatch ?chembl_uri ;
 	skos:exactMatch ?db_uri .
 ?cw_uri skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org> .
@@ -97,11 +97,13 @@
 	uniprot:alternativeName ?alt_name ;
 	rdfs:seeAlso ?target_pdb ;
         void:inDataset <http://purl.uniprot.org> .
-?equiv_target chembl:hasKeyword ?keyword ;
-	chembl:hasDescription ?description ;
+
+?chembl_uri chembl:hasTargetComponent ?targetComponent ;
 	rdfs:subClassOf ?target_type ;
-	rdfs:label ?synonyms ;	
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf>.
+	rdfs:label ?synonym ;	
+	void:inDataset <http://www.ebi.ac.uk/chembl>.
+?targetComponent dcterms:description ?description .
+
 ?db_uri drugbank:cellularLocation ?cellularLocation ;
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
@@ -135,10 +137,10 @@ OPTIONAL {
         }
 }
 OPTIONAL {
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> { 
-		?chembl_uri owl:equivalentClass ?equiv_target .
-		OPTIONAL { ?chembl_uri chembl:hasKeyword ?keyword . }
-		OPTIONAL { ?chembl_uri chembl:hasDescription ?description . }
+	GRAPH <http://www.ebi.ac.uk/chembl> { 
+		OPTIONAL { ?chembl_uri chembl:hasTargetComponent ?targetComponent . 
+			   ?targetComponent dcterms:description ?description
+			}
 		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
 		OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
 	}
