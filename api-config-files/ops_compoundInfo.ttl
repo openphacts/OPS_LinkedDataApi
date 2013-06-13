@@ -49,12 +49,12 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:psa ?psa</span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.
-?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?equiv_compound </span>. 
-?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molformula </span>;
+?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_uri </span>. 
+?chembl_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molformula </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode2 ?molweight </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode3 ?mw_freebase </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode4 ?rtb </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt;</span>.
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span>.
 ?ops_item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_uri </span>.
 ?db_uri  <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:biotransformation ?biotransformation </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:description ?description </span>;
@@ -99,8 +99,8 @@
 	ops:ro5_violations ?num_ro5_violations ;
 	ops:psa ?psa;
 	void:inDataset <http://www.chemspider.com> .
-?ops_item skos:exactMatch ?equiv_compound . 
-?equiv_compound ?bNode1 ?molformula ;
+?ops_item skos:exactMatch ?chembl_uri . 
+?chembl_uri ?bNode1 ?molformula ;
 	?bNode2 ?molweight ;
 	?bNode3 ?mw_freebase ;
 	?bNode4 ?rtb ;
@@ -137,19 +137,17 @@ GRAPH <http://www.chemspider.com> {
 		qudt:numericValue ?psa . }
 }
 OPTIONAL {
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?chembl_uri owl:equivalentClass ?equiv_compound .
-	?equiv_compound sio:CHEMINF_000200 [] .
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode1 .
+GRAPH <http://www.ebi.ac.uk/chembl> {
+	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode1 .
 		?bNode1 a sio:CHEMINF_000042 ;
 			sio:SIO_000300 ?molformula. }
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode2 .
+	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode2 .
 		?bNode2 a sio:CHEMINF_000198 ;
 			sio:SIO_000300 ?molweight. }
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode3 .
+	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode3 .
 		?bNode3 a sio:CHEMINF_000350 ;
 			sio:SIO_000300 ?mw_freebase. }
-	OPTIONAL { ?chembl_uri sio:CHEMINF_000200 ?bNode4 .
+	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode4 .
 		?bNode4 a sio:CHEMINF_000311 ;
 			sio:SIO_000300 ?rtb. }
 }

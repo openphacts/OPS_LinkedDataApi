@@ -36,7 +36,7 @@
 		api:description "Returns information about a single target that corresponds to {uri}.";
 		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?equiv_target </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
@@ -47,12 +47,12 @@
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_names </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .
-?equiv_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasKeyword ?keywords </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?description </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:subClassOf ?target_type </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonyms </span>;	
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt;</span>.
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span>.
+?chembl_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?targetComponent </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdf:type ?target_type </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonym </span>;	
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
+?targetComponent <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;
@@ -97,9 +97,8 @@
 	uniprot:alternativeName ?alt_name ;
 	rdfs:seeAlso ?target_pdb ;
         void:inDataset <http://purl.uniprot.org> .
-
 ?chembl_uri chembl:hasTargetComponent ?targetComponent ;
-	rdfs:subClassOf ?target_type ;
+	a ?target_type ;
 	rdfs:label ?synonym ;	
 	void:inDataset <http://www.ebi.ac.uk/chembl>.
 ?targetComponent dcterms:description ?description .
@@ -138,10 +137,10 @@ OPTIONAL {
 }
 OPTIONAL {
 	GRAPH <http://www.ebi.ac.uk/chembl> { 
+		?chembl_uri a ?target_type
 		OPTIONAL { ?chembl_uri chembl:hasTargetComponent ?targetComponent . 
 			   ?targetComponent dcterms:description ?description
 			}
-		OPTIONAL { ?chembl_uri rdfs:subClassOf ?target_type . }
 		OPTIONAL { ?chembl_uri rdfs:label ?synonym . }
 	}
 }".

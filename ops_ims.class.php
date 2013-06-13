@@ -4,7 +4,7 @@ class OpsIms {
 
     function expandQuery ( $query , $input_uri ) {
         $variables = array('?cw_uri' , '?cs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri');
-        $url = 'http://openphacts.cs.man.ac.uk:9090/QueryExpander/expandXML?query=' ;
+        $url = 'http://openphacts.cs.man.ac.uk:9091/QueryExpander/expandXML?query=' ;
         $url .= urlencode($query) ;
         $params='';
         $output = $query ;
@@ -27,7 +27,8 @@ class OpsIms {
             curl_close($ch);
 
             //echo $query;
-            //echo $url;
+            //echo '<br><br>';
+	    //echo $url;
             $output = simplexml_load_string($response)->expandedQuery ;
         }
         return $output ;
