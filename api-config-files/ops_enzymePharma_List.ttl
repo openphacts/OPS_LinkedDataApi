@@ -11,7 +11,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix cw: <http://www.conceptwiki.org/concept/> .
 @prefix void: <http://rdfs.org/ns/void#> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
@@ -36,7 +36,7 @@
  	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -47,7 +47,7 @@
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
 <http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
@@ -133,7 +133,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 "	GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 ?subclass rdfs:subClassOf ?ops_item
         }
-        GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+        GRAPH <http://www.ebi.ac.uk/chembl> {
         ?target_chembl skos:exactMatch ?subclass ;
                 owl:equivalentClass ?equiv_target .
         ?assay_uri chembl:hasTarget ?target_chembl ;
@@ -188,7 +188,7 @@ GRAPH <http://www.conceptwiki.org> {
 	chembl:onAssay ?equiv_assay ;
 	chembl:citesAsDataSource ?doi ;
 	bibo:pmid ?pmid ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> ;
 	chembl:hasTarget ?equiv_target .
 ?equiv_assay chembl:hasDescription ?assay_description ;
 	chembl:organism ?assay_organism .
@@ -210,7 +210,7 @@ GRAPH <http://www.conceptwiki.org> {
 "GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 ?subclass rdfs:subClassOf ?ops_item
 }
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+GRAPH <http://www.ebi.ac.uk/chembl> {
 	?target_chembl skos:exactMatch ?subclass ;
 		owl:equivalentClass ?equiv_target . 
 	?assay_uri chembl:hasTarget ?target_chembl ;

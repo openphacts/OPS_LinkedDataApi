@@ -15,7 +15,7 @@
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#>
 
 <#chebi> a api:API ;
@@ -30,14 +30,14 @@
  	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:vocabulary <http://www.openphacts.org/api#> ;
-	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
+	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about classes in the ChEBI Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
@@ -56,10 +56,10 @@
 		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
-<http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
 <http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
@@ -111,7 +111,7 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
 	GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         	?subclass rdfs:subClassOf ?ops_item .
 	}
-	GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+	GRAPH <http://www.ebi.ac.uk/chembl> {
 	        ?compound_chembl skos:exactMatch ?subclass ;
                 owl:equivalentClass ?equiv_uri .
 	        ?equiv_uri skos:exactMatch ?compound_cs .

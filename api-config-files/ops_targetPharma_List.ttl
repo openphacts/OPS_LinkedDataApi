@@ -11,7 +11,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix cw: <http://www.conceptwiki.org/concept/> .
 @prefix void: <http://rdfs.org/ns/void#> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
@@ -36,7 +36,7 @@
  	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -47,7 +47,7 @@
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
 <http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
@@ -109,21 +109,21 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:citesAsDataSource ?doi </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?equiv_assay <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?equiv_target </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.
 ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?node1 ?molweight </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;
@@ -136,7 +136,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F208b03ad-e809-4d98-b83b-69ff85880897&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=9&activity_unit=micromolar&assay_organism=Mus%20musculus";
 	api:selector [
 		api:where 
-"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+"GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_uri ;
                 owl:equivalentClass ?equiv_assay .
         ?chembl_uri owl:equivalentClass ?equiv_target .
@@ -190,21 +190,21 @@ GRAPH <http://www.conceptwiki.org> {
 	chembl:onAssay ?equiv_assay ;
 	bibo:pmid ?pmid ;
 	chembl:citesAsDataSource ?doi ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?equiv_assay chembl:hasTarget ?equiv_target ;
 	chembl:organism ?assay_organism ;
 	chembl:hasDescription ?assay_description ;
-        void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?equiv_target dc:title ?target_name_chembl ;
 	ops:target_organism ?target_organism ;
 	skos:exactMatch ?cw_uri ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?cw_uri skos:prefLabel ?target_name ;
         void:inDataset <http://www.conceptwiki.org/> .
 ?equiv_compound ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?compound_cs chemspider:smiles ?smiles ;
 	chemspider:inchi ?inchi ;
 	chemspider:inchikey ?inchi_key;
@@ -214,7 +214,7 @@ GRAPH <http://www.conceptwiki.org> {
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
 	api:where 
-"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+"GRAPH <http://www.ebi.ac.uk/chembl> {
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		owl:equivalentClass ?equiv_assay .
 	?chembl_uri owl:equivalentClass ?equiv_target .
