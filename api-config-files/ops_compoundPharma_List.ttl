@@ -202,6 +202,7 @@ chembl-ops:standardRelation api:name "relation" ;
         chembl:publishedRelation ?published_relation ;
         chembl:publishedValue ?published_value ;
         chembl:publishedUnits ?published_unit ;
+	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
         chembl:hasDocument ?doi ;
         bibo:pmid ?pmid ;
@@ -254,7 +255,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 		OPTIONAL { ?target_uri dcterms:title ?target_name }
 		OPTIONAL { ?target_uri chembl:organismName ?target_organism }
 	}
-	OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
+	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
 	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
 	OPTIONAL { ?item chembl:publishedType ?published_type }
 	OPTIONAL { ?item chembl:publishedRelation ?published_relation }
