@@ -112,12 +112,10 @@ chembl-ops:normalisedUnit api:name "activity_unit" ;
         	?subclass rdfs:subClassOf ?ops_item .
 	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
-	        ?compound_chembl skos:exactMatch ?subclass ;
-                owl:equivalentClass ?equiv_uri .
-	        ?equiv_uri skos:exactMatch ?compound_cs .
-       		?activity_uri chembl:forMolecule ?compound_chembl ;
-        	        chembl:onAssay ?assay_uri .
-	        ?assay_uri chembl:hasTarget ?target_uri .
-	
+		?compound_chembl owl:sameAs ?class .
+		?compound_cs skos:exactMatch ?compound_chembl .
+        	?activity_uri chembl:hasMolecule ?compound_chembl ;
+               		chembl:hasAssay ?assay_uri .
+        	?assay_uri chembl:hasTarget ?target_uri .
 	} 
 } }" .
