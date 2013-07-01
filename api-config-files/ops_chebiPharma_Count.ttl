@@ -22,12 +22,9 @@
         rdfs:label "ChEBI Ontology"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-	api:variable chembl:organism ;
         api:variable <#input> ; 
 	api:variable _:targetOrganism ;
-	api:variable chembl:type;
-	api:variable chembl-ops:normalisedValue ;
- 	api:variable chembl-ops:normalisedUnit ;
+	api:variable chembl:organismName ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -66,36 +63,19 @@
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
-chembl:organism api:name "assay_organism" ;
+chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
 	api:filterVariable "?assay_uri";
 	a rdf:Property .
-
+	
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
 	api:filterVariable "?target_uri";
-	rdfs:subPropertyOf chembl:organism ;
+	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
-chembl:type api:name "activity_type" ;
-	api:label "activity_type" ;
-	api:filterVariable "?activity_uri";
-	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
-	a rdf:Property .
-
-chembl-ops:normalisedValue api:name "activity_value" ;
-	api:label "activity_value" ;
-	api:value "Return activity values equal to this number." ;
-	api:filterVariable "?activity_uri";
-	a rdf:Property .
-
-chembl-ops:normalisedUnit api:name "activity_unit" ;
-        api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
-        api:filterVariable "?activity_uri";
-        a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";

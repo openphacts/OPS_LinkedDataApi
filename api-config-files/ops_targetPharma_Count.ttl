@@ -77,7 +77,7 @@ chembl:organismName api:name "assay_organism" ;
 _:targetOrganism api:name "target_organism" ;
  	api:label "target_organism" ;
  	api:value "A literal target organism in ChEMBL." ;
- 	api:filterVariable "?target_uri";
+ 	api:filterVariable "?chembl_uri";
  	rdfs:subPropertyOf chembl:organismName ;
  	a rdf:Property .
 
@@ -94,13 +94,13 @@ chembl:standardUnits api:name "activity_unit" ;
         api:filterVariable "?item";
         a rdf:Property .
 
-chembl-ops:standardValue api:name "activity_value" ;
+chembl:standardValue api:name "activity_value" ;
 	api:label "activity_value" ;
 	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
-chembl-ops:standardRelation api:name "relation" ;
+chembl:standardRelation api:name "relation" ;
         api:label "Relation" ;
         api:value ">, >=,= , < , <=" ;
         api:filterVariable "?item";
