@@ -98,13 +98,13 @@ chembl:standardUnits api:name "activity_unit" ;
         api:filterVariable "?item";
         a rdf:Property .
 
-chembl-ops:standardValue api:name "activity_value" ;
+chembl:standardValue api:name "activity_value" ;
 	api:label "activity_value" ;
 	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
-chembl-ops:standardRelation api:name "relation" ;
+chembl:standardRelation api:name "relation" ;
         api:label "Relation" ;
         api:value ">, >=,= , < , <=" ;
         api:filterVariable "?item";
