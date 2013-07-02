@@ -35,6 +35,7 @@
  	api:variable chembl:standardUnit ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
+	api:variable chembl:pChembl ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -91,6 +92,12 @@ chembl:standardRelation api:name "relation" ;
         api:value ">, >=,= , < , <=" ;
         api:filterVariable "?item";
         a rdf:Property .
+
+chembl:pChembl api:name "pChembl" ;
+	api:label "pChembl" ;
+	api:filterVariable "?item";
+        api:value "The pChembl value of an activity" ;
+	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
@@ -156,6 +163,7 @@ chembl:standardRelation api:name "relation" ;
         	OPTIONAL { ?item chembl:standardValue ?std_value }
         	OPTIONAL { ?item chembl:standardUnits ?std_unit }
         	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+		OPTIONAL { ?item chembl:pChembl ?pChembl }
         	OPTIONAL { ?item chembl:hasDocument ?document .
         		OPTIONAL { ?document owl:sameAs ?doi }
         		OPTIONAL { ?document bibo:pmid ?pmid }
@@ -191,6 +199,7 @@ chembl:standardRelation api:name "relation" ;
 	chembl:standardUnits ?std_unit;
 	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
+	chembl:pChembl ?pChembl ;
 	chembl:hasDocument ?doi ;
         bibo:pmid ?pmid ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> ;
@@ -232,6 +241,7 @@ chembl:standardRelation api:name "relation" ;
         	OPTIONAL { ?item chembl:standardValue ?std_value }
         	OPTIONAL { ?item chembl:standardUnits ?std_unit }
         	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+		OPTIONAL { ?item chembl:pChembl ?pChembl }
         	OPTIONAL { ?item chembl:hasDocument ?document .
         		OPTIONAL { ?document owl:sameAs ?doi }
         		OPTIONAL { ?document bibo:pmid ?pmid }

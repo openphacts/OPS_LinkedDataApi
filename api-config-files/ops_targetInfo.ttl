@@ -114,18 +114,18 @@
 		?cw_uri skos:prefLabel ?target_name.
 	}
 	GRAPH <http://purl.uniprot.org> {
-	?uniprot_uri uniprot:existence ?existence .
-	OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
-	OPTIONAL { ?uniprot_uri uniprot:sequence ?seq_uri .
-		?seq_uri rdf:value ?sequence . }
-	OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri .
-		?fun_uri a uniprot:Function_Annotation ;
-		rdfs:comment ?function . }
-	OPTIONAL { ?uniprot_uri uniprot:classifiedWith ?class . }
-	OPTIONAL { ?uniprot_uri uniprot:alternativeName ?alt_name_uri .
-		?alt_name_uri uniprot:fullName ?alt_name . }
-	OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb .
-		?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
+		?uniprot_uri uniprot:existence ?existence .
+		OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
+		OPTIONAL { ?uniprot_uri uniprot:sequence ?seq_uri .
+			?seq_uri rdf:value ?sequence . }
+		OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri .
+			?fun_uri a uniprot:Function_Annotation ;
+			rdfs:comment ?function . }
+		OPTIONAL { ?uniprot_uri uniprot:classifiedWith ?class . }
+		OPTIONAL { ?uniprot_uri uniprot:alternativeName ?alt_name_uri .
+			?alt_name_uri uniprot:fullName ?alt_name . }
+		OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb .
+			?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
 	}
 OPTIONAL {
          GRAPH <http://linkedlifedata.com/resource/drugbank> {

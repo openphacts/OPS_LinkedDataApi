@@ -34,6 +34,7 @@
  	api:variable chembl:standardUnit ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
+	api:variable chembl:pChembl ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -110,6 +111,12 @@ chembl:standardRelation api:name "relation" ;
         api:filterVariable "?activity_uri";
         a rdf:Property .
 
+chembl:pChembl api:name "pChembl" ;
+	api:label "pChembl" ;
+	api:filterVariable "?item";
+        api:value "The pChembl value of an activity" ;
+	a rdf:Property .
+
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "An Enzyme Class URI. e.g.: http://purl.uniprot.org/enzyme/1.1.1.-" ;
@@ -140,6 +147,7 @@ GRAPH <http://purl.uniprot.org/enzyme/inference> {
         	OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
         	OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
         	OPTIONAL { ?activity_uri chembl:hasQUDT ?qudt_uri }
+		OPTIONAL { ?activity_uri chembl:pChembl ?pChembl }
         	OPTIONAL { ?activity_uri chembl:hasDocument ?document .
         		OPTIONAL { ?document owl:sameAs ?doi }
         		OPTIONAL { ?document bibo:pmid ?pmid }

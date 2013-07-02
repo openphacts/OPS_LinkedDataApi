@@ -25,6 +25,7 @@
         api:variable <#input> ; 
 	api:variable _:targetOrganism ;
 	api:variable chembl:organismName ;
+	api:variable chembl:pChembl ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -76,6 +77,11 @@ _:targetOrganism api:name "target_organism" ;
 	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
+chembl:pChembl api:name "pChembl" ;
+	api:label "pChembl" ;
+	api:filterVariable "?activity_uri";
+        api:value "The pChembl value of an activity" ;
+	a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";
@@ -92,10 +98,11 @@ _:targetOrganism api:name "target_organism" ;
         	?subclass rdfs:subClassOf ?ops_item .
 	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
-		?compound_chembl owl:sameAs ?class .
+		?compound_chembl owl:sameAs ?subclass .
 		?compound_cs skos:exactMatch ?compound_chembl .
         	?activity_uri chembl:hasMolecule ?compound_chembl ;
                		chembl:hasAssay ?assay_uri .
         	?assay_uri chembl:hasTarget ?target_uri .
+		OPTIONAL { ?activity_uri chembl:pChembl ?pChembl }
 	} 
 } }" .
