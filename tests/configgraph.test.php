@@ -1,6 +1,6 @@
 <?php
-require_once '../graphs/configgraph.class.php';
-require_once '../lda-request.class.php';
+require_once 'graphs/configgraph.class.php';
+require_once 'lda-request.class.php';
 
 class ConfigGraphTest extends PHPUnit_Framework_TestCase {
     

@@ -1,5 +1,5 @@
 <?php
-require_once '../graphs/pueliagraph.class.php';
+require_once 'graphs/pueliagraph.class.php';
 
 class PueliaGraphTest extends PHPUnit_Framework_TestCase {
     

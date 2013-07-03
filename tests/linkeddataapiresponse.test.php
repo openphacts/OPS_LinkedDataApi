@@ -1,6 +1,6 @@
 <?php
-require_once '../lda-response.class.php';
-require_once '../lda-request.class.php';
+require_once 'lda-response.class.php';
+require_once 'lda-request.class.php';
 
 class LinkedDataApiResponseTest extends PHPUnit_Framework_TestCase {
     

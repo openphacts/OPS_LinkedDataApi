@@ -1,6 +1,6 @@
 <?php
-require_once '../sparqlwriter.class.php';
-require_once '../graphs/configgraph.class.php';
+require_once 'sparqlwriter.class.php';
+require_once 'graphs/configgraph.class.php';
 
 
 class SparqlWriterTest extends PHPUnit_Framework_TestCase {

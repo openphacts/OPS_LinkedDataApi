@@ -163,7 +163,7 @@ class ARC2_NQuadsParser extends ARC2_TurtleParser{
                     $proceed = 1;
                 }
             }         
-            if ($state == 5) {/* expecting . or ; or , or } */
+            if ($state == 5) {/* expecting . */
                 if ($sub_r = $this->x('\.', $sub_v)) {
                     $sub_v = $sub_r[1];
                     $buffer = $sub_v;
