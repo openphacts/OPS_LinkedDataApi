@@ -142,6 +142,10 @@ GRAPH <http://purl.uniprot.org/enzyme/inference> {
         	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         	OPTIONAL { ?target_chembl dcterms:title ?target_name }
         	OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+		OPTIONAL { ?activity_uri chembl:publishedType ?published_type }
+                OPTIONAL { ?activity_uri chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?activity_uri chembl:publishedValue ?published_value }
+                OPTIONAL { ?activity_uri chembl:publishedUnits ?published_unit }
         	OPTIONAL { ?activity_uri chembl:standardType ?std_type }
         	OPTIONAL { ?activity_uri chembl:standardRelation ?relation }
         	OPTIONAL { ?activity_uri chembl:standardValue ?std_value }

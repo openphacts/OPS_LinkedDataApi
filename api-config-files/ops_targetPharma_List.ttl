@@ -160,6 +160,10 @@ chembl:pChembl api:name "pChembl" ;
         OPTIONAL { ?chembl_uri chembl:organismName ?target_organism }
         OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+	OPTIONAL { ?item chembl:publishedType ?published_type }
+        OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+        OPTIONAL { ?item chembl:publishedValue ?published_value }
+        OPTIONAL { ?item chembl:publishedUnits ?published_unit }
         OPTIONAL { ?item chembl:standardType ?standard_type }
 	OPTIONAL { ?item chembl:standardRelation ?standard_relation }
 	OPTIONAL { ?item chembl:standardValue ?standard_value }
@@ -196,6 +200,10 @@ GRAPH <http://www.conceptwiki.org> {
 	api:template 
 "[] ops:input ?ops_item .
 ?item chembl:hasMolecule ?compound_chembl;
+	chembl:publishedType ?published_type ;
+        chembl:publishedRelation ?published_relation ;
+	chembl:publishedValue ?published_value ;
+	chembl:publishedUnits ?published_unit ;
 	chembl:standardType ?standard_type ;
 	chembl:standardRelation ?standard_relation ;
 	chembl:standardValue ?standard_value ;
@@ -235,6 +243,10 @@ GRAPH <http://www.conceptwiki.org> {
         OPTIONAL { ?chembl_uri chembl:organismName ?target_organism }
         OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+	OPTIONAL { ?item chembl:publishedType ?published_type }
+        OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+        OPTIONAL { ?item chembl:publishedValue ?published_value }
+        OPTIONAL { ?item chembl:publishedUnits ?published_unit }
         OPTIONAL { ?item chembl:standardType ?standard_type }
 	OPTIONAL { ?item chembl:standardRelation ?standard_relation }
 	OPTIONAL { ?item chembl:standardValue ?standard_value }

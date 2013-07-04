@@ -96,6 +96,7 @@
 	uniprot:classifiedWith ?class ;
 	uniprot:alternativeName ?alt_name ;
 	rdfs:seeAlso ?target_pdb ;
+	rdfs:seeAlso ?ppi ;
         void:inDataset <http://purl.uniprot.org> .
 ?chembl_uri chembl:hasTargetComponent ?targetComponent ;
 	a ?target_type ;
@@ -126,6 +127,8 @@
 			?alt_name_uri uniprot:fullName ?alt_name . }
 		OPTIONAL { ?uniprot_uri rdfs:seeAlso ?target_pdb .
 			?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
+		OPTIONAL { ?uniprot_uri rdfs:seeAlso ?ppi .
+			?ppi uniprot:database <http://purl.uniprot.org/database/IntAct> . }
 	}
 OPTIONAL {
          GRAPH <http://linkedlifedata.com/resource/drugbank> {

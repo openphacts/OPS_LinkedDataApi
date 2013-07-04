@@ -158,6 +158,10 @@ chembl:pChembl api:name "pChembl" ;
         	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         	OPTIONAL { ?target_chembl dcterms:title ?target_name }
         	OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+		OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
         	OPTIONAL { ?item chembl:standardType ?std_type }
         	OPTIONAL { ?item chembl:standardRelation ?relation }
         	OPTIONAL { ?item chembl:standardValue ?std_value }
@@ -193,6 +197,10 @@ chembl:pChembl api:name "pChembl" ;
 	api:template 
 "[] ops:input ?ops_item .
 ?item chembl:hasMolecule ?compound_chembl;
+	chembl:publishedType ?published_type ;
+        chembl:publishedRelation ?published_relation ;
+        chembl:publishedValue ?published_value ;
+        chembl:publishedUnits ?published_unit ;
 	chembl:standardType ?std_type;
 	chembl:standardRelation ?relation;
 	chembl:standardValue ?std_value;
@@ -236,6 +244,10 @@ chembl:pChembl api:name "pChembl" ;
         	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         	OPTIONAL { ?target_chembl dcterms:title ?target_name }
         	OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+		OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
         	OPTIONAL { ?item chembl:standardType ?std_type }
         	OPTIONAL { ?item chembl:standardRelation ?relation }
         	OPTIONAL { ?item chembl:standardValue ?std_value }
