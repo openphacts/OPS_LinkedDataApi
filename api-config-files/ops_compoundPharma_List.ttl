@@ -258,7 +258,8 @@ GRAPH <http://www.chemspider.com> {
 			qudt:numericValue ?num_ro5_violations . }
 }
 GRAPH <http://www.ebi.ac.uk/chembl> {
-	?item chembl:hasMolecule ?chembl_uri ;
+	?item a chembl:Activity ;
+		chembl:hasMolecule ?chembl_uri ;
 		chembl:hasAssay ?assay_uri .
 	OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri .
 		OPTIONAL { ?target_uri dcterms:title ?target_name }

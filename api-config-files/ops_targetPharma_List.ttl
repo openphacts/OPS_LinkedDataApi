@@ -153,7 +153,8 @@ chembl:pChembl api:name "pChembl" ;
 		api:where 
 "GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_uri .
-        ?item chembl:hasAssay ?assay_uri ;
+        ?item a chembl:Activity ;
+		chembl:hasAssay ?assay_uri ;
                 chembl:hasMolecule ?compound_chembl .
 	?compound_cs skos:exactMatch ?compound_chembl .
 	OPTIONAL { ?chembl_uri dcterms:title ?target_name_chembl }
@@ -236,8 +237,9 @@ GRAPH <http://www.conceptwiki.org> {
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_uri .
-        ?item chembl:hasAssay ?assay_uri ;
-                chembl:hasMolecule ?compound_chembl .
+        ?item a chembl:Activity ;
+	      chembl:hasAssay ?assay_uri ;
+              chembl:hasMolecule ?compound_chembl .
 	?compound_cs skos:exactMatch ?compound_chembl .
 	OPTIONAL { ?chembl_uri dcterms:title ?target_name_chembl }
         OPTIONAL { ?chembl_uri chembl:organismName ?target_organism }

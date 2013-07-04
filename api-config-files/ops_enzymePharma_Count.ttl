@@ -135,7 +135,8 @@ GRAPH <http://purl.uniprot.org/enzyme/inference> {
         	?target_comp_chembl chembl:targetCmptXref ?subclass .
 		?target_chembl chembl:hasTargetComponent ?target_comp_chembl .
         	?assay_uri chembl:hasTarget ?target_chembl .
-        	?activity_uri chembl:hasAssay ?assay_uri ;
+        	?activity_uri a chembl:Activity ;
+			chembl:hasAssay ?assay_uri ;
         	        chembl:hasMolecule ?compound_chembl .
         	?compound_cs skos:exactMatch ?compound_chembl .
         	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }

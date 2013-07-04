@@ -152,7 +152,8 @@ chembl:pChembl api:name "pChembl" ;
  GRAPH <http://www.ebi.ac.uk/chembl> {
         ?compound_chembl owl:sameAs ?class .
 	?compound_cs skos:exactMatch ?compound_chembl .
-        ?item chembl:hasMolecule ?compound_chembl ;
+        ?item a chembl:Activity ;
+		chembl:hasMolecule ?compound_chembl ;
            		chembl:hasAssay ?assay_uri .
         ?assay_uri chembl:hasTarget ?target_uri .
         OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
@@ -237,7 +238,8 @@ GRAPH <http://www.conceptwiki.org> {
 		GRAPH <http://www.ebi.ac.uk/chembl> {
         		?compound_chembl owl:sameAs ?class .
 			?compound_cs skos:exactMatch ?compound_chembl .
-        		?item chembl:hasMolecule ?compound_chembl ;
+        		?item a chembl:Activity ;
+				chembl:hasMolecule ?compound_chembl ;
                 		chembl:hasAssay ?assay_uri .
         		?assay_uri chembl:hasTarget ?target_uri .
         		OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
