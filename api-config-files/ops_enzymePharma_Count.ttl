@@ -138,7 +138,6 @@ GRAPH <http://purl.uniprot.org/enzyme/inference> {
         	?activity_uri a chembl:Activity ;
 			chembl:hasAssay ?assay_uri ;
         	        chembl:hasMolecule ?compound_chembl .
-        	?compound_cs skos:exactMatch ?compound_chembl .
         	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         	OPTIONAL { ?target_chembl dcterms:title ?target_name }
@@ -162,6 +161,7 @@ GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 			sio:SIO_000300 ?molweight. }
         }
 	GRAPH <http://www.chemspider.com> {
+                ?compound_cs skos:exactMatch ?compound_chembl .
                 ?compound_cs chemspider:inchi ?inchi;
                         chemspider:inchikey ?inchi_key;
                         chemspider:smiles ?smiles .

@@ -17,6 +17,7 @@
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#>
+@prefix bibo: <http://purl.org/ontology/bibo/> .
 
 <#chebi> a api:API ;
         rdfs:label "ChEBI Ontology"@en ;
@@ -99,7 +100,6 @@ chembl:pChembl api:name "pChembl" ;
 	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?compound_chembl owl:sameAs ?subclass .
-		?compound_cs skos:exactMatch ?compound_chembl .
         	?activity_uri a chembl:Activity ;
 			chembl:hasMolecule ?compound_chembl ;
                		chembl:hasAssay ?assay_uri .
@@ -125,5 +125,8 @@ chembl:pChembl api:name "pChembl" ;
 	        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
               		?full_mwt a sio:CHEMINF_000198 ;
  	      			sio:SIO_000300 ?molweight. }
+	}
+	GRAPH <http://www.chemspider.com> {
+		?compound_cs skos:exactMatch ?compound_chembl .
 	} 
 } }" .

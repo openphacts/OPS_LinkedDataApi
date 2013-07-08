@@ -154,7 +154,6 @@ chembl:pChembl api:name "pChembl" ;
         	?item a chembl:Activity ;
 			chembl:hasAssay ?assay_uri ;
         	        chembl:hasMolecule ?compound_chembl .
-        	?compound_cs skos:exactMatch ?compound_chembl .
         	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         	OPTIONAL { ?target_chembl dcterms:title ?target_name }
@@ -178,6 +177,7 @@ chembl:pChembl api:name "pChembl" ;
                 			sio:SIO_000300 ?molweight. }
         }
         GRAPH <http://www.chemspider.com> {
+                ?compound_cs skos:exactMatch ?compound_chembl .
                 ?compound_cs chemspider:inchi ?inchi;
                         chemspider:inchikey ?inchi_key;
                         chemspider:smiles ?smiles .
@@ -231,7 +231,7 @@ chembl:pChembl api:name "pChembl" ;
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
 	api:where 
-"GRAPH <http://purl.uniprot.org/enzyme/inference> {
+"	GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 ?subclass rdfs:subClassOf ?ops_item
         }
         GRAPH <http://www.ebi.ac.uk/chembl> {
@@ -241,7 +241,6 @@ chembl:pChembl api:name "pChembl" ;
         	?item a chembl:Activity ;
 			chembl:hasAssay ?assay_uri ;
         	        chembl:hasMolecule ?compound_chembl .
-        	?compound_cs skos:exactMatch ?compound_chembl .
         	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         	OPTIONAL { ?target_chembl dcterms:title ?target_name }
@@ -264,15 +263,16 @@ chembl:pChembl api:name "pChembl" ;
                 		?full_mwt a sio:CHEMINF_000198 ;
                 			sio:SIO_000300 ?molweight. }
         }
-GRAPH <http://www.chemspider.com> {
+	GRAPH <http://www.chemspider.com> {
+                ?compound_cs skos:exactMatch ?compound_chembl .
                 ?compound_cs chemspider:inchi ?inchi;
                         chemspider:inchikey ?inchi_key;
                         chemspider:smiles ?smiles .
                 OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
                         a cheminf:CHEMINF_000367;
                         qudt:numericValue ?num_ro5_violations . }
-}
-GRAPH <http://www.conceptwiki.org> {
+	}
+	GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_cs ;
                         skos:prefLabel ?compound_name .
-}" .
+	}" .
