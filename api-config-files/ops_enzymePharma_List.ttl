@@ -11,7 +11,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix cw: <http://www.conceptwiki.org/concept/> .
 @prefix void: <http://rdfs.org/ns/void#> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
@@ -28,15 +28,17 @@
     rdfs:label "Enzyme Classification"@en ;
     api:sparqlEndpoint <http://localhost:8890/sparql/> ;
     api:contentNegotiation api:parameterBased ;
-	api:variable chembl:organism ;
-	api:variable _:targetOrganism ;
     api:variable <#input> ; 
-	api:variable chembl:type;
-	api:variable chembl-ops:normalisedValue ;
- 	api:variable chembl-ops:normalisedUnit ;
+	api:variable _:targetOrganism ;
+	api:variable chembl:standardType;
+	api:variable chembl:standardValue ;
+ 	api:variable chembl:standardUnit ;
+	api:variable chembl:standardRelation ;
+	api:variable chembl:organismName ;
+	api:variable chembl:pChembl ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -47,14 +49,14 @@
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
 <http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
 
-chembl:organism api:name "assay_organism" ;
+chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
 	api:filterVariable "?assay_uri";
@@ -64,25 +66,37 @@ _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
 	api:filterVariable "?target_chembl";
-	rdfs:subPropertyOf chembl:organism ;
+	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
-chembl:type api:name "activity_type" ;
+chembl:standardType api:name "activity_type" ;
 	api:label "activity_type" ;
 	api:filterVariable "?item";
 	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
  
-chembl-ops:normalisedUnit api:name "activity_unit" ;
+chembl:standardUnits api:name "activity_unit" ;
         api:label "activity_unit" ;
         api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
         api:filterVariable "?item";
         a rdf:Property .
 
-chembl-ops:normalisedValue api:name "activity_value" ;
+chembl:standardValue api:name "activity_value" ;
 	api:label "activity_value" ;
 	api:value "Return activity values equal to this number." ;
 	api:filterVariable "?item";
+	a rdf:Property .
+
+chembl:standardRelation api:name "relation" ;
+        api:label "Relation" ;
+        api:value ">, >=,= , < , <=" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:pChembl api:name "pChembl" ;
+	api:label "pChembl" ;
+	api:filterVariable "?item";
+        api:value "The pChembl value of an activity" ;
 	a rdf:Property .
 
 <#input> api:name "uri" ;
@@ -133,45 +147,49 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 "	GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 ?subclass rdfs:subClassOf ?ops_item
         }
-        GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-        ?target_chembl skos:exactMatch ?subclass ;
-                owl:equivalentClass ?equiv_target .
-        ?assay_uri chembl:hasTarget ?target_chembl ;
-                owl:equivalentClass ?equiv_assay .
-        ?item chembl:onAssay ?assay_uri ;
-                chembl:forMolecule ?compound_chembl .
-        ?compound_chembl owl:equivalentClass ?equiv_compound .
-        ?equiv_compound skos:exactMatch ?compound_cs .
-        OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
-        OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
-        OPTIONAL { ?target_chembl dc:title ?target_name }
-        OPTIONAL { ?target_chembl chembl:organism ?target_organism }
-        OPTIONAL { ?item chembl:type ?std_type }
-        OPTIONAL { ?item chembl:relation ?relation }
-        OPTIONAL { ?item chembl:standardValue ?std_value }
-        OPTIONAL { ?item chembl:standardUnits ?std_unit }
-        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
-        OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
-                OPTIONAL { ?doi_internal owl:sameAs ?doi }
-                OPTIONAL { ?doi_internal bibo:pmid ?pmid }
+        GRAPH <http://www.ebi.ac.uk/chembl> {
+        	?target_comp_chembl chembl:targetCmptXref ?subclass .
+		?target_chembl chembl:hasTargetComponent ?target_comp_chembl .
+        	?assay_uri chembl:hasTarget ?target_chembl .
+        	?item a chembl:Activity ;
+			chembl:hasAssay ?assay_uri ;
+        	        chembl:hasMolecule ?compound_chembl .
+        	?compound_cs skos:exactMatch ?compound_chembl .
+        	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+        	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+        	OPTIONAL { ?target_chembl dcterms:title ?target_name }
+        	OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+		OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
+        	OPTIONAL { ?item chembl:standardType ?std_type }
+        	OPTIONAL { ?item chembl:standardRelation ?relation }
+        	OPTIONAL { ?item chembl:standardValue ?std_value }
+        	OPTIONAL { ?item chembl:standardUnits ?std_unit }
+        	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+		OPTIONAL { ?item chembl:pChembl ?pChembl }
+        	OPTIONAL { ?item chembl:hasDocument ?document .
+        		OPTIONAL { ?document owl:sameAs ?doi }
+        		OPTIONAL { ?document bibo:pmid ?pmid }
+        	}
+	        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
+                		?full_mwt a sio:CHEMINF_000198 ;
+                			sio:SIO_000300 ?molweight. }
         }
-        OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 .
-                ?node1 a sio:CHEMINF_000198 ;
-                        sio:SIO_000300 ?molweight }
-        }
-GRAPH <http://www.chemspider.com> {
+        GRAPH <http://www.chemspider.com> {
                 ?compound_cs chemspider:inchi ?inchi;
                         chemspider:inchikey ?inchi_key;
                         chemspider:smiles ?smiles .
                 OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
                         a cheminf:CHEMINF_000367;
                         qudt:numericValue ?num_ro5_violations . }
-}
-GRAPH <http://www.conceptwiki.org> {
+        }
+        GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_cs ;
                         skos:prefLabel ?compound_name .
-}
-        " ;
+        } 
+" ;
 	] ;
 	api:defaultViewer <#enzymePharmacologyListViewer> .
 
@@ -179,23 +197,29 @@ GRAPH <http://www.conceptwiki.org> {
         api:name "enzymePharmacologyListViewer" ;
 	api:template 
 "[] ops:input ?ops_item .
-?item chembl:forMolecule ?equiv_compound;
-	chembl:type ?std_type;
-	chembl:relation ?relation;
+?item chembl:hasMolecule ?compound_chembl;
+	chembl:publishedType ?published_type ;
+        chembl:publishedRelation ?published_relation ;
+        chembl:publishedValue ?published_value ;
+        chembl:publishedUnits ?published_unit ;
+	chembl:standardType ?std_type;
+	chembl:standardRelation ?relation;
 	chembl:standardValue ?std_value;
 	chembl:standardUnits ?std_unit;
-	chembl-ops:normalisedValue ?activity_value ;
-	chembl:onAssay ?equiv_assay ;
-	chembl:citesAsDataSource ?doi ;
-	bibo:pmid ?pmid ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> ;
-	chembl:hasTarget ?equiv_target .
-?equiv_assay chembl:hasDescription ?assay_description ;
-	chembl:organism ?assay_organism .
-?equiv_target dc:title ?target_name;
-	chembl-ops:organism ?target_organism ;
-	skos:exactMatch ?subclass . 
-?equiv_compound ?node1 ?molweight ;
+	chembl:hasQUDT ?qudt_uri;
+	chembl:hasAssay ?assay_uri ;
+	chembl:pChembl ?pChembl ;
+	chembl:hasDocument ?doi ;
+        bibo:pmid ?pmid ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> ;
+	chembl:hasTarget ?target_chembl .
+?assay_uri dcterms:description ?assay_description ;
+	chembl:organismName ?assay_organism .
+?target_chembl dcterms:title ?target_name;
+	chembl:organismName ?target_organism ;
+	chembl:hasTargetComponent ?target_comp_chembl .
+?target_comp_chembl chembl:targetCmptXref ?subclass . 
+?compound_chembl ?full_mwt ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw .
 ?compound_cs chemspider:smiles ?smiles ;
@@ -209,42 +233,46 @@ GRAPH <http://www.conceptwiki.org> {
 	api:where 
 "GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 ?subclass rdfs:subClassOf ?ops_item
-}
-GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
-	?target_chembl skos:exactMatch ?subclass ;
-		owl:equivalentClass ?equiv_target . 
-	?assay_uri chembl:hasTarget ?target_chembl ;
-		owl:equivalentClass ?equiv_assay .
-	?item chembl:onAssay ?assay_uri ;
-		chembl:forMolecule ?compound_chembl .
-	?compound_chembl owl:equivalentClass ?equiv_compound . 
-	?equiv_compound skos:exactMatch ?compound_cs .
-        OPTIONAL { ?assay_uri chembl:hasDescription ?assay_description }
-        OPTIONAL { ?assay_uri chembl:organism ?assay_organism }
-	OPTIONAL { ?target_chembl dc:title ?target_name }
-	OPTIONAL { ?target_chembl chembl:organism ?target_organism }
-        OPTIONAL { ?item chembl:type ?std_type }
-        OPTIONAL { ?item chembl:relation ?relation }
-        OPTIONAL { ?item chembl:standardValue ?std_value }
-        OPTIONAL { ?item chembl:standardUnits ?std_unit }
-        OPTIONAL { ?item chembl-ops:normalisedValue ?activity_value }
-        OPTIONAL { ?item cito:citesAsDataSource ?doi_internal .
-                OPTIONAL { ?doi_internal owl:sameAs ?doi }
-                OPTIONAL { ?doi_internal bibo:pmid ?pmid }
-	}
- 	OPTIONAL { ?compound_chembl sio:CHEMINF_000200 ?node1 . 
-		?node1 a sio:CHEMINF_000198 ;
-			sio:SIO_000300 ?molweight }
-}
+        }
+        GRAPH <http://www.ebi.ac.uk/chembl> {
+        	?target_comp_chembl chembl:targetCmptXref ?subclass .
+		?target_chembl chembl:hasTargetComponent ?target_comp_chembl .
+        	?assay_uri chembl:hasTarget ?target_chembl .
+        	?item a chembl:Activity ;
+			chembl:hasAssay ?assay_uri ;
+        	        chembl:hasMolecule ?compound_chembl .
+        	?compound_cs skos:exactMatch ?compound_chembl .
+        	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+        	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+        	OPTIONAL { ?target_chembl dcterms:title ?target_name }
+        	OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+		OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
+        	OPTIONAL { ?item chembl:standardType ?std_type }
+        	OPTIONAL { ?item chembl:standardRelation ?relation }
+        	OPTIONAL { ?item chembl:standardValue ?std_value }
+        	OPTIONAL { ?item chembl:standardUnits ?std_unit }
+        	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+		OPTIONAL { ?item chembl:pChembl ?pChembl }
+        	OPTIONAL { ?item chembl:hasDocument ?document .
+        		OPTIONAL { ?document owl:sameAs ?doi }
+        		OPTIONAL { ?document bibo:pmid ?pmid }
+        	}
+	        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
+                		?full_mwt a sio:CHEMINF_000198 ;
+                			sio:SIO_000300 ?molweight. }
+        }
 GRAPH <http://www.chemspider.com> {
-	?compound_cs chemspider:inchi ?inchi;
-		chemspider:inchikey ?inchi_key;
-		chemspider:smiles ?smiles . 
-	OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
-                a cheminf:CHEMINF_000367;
-               	qudt:numericValue ?num_ro5_violations . }
+                ?compound_cs chemspider:inchi ?inchi;
+                        chemspider:inchikey ?inchi_key;
+                        chemspider:smiles ?smiles .
+                OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+                        a cheminf:CHEMINF_000367;
+                        qudt:numericValue ?num_ro5_violations . }
 }
 GRAPH <http://www.conceptwiki.org> {
-	?compound_cw skos:exactMatch ?compound_cs ; 
-		skos:prefLabel ?compound_name .
+                ?compound_cw skos:exactMatch ?compound_cs ;
+                        skos:prefLabel ?compound_name .
 }" .

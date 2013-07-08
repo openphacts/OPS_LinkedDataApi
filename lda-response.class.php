@@ -335,7 +335,7 @@ class LinkedDataApiResponse {
             }
             
             //query the data store
-            $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);//TODO use appropriate mime in the future
+            $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
             if ($response->is_success()){
                 $this->DataGraph->add_rdf($response->body);
                 
@@ -383,19 +383,7 @@ class LinkedDataApiResponse {
         
         if ($this->useDatastore){
             $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
-        }
-        
-        //if we went to the external service we cache the path without extension
-        if ($this->decideToCacheResponse($checkDatastore)){         
-            LinkedDataApiCache::cacheURI($uriWithoutExtension);
-        }
-    }
-    
-    private function decideToCacheResponse($checkDatastore){
-        if ($this->useDatastore==true AND $checkDatastore==false AND defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE)
-            return true;
-        else
-            return false;
+        }   
     }
     
     private function decideToCheckTripleStore($pathWithoutExtension){
@@ -403,26 +391,7 @@ class LinkedDataApiResponse {
         $this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
         $this->useDatastore = $this->useDatastore==='true' ? true:false;
         
-        if ($this->useDatastore == true){
-            //if caching is enabled
-            if (defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE){
-                if ($cachedResponse = LinkedDataApiCache::hasCachedUri($pathWithoutExtension)){//request without format is cached
-                    // we get the data from the datastore
-                    $checkDatastore = true;
-                }
-                else{//we go directly to the external service
-                    $checkDatastore = false;
-                }
-            }
-            else{// try to get the data from the datastore
-                $checkDatastore = true;
-            }
-        }
-        else{
-            $checkDatastore = false;
-        }
-        
-        return $checkDatastore;
+        return $this->useDatastore;
     }
     
     private function retrieveRDFDataFromExternalService($externalServiceRequest, $rdfData){

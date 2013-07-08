@@ -15,7 +15,7 @@
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix uniprot: <http://purl.uniprot.org/core/> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 
@@ -26,14 +26,14 @@
         api:variable <#input> ; 
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:vocabulary <http://www.openphacts.org/api#> ;
-	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
+	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:vocabulary <http://purl.uniprot.org/core/> ;
         api:vocabulary <http://purl.obolibrary.org/obo/> ;
 	api:description "An API configuration to return information about members of classes in the ChEBI Ontology." ;

@@ -15,7 +15,7 @@
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
-@prefix chembl: <http://rdf.farmbio.uu.se/chembl/onto/#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
@@ -34,14 +34,14 @@
  	api:variable chembl-ops:normalisedUnit ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
-	api:dataset <http://data.kasabi.com/dataset/chembl-rdf>;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:vocabulary <http://www.openphacts.org/api#> ;
-	api:vocabulary <http://rdf.farmbio.uu.se/chembl/onto/#> ;
+	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about targets." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
@@ -59,10 +59,10 @@
 		api:defaultViewer <#targetPharmacologyViewer> ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
-<http://rdf.farmbio.uu.se/chembl/onto/#> api:label "chembl" .
+<http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://data.kasabi.com/dataset/chembl-rdf> api:label "ChEMBL - RDF" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
 <http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
@@ -108,7 +108,7 @@ chembl-ops:normalisedValue api:name "activity_value" ;
 ?equiv_target dc:title ?target_name;
 	ops:target_organism ?target_organism ;
 	ops:targetOfAssay ?equiv_assay ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ops:targetOfAssay owl:inverseOf chembl:hasTarget .
 ?equiv_assay chembl:organism ?assay_organism ;
 	chembl:hasDescription ?assay_description ;
@@ -122,7 +122,7 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 	chembl:forMolecule ?equiv_compound ;
 	chembl:citesAsDataSource ?doi ;
 	bibo:pmid ?pmid ;
-	void:inDataset <http://data.kasabi.com/dataset/chembl-rdf> .
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?equiv_compound ?node1 ?molweight ;
 	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?compound_cw .
@@ -134,7 +134,7 @@ ops:assayOfActivity owl:inverseOf chembl:onAssay .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .";
 	api:where 
-"GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+"GRAPH <http://www.ebi.ac.uk/chembl> {
 	?assay_uri chembl:hasTarget ?chembl_uri ;
 		owl:equivalentClass ?equiv_assay .
 	?chembl_uri owl:equivalentClass ?equiv_target .
