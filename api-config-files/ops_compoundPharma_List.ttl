@@ -217,11 +217,11 @@ chembl:pChembl api:name "pChembl" ;
         bibo:pmid ?pmid ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?assay_uri chembl:hasTarget ?target_uri ;
-        chembl:organismName ?assay_organism ;
+        chembl:assayOrganismName ?assay_organism ;
 	dcterms:description ?assay_description  ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_uri dcterms:title ?target_name ;
-	chembl:organismName ?target_organism ;
+	chembl:targetOrganismName ?target_organism ;
         void:inDataset <http://www.ebi.ac.uk/chembl> . 
 ?chembl_uri skos:exactMatch ?cw_uri .
 ?cw_uri skos:prefLabel ?compound_name ;

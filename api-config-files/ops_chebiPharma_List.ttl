@@ -142,8 +142,8 @@ chembl:pChembl api:name "pChembl" ;
 ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;
 <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>." ;
 
-	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_33304";
+	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_33304&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:selector [
 		api:where 
 "GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
@@ -213,11 +213,12 @@ GRAPH <http://www.conceptwiki.org> {
         bibo:pmid ?pmid ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?assay_uri chembl:hasTarget ?target_uri ;
-        chembl:organismName ?assay_organism ;
+        chembl:assayOrganismName ?assay_organism ;
 	dcterms:description ?assay_description ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_uri dcterms:title ?target_name ;
-	chembl:organismName ?target_organism . 
+	chembl:targetOrganismName ?target_organism ;
+        void:inDataset <http://www.ebi.ac.uk/chembl> . 
 ?compound_chembl skos:exactMatch ?compound_cw ;
 		skos:exactMatch ?class .
 ?compound_cw skos:prefLabel ?compound_name ;

@@ -49,8 +49,8 @@
 		api:variable <http://www.openphacts.org/units/Nanomolar> ;
 		api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
         	api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_3304";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_3304&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#chebiPharmacologyCountViewer> ; 
 		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
 

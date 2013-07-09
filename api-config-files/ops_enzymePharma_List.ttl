@@ -214,9 +214,9 @@ chembl:pChembl api:name "pChembl" ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> ;
 	chembl:hasTarget ?target_chembl .
 ?assay_uri dcterms:description ?assay_description ;
-	chembl:organismName ?assay_organism .
+	chembl:assayOrganismName ?assay_organism .
 ?target_chembl dcterms:title ?target_name;
-	chembl:organismName ?target_organism ;
+	chembl:targetOrganismName ?target_organism ;
 	chembl:hasTargetComponent ?target_comp_chembl .
 ?target_comp_chembl chembl:targetCmptXref ?subclass . 
 ?compound_chembl ?full_mwt ?molweight ;
