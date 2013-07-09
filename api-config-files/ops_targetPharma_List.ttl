@@ -90,7 +90,7 @@ chembl:standardValue api:name "activity_value" ;
 	a rdf:Property .
 
 chembl:standardRelation api:name "relation" ;
-        api:label "Relation" ;
+        api:label "activity_relation" ;
         api:value ">, >=,= , < , <=" ;
         api:filterVariable "?item";
         a rdf:Property .
@@ -157,8 +157,8 @@ chembl:pChembl api:name "pChembl" ;
 		chembl:hasAssay ?assay_uri ;
                 chembl:hasMolecule ?compound_chembl .
 	OPTIONAL { ?chembl_uri dcterms:title ?target_name_chembl }
-        OPTIONAL { ?chembl_uri chembl:organismName ?target_organism }
-        OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+        OPTIONAL { ?chembl_uri chembl:assayOrganismName ?target_organism }
+        OPTIONAL { ?assay_uri chembl:targetOrganismName ?assay_organism }
         OPTIONAL { ?assay_uri dcterms:description ?assay_description }
 	OPTIONAL { ?item chembl:publishedType ?published_type }
         OPTIONAL { ?item chembl:publishedRelation ?published_relation }
@@ -215,12 +215,12 @@ GRAPH <http://www.conceptwiki.org> {
 	bibo:pmid ?pmid ;
 	chembl:hasDocument ?doi ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
-?assay_uri chembl:organismName ?assay_organism ;
+?assay_uri chembl:assayOrganismName ?assay_organism ;
 	chembl:hasTarget ?chembl_uri ; 
 	dcterms:description ?assay_description ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_uri dcterms:title ?target_name_chembl ;
-	chembl:organismName ?target_organism ;
+	chembl:targetOrganismName ?target_organism ;
 	skos:exactMatch ?cw_uri ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_uri skos:exactMatch ?cw_uri . 

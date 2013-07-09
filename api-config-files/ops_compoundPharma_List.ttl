@@ -89,7 +89,7 @@ chembl:standardValue api:name "activity_value" ;
 	a rdf:Property .
 
 chembl:standardRelation api:name "relation" ;
-        api:label "Relation" ;
+        api:label "activity_relation" ;
         api:value ">, >=,= , < , <=" ;
         api:filterVariable "?item";
         a rdf:Property .
