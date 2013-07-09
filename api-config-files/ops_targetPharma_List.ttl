@@ -216,16 +216,19 @@ GRAPH <http://www.conceptwiki.org> {
 	chembl:hasDocument ?doi ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?assay_uri chembl:organismName ?assay_organism ;
+	chembl:hasTarget ?chembl_uri ; 
 	dcterms:description ?assay_description ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_uri dcterms:title ?target_name_chembl ;
 	chembl:organismName ?target_organism ;
-	?full_mwt ?molweight ;
-	skos:exactMatch ?compound_cs ;
 	skos:exactMatch ?cw_uri ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?chembl_uri skos:exactMatch ?cw_uri . 
 ?cw_uri skos:prefLabel ?target_name ;
         void:inDataset <http://www.conceptwiki.org/> .
+?compound_chembl ?full_mwt ?molweight ;
+	skos:exactMatch ?compound_cs ; 
+	skos:exactMatch ?compound_cw . 
 ?compound_cs chemspider:smiles ?smiles ;
 	chemspider:inchi ?inchi ;
 	chemspider:inchikey ?inchi_key;
