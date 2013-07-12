@@ -81,7 +81,7 @@ chembl:hasQUDT api:name "activity_unit" ;
 	api:template 
 "<http://www.ebi.ac.uk/chembl> ops:normalised_activity_type ?item .
 ?item rdfs:label ?type_label ;
-ops:count ?count" ; 
+ops:activity_count ?count" ; 
 	api:where
 "{
 SELECT DISTINCT ?type_label COUNT(?activity) AS ?count WHERE {
