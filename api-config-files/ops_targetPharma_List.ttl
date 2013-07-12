@@ -34,7 +34,7 @@
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
- 	api:variable chembl:standardUnit ;
+ 	api:variable chembl:hasQUDT ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
@@ -98,7 +98,7 @@ chembl:standardType api:name "activity_type" ;
 	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
-chembl:standardUnits api:name "activity_unit" ;
+chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
         api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
         api:filterVariable "?item";
