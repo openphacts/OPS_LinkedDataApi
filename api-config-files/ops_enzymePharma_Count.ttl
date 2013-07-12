@@ -16,7 +16,7 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
-@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#>
+@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#>
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
