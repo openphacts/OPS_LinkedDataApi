@@ -41,14 +41,12 @@
 ?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label</span>." ;
 		api:uriTemplate "/pharmacology/filters/units/{act_name}" ;
         	api:itemTemplate "http://www.openphacts.org/terms/chembl#{act_name}" ;
-        	api:itemTemplate "http://www.openphacts.org/terms/chembl#{act_name}" ;
 		api:variable _:act_type	; 
 		api:exampleRequestPath "/pharmacology/filters/units/IC50";
 		api:viewer <#pharmacologyFiltersUnitViewer> ; 
 		api:defaultViewer <#pharmacologyFiltersUnitViewer> . ] .
 
 _:act_type api:name "act_type" ;
-	api:value "http://www.openphacts.org/terms/chembl#{act_name}" ;
 	api:value "http://www.openphacts.org/terms/chembl#{act_name}" ;
 	api:type rdfs:Resource .
 
@@ -59,13 +57,12 @@ _:act_type api:name "act_type" ;
 <#pharmacologyFiltersUnitViewer> a api:Viewer ;
 	api:name "pharmacologyFiltersUnitViewer" ;
 	api:template 
-"?act_type qudt:unit ?unit ;
+"?item qudt:unit ?unit ;
 	rdfs:label ?act_label . 
 ?unit rdfs:label ?unit_label" ; 
 	api:where
-"GRAPH <http://www.ebi.ac.uk/chembl> {
-	?act_type rdfs:label ?act_label .
-	?act_unit a ?act_type ;
-		qudt:unit ?unit .
-	OPTIONAL { ?unit rdfs:label ?unit_label }
+"GRAPH <http://www.openphacts.org/units> {
+	?item rdfs:label ?act_label ;
+		chembl:hasQUDT ?unit .
+	?unit rdfs:label ?unit_label .
 }" .
