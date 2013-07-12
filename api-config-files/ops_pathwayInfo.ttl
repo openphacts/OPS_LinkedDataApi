@@ -83,8 +83,10 @@
 	OPTIONAL { ?ops_item wp:pathwayOntology ?ontology }
 	OPTIONAL { ?reference dcterms:isPartOf ?ops_item ;
 			a wp:PublicationReference }
-	OPTIONAL { ?metabolite dcterms:isPartOf ?ops_item ;
-			a wp:Metabolite }
-	OPTIONAL { ?gene_product dcterms:isPartOf ?ops_item ;
-			a wp:GeneProduct }
+	OPTIONAL { ?metabolite_internal dcterms:isPartOf ?ops_item ;
+			a wp:Metabolite ;
+			dc:identifier ?metabolite }
+	OPTIONAL { ?gene_product_internal dcterms:isPartOf ?ops_item ;
+			a wp:GeneProduct ;
+			dc:identifier ?gene_product }
 }" .
