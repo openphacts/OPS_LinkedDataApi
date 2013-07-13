@@ -36,7 +36,7 @@
 	api:endpoint [ 
 		a api:ListEndpoint ;
 		api:name "Pathways by Compound" ;
-		api:description "Returns a list pf pathways which have as part the Metabolite that corresponds to  {uri}.";
+		api:description "Returns a list of pathways which have as part the Metabolite that corresponds to  {uri}.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
