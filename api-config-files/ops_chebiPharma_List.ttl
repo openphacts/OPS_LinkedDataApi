@@ -155,8 +155,7 @@ chembl:pChembl api:name "pChembl" ;
 	api:variable <http://qudt.org/vocab/unit#Liter> ;
 	api:name "ChEBI Ontology Class Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values for a given ChEBI Ontology class" ;
-	api:resultsDescription "[] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
+	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;
@@ -239,8 +238,7 @@ GRAPH <http://www.conceptwiki.org> {
 <#chebiPharmacologyListViewer> a api:Viewer ;
         api:name "chebiPharmacologyListViewer" ;
 	api:template 
-"[] ops:input ?ops_item .
-?item chembl:hasMolecule ?compound_chembl;
+"?item chembl:hasMolecule ?compound_chembl;
 	chembl:standardType ?std_type;
 	chembl:standardRelation ?relation;
 	chembl:standardValue ?std_value;

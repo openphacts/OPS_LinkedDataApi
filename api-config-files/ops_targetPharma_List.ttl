@@ -25,12 +25,12 @@
 @prefix cito: <http://purl.org/spar/cito/> .
 
 <#target> a api:API ;
-    rdfs:label "Target"@en ;
-    api:sparqlEndpoint <http://localhost:8890/sparql/> ;
-    api:contentNegotiation api:parameterBased ;
+	rdfs:label "Target"@en ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organism ;
 	api:variable _:targetOrganism ;
-    api:variable <#input> ; 
+	api:variable <#input> ; 
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
@@ -156,8 +156,7 @@ chembl:pChembl api:name "pChembl" ;
 	api:variable <http://qudt.org/vocab/unit#Liter> ;
 	api:name "Target Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given target" ;
-	api:resultsDescription "[] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
+	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;
@@ -241,8 +240,7 @@ GRAPH <http://www.conceptwiki.org> {
 <#targetPharmacologyListViewer> a api:Viewer ;
         api:name "targetPharmacologyListViewer" ;
 	api:template 
-"[] ops:input ?ops_item .
-?item chembl:hasMolecule ?compound_chembl;
+"?item chembl:hasMolecule ?compound_chembl;
 	chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
 	chembl:publishedValue ?published_value ;

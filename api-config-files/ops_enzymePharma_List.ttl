@@ -155,8 +155,7 @@ chembl:pChembl api:name "pChembl" ;
 	api:variable <http://qudt.org/vocab/unit#Liter> ;
 	api:name "Enzyme Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given Enzyme Classification class" ;
-	api:resultsDescription "[] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
+	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;
@@ -239,8 +238,7 @@ chembl:pChembl api:name "pChembl" ;
 <#enzymePharmacologyListViewer> a api:Viewer ;
         api:name "enzymePharmacologyListViewer" ;
 	api:template 
-"[] ops:input ?ops_item .
-?item chembl:hasMolecule ?compound_chembl;
+"?item chembl:hasMolecule ?compound_chembl;
 	chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
         chembl:publishedValue ?published_value ;
