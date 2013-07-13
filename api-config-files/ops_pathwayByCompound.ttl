@@ -36,6 +36,25 @@
 		a api:ListEndpoint ;
 		api:name "Pathways by Compound" ;
 		api:description "Returns a list pf pathways which have as part the Metabolite that corresponds to  {uri}.";
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9913> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_6239> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9615> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7955> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7227> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9796> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9031> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_5518> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9606> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10090> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1773> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4530> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9598> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
 		api:uriTemplate "/pathways/byCompound?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways/byCompound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
@@ -64,6 +83,32 @@
 <http://xmlns.com/foaf/0.1/> api:label "foaf" .
 <http://purl.org/dc/elements/1.1/> api:label "dc" .
 <http://purl.org/dc/terms/> api:label "dcterms" .
+
+<http://purl.obolibrary.org/obo/NCBITaxon_7165> api:name "Anopheles gambiae" .
+<http://purl.obolibrary.org/obo/NCBITaxon_3702> api:name "Arabidopsis thaliana" .
+<http://purl.obolibrary.org/obo/NCBITaxon_1423> api:name "Bacillus subtilis" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9913> api:name "Bos taurus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_6239> api:name "Caenorhabditis elegans" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9615> api:name "Canis familiaris" .
+<http://purl.obolibrary.org/obo/NCBITaxon_7955> api:name "Danio rerio" .
+<http://purl.obolibrary.org/obo/NCBITaxon_7227> api:name "Drosophila melanogaster" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9796> api:name "Equus caballus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9031> api:name "Gallus gallus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_5518> api:name "Gibberella zeae" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9606> api:name "Homo sapiens" .
+<http://purl.obolibrary.org/obo/NCBITaxon_10090> api:name "Mus musculus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_1773> api:name "Mycobacterium tuberculosis" .
+<http://purl.obolibrary.org/obo/NCBITaxon_4530> api:name "Oryza sativa" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9598> api:name "Pan troglodytes" .
+<http://purl.obolibrary.org/obo/NCBITaxon_10116> api:name "Rattus norvegicus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_4932> api:name "Saccharomyces cerevisiae" .
+<http://purl.obolibrary.org/obo/NCBITaxon_4577> api:name "Zea mays" .
+
+pw:organism api:name "pathway_organism" ;
+	api:label "pathway_organism" ;
+	api:value "The rdfs:label for the pathway organism (URL encode)." ;
+	api:filterVariable "?item";
+	a rdf:Property .
 
 <#input> api:name "uri" ;
         api:label "uri";
