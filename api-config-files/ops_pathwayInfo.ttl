@@ -31,7 +31,7 @@
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
 	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
 	api:vocabulary <http://purl.org/dc/terms/> ;
-	api:description "An API configuration to return information about compounds" ;
+	api:description "An API configuration to return information about pathways." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Pathway Information" ;

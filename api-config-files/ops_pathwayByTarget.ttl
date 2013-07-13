@@ -34,11 +34,11 @@
 	api:description "An API configuration to return information about pathways" ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "List Pathways" ;
-		api:description "Returns the list of pathways in the cache.";
-		api:uriTemplate "/pathways" ;
+		api:name "Pathways by Target" ;
+		api:description "Returns a list pf pathways which have as part the Gene Product that corresponds to  {uri}.";
+		api:uriTemplate "/pathways/byTarget?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways" ;
+		api:exampleRequestPath "/pathways/byTarget?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F51918c32-776d-4156-bc22-540cda2b1f44" ;
 	        api:selector [
         	        api:where
 "GRAPH <http://www.wikipathways.org> {
@@ -47,13 +47,16 @@
                 wp:organism ?organism_uri ;
                 foaf:page ?page ;
                 dc:identifier ?identifier .
+	?gene_product dcterms:isPartOf ?item ;
+                a wp:GeneProduct ;
+                dc:identifier ?pw_uri .
         ?organism_uri rdfs:label ?organism .
         OPTIONAL { ?item dcterms:description ?description }
         OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }" ;
 	        ] ;
-		api:viewer <#pathwayListViewer> ;
-		api:defaultViewer <#pathwayListViewer> . ] .
+		api:viewer <#pathwayByTargetViewer> ;
+		api:defaultViewer <#pathwayByTargetViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -62,8 +65,13 @@
 <http://purl.org/dc/elements/1.1/> api:label "dc" .
 <http://purl.org/dc/terms/> api:label "dcterms" .
 
-<#pathwayListViewer> a api:Viewer ;
-	api:name "pathwayListViewer" ;
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/51918c32-776d-4156-bc22-540cda2b1f44" ;
+        rdfs:range rdfs:Resource .
+
+<#pathwayByTargetViewer> a api:Viewer ;
+	api:name "pathwayByTargetViewer" ;
 	api:template 
 "?item dc:title ?title ; 
 	wp:organism ?organism_uri ; 
@@ -71,8 +79,12 @@
 	dc:identifier ?identifier ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
+	dcterms:hasPart ?pw_uri ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
+?pw_uri a wp:GeneProduct ; 
+	skos:exactMatch ?cw_uri .
+?cw_uri skos:prefLabel ?prefLabel .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
@@ -81,7 +93,13 @@
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
+        ?gene_product dcterms:isPartOf ?item ;
+                a wp:GeneProduct ;
+                dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
+}
+GRAPH <http://www.conceptwiki.org> {
+	?cw_uri skos:prefLabel ?prefLabel .
 }" .

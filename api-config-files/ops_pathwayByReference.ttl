@@ -34,11 +34,11 @@
 	api:description "An API configuration to return information about pathways" ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "List Pathways" ;
-		api:description "Returns the list of pathways in the cache.";
-		api:uriTemplate "/pathways" ;
+		api:name "Pathways by Reference" ;
+		api:description "Returns a list pf pathways which have as part the Reference that corresponds to  {uri}.";
+		api:uriTemplate "/pathways/byReference?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways" ;
+		api:exampleRequestPath "/pathways/byReference?uri=http%3A%2F%2Fidentifiers.org%2Fpubmed%2F9789062" ;
 	        api:selector [
         	        api:where
 "GRAPH <http://www.wikipathways.org> {
@@ -47,13 +47,15 @@
                 wp:organism ?organism_uri ;
                 foaf:page ?page ;
                 dc:identifier ?identifier .
+	?pw_uri dcterms:isPartOf ?item ;
+                a wp:PublicationReference . 
         ?organism_uri rdfs:label ?organism .
         OPTIONAL { ?item dcterms:description ?description }
         OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }" ;
 	        ] ;
-		api:viewer <#pathwayListViewer> ;
-		api:defaultViewer <#pathwayListViewer> . ] .
+		api:viewer <#pathwayByReferenceViewer> ;
+		api:defaultViewer <#pathwayByReferenceViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -62,8 +64,13 @@
 <http://purl.org/dc/elements/1.1/> api:label "dc" .
 <http://purl.org/dc/terms/> api:label "dcterms" .
 
-<#pathwayListViewer> a api:Viewer ;
-	api:name "pathwayListViewer" ;
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A reference URI. e.g.: http://identifiers.org/pubmed/9789062" ;
+        rdfs:range rdfs:Resource .
+
+<#pathwayByReferenceViewer> a api:Viewer ;
+	api:name "pathwayByReferenceViewer" ;
 	api:template 
 "?item dc:title ?title ; 
 	wp:organism ?organism_uri ; 
@@ -71,8 +78,10 @@
 	dc:identifier ?identifier ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
+	dcterms:hasPart ?pw_uri ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
+?pw_uri a wp:PublicationReference ; 
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
@@ -81,6 +90,8 @@
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
+        ?pw_uri dcterms:isPartOf ?item ;
+                a wp:PublicationReference .
 	?organism_uri rdfs:label ?organism . 
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
