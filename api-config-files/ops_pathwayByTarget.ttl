@@ -25,7 +25,8 @@
         rdfs:label "Pathway"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
+        api:variable wp:organism ; 
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
@@ -104,7 +105,7 @@
 <http://purl.obolibrary.org/obo/NCBITaxon_4932> api:name "Saccharomyces cerevisiae" .
 <http://purl.obolibrary.org/obo/NCBITaxon_4577> api:name "Zea mays" .
 
-pw:organism api:name "pathway_organism" ;
+wp:organism api:name "pathway_organism" ;
 	api:label "pathway_organism" ;
 	api:value "The rdfs:label for the pathway organism (URL encode)." ;
 	api:filterVariable "?item";
