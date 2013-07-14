@@ -34,13 +34,13 @@
 	api:description "An API configuration to return information about pathways." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Pathway Information" ;
-		api:description "Returns information about a single pathway that corresponds to {uri}.";
-		api:uriTemplate "/pathway?uri={uri}" ;
+		api:name "Get Targets for Pathway" ;
+		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
+		api:uriTemplate "/pathway/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/pathway?uri=http%3A%2F%2Frdf.wikipathways.org%2FPathway%2FWP176_r68034" ;
-		api:viewer <#pathwayViewer> ;
-		api:defaultViewer <#pathwayViewer> . ] .
+		api:exampleRequestPath "/pathway?uri=http%3A%2F%2Frdf.wikipathways.org%2FPathway%2FWP1008_r63353" ;
+		api:viewer <#pathwayTargetViewer> ;
+		api:defaultViewer <#pathwayTargetViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -51,42 +51,19 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A Pathway URI. e.g.: http://rdf.wikipathways.org/WP1019_r48131" ;
+	api:value "A Pathway URI. e.g.: http://rdf.wikipathways.org/WP1008_r63353" ;
 	rdfs:range rdfs:Resource .
 
-<#pathwayViewer> a api:Viewer ;
-	api:name "pathwayViewer" ;
+<#pathwayTargetViewer> a api:Viewer ;
+	api:name "pathwayTargetViewer" ;
 	api:template 
 "?ops_item dc:title ?title ; 
-	wp:organism ?organism_uri ; 
-	foaf:page ?page ;
-	dc:identifier ?identifier ;
-	dcterms:description ?description ;
-	wp:pathwayOntology ?ontology ;
-	dcterms:hasPart ?reference ;
-	dcterms:hasPart ?metabolite ;
 	dcterms:hasPart ?gene_product;
-	void:inDataset <http://www.wikipathways.org> .
-?organism_uri rdfs:label ?organism . 
-?reference a wp:PublicationReference .
-?metabolite a wp:Metabolite .
-?gene_product a wp:GeneProduct .
-";
+	void:inDataset <http://www.wikipathways.org>";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?ops_item dc:title ?title ; 
-		wp:organism ?organism_uri ; 
-		foaf:page ?page ;
-		dc:identifier ?identifier . 
-	?organism_uri rdfs:label ?organism . 
-	OPTIONAL { ?ops_item dcterms:description ?description }
-	OPTIONAL { ?ops_item wp:pathwayOntology ?ontology }
-	OPTIONAL { ?reference dcterms:isPartOf ?ops_item ;
-			a wp:PublicationReference }
-	OPTIONAL { ?metabolite_internal dcterms:isPartOf ?ops_item ;
-			a wp:Metabolite ;
-			dc:identifier ?metabolite }
-	OPTIONAL { ?gene_product_internal dcterms:isPartOf ?ops_item ;
-			a wp:GeneProduct ;
-			dc:identifier ?gene_product }
+	?ops_item dc:title ?title . 
+	?gene_product_internal dcterms:isPartOf ?ops_item ;
+		a wp:GeneProduct ;
+		dc:identifier ?gene_product .
 }" .

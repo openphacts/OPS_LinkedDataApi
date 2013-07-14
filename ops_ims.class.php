@@ -3,9 +3,9 @@
 class OpsIms {
 
     function expandQuery ( $query , $input_uri ) {
-        $variables = array('?cw_uri' , '?cs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri');
+        $variables = array('?cw_uri' , '?cs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri');
         //$url = 'http://ims-test.openlinksw.com/QueryExpander/expandXML?query=';
-        $url = 'http://openphacts.cs.man.ac.uk:9092/QueryExpander/expandXML?query=';
+        $url = 'http://openphacts.cs.man.ac.uk:9092/QueryExpander/expandXML?lensUri=All&query=';
         $url .= urlencode($query) ;
         $params='';
         $output = $query ;
@@ -15,6 +15,7 @@ class OpsIms {
             }
         }
         if ($params !='') {
+	    $params=substr($params, 2);
             $url .= '&inputURI=' . urlencode($input_uri) ;
             $url .= '&parameter=' ;
             $url .= urlencode($params);

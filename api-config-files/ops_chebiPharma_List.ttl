@@ -17,7 +17,7 @@
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix sio: <http://semanticscience.org/resource/> .
-@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
+@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
@@ -33,7 +33,7 @@
         api:variable <#input> ; 
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
- 	api:variable chembl:standardUnit ;
+ 	api:variable chembl:hasQUDT ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:pChembl ;
 	api:dataset <http://www.chemspider.com> ;
@@ -51,10 +51,32 @@
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
-<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
-<http://qudt.org/schema/qudt#floatPercentage> api:name "percentage" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
+<http://qudt.org/vocab/unit#Percent> api:name "percent" .
+<http://www.openphacts.org/units/MilligramPerMilliliter> api:name "milligram_per_milliliter" .
+<http://qudt.org/vocab/unit#MinuteTime> api:name "minute_time" .
+<http://qudt.org/vocab/unit#Gram> api:name "gram" .
+<http://www.openphacts.org/units/NanogramPerMilliliter> api:name "nanogram_per_milliliter" .
+<http://qudt.org/vocab/unit#Hour> api:name "hour" .
+<http://www.openphacts.org/units/PicogramPerMilliliter> api:name "picogram_per_milliliter" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://www.openphacts.org/units/Molar> api:name "molar" .
+<http://www.openphacts.org/units/MilligramPerDeciliter> api:name "milligram_per_deciliter" .
+<http://qudt.org/vocab/unit#Day> api:name "day" .
+<http://qudt.org/vocab/unit#SecondTime> api:name "second_time" .
+<http://www.openphacts.org/units/Picomolar> api:name "picomolar" .
+<http://qudt.org/vocab/unit#Centimeter> api:name "centimeter" .
+<http://www.openphacts.org/units/GramPerLiter> api:name "gram_per_liter" .
+<http://qudt.org/vocab/unit#InternationalUnitPerLiter> api:name "international_unit_per_liter" .
+<http://qudt.org/vocab/unit#Kilogram> api:name "kilogram" .
+<http://qudt.org/vocab/unit#DegreeCelsius> api:name "degree_celsius" .
+<http://qudt.org/vocab/unit#MilliSecond> api:name "milli_second" .
+<http://qudt.org/vocab/unit#Millimeter> api:name "millimeter" .
+<http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
+<http://qudt.org/vocab/unit#Liter> api:name "liter" .
+
 
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -75,7 +97,7 @@ chembl:standardType api:name "activity_type" ;
 	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
-chembl:standardUnits api:name "activity_unit" ;
+chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
         api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
         api:filterVariable "?item";
@@ -106,14 +128,34 @@ chembl:pChembl api:name "pChembl" ;
 
 <#chebiPharmacologyListEndpoint> a api:ListEndpoint ;
 	api:uriTemplate "/compound/chebi/pharmacology/pages?uri={uri}" ;
-	api:variable <http://www.openphacts.org/units/Micromolar> ;
 	api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+	api:variable <http://www.openphacts.org/units/Millimolar> ;
 	api:variable <http://www.openphacts.org/units/Nanomolar> ;
-	api:variable <http://qudt.org/schema/qudt#floatPercentage> ;
+	api:variable <http://qudt.org/vocab/unit#Percent> ;
+	api:variable <http://www.openphacts.org/units/MilligramPerMilliliter> ;
+	api:variable <http://qudt.org/vocab/unit#MinuteTime> ;
+	api:variable <http://qudt.org/vocab/unit#Gram> ;
+	api:variable <http://www.openphacts.org/units/NanogramPerMilliliter> ;
+	api:variable <http://qudt.org/vocab/unit#Hour> ;
+	api:variable <http://www.openphacts.org/units/PicogramPerMilliliter> ;
+	api:variable <http://www.openphacts.org/units/Micromolar> ;
+	api:variable <http://www.openphacts.org/units/Molar> ;
+	api:variable <http://www.openphacts.org/units/MilligramPerDeciliter> ;
+	api:variable <http://qudt.org/vocab/unit#Day> ;
+	api:variable <http://qudt.org/vocab/unit#SecondTime> ;
+	api:variable <http://www.openphacts.org/units/Picomolar> ;
+	api:variable <http://qudt.org/vocab/unit#Centimeter> ;
+	api:variable <http://www.openphacts.org/units/GramPerLiter> ;
+	api:variable <http://qudt.org/vocab/unit#InternationalUnitPerLiter> ;
+	api:variable <http://qudt.org/vocab/unit#Kilogram> ;
+	api:variable <http://qudt.org/vocab/unit#DegreeCelsius> ;
+	api:variable <http://qudt.org/vocab/unit#MilliSecond> ;
+	api:variable <http://qudt.org/vocab/unit#Millimeter> ;
+	api:variable <http://qudt.org/vocab/unit#Micrometer> ;
+	api:variable <http://qudt.org/vocab/unit#Liter> ;
 	api:name "ChEBI Ontology Class Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values for a given ChEBI Ontology class" ;
-	api:resultsDescription "[] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
+	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;
@@ -196,8 +238,7 @@ GRAPH <http://www.conceptwiki.org> {
 <#chebiPharmacologyListViewer> a api:Viewer ;
         api:name "chebiPharmacologyListViewer" ;
 	api:template 
-"[] ops:input ?ops_item .
-?item chembl:hasMolecule ?compound_chembl;
+"?item chembl:hasMolecule ?compound_chembl;
 	chembl:standardType ?std_type;
 	chembl:standardRelation ?relation;
 	chembl:standardValue ?std_value;

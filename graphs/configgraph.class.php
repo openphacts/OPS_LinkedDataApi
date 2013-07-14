@@ -389,7 +389,7 @@ class ConfigGraph extends PueliaGraph {
                     isset($props['source']) AND $props['source']=='request' 
                     AND $name != 'uri')) {
                 # Antonis botch
-                $props['value'] = urlencode($props['value']);
+                $props['value'] = rawurlencode($props['value']);
             }
             
             $value = str_replace('{'.$name.'}', $props['value'], $value);

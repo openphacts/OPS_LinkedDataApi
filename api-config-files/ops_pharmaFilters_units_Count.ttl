@@ -31,38 +31,38 @@
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://qudt.org/schema/qudt#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
+	api:variable rdfs:label ;
 	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Units for activity type" ;
-		api:description "A list of units that activities of the specified type have been normalised to." ;
-		api:resultsDescription "?act_type <span style=\"BACKGROUND-COLOR: #33CC99\"> qudt:unit ?unit </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. 
-?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label</span>." ;
-		api:uriTemplate "/pharmacology/filters/units/{act_name}" ;
-        	api:itemTemplate "http://www.openphacts.org/terms/chembl#{act_name}" ;
-		api:variable _:act_type	; 
-		api:exampleRequestPath "/pharmacology/filters/units/IC50";
-		api:viewer <#pharmacologyFiltersUnitViewer> ; 
-		api:defaultViewer <#pharmacologyFiltersUnitViewer> . ] .
-
-_:act_type api:name "act_type" ;
-	api:value "http://www.openphacts.org/terms/chembl#{act_name}" ;
-	api:type rdfs:Resource .
+		api:name "Number of activity units" ;
+		api:description "A list of activity units which have been normalised" ;
+		api:resultsDescription "&lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.
+?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label</span>." ;
+		api:uriTemplate "/pharmacology/filters/count_units" ;
+        	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
+		api:exampleRequestPath "/pharmacology/filters/count_units";
+		api:viewer <#pharmacologyFiltersUnitCountViewer> ; 
+		api:defaultViewer <#pharmacologyFiltersUnitCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
 <http://qudt.org/schema/qudt#> api:label "qudt" .
 
-<#pharmacologyFiltersUnitViewer> a api:Viewer ;
-	api:name "pharmacologyFiltersUnitViewer" ;
+rdfs:label api:name "activity_type" ;
+        api:label "activity_type" ;
+        api:filterVariable "?type";
+        api:value "One of the activity types listed at /pharmacology/filters/activities" ;
+        a rdf:Property .
+
+<#pharmacologyFiltersUnitCountViewer> a api:Viewer ;
+	api:name "pharmacologyFiltersUnitCountViewer" ;
 	api:template 
-"?item qudt:unit ?unit ;
-	rdfs:label ?act_label . 
-?unit rdfs:label ?unit_label" ; 
+"<http://www.ebi.ac.uk/chembl> ops:normalised_activity_unit_count ?count ." ; 
 	api:where
-"GRAPH <http://www.openphacts.org/units> {
-	?item rdfs:label ?act_label ;
-		chembl:hasQUDT ?unit .
-	?unit rdfs:label ?unit_label .
+"{
+SELECT COUNT( DISTINCT ?unit) AS ?count WHERE {
+  GRAPH <http://www.openphacts.org/units>  {
+   ?type chembl:hasQUDT ?unit  .
+  } } 
 }" .

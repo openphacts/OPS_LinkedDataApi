@@ -68,7 +68,7 @@ class SparqlWriter {
             $limit = $this->getLimit();
             $offset = $this->getOffset();
 	    $orderBy = $this->getOrderBy();
-	    if (empty($orderBy['orderBy'])) {
+	    if (empty($orderBy['orderBy']) AND stristr($template,'ORDER BY')===FALSE) {
 		$orderBy['orderBy']='ORDER BY ?item';
 	    }
 	    $filterGraph = $this->getFilterGraph();
@@ -619,9 +619,10 @@ _SPARQL_;
             return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
+            $query = preg_replace('/GRAPH/'," {$this->getFilterGraph()} GRAPH",$query,1);
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
+	    if (/*$this->_config->getEndpointType() == API.'ListEndpoint' */strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
             	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
             	foreach($uriList as $uri) {
                 	$expandedQuery .= "?item = <{$uri}> || ";
