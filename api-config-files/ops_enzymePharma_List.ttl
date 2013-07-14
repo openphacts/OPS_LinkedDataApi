@@ -211,9 +211,9 @@ chembl:pChembl api:name "pChembl" ;
 	chembl:pChembl ?pChembl ;
 	chembl:hasDocument ?doi ;
         bibo:pmid ?pmid ;
-	void:inDataset <http://www.ebi.ac.uk/chembl> ;
-	chembl:hasTarget ?target_chembl .
-?assay_uri dcterms:description ?assay_description ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?assay_uri chembl:hasTarget ?target_chembl ;
+	dcterms:description ?assay_description ;
 	chembl:assayOrganismName ?assay_organism .
 ?target_chembl dcterms:title ?target_name;
 	chembl:targetOrganismName ?target_organism ;
