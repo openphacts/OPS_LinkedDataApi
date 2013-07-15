@@ -38,7 +38,7 @@
 		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
 		api:uriTemplate "/pathway/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/pathway?uri=http%3A%2F%2Frdf.wikipathways.org%2FPathway%2FWP1008_r63353" ;
+		api:exampleRequestPath "/pathway/getTargets?uri=http%3A%2F%2Frdf.wikipathways.org%2FPathway%2FWP1008_r63353" ;
 		api:viewer <#pathwayTargetViewer> ;
 		api:defaultViewer <#pathwayTargetViewer> . ] .
 

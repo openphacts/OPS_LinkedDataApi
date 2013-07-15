@@ -58,7 +58,7 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
 		api:uriTemplate "/pathways/byReference/count?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways/byReference?uri=http%3A%2F%2Fidentifiers.org%2Fpubmed%2F9789062" ;
+		api:exampleRequestPath "/pathways/byReference/count?uri=http%3A%2F%2Fidentifiers.org%2Fpubmed%2F9789062" ;
 		api:viewer <#pathwayByReferenceCountViewer> ;
 		api:defaultViewer <#pathwayByReferenceCountViewer> . ] .
 
