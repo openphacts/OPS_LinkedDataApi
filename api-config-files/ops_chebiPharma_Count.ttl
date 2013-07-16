@@ -26,6 +26,10 @@
         api:variable <#input> ; 
 	api:variable _:targetOrganism ;
 	api:variable chembl:organismName ;
+	api:variable chembl:standardType;
+	api:variable chembl:standardValue ;
+ 	api:variable chembl:hasQUDT ;
+	api:variable chembl:standardRelation ;
 	api:variable chembl:pChembl ;
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
@@ -120,6 +124,31 @@ _:targetOrganism api:name "target_organism" ;
 	api:filterVariable "?target_uri";
 	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
+
+chembl:standardType api:name "activity_type" ;
+        api:label "activity_type" ;
+        api:filterVariable "?activity_uri";
+        api:value "One of the activity types listed at /pharmacology/filters/activities" ;
+        a rdf:Property .
+
+
+chembl:hasQUDT api:name "activity_unit" ;
+        api:label "activity_unit" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
+        api:filterVariable "?activity_uri";
+        a rdf:Property .
+
+chembl:standardValue api:name "activity_value" ;
+        api:label "activity_value" ;
+        api:value "Return activity values equal to this number." ;
+        api:filterVariable "?activity_uri";
+        a rdf:Property .
+
+chembl:standardRelation api:name "relation" ;
+        api:label "activity_relation" ;
+        api:value ">, >=,= , < , <=" ;
+        api:filterVariable "?activity_uri";
+        a rdf:Property .
 
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
