@@ -41,7 +41,6 @@
 		api:uriTemplate "/target/tree/node?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/target/tree/node?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fchembl%2Fprotclass%2FCHEMBL_PC_1272";
-		api:exampleRequestPath "/target/tree/node?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fchembl%2Fprotclass%2FCHEMBL_PC_1272&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#targetTreeClassViewer> ;
 		api:defaultViewer <#targetTreeClassViewer> ] .
 

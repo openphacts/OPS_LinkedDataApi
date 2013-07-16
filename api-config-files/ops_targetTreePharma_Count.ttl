@@ -39,7 +39,6 @@
 	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
-	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
@@ -50,7 +49,6 @@
 <http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
@@ -155,7 +153,7 @@ chembl:pChembl api:name "pChembl" ;
 	api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 	api:variable <http://qudt.org/vocab/unit#Liter> ;
 	api:name "Chembl Protein Classification Pharmacology Count" ;
-	api:description "A page of items corresponding to activity values for a givenThe total number of acitivity values in the LDC for a given Protein class" ;
+	api:description "A page of items corresponding to activity values for a given Protein class in the LDC " ;
 	api:resultsDescription "?activity_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
@@ -191,7 +189,7 @@ chembl:pChembl api:name "pChembl" ;
 	api:defaultViewer <#targetTreePharmacologyCountViewer> .
 
 <#targetTreePharmacologyCountViewer> a api:Viewer ;
-        api:name "chebiPharmacologyCountViewer" ;
+        api:name "targetTreePharmacologyCountViewer" ;
 	api:template "?ops_item ops:targetTreePharmacologyTotalResults ?count . " ; 
 	api:where "
 { SELECT (COUNT(?activity_uri) AS ?count) {
