@@ -49,6 +49,5 @@
 	api:name "targetTreeRootViewer";
 	api:template 
 "<http://www.ebi.ac.uk/chembl> ops:rootNode chembl_prot_class:CHEMBL_PC_1000 . 
-chembl_prot_class:CHEMBL_PC_1000 chembl:classLevel \"L0\" .
-chembl_prot_class:CHEMBL_PC_1000 skos:prefLabel \"Root\" .
+chembl_prot_class:CHEMBL_PC_1000 rdfs:label \"Root\" .
 " .
