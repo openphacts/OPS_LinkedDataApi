@@ -1,0 +1,65 @@
+@base <http://www.openphacts.org/api#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix chembl_prot_class: <http://rdf.ebi.ac.uk/resource/chembl/protclass/> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix enzyme: <http://purl.uniprot.org/enzyme/> .
+
+<#targetTree> a api:API ;
+        rdfs:label "Chembl Protein Classification"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:variable <#input> ;
+        api:contentNegotiation api:parameterBased ;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
+	api:vocabulary <http://rdf.chemspider.com/#> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:vocabulary <http://www.openphacts.org/api#> ;
+	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
+	api:vocabulary <http://purl.uniprot.org/core/> ;
+	api:description "An API configuration to return information about protein classes and the targets associated with them." ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Get Chembl Protein Class Members" ;
+		api:description "A representation of all members of a given Protein Class." ;
+		api:uriTemplate "/target/tree/members?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/target/tree/members?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fchembl%2Fprotclass%2FCHEMBL_PC_1272";
+		api:viewer <#targetTreeClassMemberViewer> ;
+		api:defaultViewer <#targetTreeClassMemberViewer> ] .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "A Protein Class URI. e.g.: http://rdf.ebi.ac.uk/resource/chembl/protclass/CHEMBL_PC_1272" ;
+	rdfs:range rdfs:Resource .
+
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
+
+<#targetTreeClassMemberViewer> a api:Viewer ;
+	api:name "targetTreeClassMemberViewer";
+	api:template 
+"?ops_item ops:has_member ?member .
+?member rdfs:label ?member_name .
+" ;
+	api:where "GRAPH <http://www.ebi.ac.uk/chembl/target/direct> {
+	?member rdfs:subClassOf ?ops_item .
+}
+GRAPH <http://www.ebi.ac.uk/chembl> {
+	?member rdfs:label ?member_name .
+}" .
