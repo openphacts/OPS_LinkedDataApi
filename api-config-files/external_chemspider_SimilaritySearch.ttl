@@ -26,6 +26,8 @@
 		<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?similarMolecule </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Threshold ?searchThreshold </span>; 
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:SimilarityType ?searchSimilarityType </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Alpha ?searchAlpha </span>; 
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Beta ?searchBeta </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;
@@ -50,11 +52,21 @@ cs_api:searchOptions api:name "searchOptions" ;
 	api:value "Possible search option values" ;
 	api:subType cs_api_search:Molecule ;
 	api:subType cs_api_search:SimilarityType ;
-	api:subType cs_api_search:Threshold .
+	api:subType cs_api_search:Threshold ;
+	api:subType cs_api_search:Alpha ;
+	api:subType cs_api_search:Beta .
 
 cs_api_search:SimilarityType api:name "SimilarityType" ;
 	api:label "SimilarityType" ;
 	api:value "0: Tanimoto ; 1: Tversky ; 2: Euclidian" .
+
+cs_api_search:Alpha api:name "Alpha" ;
+	api:label "Alpha" ;
+	api:value "Value in [0,1] ; available only for Tversky metric ; Default=0.5" .
+
+cs_api_search:Beta api:name "Beta" ;
+	api:label "Beta" ;
+	api:value "Value in [0,1] ; available only for Tversky metric ; Default=0.5" .
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
@@ -116,7 +128,9 @@ cs_api_result:Length api:name "Length" ;
 	?primaryTopic rdf:type ?searchType ;
 		cs_api_search:Molecule ?moleculeSmiles ;
 		cs_api:result ?result ;
-		cs_api_search:Threshold ?searchThreshold ; 
+		cs_api_search:Threshold ?searchThreshold ;
+		cs_api_search:Alpha ?searchAlpha ; 
+		cs_api_search:Beta ?searchBeta ;
 		cs_api_search:SimilarityType ?searchSimilarityType ;
 		cs_api_common:Complexity ?complexity ;
 		cs_api_common:Isotopic ?isotopic ;
@@ -134,6 +148,8 @@ GRAPH <{result_hash}> {
 	?primaryTopic cs_api:result ?result .
 	OPTIONAL { ?primaryTopic cs_api_search:Threshold ?searchThreshold }
 	OPTIONAL { ?primaryTopic cs_api_search:SimilarityType ?searchSimilarityType }
+	OPTIONAL { ?primaryTopic cs_api_search:Alpha ?searchAlpha }
+	OPTIONAL { ?primaryTopic cs_api_search:Beta ?searchBeta }
 	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
 	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
 	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }

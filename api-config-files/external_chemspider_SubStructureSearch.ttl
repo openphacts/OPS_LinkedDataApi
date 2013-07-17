@@ -49,7 +49,8 @@ cs_api:searchOptions api:name "searchOptions" ;
 	api:label "searchOptions" ;
 	api:value "Possible search option values" ;
 	api:subType cs_api_search:Molecule ;
-	api:subType cs_api_search:MatchTautomers .
+	api:subType cs_api_search:MatchTautomers ;
+	api:subType cs_api_search:MolType .
 
 cs_api_search:MatchTautomers api:name "MatchTautomers" ;
 	api:label "MatchTautomers" ;
