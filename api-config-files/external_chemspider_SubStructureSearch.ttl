@@ -23,6 +23,7 @@
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;
 		<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?resultMolecule </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api:search:MolType ?searchMolType </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:MatchTautomers ?searchMatchTautomers </span>; 		
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
@@ -58,6 +59,9 @@ cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
 	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
 
+cs_api_search:MolType api:name "MolType" ;
+	api:label "MolType" ;
+	api:value "0: SMILES ; 1: SMARTS" .
 
 cs_api:commonOptions api:name "commonOptions" ;
 	api:label "commonOptions";
@@ -109,6 +113,7 @@ cs_api_result:Length api:name "Length" ;
 	?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
 	?primaryTopic rdf:type ?searchType ;
 		cs_api_search:Molecule ?moleculeSmiles ;
+		cs_api_search:MolType ?searchMolType ;
 		cs_api:result ?result ;
 		cs_api_search:MatchTautomers ?searchMatchTautomers ; 		
 		cs_api_common:Complexity ?complexity ;
@@ -126,6 +131,7 @@ GRAPH <{result_hash}> {
 	?primaryTopic cs_api_search:Molecule ?moleculeSmiles .
 	?primaryTopic cs_api:result ?result .
 	OPTIONAL { ?primaryTopic cs_api_search:MatchTautomers ?searchMatchTautomers }
+	OPTIONAL { ?primaryTopic cs_api_search:MolType ?searchMolType }
 	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
 	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
 	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }

@@ -5,6 +5,7 @@ define('SEARCH_RESULTS_REQUEST_TEMPLATE', 'http://crs.beta.rsc-us.org/JSON.ashx?
 
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
 define('OPS_CHEMSPIDER_PREFIX', 'http://www.chemspider.com/api/');
+define('OPS_PREFIX', 'http://www.openphacts.org/api/');
 define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/');
 
 define('SEARCH_STATUS_UNKNOWN', 0);
@@ -34,7 +35,7 @@ if (empty($decodedFinalResults)){
 //add Data To DataGraph
 $searchType = getSearchType($this->Request->getPathWithoutExtension());
 $resultBNode = '_:searchResult';
-$this->DataGraph->add_literal_triple($resultBNode, RDF_TYPE, $searchType);
+$this->DataGraph->add_resource_triple($resultBNode, RDF_TYPE, $searchType);
 
 $unreservedParameters = $this->Request->getUnreservedParams();
 foreach ($unreservedParameters as $name => $value){
@@ -78,11 +79,11 @@ function getDecodedFinalResults($requestId){
 
 function getSearchType($path){
     if (endsWith("exact", $path)){
-        return "ExactStructureSearch";
+        return OPS_PREFIX.'ExactStructureSearch';
     } else if (endsWith("substructure", $path)){
-        return "SubstructureSearch";
+        return OPS_PREFIX.'SubstructureSearch';
     } else if (endsWith("similarity", $path)){
-        return "SimilaritySearch";
+        return OPS_PREFIX.'SimilaritySearch';
     }
     else{
         throw new ErrorException('Unknown search type');
