@@ -37,7 +37,7 @@
 		api:name "Activity units" ;
 		api:description "A list of activity units which have been normalised" ;
 		api:resultsDescription "&lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.
-?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label</span>." ;
+?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>." ;
 		api:uriTemplate "/pharmacology/filters/units" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/units";
@@ -51,7 +51,7 @@ GRAPH <http://www.ebi.ac.uk/chembl>  {
 GRAPH <http://www.openphacts.org/units> {
         ?item rdfs:label ?qudt_label    
 }  
-} GROUP BY ?item ?qudt_label ORDER BY DESC(?count)
+} GROUP BY ?item ?qudt_label ORDER BY DESC( ?count )
 }" ;
 api:orderBy ""] ;
 		api:viewer <#pharmacologyFiltersUnitViewer> ; 
@@ -66,7 +66,7 @@ api:orderBy ""] ;
 	api:template 
 "<http://www.ebi.ac.uk/chembl> ops:normalised_activity_unit ?item .
 ?item rdfs:label ?qudt_label ;
-ops:activity_count ?count" ; 
+ops:activity_count ?count " ; 
 	api:where
 "{
 SELECT DISTINCT ?item COUNT(?activity) AS ?count WHERE {
