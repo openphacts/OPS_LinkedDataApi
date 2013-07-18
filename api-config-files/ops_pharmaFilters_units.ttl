@@ -38,7 +38,7 @@
 		api:description "A list of units that activities of the specified type have been normalised to." ;
 		api:resultsDescription "?act_type <span style=\"BACKGROUND-COLOR: #33CC99\"> qudt:unit ?unit </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. 
-?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label</span>." ;
+?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label </span>." ;
 		api:uriTemplate "/pharmacology/filters/units/{act_name}" ;
         	api:itemTemplate "http://www.openphacts.org/terms/chembl#{act_name}" ;
 		api:variable _:act_type	; 
@@ -57,9 +57,9 @@ _:act_type api:name "act_type" ;
 <#pharmacologyFiltersUnitViewer> a api:Viewer ;
 	api:name "pharmacologyFiltersUnitViewer" ;
 	api:template 
-"?item qudt:unit ?unit ;
+" ?item qudt:unit ?unit ;
 	rdfs:label ?act_label . 
-?unit rdfs:label ?unit_label" ; 
+?unit rdfs:label ?unit_label " ; 
 	api:where
 "GRAPH <http://www.openphacts.org/units> {
 	?item rdfs:label ?act_label ;
