@@ -62,11 +62,11 @@ cs_api_search:SimilarityType api:name "SimilarityType" ;
 
 cs_api_search:Alpha api:name "Alpha" ;
 	api:label "Alpha" ;
-	api:value "Value in [0,1] ; available only for Tversky metric ; Default=0.5" .
+	api:value "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " .
 
 cs_api_search:Beta api:name "Beta" ;
 	api:label "Beta" ;
-	api:value "Value in [0,1] ; available only for Tversky metric ; Default=0.5" .
+	api:value "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " .
 
 cs_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
