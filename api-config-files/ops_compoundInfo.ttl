@@ -17,6 +17,7 @@
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix cito: <http://purl.org/spar/cito/> .
+@prefix aers: <http://aers.data2semantics.org/vocab/> .
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
@@ -113,7 +114,18 @@
 	drugbank:meltingPoint ?meltingPoint ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
 	api:where
-"GRAPH <http://www.conceptwiki.org> {
+"OPTIONAL {
+	{
+	SELECT ?diagnosis (count( ?diagnosis) AS ?diagnosis_count) ?adverse_event ( count( ?adverse_event) AS ?ae_count ) WHERE {
+		GRAPH <http://aers.data2semantics.org/> {
+			?involvement aers:drug ?aers_uri ;
+				ears:involved_in ?report .
+			?adverse_event aers:reaction_of ?report .
+			?diagnosis aers:diagnosis_for ?involvement
+		}
+	} 
+} }
+GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?compound_name.
 }
 GRAPH <http://www.chemspider.com> {
