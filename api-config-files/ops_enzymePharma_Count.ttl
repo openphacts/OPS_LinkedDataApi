@@ -156,7 +156,7 @@ chembl:standardRelation api:name "relation" ;
 
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
-	api:filterVariable "?item";
+	api:filterVariable "?activity_uri";
         api:value "The pChembl value of an activity" ;
 	a rdf:Property .
 
