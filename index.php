@@ -1,4 +1,6 @@
 <?php
+set_time_limit(600);
+
 require 'deployment.settings.php';
 require_once 'lda.inc.php';
 require 'setup.php';
