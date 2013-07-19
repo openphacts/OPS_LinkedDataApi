@@ -41,6 +41,8 @@
 		a api:ItemEndpoint ;
 		api:name "Get ChEBI Ontology Root Classes" ;
 		api:description "A representation of the root classes of the ChEBI Ontology." ;
+		api:resultsDescription "<http://www.ebi.ac.uk/chebi> <span style=\"BACKGROUND-COLOR: #33CC99\">ops:rootNode ?chebi_root</span> . 
+?chebi_root <span style=\"BACKGROUND-COLOR: #66FFCC\">rdfs:label ?chebi_root_label</span> ." ;
 		api:uriTemplate "/compound/chebi/root" ;
 	        api:itemTemplate "http://www.ebi.ac.uk/chebi" ;
 		api:exampleRequestPath "/compound/chebi/root";
