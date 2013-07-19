@@ -127,10 +127,10 @@ do
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": ['
-		for sparql_var in `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | sort | uniq`
+		for sparql_var in `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | grep -v '</span>' | sort | uniq`
 		do
 			echo '                  "'$sparql_var'"',
-			if [[ "$sparql_var" == `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | sort | uniq | tail -n 1` ]]
+			if [[ "$sparql_var" == `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | grep -v '</span>' | sort | uniq | tail -n 1` ]]
 			then
 				echo '                  "DESC('$sparql_var')"'
 			else
