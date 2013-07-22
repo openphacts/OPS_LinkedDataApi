@@ -39,6 +39,8 @@
 		a api:ItemEndpoint ;
 		api:name "Get Enzyme Classification Root Classes" ;
 		api:description "A representation of the root classes of the Enzyme Classification." ;
+		api:resultsDescription "&lt;http://purl.uniprot.org/enzyme/&gt; <span style=\"BACKGROUND-COLOR: #33CC99\">ops:rootNode ?enzyme_root</span> . 
+?enzyme_root <span style=\"BACKGROUND-COLOR: #66FFCC\">rdfs:label ?enzyme_root_label</span> ." ;
 		api:uriTemplate "/target/enzyme/root" ;
 	        api:itemTemplate "http://purl.uniprot.org/enzyme/" ;
 		api:exampleRequestPath "/target/enzyme/root";

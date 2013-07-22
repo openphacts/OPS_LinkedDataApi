@@ -35,7 +35,7 @@
 	api:description "An API configuration to return information about protein classes and the targets associated with them." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get Chembl Protein Classification Root Classes" ;
+		api:name "Get Chembl Protein Classification Root Class" ;
 		api:description "A representation of the root classes of the Protein Classification in Chembl." ;
 		api:resultsDescription "&lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #33CC99\">ops:rootNode ?chembl_prot_class_root</span> . 
 ?chembl_prot_class_root <span style=\"BACKGROUND-COLOR: #66FFCC\">rdfs:label ?chembl_prot_class_label</span> ." ;
