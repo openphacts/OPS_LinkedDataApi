@@ -3,6 +3,71 @@
   "apiVersion": "v1.2",
   "apis": [
     {
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "path": "/structure/exact" ,
       "operations": [
         {
@@ -284,7 +349,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Chemical Structure Similarity Search" ,
-          "description":  "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?similarMolecule </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Threshold ?searchThreshold </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:SimilarityType ?searchSimilarityType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span><br><br><hr>",
+          "description":  "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?similarMolecule </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Threshold ?searchThreshold </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:SimilarityType ?searchSimilarityType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Alpha ?searchAlpha </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Beta ?searchBeta </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span><br><br><hr>",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -317,6 +382,18 @@
             {
               "name": "searchOptions.Threshold",
               "description":  "Double <= 1.0" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "searchOptions.Alpha",
+              "description":  "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "searchOptions.Beta",
+              "description":  "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -490,7 +567,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Chemical Structure Substructure Search" ,
-          "description":  "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?resultMolecule </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:MatchTautomers ?searchMatchTautomers </span>; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span><br><br><hr>",
+          "description":  "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?resultMolecule </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api:search:MolType ?searchMolType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:MatchTautomers ?searchMatchTautomers </span>; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span><br><br><hr>",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -517,6 +594,12 @@
             {
               "name": "searchOptions.MatchTautomers",
               "description":  "(Not supported at the moment) Search exactly for the given tautomeric form and ignore others. Not supported at the moment . Boolean" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "searchOptions.MolType",
+              "description":  "0: SMILES ; 1: SMARTS" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -696,7 +779,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Map free text to a concept URL based on semantic tag" ,
-          "description":  "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?uuidURL ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit .<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:semanticTag ?tagBNode ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode .<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel .<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType .", 
+          "description":  "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?uuidURL</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit</span> .<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:semanticTag ?tagBNode</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode</span> .<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel</span> .<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType</span><br><br><hr>",
           "group": "Concept Wiki services" ,
           "parameters": [
             {
@@ -1037,7 +1120,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Get ChEBI Ontology Root Classes" ,
-          "description":  "A representation of the root classes of the ChEBI Ontology.<hr>",
+          "description":  "A representation of the root classes of the ChEBI Ontology.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #33CC99\">ops:rootNode ?chebi_root</span> . <br> ?chebi_root <span style=\"BACKGROUND-COLOR: #66FFCC\">rdfs:label ?chebi_root_label</span><br><br><hr>",
           "group": "ChEBI Ontology" ,
           "parameters": [
             {
@@ -1207,136 +1290,12 @@
               "threescale_name": "app_keys"
             },
             {
-              "name":  "assay_organism" ,
-              "description":  "A literal organism in ChEMBL." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
               "name":  "target_organism" ,
               "description":  "A literal target organism in ChEMBL." ,
               "paramType": "query",
               "dataType": "string"
             },
             {
-              "name":  "activity_type" ,
-              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "activity_value" ,
-              "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "activity_unit" ,
-              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "path": "/compound/chebi/pharmacology" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "ChEBI Class Pharmacology Complete (DEPRECATED)" ,
-          "description":  "A complete representation of acitivity values in the LDC for a given ChEBI Ontology class. Potentially very large result.<hr>",
-          "group": "ChEBI Ontology" ,
-          "parameters": [
-            {
-              "name":  "uri" ,
-              "description":  "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
               "name":  "assay_organism" ,
               "description":  "A literal organism in ChEMBL." ,
               "paramType": "query",
@@ -1351,36 +1310,24 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -1436,7 +1383,7 @@
         {
           "httpMethod": "GET",
           "summary":  "ChEBI Ontology Class Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values for a given ChEBI Ontology class<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> [] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> cito:citesAsDataSource ?doi </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:hasTarget ?equiv_target </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organism ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>. <br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>.<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?class </span>.<br> ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;<br> <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values for a given ChEBI Ontology class<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\">chembl:hasMolecule ?compound_chembl</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardType ?std_type</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardRelation ?relation</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardValue ?std_value</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardUnits ?std_unit</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedType ?published_type</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedRelation ?published_relation</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedValue ?published_value</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedUnits ?published_unit</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:hasQUDT ?qudt_uri</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">chembl:hasAssay ?assay_uri</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:pChembl ?pChembl</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\">chembl:hasDocument ?doi</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\">bibo:pmid ?pmid</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #33CC99\">chembl:hasTarget ?target_uri</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:assayOrganismName ?assay_organism</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">dcterms:description ?assay_description</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\">dcterms:title ?target_name</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:targetOrganismName ?target_organism</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:exactMatch ?compound_cw</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\">skos:exactMatch ?class</span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:prefLabel ?compound_name</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.conceptwiki.org&gt;</span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:exactMatch ?compound_cs</span> .<br> ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\">chemspider:smiles ?smiles</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">chemspider:inchi ?inchi</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">chemspider:inchikey ?inchiKey</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">ops:ro5_violations ?num_ro5_violations</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://rdf.chemspider.com&gt;</span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\">?full_mwt ?molweight</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span><br><br><hr>",
           "group": "ChEBI Ontology" ,
           "parameters": [
             {
@@ -1481,36 +1428,24 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -1531,16 +1466,12 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
-                  "?activity_value",
-                  "DESC(?activity_value)",
                   "?assay_description",
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
-                  "?bNode1",
-                  "DESC(?bNode1)",
                   "?class",
                   "DESC(?class)",
                   "?compound_chembl",
@@ -1551,24 +1482,16 @@
                   "DESC(?compound_cw)",
                   "?compound_name",
                   "DESC(?compound_name)",
+                  "?document",
+                  "DESC(?document)",
                   "?doi",
                   "DESC(?doi)",
-                  "?doi_internal",
-                  "DESC(?doi_internal)",
-                  "?equiv_assay",
-                  "DESC(?equiv_assay)",
-                  "?equiv_compound",
-                  "DESC(?equiv_compound)",
-                  "?equiv_compound</span>",
-                  "DESC(?equiv_compound</span>)",
-                  "?equiv_target",
-                  "DESC(?equiv_target)",
+                  "?full_mwt",
+                  "DESC(?full_mwt)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchiKey",
                   "DESC(?inchiKey)",
-                  "?inchiKey</span>",
-                  "DESC(?inchiKey</span>)",
                   "?item",
                   "DESC(?item)",
                   "?molweight",
@@ -1577,26 +1500,30 @@
                   "DESC(?num_ro5_violations)",
                   "?ops_item",
                   "DESC(?ops_item)",
+                  "?pChembl",
+                  "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
+                  "?published_relation",
+                  "DESC(?published_relation)",
+                  "?published_type",
+                  "DESC(?published_type)",
+                  "?published_unit",
+                  "DESC(?published_unit)",
+                  "?published_value",
+                  "DESC(?published_value)",
+                  "?qudt_uri",
+                  "DESC(?qudt_uri)",
                   "?relation",
                   "DESC(?relation)",
-                  "?relation</span>",
-                  "DESC(?relation</span>)",
                   "?smiles",
                   "DESC(?smiles)",
                   "?std_type",
                   "DESC(?std_type)",
-                  "?std_type</span>",
-                  "DESC(?std_type</span>)",
                   "?std_unit",
                   "DESC(?std_unit)",
-                  "?std_unit</span>",
-                  "DESC(?std_unit</span>)",
                   "?std_value",
                   "DESC(?std_value)",
-                  "?std_value</span>",
-                  "DESC(?std_value</span>)",
                   "?target_name",
                   "DESC(?target_name)",
                   "?target_organism",
@@ -1662,7 +1589,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Information" ,
-          "description":  "Returns information about a single compound that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.<br> ?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hba ?hba </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:psa ?psa</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?equiv_compound </span>. <br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molformula </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode2 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode3 ?mw_freebase </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode4 ?rtb </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt;</span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_uri </span>.<br> ?db_uri  <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:biotransformation ?biotransformation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:description ?description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:proteinBinding ?proteinBinding </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:toxicity ?toxicity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span><br><br><hr>",
+          "description":  "Returns information about a single compound that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.<br> ?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hba ?hba </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:psa ?psa</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_uri </span>. <br> ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molformula </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode2 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode3 ?mw_freebase </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode4 ?rtb </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_uri </span>.<br> ?db_uri  <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:biotransformation ?biotransformation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:description ?description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:proteinBinding ?proteinBinding </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:toxicity ?toxicity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span><br><br><hr>",
           "group": "Compound" ,
           "parameters": [
             {
@@ -1783,32 +1710,8 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
@@ -1817,126 +1720,14 @@
               "dataType": "string"
             },
             {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "path": "/compound/pharmacology" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Compound Pharmacology Complete (DEPRECATED)" ,
-          "description":  "A complete representation of acitivity values in the LDC for a given compound. Potentially very large result.<hr>",
-          "group": "Compound" ,
-          "parameters": [
-            {
-              "name":  "uri" ,
-              "description":  "A compound URI. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "assay_organism" ,
-              "description":  "A literal organism in ChEMBL." ,
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
             },
             {
-              "name":  "activity_type" ,
-              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "activity_value" ,
-              "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "activity_unit" ,
-              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -1992,7 +1783,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given compound<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> [] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> cito:citesAsDataSource ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTarget ?equiv_target </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl-ops:organism ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description  </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:organism ?target_organism </span>. <br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.<br> ?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given compound<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?standard_type </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?standard_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?standard_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?standard_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTarget ?targetUri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:hasDescription ?assay_description  </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span>. <br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.<br> ?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span><br><br><hr>",
           "group": "Compound" ,
           "parameters": [
             {
@@ -2017,12 +1808,6 @@
               "threescale_name": "app_keys"
             },
             {
-              "name":  "assay_organism" ,
-              "description":  "A literal organism in ChEMBL." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
               "name":  "target_organism" ,
               "description":  "A literal target organism in ChEMBL." ,
               "paramType": "query",
@@ -2037,36 +1822,30 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "assay_organism" ,
+              "description":  "A literal assay organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -2087,8 +1866,6 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
-                  "?activity_value",
-                  "DESC(?activity_value)",
                   "?assay_description",
                   "DESC(?assay_description)",
                   "?assay_organism",
@@ -2107,16 +1884,16 @@
                   "DESC(?cw_uri)",
                   "?db_uri",
                   "DESC(?db_uri)",
+                  "?doc_uri",
+                  "DESC(?doc_uri)",
                   "?doi",
                   "DESC(?doi)",
-                  "?doi_internal",
-                  "DESC(?doi_internal)",
+                  "?drug_name",
+                  "DESC(?drug_name)",
                   "?drugType",
                   "DESC(?drugType)",
                   "?drugType_uri",
                   "DESC(?drugType_uri)",
-                  "?drug_name",
-                  "DESC(?drug_name)",
                   "?equiv_assay",
                   "DESC(?equiv_assay)",
                   "?equiv_compound",
@@ -2127,34 +1904,44 @@
                   "DESC(?inchi)",
                   "?inchiKey",
                   "DESC(?inchiKey)",
-                  "?inchiKey</span>",
-                  "DESC(?inchiKey</span>)",
                   "?item",
                   "DESC(?item)",
                   "?molweight",
                   "DESC(?molweight)",
                   "?num_ro5_violations",
                   "DESC(?num_ro5_violations)",
-                  "?ops_item",
-                  "DESC(?ops_item)",
+                  "?pChembl",
+                  "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
-                  "?relation",
-                  "DESC(?relation)",
+                  "?published_relation",
+                  "DESC(?published_relation)",
+                  "?published_type",
+                  "DESC(?published_type)",
+                  "?published_unit",
+                  "DESC(?published_unit)",
+                  "?published_value",
+                  "DESC(?published_value)",
+                  "?qudt_uri",
+                  "DESC(?qudt_uri)",
                   "?smiles",
                   "DESC(?smiles)",
-                  "?std_type",
-                  "DESC(?std_type)",
-                  "?std_unit",
-                  "DESC(?std_unit)",
-                  "?std_value",
-                  "DESC(?std_value)",
+                  "?standard_relation",
+                  "DESC(?standard_relation)",
+                  "?standard_type",
+                  "DESC(?standard_type)",
+                  "?standard_unit",
+                  "DESC(?standard_unit)",
+                  "?standard_value",
+                  "DESC(?standard_value)",
                   "?target_name",
                   "DESC(?target_name)",
                   "?target_organism",
                   "DESC(?target_organism)",
                   "?target_uri",
-                  "DESC(?target_uri)"
+                  "DESC(?target_uri)",
+                  "?targetUri",
+                  "DESC(?targetUri)"
                 ],
                 "valueType": "LIST"
               },
@@ -2549,32 +2336,8 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
@@ -2583,80 +2346,10 @@
               "dataType": "string"
             },
             {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "path": "/target/enzyme/pharmacology" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Enzyme Pharmacology Complete (DEPRECATED)" ,
-          "description":  "A complete representation of acitivity values in the LDC for a given Enzyme Class. Potentially extremely large result. Example will use up 2GB of RAM in Chrome.<hr>",
-          "group": "Enzyme Classification" ,
-          "parameters": [
-            {
-              "name":  "uri" ,
-              "description":  "An Enzyme Class URI. e.g.: http://purl.uniprot.org/enzyme/1.1.1.-" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
+              "dataType": "string"
             },
             {
               "name":  "assay_organism" ,
@@ -2665,44 +2358,8 @@
               "dataType": "string"
             },
             {
-              "name":  "activity_type" ,
-              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "activity_value" ,
-              "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "activity_unit" ,
-              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -2758,7 +2415,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Enzyme Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given Enzyme Classification class<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> [] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:citesAsDataSource ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi/dataset/chembl-rdf&gt; </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:hasTarget ?equiv_target </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:organism ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?subclass </span>. <br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?node1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>.<br> ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given Enzyme Classification class<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:citesAsDataSource ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi/dataset/chembl-rdf&gt; </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:hasTarget ?equiv_target </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:organism ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?subclass </span>. <br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?node1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>.<br> ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span><br><br><hr>",
           "group": "Enzyme Classification" ,
           "parameters": [
             {
@@ -2783,12 +2440,6 @@
               "threescale_name": "app_keys"
             },
             {
-              "name":  "assay_organism" ,
-              "description":  "A literal organism in ChEMBL." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
               "name":  "target_organism" ,
               "description":  "A literal target organism in ChEMBL." ,
               "paramType": "query",
@@ -2803,36 +2454,30 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "assay_organism" ,
+              "description":  "A literal organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -2869,24 +2514,22 @@
                   "DESC(?compound_cw)",
                   "?compound_name",
                   "DESC(?compound_name)",
+                  "?document",
+                  "DESC(?document)",
                   "?doi",
                   "DESC(?doi)",
-                  "?doi_internal",
-                  "DESC(?doi_internal)",
                   "?equiv_assay",
                   "DESC(?equiv_assay)",
                   "?equiv_compound",
                   "DESC(?equiv_compound)",
-                  "?equiv_compound</span>",
-                  "DESC(?equiv_compound</span>)",
                   "?equiv_target",
                   "DESC(?equiv_target)",
+                  "?full_mwt",
+                  "DESC(?full_mwt)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchi_key",
                   "DESC(?inchi_key)",
-                  "?inchi_key</span>",
-                  "DESC(?inchi_key</span>)",
                   "?item",
                   "DESC(?item)",
                   "?molweight",
@@ -2897,34 +2540,38 @@
                   "DESC(?num_ro5_violations)",
                   "?ops_item",
                   "DESC(?ops_item)",
+                  "?pChembl",
+                  "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
+                  "?published_relation",
+                  "DESC(?published_relation)",
+                  "?published_type",
+                  "DESC(?published_type)",
+                  "?published_unit",
+                  "DESC(?published_unit)",
+                  "?published_value",
+                  "DESC(?published_value)",
+                  "?qudt_uri",
+                  "DESC(?qudt_uri)",
                   "?relation",
                   "DESC(?relation)",
-                  "?relation</span>",
-                  "DESC(?relation</span>)",
                   "?smiles",
                   "DESC(?smiles)",
                   "?std_type",
                   "DESC(?std_type)",
-                  "?std_type</span>",
-                  "DESC(?std_type</span>)",
                   "?std_unit",
                   "DESC(?std_unit)",
-                  "?std_unit</span>",
-                  "DESC(?std_unit</span>)",
                   "?std_value",
                   "DESC(?std_value)",
-                  "?std_value</span>",
-                  "DESC(?std_value</span>)",
                   "?subclass",
                   "DESC(?subclass)",
                   "?target_chembl",
                   "DESC(?target_chembl)",
+                  "?target_comp_chembl",
+                  "DESC(?target_comp_chembl)",
                   "?target_name",
                   "DESC(?target_name)",
-                  "?target_name</span>",
-                  "DESC(?target_name</span>)",
                   "?target_organism",
                   "DESC(?target_organism)"
                 ],
@@ -2933,6 +2580,864 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/byCompound/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Count Pathways by Compound" ,
+          "description":  "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A compound URI. e.g.: http://www.conceptwiki.org/concept/83931753-9e3f-4e90-b104-e3bcd0b4d833" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/byCompound" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Pathways by Compound" ,
+          "description":  "Returns a list of pathways which have as part the Metabolite that corresponds to  {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A compound URI. e.g.: http://www.conceptwiki.org/concept/83931753-9e3f-4e90-b104-e3bcd0b4d833" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?cw_uri",
+                  "DESC(?cw_uri)",
+                  "?description",
+                  "DESC(?description)",
+                  "?gene_product",
+                  "DESC(?gene_product)",
+                  "?identifier",
+                  "DESC(?identifier)",
+                  "?item",
+                  "DESC(?item)",
+                  "?ontology",
+                  "DESC(?ontology)",
+                  "?organism",
+                  "DESC(?organism)",
+                  "?organism_uri",
+                  "DESC(?organism_uri)",
+                  "?page",
+                  "DESC(?page)",
+                  "?prefLabel",
+                  "DESC(?prefLabel)",
+                  "?pw_uri",
+                  "DESC(?pw_uri)",
+                  "?title",
+                  "DESC(?title)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/byReference/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Count Pathways by Reference" ,
+          "description":  "Returns the number of pathways which have as part the Reference that corresponds to  {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A reference URI. e.g.: http://identifiers.org/pubmed/9789062" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/byReference" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Pathways by Reference" ,
+          "description":  "Returns a list of pathways which have as part the Reference that corresponds to  {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A reference URI. e.g.: http://identifiers.org/pubmed/9789062" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?description",
+                  "DESC(?description)",
+                  "?identifier",
+                  "DESC(?identifier)",
+                  "?item",
+                  "DESC(?item)",
+                  "?ontology",
+                  "DESC(?ontology)",
+                  "?organism",
+                  "DESC(?organism)",
+                  "?organism_uri",
+                  "DESC(?organism_uri)",
+                  "?page",
+                  "DESC(?page)",
+                  "?pw_uri",
+                  "DESC(?pw_uri)",
+                  "?title",
+                  "DESC(?title)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/byTarget/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Count Pathways by Target" ,
+          "description":  "Returns the number of pathways which have as part the Gene Product that corresponds to  {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A target URI. e.g.: http://www.conceptwiki.org/concept/51918c32-776d-4156-bc22-540cda2b1f44" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/byTarget" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Pathways by Target" ,
+          "description":  "Returns a list of pathways which have as part the Gene Product that corresponds to  {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A target URI. e.g.: http://www.conceptwiki.org/concept/51918c32-776d-4156-bc22-540cda2b1f44" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?cw_uri",
+                  "DESC(?cw_uri)",
+                  "?description",
+                  "DESC(?description)",
+                  "?gene_product",
+                  "DESC(?gene_product)",
+                  "?identifier",
+                  "DESC(?identifier)",
+                  "?item",
+                  "DESC(?item)",
+                  "?ontology",
+                  "DESC(?ontology)",
+                  "?organism",
+                  "DESC(?organism)",
+                  "?organism_uri",
+                  "DESC(?organism_uri)",
+                  "?page",
+                  "DESC(?page)",
+                  "?prefLabel",
+                  "DESC(?prefLabel)",
+                  "?pw_uri",
+                  "DESC(?pw_uri)",
+                  "?title",
+                  "DESC(?title)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathway/getCompounds" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Compounds for Pathway" ,
+          "description":  "Returns the compounds that are part of the pathway that corresponds to {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Pathway URI. e.g.: http://rdf.wikipathways.org/Pathway/WP1002_r63445" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathway/getReferences" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get References for Pathway" ,
+          "description":  "Returns references that are part of the pathway that corresponds to {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Pathway URI. e.g.: http://rdf.wikipathways.org/WP1015_r67672" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathway/getTargets" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Targets for Pathway" ,
+          "description":  "Returns information targets that are part of the pathway that corresponds to {uri}.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Pathway URI. e.g.: http://rdf.wikipathways.org/WP1008_r63353" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
             },
             {
               "name": "_format",
@@ -3057,12 +3562,307 @@
       ]
     },
     {
-      "path": "/pharmacology/filters/activities" ,
+      "path": "/pathways/count" ,
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Activity types" ,
-          "description":  "A list of activities type which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label</span><br><br><hr>",
+          "summary":  "Count Pathways" ,
+          "description":  "Returns the number of pathways in the cache.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "List Pathways" ,
+          "description":  "Returns the list of pathways in the cache.<hr>",
+          "group": "Pathway" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "pathway_organism" ,
+              "description":  "The rdfs:label for the pathway organism (URL encode)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?description",
+                  "DESC(?description)",
+                  "?identifier",
+                  "DESC(?identifier)",
+                  "?item",
+                  "DESC(?item)",
+                  "?ontology",
+                  "DESC(?ontology)",
+                  "?organism",
+                  "DESC(?organism)",
+                  "?organism_uri",
+                  "DESC(?organism_uri)",
+                  "?page",
+                  "DESC(?page)",
+                  "?title",
+                  "DESC(?title)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pathways/organisms" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Organismsz used in Pathways" ,
+          "description":  "A list of organism URIs and labels for which pathway data is available.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://data.kasabi/dataset/chembl-rdf&gt; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span><br><br><hr>",
+          "group": "Patwhay" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?act_label",
+                  "DESC(?act_label)",
+                  "?act_type",
+                  "DESC(?act_type)",
+                  "?count",
+                  "DESC(?count)",
+                  "?item",
+                  "DESC(?item)",
+                  "?label",
+                  "DESC(?label)",
+                  "?pathway",
+                  "DESC(?pathway)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pharmacology/filters/units" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Activity units" ,
+          "description":  "A list of activity units which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span><br><br><hr>",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -3078,6 +3878,305 @@
               "dataType": "string",
               "paramType": "query",
               "threescale_name": "app_keys"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?activity",
+                  "DESC(?activity)",
+                  "?act_label",
+                  "DESC(?act_label)",
+                  "?act_type",
+                  "DESC(?act_type)",
+                  "?count",
+                  "DESC(?count)",
+                  "?item",
+                  "DESC(?item)",
+                  "?qudt_label",
+                  "DESC(?qudt_label)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pharmacology/filters/activities/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Count activity types" ,
+          "description":  "The number of activity types which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span><br><br><hr>",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "activity_unit" ,
+              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pharmacology/filters/activities" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Activity types" ,
+          "description":  "A list of activity types which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span><br><br><hr>",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "activity_unit" ,
+              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?activity",
+                  "DESC(?activity)",
+                  "?act_label",
+                  "DESC(?act_label)",
+                  "?act_type",
+                  "DESC(?act_type)",
+                  "?count",
+                  "DESC(?count)",
+                  "?item",
+                  "DESC(?item)",
+                  "?standard_type",
+                  "DESC(?standard_type)",
+                  "?type_label",
+                  "DESC(?type_label)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pharmacology/filters/count_units" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Number of activity units" ,
+          "description":  "A list of activity units which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://data.kasabi/dataset/chembl-rdf&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span><br><br><hr>",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "activity_type" ,
+              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name": "_format",
@@ -3131,7 +4230,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Units for activity type" ,
-          "description":  "A list of units that activities of the specified type have been normalised to.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?act_type <span style=\"BACKGROUND-COLOR: #33CC99\"> qudt:unit ?unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. <br> ?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label</span><br><br><hr>",
+          "description":  "A list of units that activities of the specified type have been normalised to.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?act_type <span style=\"BACKGROUND-COLOR: #33CC99\"> qudt:unit ?unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. <br> ?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label </span><br><br><hr>",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -3150,7 +4249,7 @@
             },
             {
               "name":  "act_type" ,
-              "description":  "http://www.openphacts.org/chembl/onto/#{act_name}" ,
+              "description":  "http://www.openphacts.org/terms/chembl#{act_name}" ,
               "required": true,
               "paramType": "path",
               "dataType": "string"
@@ -3207,7 +4306,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Information" ,
-          "description":  "Returns information about a single target that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?equiv_target </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?uniprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:existence ?existence </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_names </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasKeyword ?keywords </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:subClassOf ?target_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonyms </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt;</span>.<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; <br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span><br><br><hr>",
+          "description":  "Returns information about a single target that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?uniprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:existence ?existence </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_names </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span>.<br> ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?targetComponent </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdf:type ?target_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonym </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?targetComponent <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; <br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span><br><br><hr>",
           "group": "Target" ,
           "parameters": [
             {
@@ -3308,12 +4407,6 @@
               "threescale_name": "app_keys"
             },
             {
-              "name":  "assay_organism" ,
-              "description":  "A literal organism in ChEMBL." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
               "name":  "target_organism" ,
               "description":  "A literal target organism in ChEMBL." ,
               "paramType": "query",
@@ -3328,32 +4421,8 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
@@ -3362,126 +4431,20 @@
               "dataType": "string"
             },
             {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "path": "/target/pharmacology" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Target Pharmacology Complete (DEPRECATED)" ,
-          "description":  "A complete representation of acitivity values in the LDC for a given target. Potentially large result.<hr>",
-          "group": "Target" ,
-          "parameters": [
-            {
-              "name":  "uri" ,
-              "description":  "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
+              "dataType": "string"
             },
             {
               "name":  "assay_organism" ,
-              "description":  "A literal organism in ChEMBL." ,
+              "description":  "A literal assay organism in ChEMBL." ,
               "paramType": "query",
               "dataType": "string"
             },
             {
-              "name":  "activity_type" ,
-              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "activity_value" ,
-              "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "activity_unit" ,
-              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -3537,7 +4500,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given target<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> [] <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:input ?ops_item </span>.<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:citesAsDataSource ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?equiv_target </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?node1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://data.kasabi.com/dataset/chembl-rdf&gt; </span>.<br> ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given target<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:citesAsDataSource ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?equiv_assay <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?equiv_target </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:organism ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.<br> ?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?node1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span><br><br><hr>",
           "group": "Target" ,
           "parameters": [
             {
@@ -3574,6 +4537,12 @@
               "dataType": "string"
             },
             {
+              "name":  "target_organism" ,
+              "description":  "A literal target organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name":  "activity_type" ,
               "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
               "paramType": "query",
@@ -3582,36 +4551,30 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "min-activity_value" ,
-              "description":  "Return activity values greater than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "minEx-activity_value" ,
-              "description":  "Return activity values greater than this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "max-activity_value" ,
-              "description":  "Return activity values less than or equal to this number." ,
-              "dataType": "double",
-              "paramType": "query"
-            },
-            {
-              "name":  "maxEx-activity_value" ,
-              "description":  "Return activity values less than this number." ,
-              "dataType": "double",
-              "paramType": "query"
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name":  "activity_unit" ,
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "assay_organism" ,
+              "description":  "A literal organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -3652,24 +4615,22 @@
                   "DESC(?compound_name)",
                   "?cw_uri",
                   "DESC(?cw_uri)",
+                  "?doc_uri",
+                  "DESC(?doc_uri)",
                   "?doi",
                   "DESC(?doi)",
-                  "?doi_internal",
-                  "DESC(?doi_internal)",
                   "?equiv_assay",
                   "DESC(?equiv_assay)",
                   "?equiv_compound",
                   "DESC(?equiv_compound)",
-                  "?equiv_compound</span>",
-                  "DESC(?equiv_compound</span>)",
                   "?equiv_target",
                   "DESC(?equiv_target)",
+                  "?full_mwt",
+                  "DESC(?full_mwt)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchi_key",
                   "DESC(?inchi_key)",
-                  "?inchi_key</span>",
-                  "DESC(?inchi_key</span>)",
                   "?item",
                   "DESC(?item)",
                   "?molweight",
@@ -3678,28 +4639,30 @@
                   "DESC(?node1)",
                   "?num_ro5_violations",
                   "DESC(?num_ro5_violations)",
-                  "?ops_item",
-                  "DESC(?ops_item)",
+                  "?pChembl",
+                  "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
-                  "?relation",
-                  "DESC(?relation)",
-                  "?relation</span>",
-                  "DESC(?relation</span>)",
+                  "?published_relation",
+                  "DESC(?published_relation)",
+                  "?published_type",
+                  "DESC(?published_type)",
+                  "?published_unit",
+                  "DESC(?published_unit)",
+                  "?published_value",
+                  "DESC(?published_value)",
+                  "?qudt_uri",
+                  "DESC(?qudt_uri)",
                   "?smiles",
                   "DESC(?smiles)",
-                  "?std_type",
-                  "DESC(?std_type)",
-                  "?std_type</span>",
-                  "DESC(?std_type</span>)",
-                  "?std_unit",
-                  "DESC(?std_unit)",
-                  "?std_unit</span>",
-                  "DESC(?std_unit</span>)",
-                  "?std_value",
-                  "DESC(?std_value)",
-                  "?std_value</span>",
-                  "DESC(?std_value</span>)",
+                  "?standard_relation",
+                  "DESC(?standard_relation)",
+                  "?standard_type",
+                  "DESC(?standard_type)",
+                  "?standard_unit",
+                  "DESC(?standard_unit)",
+                  "?standard_value",
+                  "DESC(?standard_value)",
                   "?target_name",
                   "DESC(?target_name)",
                   "?target_name_chembl",
@@ -3712,6 +4675,551 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/target/tree/members" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Chembl Protein Class Members" ,
+          "description":  "A representation of all members of a given Protein Class.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:has_member ?member </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?member <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?member_name </span><br><br><hr>",
+          "group": "Chembl Protein Classification" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Protein Class URI. e.g.: http://rdf.ebi.ac.uk/resource/chembl/protclass/CHEMBL_PC_1272" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/target/tree/node" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Chembl Protein Class" ,
+          "description":  "A representation of a given Protein Class, its parent and its siblings.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #33CC99\"> rdfs:subClassOf ?parent </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?item_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops:sibling ?sibling </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?sibling <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?sibling_name </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?parent <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?parent_name </span><br><br><hr>",
+          "group": "Chembl Protein Classification" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Protein Class URI. e.g.: http://rdf.ebi.ac.uk/resource/chembl/protclass/CHEMBL_PC_1272" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/target/tree/pharmacology/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Chembl Protein Classification Pharmacology Count" ,
+          "description":  "A page of items corresponding to activity values for a given Protein class in the LDC <br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetTreePharmacologyTotalResults ?count </span><br><br><hr>",
+          "group": "Chembl Protein Classification" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Protein Class URI. e.g.: http://rdf.ebi.ac.uk/resource/chembl/protclass/CHEMBL_PC_1272" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "assay_organism" ,
+              "description":  "A literal organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "target_organism" ,
+              "description":  "A literal target organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "activity_type" ,
+              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "activity_value" ,
+              "description":  "Return activity values equal to this number." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "activity_unit" ,
+              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/target/tree/pharmacology/pages" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Chembl Protein Classification Pharmacology Paginated" ,
+          "description":  "A page of items corresponding to activity values for a given Protein class<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?std_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasProteinClassification ?class </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:targetOrganismName ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span><br><br><hr>",
+          "group": "Chembl Protein Classification" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A Protein Class URI. e.g.: http://rdf.ebi.ac.uk/resource/chembl/protclass/CHEMBL_PC_1272" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "assay_organism" ,
+              "description":  "A literal organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "target_organism" ,
+              "description":  "A literal target organism in ChEMBL." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "activity_type" ,
+              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "activity_value" ,
+              "description":  "Return activity values equal to this number." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "activity_unit" ,
+              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "relation" ,
+              "description":  ">, >=,= , < , <=" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?assay_description",
+                  "DESC(?assay_description)",
+                  "?assay_organism",
+                  "DESC(?assay_organism)",
+                  "?assay_uri",
+                  "DESC(?assay_uri)",
+                  "?class",
+                  "DESC(?class)",
+                  "?compound_chembl",
+                  "DESC(?compound_chembl)",
+                  "?compound_cs",
+                  "DESC(?compound_cs)",
+                  "?compound_cw",
+                  "DESC(?compound_cw)",
+                  "?compound_name",
+                  "DESC(?compound_name)",
+                  "?document",
+                  "DESC(?document)",
+                  "?doi",
+                  "DESC(?doi)",
+                  "?full_mwt",
+                  "DESC(?full_mwt)",
+                  "?inchi",
+                  "DESC(?inchi)",
+                  "?inchi_key",
+                  "DESC(?inchi_key)",
+                  "?item",
+                  "DESC(?item)",
+                  "?molweight",
+                  "DESC(?molweight)",
+                  "?num_ro5_violations",
+                  "DESC(?num_ro5_violations)",
+                  "?ops_item",
+                  "DESC(?ops_item)",
+                  "?pChembl",
+                  "DESC(?pChembl)",
+                  "?pmid",
+                  "DESC(?pmid)",
+                  "?published_relation",
+                  "DESC(?published_relation)",
+                  "?published_type",
+                  "DESC(?published_type)",
+                  "?published_unit",
+                  "DESC(?published_unit)",
+                  "?published_value",
+                  "DESC(?published_value)",
+                  "?qudt_uri",
+                  "DESC(?qudt_uri)",
+                  "?relation",
+                  "DESC(?relation)",
+                  "?smiles",
+                  "DESC(?smiles)",
+                  "?std_type",
+                  "DESC(?std_type)",
+                  "?std_unit",
+                  "DESC(?std_unit)",
+                  "?std_value",
+                  "DESC(?std_value)",
+                  "?target_name",
+                  "DESC(?target_name)",
+                  "?target_organism",
+                  "DESC(?target_organism)",
+                  "?target_uri",
+                  "DESC(?target_uri)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/target/tree/root" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Chembl Protein Classification Root Classes" ,
+          "description":  "A representation of the root classes of the Protein Classification in Chembl.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #33CC99\">ops:rootNode ?chembl_prot_class_root</span> . <br> ?chembl_prot_class_root <span style=\"BACKGROUND-COLOR: #66FFCC\">rdfs:label ?chembl_prot_class_label</span><br><br><hr>",
+          "group": "Chembl Protein Classification" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
             },
             {
               "name": "_format",

@@ -154,34 +154,7 @@ chembl:pChembl api:name "pChembl" ;
 	api:variable <http://qudt.org/vocab/unit#Liter> ;
 	api:name "Chembl Protein Classification Pharmacology Count" ;
 	api:description "A page of items corresponding to activity values for a given Protein class in the LDC " ;
-	api:resultsDescription "?activity_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:forMolecule ?equiv_compound</span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:type ?std_type</span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:relation ?relation</span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value</span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit</span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:onAssay ?equiv_assay </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl-ops:normalisedValue ?activity_value </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> cito:citesAsDataSource ?doi </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-?equiv_assay <span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:hasTarget ?equiv_target </span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organism ?assay_organism </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDescription ?assay_description </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-?equiv_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dc:title ?target_name </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:target_organism ?target_organism </span>. 
-?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>.
-?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.
-?equiv_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>;
-		<span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?class </span>.
-?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.
-?equiv_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;
-<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>." ;
+	api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetTreePharmacologyTotalResults ?count </span>." ;
 
 	api:exampleRequestPath "/target/tree/pharmacology/count?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fchembl%2Fprotclass%2FCHEMBL_PC_1272";
 	api:exampleRequestPath "/target/tree/pharmacology/count?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fchembl%2Fprotclass%2FCHEMBL_PC_1272&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
