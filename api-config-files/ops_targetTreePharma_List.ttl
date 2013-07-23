@@ -182,7 +182,7 @@ chembl:pChembl api:name "pChembl" ;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://rdf.chemspider.com/&gt; </span>.
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.
 	?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>." ;
 

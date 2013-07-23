@@ -39,11 +39,11 @@
 		api:description "Returns information about a single compound that corresponds to {uri}.";
 		api:resultsDescription "	?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
-<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
 ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.
 ?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hba ?hba </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span>;
