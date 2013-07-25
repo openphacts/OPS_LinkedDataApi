@@ -1,5 +1,5 @@
 <?php
-set_time_limit(600);
+ini_set('memory_limit', '3072M');
 
 require 'deployment.settings.php';
 require_once 'lda.inc.php';
