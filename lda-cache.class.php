@@ -2,12 +2,15 @@
 
 require_once 'lda.inc.php';
 
+
+
 class LinkedDataApiCachedResponse
 {
 	var $eTag;
 	var $generatedTime;
 	var $lastModified;
 	var $mimetype;
+	var $nChunks;
 	var $body;
 	var $cacheable;
 
@@ -17,7 +20,14 @@ class LinkedDataApiCachedResponse
 		header("Last-Modified: {$this->lastModified}");
 		header("ETag: {$this->eTag}");
 		header("x-served-from-cache: true");
-		echo $this->body;
+		if ($this->nChunks == 1){
+		    echo $this->body;
+		}
+		else{
+		    foreach ($this->body as $split){
+		        echo $split;
+		    }
+		}
 	}
 }
 
@@ -102,8 +112,20 @@ class LinkedDataApiCache
 			$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 			$cachedObject = $mc->get($key);
 			if ($cachedObject)
-			{
-				logDebug("Found a cached response for $mimetype under key $key");
+			{				
+				if ($cachedObject->nChunks > 1){
+				    $cachedObject->body = array();
+				    for ($i=0; $i<$cachedObject->nChunks; $i++){
+				        $splitKey = LinkedDataApiCache::cacheIndexedKey($uri, $mimetype, $i);
+				        $cachedObject->body[$i] = $mc->get($splitKey);
+				    }
+				    
+				    logDebug("Found a cached response > 1 MB for $mimetype under key $key ; Aggregating response from ".$cachedObject->nChunks." chunks");
+				}
+				else{
+				    logDebug("Found a cached response for $mimetype under key $key");
+				}
+				
 				return $cachedObject;
 			} 
 			logDebug("No cached response for $mimetype under key $key");
@@ -139,12 +161,36 @@ class LinkedDataApiCache
 		$cacheableResponse->generatedTime = $response->generatedTime;
 		$cacheableResponse->lastModified = $response->lastModified;
 		$cacheableResponse->mimetype = $response->mimetype;
-		$cacheableResponse->body = $response->body;
-
+		
 		$key = LinkedDataApiCache::cacheKey($request->getOrderedUriWithoutApiKeys(), $cacheableResponse->mimetype);
-		logDebug('Caching Response as '.$key.' with mimetype '.$cacheableResponse->mimetype);
-		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
-		$mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
+		
+		$responseLength = strlen($response->body); 
+		if ($responseLength > MEMCACHED_LIMIT){
+		    $cacheableResponse->nChunks = (int)(($responseLength+MEMCACHED_LIMIT)/MEMCACHED_LIMIT); 
+		    $splits = str_split($response->body, MEMCACHED_LIMIT);
+		    $cacheableResponse->body = false;
+		    
+		    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
+		    $mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
+		    logDebug('Main key: '.$key);
+		    
+		    for ($i=0; $i<$cacheableResponse->nChunks; $i++){
+		        $splitKey = LinkedDataApiCache::cacheIndexedKey($request->getOrderedUriWithoutApiKeys(), $cacheableResponse->mimetype, $i);
+		        $mc->add($splitKey, $splits[$i], false, PUELIA_CACHE_AGE);
+		        logDebug('Split key: '.$splitKey);
+		    }
+		    
+		    logDebug('Caching Response > 1MB as '.$key.' with mimetype '.$cacheableResponse->mimetype."; writing ".$cacheableResponse->nChunks." chunks");
+		}
+		else{
+		    $cacheableResponse->nChunks = 1;
+		    $cacheableResponse->body = $response->body;
+		    
+		    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
+		    $mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
+		    
+		    logDebug('Caching Response as '.$key.' with mimetype '.$cacheableResponse->mimetype);
+		}		
 	}
 	
 	public static function cacheURI($uri){
@@ -213,6 +259,15 @@ class LinkedDataApiCache
 		if (isset($mimetype))
 			$key .= trim($mimetype);
 		return md5($key);
+	}
+	
+	private static function cacheIndexedKey($requestUri, $mimetype, $index)
+	{
+	    $key  = $requestUri;
+	    if (isset($mimetype))
+	        $key .= trim($mimetype);
+	    $key .= $index;
+	    return md5($key);
 	}
 	
 }

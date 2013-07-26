@@ -2,6 +2,7 @@
 
 $appRoot = dirname(__FILE__);
 set_include_path(get_include_path() . PATH_SEPARATOR . $appRoot . ':lib/' );
+define('MEMCACHED_LIMIT', 1024*1024);//1024*1024 - 1MB is the memcached limit
 define('PUELIA_VERSION', '0.9');
 define('PUELIA_RDF_ACCEPT_MIMES', 'application/rdf+xml;q=0.8,*/*;q=0.1');
 define('PUELIA_SPARQL_ACCEPT_MIMES', 'application/sparql-results+json;q=1,application/sparql-results+xml;q=0.8,*/*;q=0.1');

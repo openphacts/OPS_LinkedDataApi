@@ -386,8 +386,7 @@ class LinkedDataApiResponse {
         }   
     }
     
-    private function decideToCheckTripleStore($pathWithoutExtension){
-        
+    private function decideToCheckTripleStore($pathWithoutExtension){    
         $this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
         $this->useDatastore = $this->useDatastore==='true' ? true:false;
         
