@@ -165,6 +165,11 @@ class LinkedDataApiCache
 		$key = LinkedDataApiCache::cacheKey($request->getOrderedUriWithoutApiKeys(), $cacheableResponse->mimetype);
 		
 		$responseLength = strlen($response->body); 
+		if ($responseLength>MAX_RESPONSE){
+			logDebug('Response larger than '.MAX_RESPONSE.', will not cache');
+			return;
+		}
+
 		if ($responseLength > MEMCACHED_LIMIT){
 		    $cacheableResponse->nChunks = (int)(($responseLength+MEMCACHED_LIMIT)/MEMCACHED_LIMIT); 
 		    $splits = str_split($response->body, MEMCACHED_LIMIT);
