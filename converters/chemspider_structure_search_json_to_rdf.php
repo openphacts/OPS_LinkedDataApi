@@ -1,7 +1,7 @@
 <?php
 
-define('SEARCH_STATUS_REQUEST_TEMPLATE', 'http://crs.beta.rsc-us.org/JSON.ashx?op=GetSearchStatus&rid=');
-define('SEARCH_RESULTS_REQUEST_TEMPLATE', 'http://crs.beta.rsc-us.org/JSON.ashx?op=GetSearchResult&rid=');
+define('SEARCH_STATUS_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchStatus&rid=');
+define('SEARCH_RESULTS_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResult&rid=');
 
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
 define('OPS_CHEMSPIDER_PREFIX', 'http://www.chemspider.com/api/');
