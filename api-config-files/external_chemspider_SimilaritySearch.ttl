@@ -2,19 +2,19 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
-@prefix cs_api:  <http://www.chemspider.com/api/> .
-@prefix cs_api_search:  <http://www.chemspider.com/api/searchOptions#> .
-@prefix cs_api_result:  <http://www.chemspider.com/api/searchResultOptions#> .
-@prefix cs_api_common:  <http://www.chemspider.com/api/commonOptions#> .
+@prefix ops_api:  <http://www.chemspider.com/api/#> .
+@prefix ops_api_search:  <http://www.chemspider.com/api/searchOptions#> .
+@prefix ops_api_result:  <http://www.chemspider.com/api/searchResultOptions#> .
+@prefix ops_api_common:  <http://www.chemspider.com/api/commonOptions#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable cs_api:searchOptions ;
-	api:variable cs_api:commonOptions ;
-	api:variable cs_api:searchResultOptions ;
+	api:variable ops_api:searchOptions ;
+	api:variable ops_api:commonOptions ;
+	api:variable ops_api:searchResultOptions ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return the result of a chemical similarity search." ;
 	api:endpoint [
@@ -22,19 +22,19 @@
 		api:name "Chemical Structure Similarity Search" ;
 		api:description "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> cs_api_search:Molecule ?inputMoleculeSmiles </span>;
-		<span style=\"BACKGROUND-COLOR: #33CC99\"> cs_api:result ?similarMolecule </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Threshold ?searchThreshold </span>; 
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:SimilarityType ?searchSimilarityType </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Alpha ?searchAlpha </span>; 
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_search:Beta ?searchBeta </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span>." ;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?inputMoleculeSmiles </span>;
+		<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?similarMolecule </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Threshold ?searchThreshold </span>; 
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Alpha ?searchAlpha </span>; 
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Beta ?searchBeta </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Limit ?limit </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Length ?length </span>." ;
 
 		api:enableCache true ;
 		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
@@ -47,77 +47,72 @@
 <http://www.chemspider.com> api:label "ChemSpider" .
 
 
-cs_api:searchOptions api:name "searchOptions" ;
+ops_api:searchOptions api:name "searchOptions" ;
 	api:label "searchOptions" ;
 	api:value "Possible search option values" ;
-	api:subType cs_api_search:Molecule ;
-	api:subType cs_api_search:SimilarityType ;
-	api:subType cs_api_search:Threshold ;
-	api:subType cs_api_search:Alpha ;
-	api:subType cs_api_search:Beta .
+	api:subType ops_api_search:Molecule ;
+	api:subType ops_api_search:SimilarityType ;
+	api:subType ops_api_search:Threshold ;
+	api:subType ops_api_search:Alpha ;
+	api:subType ops_api_search:Beta .
 
-cs_api_search:SimilarityType api:name "SimilarityType" ;
+ops_api_search:SimilarityType api:name "SimilarityType" ;
 	api:label "SimilarityType" ;
 	api:value "0: Tanimoto ; 1: Tversky ; 2: Euclidian" .
 
-cs_api_search:Alpha api:name "Alpha" ;
+ops_api_search:Alpha api:name "Alpha" ;
 	api:label "Alpha" ;
 	api:value "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " .
 
-cs_api_search:Beta api:name "Beta" ;
+ops_api_search:Beta api:name "Beta" ;
 	api:label "Beta" ;
 	api:value "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " .
 
-cs_api_search:Molecule api:name "Molecule" ;
+ops_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
 	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
 
-cs_api_search:Threshold api:name "Threshold" ;
+ops_api_search:Threshold api:name "Threshold" ;
 	api:label "Threshold" ;
 	api:value "Double <= 1.0" .
 
 
-cs_api:commonOptions api:name "commonOptions" ;
+ops_api:commonOptions api:name "commonOptions" ;
 	api:label "commonOptions";
 	api:value "Possible common option values" ;
-	api:subType cs_api_common:Complexity ;
-	api:subType cs_api_common:Isotopic ;
-	api:subType cs_api_common:HasSpectra ;
-	api:subType cs_api_common:HasPatents .
+	api:subType ops_api_common:Complexity ;
+	api:subType ops_api_common:Isotopic ;
+	api:subType ops_api_common:HasSpectra ;
+	api:subType ops_api_common:HasPatents .
 
-cs_api_common:Complexity api:name "Complexity" ;
+ops_api_common:Complexity api:name "Complexity" ;
         api:label "Complexity";
         api:value "(Not supported at the moment) 0: Any ; 1: Single ; 2: Multi" .
 
-cs_api_common:Isotopic api:name "Isotopic" ;
+ops_api_common:Isotopic api:name "Isotopic" ;
         api:label "Isotopic" ;
         api:value "(Not supported at the moment) 0: Any ; 1: Labeled ; 2: NotLabeled" .
 
-cs_api_common:HasSpectra api:name "HasSpectra" ;
+ops_api_common:HasSpectra api:name "HasSpectra" ;
         api:label "HasSpectra" ;
         api:value "(Not supported at the moment) Boolean" .
 
-cs_api_common:HasPatents api:name "HasPatents" ;
+ops_api_common:HasPatents api:name "HasPatents" ;
         api:label "HasPatents" ;
         api:value "(Not supported at the moment) Boolean" .
 
-cs_api:searchResultOptions api:name "resultOptions" ;
+ops_api:searchResultOptions api:name "resultOptions" ;
 	api:label "resultOptions";
 	api:value "Possible search result option values" ;
-	api:subType cs_api_result:Limit ;
-	api:subType cs_api_result:Start ;
-	api:subType cs_api_result:Length .
+	api:subType ops_api_result:Start ;
+	api:subType ops_api_result:Count .
 
-cs_api_result:Limit api:name "Limit" ;
-	api:label "Limit" ;
-	api:value "Integer. Search limit. Specefy how many results return back during the search. Default value: -1 ." .
-
-cs_api_result:Start api:name "Start" ;
+ops_api_result:Start api:name "Start" ;
 	api:label "Start" ;
 	api:value "Integer. Return results starting the index. Default value: 0" .
 
-cs_api_result:Length api:name "Length" ;
-	api:label "Length" ;
+ops_api_result:Count api:name "Count" ;
+	api:label "Count" ;
 	api:value "Integer. How many results should be returned starting from Start index. Default value: -1." .
 
 <#externalResponseViewer> a api:Viewer ;
@@ -126,35 +121,35 @@ cs_api_result:Length api:name "Length" ;
 	{pageUri} foaf:primaryTopic ?primaryTopic .
 	?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
 	?primaryTopic rdf:type ?searchType ;
-		cs_api_search:Molecule ?moleculeSmiles ;
-		cs_api:result ?result ;
-		cs_api_search:Threshold ?searchThreshold ;
-		cs_api_search:Alpha ?searchAlpha ; 
-		cs_api_search:Beta ?searchBeta ;
-		cs_api_search:SimilarityType ?searchSimilarityType ;
-		cs_api_common:Complexity ?complexity ;
-		cs_api_common:Isotopic ?isotopic ;
-		cs_api_common:HasSpectra ?hasSpectra ;
-		cs_api_common:HasPatents ?hasPatents ;
-		cs_api_result:Limit ?limit ;
-		cs_api_result:Start ?start ;
-		cs_api_result:Length ?length .
+		ops_api_search:Molecule ?moleculeSmiles ;
+		ops_api:result ?result ;
+		ops_api_search:Threshold ?searchThreshold ;
+		ops_api_search:Alpha ?searchAlpha ; 
+		ops_api_search:Beta ?searchBeta ;
+		ops_api_search:SimilarityType ?searchSimilarityType ;
+		ops_api_common:Complexity ?complexity ;
+		ops_api_common:Isotopic ?isotopic ;
+		ops_api_common:HasSpectra ?hasSpectra ;
+		ops_api_common:HasPatents ?hasPatents ;
+		ops_api_result:Start ?start ;
+		ops_api_result:Count ?count .
+	?result ops_api:relevance ?relevance .
 		" ;
 
 	api:where "
 GRAPH <{result_hash}> {
 	?primaryTopic rdf:type ?searchType .
-	?primaryTopic cs_api_search:Molecule ?moleculeSmiles .
-	?primaryTopic cs_api:result ?result .
-	OPTIONAL { ?primaryTopic cs_api_search:Threshold ?searchThreshold }
-	OPTIONAL { ?primaryTopic cs_api_search:SimilarityType ?searchSimilarityType }
-	OPTIONAL { ?primaryTopic cs_api_search:Alpha ?searchAlpha }
-	OPTIONAL { ?primaryTopic cs_api_search:Beta ?searchBeta }
-	OPTIONAL { ?primaryTopic cs_api_common:Complexity ?complexity }
-	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
-	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }
-	OPTIONAL { ?primaryTopic cs_api_common:HasPatents ?hasPatents }
-	OPTIONAL { ?primaryTopic cs_api_result:Limit ?limit }
-	OPTIONAL { ?primaryTopic cs_api_result:Start ?start }
-	OPTIONAL { ?primaryTopic cs_api_result:Length ?length }
+	?primaryTopic ops_api_search:Molecule ?moleculeSmiles .
+	?primaryTopic ops_api:result ?result .
+	?result ops_api:relevance ?relevance .
+	OPTIONAL { ?primaryTopic ops_api_search:Threshold ?searchThreshold }
+	OPTIONAL { ?primaryTopic ops_api_search:SimilarityType ?searchSimilarityType }
+	OPTIONAL { ?primaryTopic ops_api_search:Alpha ?searchAlpha }
+	OPTIONAL { ?primaryTopic ops_api_search:Beta ?searchBeta }
+	OPTIONAL { ?primaryTopic ops_api_common:Complexity ?complexity }
+	OPTIONAL { ?primaryTopic ops_api_common:Isotopic ?isotopic }
+	OPTIONAL { ?primaryTopic ops_api_common:HasSpectra ?hasSpectra }
+	OPTIONAL { ?primaryTopic ops_api_common:HasPatents ?hasPatents }
+	OPTIONAL { ?primaryTopic ops_api_result:Start ?start }
+	OPTIONAL { ?primaryTopic ops_api_result:Count ?count }
 }".
