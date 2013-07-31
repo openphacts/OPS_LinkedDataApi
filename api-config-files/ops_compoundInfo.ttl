@@ -105,6 +105,7 @@
 	?bNode2 ?molweight ;
 	?bNode3 ?mw_freebase ;
 	?bNode4 ?rtb ;
+	a ?mol_type;
 	void:inDataset <http://www.ebi.ac.uk/chembl>.
 ?ops_item skos:exactMatch ?db_uri .
 ?db_uri drugbank:biotransformation ?biotransformation ;
@@ -114,18 +115,7 @@
 	drugbank:meltingPoint ?meltingPoint ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
 	api:where
-"OPTIONAL {
-	{
-	SELECT ?diagnosis (count( ?diagnosis) AS ?diagnosis_count) ?adverse_event ( count( ?adverse_event) AS ?ae_count ) WHERE {
-		GRAPH <http://aers.data2semantics.org/> {
-			?involvement aers:drug ?aers_uri ;
-				ears:involved_in ?report .
-			?adverse_event aers:reaction_of ?report .
-			?diagnosis aers:diagnosis_for ?involvement
-		}
-	} 
-} }
-GRAPH <http://www.conceptwiki.org> {
+"GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?compound_name.
 }
 GRAPH <http://www.chemspider.com> {
@@ -150,6 +140,7 @@ GRAPH <http://www.chemspider.com> {
 }
 OPTIONAL {
 GRAPH <http://www.ebi.ac.uk/chembl> {
+	?chembl_uri a ?mol_type .
 	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode1 .
 		?bNode1 a sio:CHEMINF_000042 ;
 			sio:SIO_000300 ?molformula. }
@@ -174,4 +165,15 @@ GRAPH <http://linkedlifedata.com/resource/drugbank> {
 	OPTIONAL { ?db_uri drugbank:toxicity ?toxicity. }
 	OPTIONAL { ?db_uri drugbank:meltingPoint ?meltingPoint. }
 }
-}" .
+}
+OPTIONAL {
+        {
+        SELECT ?diagnosis (count( ?diagnosis) AS ?diagnosis_count) ?adverse_event ( count( ?adverse_event) AS ?ae_count ) WHERE {
+                GRAPH <http://aers.data2semantics.org/> {
+                        ?involvement aers:drug ?aers_uri ;
+                                aers:involved_in ?report .
+                        ?adverse_event aers:reaction_of ?report .
+                        ?diagnosis aers:diagnosis_for ?involvement
+                }
+        } GROUP BY ?adverse_event ?diagnosis
+} }" .
