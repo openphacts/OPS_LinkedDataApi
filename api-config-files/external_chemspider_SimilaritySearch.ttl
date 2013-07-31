@@ -32,11 +32,10 @@
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Limit ?limit </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Length ?length </span>." ;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span>." ;
 
-		api:enableCache true ;
+		api:enableCache false ;
 		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalRequestTemplate "http://crs.beta.rsc-us.org/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
@@ -45,7 +44,6 @@
 		api:defaultViewer <#externalResponseViewer> . ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .
-
 
 ops_api:searchOptions api:name "searchOptions" ;
 	api:label "searchOptions" ;

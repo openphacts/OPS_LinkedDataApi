@@ -14,7 +14,6 @@
 	api:contentNegotiation api:parameterBased ;
 	api:variable cs_api:searchOptions ;
 	api:variable cs_api:commonOptions ;
-	api:variable cs_api:resultOptions ;
 	api:dataset <http://www.chemspider.com> ;
 	api:description "An API configuration to return the result of an exact chemical structure search." ;
 	api:endpoint [
@@ -27,10 +26,7 @@
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Complexity ?complexity </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:Isotopic ?isotopic </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasSpectra ?hasSpectra </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Limit ?limit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Start ?start </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_result:Length ?length </span>." ;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cs_api_common:HasPatents ?hasPatents </span>." ;
 
 		api:name "Chemical Structure Exact Search" ;
 		api:enableCache true ;
@@ -82,29 +78,6 @@ cs_api_common:HasPatents api:name "HasPatents" ;
 	api:label "HasPatents" ;
 	api:value "(Not supported at the moment) Boolean" .
 
-
-
-cs_api:resultOptions api:name "resultOptions" ;
-	api:label "resultOptions";
-	api:value "Possible search result option values" ;
-	api:subType cs_api_result:Limit ;
-	api:subType cs_api_result:Start ;
-	api:subType cs_api_result:Length .
-
-cs_api_result:Limit api:name "Limit" ;
-	api:label "Limit" ;
-	api:value "Integer" .
-
-cs_api_result:Start api:name "Start" ;
-	api:label "Start" ;
-	api:value "Integer" .
-
-cs_api_result:Length api:name "Length" ;
-	api:label "Length" ;
-	api:value "Integer. How many results should be returned starting from Start index. Default value: -1." .
-
-
-
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
 	api:template "
@@ -117,10 +90,7 @@ cs_api_result:Length api:name "Length" ;
 		cs_api_common:Complexity ?complexity ;
 		cs_api_common:Isotopic ?isotopic ;
 		cs_api_common:HasSpectra ?hasSpectra ;
-		cs_api_common:HasPatents ?hasPatents ;
-		cs_api_result:Limit ?limit ;
-		cs_api_result:Start ?start ;
-		cs_api_result:Length ?length .
+		cs_api_common:HasPatents ?hasPatents .
 		" ;
 
 	api:where "
@@ -133,7 +103,4 @@ GRAPH <{result_hash}> {
 	OPTIONAL { ?primaryTopic cs_api_common:Isotopic ?isotopic }
 	OPTIONAL { ?primaryTopic cs_api_common:HasSpectra ?hasSpectra }
 	OPTIONAL { ?primaryTopic cs_api_common:HasPatents ?hasPatents }
-	OPTIONAL { ?primaryTopic cs_api_result:Limit ?limit }
-	OPTIONAL { ?primaryTopic cs_api_result:Start ?start }
-	OPTIONAL { ?primaryTopic cs_api_result:Length ?length }
 }".

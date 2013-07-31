@@ -4,7 +4,6 @@ define('SEARCH_STATUS_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchStatu
 define('SEARCH_RESULTS_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResult&rid=');
 define('SEARCH_RESULTS_WITH_RELEVANCE_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResultWithRelevance&rid=');
 
-define('XSD_FLOAT', 'http://www.w3.org/2001/XMLSchema#double');
 define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
 define('OPS_PREFIX', 'http://www.openphacts.org/api/');
 define('CHEMSPIDER_PREFIX', 'http://rdf.chemspider.com/');
@@ -41,24 +40,23 @@ $searchType = getSearchType($this->Request->getPathWithoutExtension());
 $resultBNode = OPS_PREFIX.'ChemicalStructureSearch';
 $this->DataGraph->add_resource_triple($resultBNode, RDF_TYPE, $searchTypes[$searchType]);
 
-$decodedFinalResults = getDecodedFinalResults($requestId, $searchType);
-if (empty($decodedFinalResults)){
-    throw new EmptyResponseException("No results retrieved from Chemspider.");
-}
-
 $unreservedParameters = $this->Request->getUnreservedParams();
 foreach ($unreservedParameters as $name => $value){
-    $processedName = str_replace('.', '#', $name);
-    $predicate = OPS_PREFIX.$processedName;
+	$processedName = str_replace('.', '#', $name);
+	$predicate = OPS_PREFIX.$processedName;
 
-    $this->DataGraph->add_literal_triple($resultBNode, $predicate, $value);
+	$this->DataGraph->add_literal_triple($resultBNode, $predicate, $value);
+}
+
+$decodedFinalResults = getDecodedFinalResults($requestId, $searchType, $unreservedParameters);
+if (empty($decodedFinalResults)){
+    throw new EmptyResponseException("No results retrieved from Chemspider.");
 }
 
 foreach ($decodedFinalResults as $elem){
     if ($searchType==SUBSTRUCTURE_SEARCH || $searchType==SIMILARITY_SEARCH){
         $this->DataGraph->add_resource_triple($resultBNode, OPS_PREFIX.'#result', CHEMSPIDER_PREFIX.$elem->{"Id"});
-        $this->DataGraph->add_literal_triple(CHEMSPIDER_PREFIX.$elem->{"Id"}, OPS_PREFIX.'#relevance', $elem->{"Relevance"}, null, XSD_FLOAT);
-        
+        $this->DataGraph->add_literal_triple(CHEMSPIDER_PREFIX.$elem->{"Id"}, OPS_PREFIX.'#relevance', $elem->{"Relevance"}, null, 'http://www.w3.org/2001/XMLSchema#double');
     }
     else{
         $this->DataGraph->add_resource_triple($resultBNode, OPS_PREFIX.'#result', CHEMSPIDER_PREFIX.$elem);
@@ -66,7 +64,6 @@ foreach ($decodedFinalResults as $elem){
 }
 
 $rdfData = $this->DataGraph->to_ntriples();//assuming nothing else is in the graph
-logDebug("Inserted data: ".$rdfData);
 
 //link pageUri to primaryTopic - resulted blank node
 $this->DataGraph->add_resource_triple($this->pageUri, FOAF.'primaryTopic', $resultBNode);
@@ -74,15 +71,21 @@ $this->DataGraph->add_resource_triple($resultBNode , FOAF.'isPrimaryTopicOf', $t
 $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
 
 
-function getDecodedFinalResults($requestId, $searchType){
+function getDecodedFinalResults($requestId, $searchType, $unreservedParameters){
     //make request for getting final results
-    logDebug("Entered getDecodedFinalResults");
     if ($searchType==SUBSTRUCTURE_SEARCH || $searchType==SIMILARITY_SEARCH){
         $finalRequest=SEARCH_RESULTS_WITH_RELEVANCE_REQUEST_TEMPLATE.$requestId;
+        if (array_key_exists('resultOptions.Start', $unreservedParameters)){
+        	$finalRequest.='&start='.$unreservedParameters['resultOptions.Start'];
+        }
+        if (array_key_exists('resultOptions.Count', $unreservedParameters)){
+        	$finalRequest.='&count='.$unreservedParameters['resultOptions.Count'];
+        }
     }
     else{
         $finalRequest=SEARCH_RESULTS_REQUEST_TEMPLATE.$requestId;
     }
+    
     $ch = curl_init($finalRequest);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $finalResponse = curl_exec($ch);
