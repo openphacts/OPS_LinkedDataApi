@@ -3,7 +3,7 @@
 class OpsIms {
 
     function expandQuery ( $query , $input_uri ) {
-        $variables = array('?cw_uri' , '?cs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
+        $variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
         
         $url = IMS_ENDPOINT;
         $url .= urlencode($query) ;
