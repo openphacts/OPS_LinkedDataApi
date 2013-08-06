@@ -12,12 +12,11 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
-@prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix chembl-ops: <http://www.openphacts.org/terms/chembl#>
-@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
 @prefix cito: <http://purl.org/spar/cito/> .
@@ -35,11 +34,9 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
-	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
-	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -85,7 +82,6 @@
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
-<http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
@@ -203,17 +199,17 @@ GRAPH <http://purl.uniprot.org/enzyme/inference> {
                 		?full_mwt a sio:CHEMINF_000198 ;
                 			sio:SIO_000300 ?molweight. }
         }
-	GRAPH <http://www.chemspider.com> {
-                ?compound_cs skos:exactMatch ?compound_chembl .
-                ?compound_cs chemspider:inchi ?inchi;
-                        chemspider:inchikey ?inchi_key;
-                        chemspider:smiles ?smiles .
-                OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+	GRAPH <http://ops.rsc-us.org> {
+                ?compound_ocrs skos:exactMatch ?compound_chembl .
+                ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                        cheminf:CHEMINF_000399 ?inchi_key;
+                        cheminf:CHEMINF_000018 ?smiles .
+                OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                         a cheminf:CHEMINF_000367;
                         qudt:numericValue ?num_ro5_violations . }
 	}
 	GRAPH <http://www.conceptwiki.org> {
-                ?compound_cw skos:exactMatch ?compound_cs ;
+                ?compound_cw skos:exactMatch ?compound_ocrs ;
                         skos:prefLabel ?compound_name .
 	}
 } }" .

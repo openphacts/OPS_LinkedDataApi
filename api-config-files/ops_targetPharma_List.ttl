@@ -13,13 +13,12 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
-@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
 @prefix cito: <http://purl.org/spar/cito/> .
@@ -38,18 +37,15 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
-	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
-	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:description "An API configuration to return paginated pharmacology information about a given target." ;
 	api:endpoint <#targetPharmacologyListEndpoint> .
 
-<http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
@@ -179,13 +175,13 @@ chembl:pChembl api:name "pChembl" ;
 		<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:targetOrganismName ?target_organism </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
 	?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cs </span>; 
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>. 
-	?compound_cs <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchi_key</span>;
+	?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.
 	?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>." ;
 
@@ -219,19 +215,19 @@ chembl:pChembl api:name "pChembl" ;
               		?full_mwt a sio:CHEMINF_000198 ;
  	      			sio:SIO_000300 ?molweight. }
 }
-GRAPH <http://www.chemspider.com> {
-        ?compound_cs skos:exactMatch ?compound_chembl .
-        ?compound_cs chemspider:inchi ?inchi;
-                chemspider:inchikey ?inchi_key;
-                chemspider:smiles ?smiles .
-        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+GRAPH <http://ops.rsc-us.org> {
+        ?compound_ocrs skos:exactMatch ?compound_chembl .
+        ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                cheminf:CHEMINF_000399 ?inchi_key;
+                cheminf:CHEMINF_000018 ?smiles .
+        OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
 
 }
 GRAPH <http://www.conceptwiki.org> {
         ?cw_uri skos:prefLabel ?target_name .
-        ?compound_cw skos:exactMatch ?compound_cs ;
+        ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
 }" ;
 	] ;
@@ -267,13 +263,13 @@ GRAPH <http://www.conceptwiki.org> {
 ?cw_uri skos:prefLabel ?target_name ;
         void:inDataset <http://www.conceptwiki.org/> .
 ?compound_chembl ?full_mwt ?molweight ;
-	skos:exactMatch ?compound_cs ; 
+	skos:exactMatch ?compound_ocrs ; 
 	skos:exactMatch ?compound_cw . 
-?compound_cs chemspider:smiles ?smiles ;
-	chemspider:inchi ?inchi ;
-	chemspider:inchikey ?inchi_key;
+?compound_ocrs ops:smiles ?smiles ;
+	ops:inchi ?inchi ;
+	ops:inchikey ?inchi_key;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://rdf.chemspider.com/> .
+	void:inDataset <http://ops.rsc-us.org> .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
@@ -304,18 +300,18 @@ GRAPH <http://www.conceptwiki.org> {
               		?full_mwt a sio:CHEMINF_000198 ;
  	      			sio:SIO_000300 ?molweight. }
 }
-GRAPH <http://www.chemspider.com> {
-        ?compound_cs skos:exactMatch ?compound_chembl .
-        ?compound_cs chemspider:inchi ?inchi;
-                chemspider:inchikey ?inchi_key;
-                chemspider:smiles ?smiles .
-        OPTIONAL { [] obo:IAO_0000136 ?compound_cs ;
+GRAPH <http://ops.rsc-us.org> {
+        ?compound_ocrs skos:exactMatch ?compound_chembl .
+        ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                cheminf:CHEMINF_000399 ?inchi_key;
+                cheminf:CHEMINF_000018 ?smiles .
+        OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
 
 }
 GRAPH <http://www.conceptwiki.org> {
         ?cw_uri skos:prefLabel ?target_name .
-        ?compound_cw skos:exactMatch ?compound_cs ;
+        ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
 }" .

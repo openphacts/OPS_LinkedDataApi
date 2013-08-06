@@ -13,13 +13,12 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
-@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
@@ -36,18 +35,15 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
-	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
-	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:description "An API configuration to return paginated pharmacology information about compounds and the target associated with them." ;
 	api:endpoint <#compoundPharmacologyListEndpoint> .
 
-<http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
@@ -178,17 +174,17 @@ chembl:pChembl api:name "pChembl" ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span>. 
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?chembl_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>;	
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>;	
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.
-?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey</span>;
+?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span>.";
@@ -197,11 +193,11 @@ chembl:pChembl api:name "pChembl" ;
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&activity_unit=micromolar&assay_organism=Mus%20musculus";
 	api:selector [
 		api:where 
-"                GRAPH <http://www.chemspider.com> {
-                        ?cs_uri chemspider:smiles ?smiles ;
-                                chemspider:inchi ?inchi ;
-                                chemspider:inchikey ?inchiKey .
-                        OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+"                GRAPH <http://ops.rsc-us.org> {
+                        ?ocrs_uri cheminf:CHEMINF_000018 ?smiles ;
+                                cheminf:CHEMINF_000396 ?inchi ;
+                                cheminf:CHEMINF_000399 ?inchiKey .
+                        OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
                                 a cheminf:CHEMINF_000367;
                                 qudt:numericValue ?num_ro5_violations . }
                 }
@@ -267,12 +263,12 @@ chembl:pChembl api:name "pChembl" ;
 ?chembl_uri skos:exactMatch ?cw_uri .
 ?cw_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org/> .
-?chembl_uri skos:exactMatch ?cs_uri .
-?cs_uri chemspider:smiles ?smiles ;
-	chemspider:inchi ?inchi ;
-	chemspider:inchikey ?inchiKey;
+?chembl_uri skos:exactMatch ?ocrs_uri .
+?ocrs_uri ops:smiles ?smiles ;
+	ops:inchi ?inchi ;
+	ops:inchikey ?inchiKey;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://rdf.chemspider.com/> .
+	void:inDataset <http://ops.rsc-us.org> .
 ?chembl_uri ?bNode1 ?molweight ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_uri skos:exactMatch ?db_uri .
@@ -290,11 +286,11 @@ chembl:pChembl api:name "pChembl" ;
 GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?compound_name.
 }
-GRAPH <http://www.chemspider.com> {
-	?cs_uri chemspider:smiles ?smiles ;
-		chemspider:inchi ?inchi ;
-		chemspider:inchikey ?inchiKey .
-	OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+GRAPH <http://ops.rsc-us.org> {
+	?ocrs_uri cheminf:CHEMINF_000018 ?smiles ;
+		cheminf:CHEMINF_000396 ?inchi ;
+		cheminf:CHEMINF_000399 ?inchiKey .
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 			a cheminf:CHEMINF_000367;
 			qudt:numericValue ?num_ro5_violations . }
 }

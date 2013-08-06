@@ -3,6 +3,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dcterms: <http://purl.org/dc/terms/>.
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -35,6 +36,7 @@
 ?dataset prov:wasDerivedFrom ?derivedFrom .
 ?dataset void:triples ?tripleNo .
 ?dataset void:dataDump ?dataDump .
+?dataset dcat:landingPage ?landingPage . 
 ?dataset foaf:homepage ?homepage .";
 	api:where
 "GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
@@ -46,4 +48,5 @@ OPTIONAL { ?dataset prov:wasDerivedFrom ?derivedFrom . }
 OPTIONAL { ?dataset void:dataDump ?dataDump . }
 OPTIONAL { ?dataset void:triples ?tripleNo . }
 OPTIONAL { ?dataset foaf:homepage ?homepage . }
+OPTIONAL { ?dataset dcat:landingPage ?landingPage . }
 }" .

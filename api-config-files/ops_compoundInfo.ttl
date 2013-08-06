@@ -10,10 +10,9 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
-@prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
-@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix cito: <http://purl.org/spar/cito/> .
@@ -24,11 +23,9 @@
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
-	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
-	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -40,16 +37,16 @@
 		api:resultsDescription "	?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
-?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cs_uri </span>.
-?cs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchikey ?inchiKey </span>;
+?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>.
+?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hba ?hba </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:psa ?psa</span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.chemspider.com&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.
 ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_uri </span>. 
 ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molformula </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode2 ?molweight </span>;
@@ -69,12 +66,10 @@
 		api:viewer <#compoundViewer> ;
 		api:defaultViewer <#compoundViewer> ] .
 
-<http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 
-<http://rdf.chemspider.com/#> api:label "chemspider" .
 <http://semanticscience.org/resource/> api:label "sio" .
 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> api:label "drugbank" .
 <http://www.w3.org/2004/02/skos/core#> api:label "skos" .
@@ -90,16 +85,16 @@
 "?ops_item skos:exactMatch ?cw_uri .
 ?cw_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
-?ops_item skos:exactMatch ?cs_uri .
-?cs_uri chemspider:smiles ?smiles ;
-	chemspider:inchi ?inchi ;
-	chemspider:inchikey ?inchiKey ;
+?ops_item skos:exactMatch ?ocrs_uri .
+?ocrs_uri ops:smiles ?smiles ;
+	ops:inchi ?inchi ;
+	ops:inchikey ?inchiKey ;
 	ops:logp ?alogp ;
 	ops:hba ?hba ;
 	ops:hbd ?hbd ;
 	ops:ro5_violations ?num_ro5_violations ;
 	ops:psa ?psa;
-	void:inDataset <http://www.chemspider.com> .
+	void:inDataset <http://ops.rsc-us.org> .
 ?ops_item skos:exactMatch ?chembl_uri . 
 ?chembl_uri ?bNode1 ?molformula ;
 	?bNode2 ?molweight ;
@@ -118,23 +113,23 @@
 "GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?compound_name.
 }
-GRAPH <http://www.chemspider.com> {
-	?cs_uri chemspider:smiles ?smiles.
-	?cs_uri chemspider:inchi ?inchi.
-	?cs_uri chemspider:inchikey ?inchiKey.
-	OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+GRAPH <http://ops.rsc-us.org> {
+	?ocrs_uri ceminf:CHEMINF_000018 ?smiles.
+	?ocrs_uri cheminf:CHEMINF_000396 ?inchi.
+	?ocrs_uri cheminf:CHEMINF_000399 ?inchiKey.
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 		a cheminf:CHEMINF_000321;
 		qudt:numericValue ?alogp . }
-	OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 		a cheminf:CHEMINF_000345;
 		qudt:numericValue ?hba . }
-	OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 		a cheminf:CHEMINF_000346;
 		qudt:numericValue ?hbd . }
-	OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 		a cheminf:CHEMINF_000367;
 		qudt:numericValue ?num_ro5_violations . }
-	OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 		a cheminf:CHEMINF_000349;
 		qudt:numericValue ?psa . }
 }
@@ -164,16 +159,4 @@ GRAPH <http://linkedlifedata.com/resource/drugbank> {
 	OPTIONAL { ?db_uri drugbank:proteinBinding ?proteinBinding. }
 	OPTIONAL { ?db_uri drugbank:toxicity ?toxicity. }
 	OPTIONAL { ?db_uri drugbank:meltingPoint ?meltingPoint. }
-}
-}
-OPTIONAL {
-        {
-        SELECT ?diagnosis (count( ?diagnosis) AS ?diagnosis_count) ?adverse_event ( count( ?adverse_event) AS ?ae_count ) WHERE {
-                GRAPH <http://aers.data2semantics.org/> {
-                        ?involvement aers:drug ?aers_uri ;
-                                aers:involved_in ?report .
-                        ?adverse_event aers:reaction_of ?report .
-                        ?diagnosis aers:diagnosis_for ?involvement
-                }
-        } GROUP BY ?adverse_event ?diagnosis
-} }" .
+}" .

@@ -12,13 +12,12 @@
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
-@prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
-@prefix cheminf: <http://semanticscience.org/ontology/cheminf.owl/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
@@ -35,11 +34,9 @@
  	api:variable chembl:hasQUDT ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:pChembl ;
-	api:dataset <http://www.chemspider.com> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
-	api:vocabulary <http://rdf.chemspider.com/#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -85,7 +82,6 @@
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
-<http://www.chemspider.com> api:label "ChemSpider" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
@@ -174,11 +170,11 @@ chembl:pChembl api:name "pChembl" ;
 	 GRAPH <http://www.conceptwiki.org> {
                 ?cw_uri skos:prefLabel ?compound_name.
          }
-         GRAPH <http://www.chemspider.com> {
-                ?cs_uri chemspider:smiles ?smiles ;
-                        chemspider:inchi ?inchi ;
-                        chemspider:inchikey ?inchiKey .
-                OPTIONAL { [] obo:IAO_0000136 ?cs_uri ;
+         GRAPH <http://ops.rsc-us.org> {
+                ?ocrs_uri cheminf:CHEMINF_000018 ?smiles ;
+                        cheminf:CHEMINF_000396 ?inchi ;
+                        cheminf:CHEMINF_000399 ?inchiKey .
+                OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
                 	        a cheminf:CHEMINF_000367;
                                 qudt:numericValue ?num_ro5_violations . }
          }
