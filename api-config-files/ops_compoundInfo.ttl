@@ -114,7 +114,7 @@
 	?cw_uri skos:prefLabel ?compound_name.
 }
 GRAPH <http://ops.rsc-us.org> {
-	?ocrs_uri ceminf:CHEMINF_000018 ?smiles.
+	?ocrs_uri cheminf:CHEMINF_000018 ?smiles.
 	?ocrs_uri cheminf:CHEMINF_000396 ?inchi.
 	?ocrs_uri cheminf:CHEMINF_000399 ?inchiKey.
 	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
