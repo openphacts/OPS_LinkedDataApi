@@ -2,20 +2,20 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
-@prefix chemspider: <http://rdf.chemspider.com/#> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable chemspider:inchi ;
-	api:dataset <http://www.chemspider.com> ;
+	api:variable cheminf:CHEMINF_000396 ;
+	api:dataset <http://ops.rsc-us.org> ;
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:inchi ?inchi </span>. " ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000396 ?inchi </span>. " ;
 
 		api:name "Inchi to URL" ;
 		api:enableCache true ;
@@ -26,9 +26,9 @@
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<http://www.chemspider.com> api:label "ChemSpider" .
+<http://ops.rsc-us.org> api:label "OpenPHACTS Chemistry Registration Service" .
 
-chemspider:inchi api:name "inchi" ;
+cheminf:CHEMINF_000396 api:name "inchi" ;
 	api:label "inchi";
 	api:value "An InChI string. E.g. InChI=1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)" .
 
@@ -37,9 +37,9 @@ chemspider:inchi api:name "inchi" ;
 	api:template "
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
-?primaryTopic chemspider:inchi ?inchi ." ;
+?primaryTopic cheminf:CHEMINF_000396 ?inchi ." ;
 
 	api:where "
 GRAPH <{result_hash}> {
-	?primaryTopic chemspider:inchi ?inchi .
+	?primaryTopic cheminf:CHEMINF_000396 ?inchi .
 }".

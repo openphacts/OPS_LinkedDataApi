@@ -9,13 +9,13 @@
 	rdfs:label "ChemSpider structure search"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable chemspider:smiles ;
-	api:dataset <http://www.chemspider.com> ;
+	api:variable cheminf:CHEMINF_000018 ;
+	api:dataset <http://ops.rsc-us.org> ;
 	api:description "An API configuration to return a ChemSpider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> chemspider:smiles ?smiles </span>." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000018 ?smiles </span>." ;
 
 		api:name "SMILES to URL" ;
 		api:enableCache true ;
@@ -26,9 +26,9 @@
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<http://www.chemspider.com> api:label "ChemSpider" .
+<http://ops.rsc-us.org> api:label "OpenPHACTS Chemistry Registration Service" .
 
-chemspider:smiles api:name "smiles" ;
+cheminf:CHEMINF_000018 api:name "smiles" ;
 	api:label "smiles";
 	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
 
@@ -37,9 +37,9 @@ chemspider:smiles api:name "smiles" ;
 	api:template "
 {pageUri} foaf:primaryTopic ?primaryTopic .
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
-?primaryTopic chemspider:smiles ?smiles ." ;
+?primaryTopic cheminf:CHEMINF_000018 ?smiles ." ;
 
 	api:where "
 GRAPH <{result_hash}> {
-	?primaryTopic chemspider:smiles ?smiles .
+	?primaryTopic cheminf:CHEMINF_000018 ?smiles .
 }".
