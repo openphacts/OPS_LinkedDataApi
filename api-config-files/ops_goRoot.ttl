@@ -1,0 +1,58 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix ssb: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix aers: <http://aers.data2semantics.org/vocab/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix obo-go: <http://purl.org/obo/owl/GO#> .
+
+<#go> a api:API ;
+        rdfs:label "Gene Ontology"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable <#input> ; 
+	api:dataset <http://www.geneontology.org> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> ;
+	api:description "An API configuration to return information about genes and targets" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Get Gene Ontology Root Classes" ;
+		api:description "A representation of the root classes of the Gene Ontology." ;
+		api:resultsDescription "&lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:rootNode ?rootClass . </span> ." ;
+		api:itemTemplate "http://www.geneontology.org" ;
+		api:uriTemplate "/go/root" ;
+		api:exampleRequestPath "/go/root" ;
+		api:viewer <#goRootViewer> ;
+		api:defaultViewer <#goRootViewer> ] .
+
+<http://www.geneontology.org> api:label "Gene Ontology" .
+
+<http://www.semantic-systems-biology.org/ontology/rdf/OBO#> api:label "ssb" .
+<http://semanticscience.org/resource/> api:label "sio" .
+
+<#goRootViewer> a api:Viewer ;
+	api:name "goRootViewer" ;
+	api:template 
+"<http://www.geneontology.org> ops:rootNode obo-go:GO_0003674 .
+<http://www.geneontology.org> ops:rootNode obo-go:GO_0005575 .
+<http://www.geneontology.org> ops:rootNode obo-go:GO_0008150 .
+obo-go:GO_0003674 rdfs:label \"molecular_function\"@en .
+obo-go:GO_0005575 rdfs:label \"cellular_component\"@en .
+obo-go:GO_0008150 rdfs:label \"biological_process\"@en ." .
+
