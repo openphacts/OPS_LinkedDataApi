@@ -53,7 +53,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
 	rdfs:range rdfs:Resource .
 
 <#chebiClassViewer> a api:Viewer ;

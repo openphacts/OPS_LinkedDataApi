@@ -119,7 +119,7 @@ chembl:pChembl api:name "pChembl" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
 	rdfs:range rdfs:Resource .
 
 <#chebiPharmacologyListEndpoint> a api:ListEndpoint ;
@@ -186,8 +186,8 @@ chembl:pChembl api:name "pChembl" ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">ops:ro5_violations ?num_ro5_violations</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://ops.rsc-us.org&gt;</span> .
 " ;
-	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_33304";
-	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_33304&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
+	api:exampleRequestPath "/compound/chebi/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:selector [
 		api:where 
 "GRAPH <http://www.ebi.ac.uk/chebi/inference>  {

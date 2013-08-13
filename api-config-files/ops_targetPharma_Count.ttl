@@ -17,6 +17,7 @@
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;

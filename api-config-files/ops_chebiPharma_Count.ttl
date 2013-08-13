@@ -71,8 +71,8 @@
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
         	api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_3304";
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_3304&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
+		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#chebiPharmacologyCountViewer> ; 
 		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
 
@@ -154,7 +154,7 @@ chembl:pChembl api:name "pChembl" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
 	rdfs:range rdfs:Resource .
 
 <#chebiPharmacologyCountViewer> a api:Viewer ;

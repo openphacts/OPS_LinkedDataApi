@@ -159,4 +159,4 @@ GRAPH <http://linkedlifedata.com/resource/drugbank> {
 	OPTIONAL { ?db_uri drugbank:proteinBinding ?proteinBinding. }
 	OPTIONAL { ?db_uri drugbank:toxicity ?toxicity. }
 	OPTIONAL { ?db_uri drugbank:meltingPoint ?meltingPoint. }
-}" .
+}}" .

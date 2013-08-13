@@ -76,7 +76,7 @@
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
 		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
-		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=4&activity_unit=micromolar&assay_organism=Mus%20musculus";
+		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=IC50&maxEx-activity_value=100&minEx-activity_value=40&activity_unit=nanomolar&assay_organism=Mus%20musculus";
 		api:viewer <#compoundPharmacologyCountViewer> ; 
 		api:defaultViewer <#compoundPharmacologyCountViewer> . ] .
 

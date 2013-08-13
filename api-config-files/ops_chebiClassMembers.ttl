@@ -42,7 +42,7 @@
 ?member <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?member_name </span>." ;
 		api:uriTemplate "/compound/chebi/members?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/chebi/members?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_38834";
+		api:exampleRequestPath "/compound/chebi/members?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
 		api:viewer <#chebiMemberViewer> ;
 		api:defaultViewer <#chebiMemberViewer> ] .
 
@@ -50,7 +50,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g. http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	api:value "A ChEBI Class URI. e.g. http://purl.obolibrary.org/obo/CHEBI_24431" ;
 	rdfs:range rdfs:Resource .
 
 <#chebiMemberViewer> a api:Viewer ;
