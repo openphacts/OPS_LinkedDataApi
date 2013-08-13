@@ -18,7 +18,7 @@
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix wp: <http://vocabularies.wikipathways.org/wp#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-
+@prefix sioc: <http://sioc-project.org/ontology#> .
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
@@ -37,7 +37,7 @@
 		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
 		api:uriTemplate "/pathway/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/pathway/getTargets?uri=http%3A%2F%2Frdf.wikipathways.org%2FPathway%2FWP1008_r63353" ;
+		api:exampleRequestPath "/pathway/getTargets?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1008" ;
 		api:viewer <#pathwayTargetViewer> ;
 		api:defaultViewer <#pathwayTargetViewer> . ] .
 
@@ -56,13 +56,15 @@
 <#pathwayTargetViewer> a api:Viewer ;
 	api:name "pathwayTargetViewer" ;
 	api:template 
-"?ops_item dc:title ?title ; 
+"?ops_item sioc:latest_version ?rev .
+?rev dc:title ?title ; 
 	dcterms:hasPart ?gene_product;
 	void:inDataset <http://www.wikipathways.org>";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?ops_item dc:title ?title . 
-	?gene_product_internal dcterms:isPartOf ?ops_item ;
+	?rev dc:identifier ?ops_item .
+	?rev dc:title ?title . 
+	?gene_product_internal dcterms:isPartOf ?rev ;
 		a wp:GeneProduct ;
 		dc:identifier ?gene_product .
 }" .
