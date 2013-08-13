@@ -56,7 +56,8 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
 		api:uriTemplate "/pathways/count" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways" ;
+		api:exampleRequestPath "/pathways/count" ;
+                api:exampleRequestPath "/pathways/count?pathway_organism=Homo%20sapiens" ;
 		api:viewer <#pathwayCountViewer> ;
 		api:defaultViewer <#pathwayCountViewer> . ] .
 

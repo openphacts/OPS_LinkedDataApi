@@ -57,6 +57,7 @@
 		api:uriTemplate "/pathways" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways" ;
+                api:exampleRequestPath "/pathways?pathway_organism=Homo%20sapiens" ;
 	        api:selector [
         	        api:where
 "GRAPH <http://www.wikipathways.org> {

@@ -22,6 +22,7 @@
 		api:itemTemplate "http://www.openphacts.org/linked_data_cache" ;
 		api:description "(UNDER DEVELOPMENT) Returns information about currently loaded data sources." ;
 		api:uriTemplate "/sources" ;
+		api:exampleRequestPath "/sources";
 		api:viewer <#dataSourcesViewer> ;
 		api:defaultViewer <#dataSourcesViewer> ] .
 
