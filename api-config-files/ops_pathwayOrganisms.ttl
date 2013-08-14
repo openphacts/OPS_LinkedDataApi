@@ -20,7 +20,7 @@
 @prefix wp: <http://vocabularies.wikipathways.org/wp#> .
 
 <#pathway> a api:API ;
-        rdfs:label "Patwhay"@en ;
+        rdfs:label "Pathway"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
