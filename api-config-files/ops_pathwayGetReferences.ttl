@@ -54,7 +54,7 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A Pathway URI. e.g.: http://rdf.wikipathways.org/WP1015_r67672" ;
+	api:value "A Pathway URI. e.g.: http://identfiers.org/wikipathways/WP1015" ;
 	rdfs:range rdfs:Resource .
 
 <#pathwayReferenceViewer> a api:Viewer ;
