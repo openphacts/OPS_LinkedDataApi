@@ -4,6 +4,7 @@
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
 @prefix chemspider: <http://rdf.chemspider.com/#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
