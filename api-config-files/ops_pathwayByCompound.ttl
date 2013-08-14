@@ -35,6 +35,18 @@
 	api:endpoint [ 
 		a api:ListEndpoint ;
 		api:name "Pathways by Compound" ;
+		api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
+        <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.
+?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.
+?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:Metabolite </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.
+?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?prefLabel </span>." ;
 		api:description "Returns a list of pathways which have as part the Metabolite that corresponds to  {uri}.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
@@ -66,7 +78,7 @@
                 wp:organism ?organism_uri ;
                 foaf:page ?page ;
                 dc:identifier ?identifier .
-	?gene_product dcterms:isPartOf ?item ;
+	?metabolite dcterms:isPartOf ?item ;
                 a wp:Metabolite ;
                 dc:identifier ?pw_uri .
         ?organism_uri rdfs:label ?organism .
@@ -138,7 +150,7 @@ wp:organism api:name "pathway_organism" ;
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
-        ?gene_product dcterms:isPartOf ?item ;
+        ?metabolite dcterms:isPartOf ?item ;
                 a wp:Metabolite ;
                 dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 

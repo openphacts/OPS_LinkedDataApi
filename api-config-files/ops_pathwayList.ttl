@@ -35,6 +35,14 @@
 		a api:ListEndpoint ;
 		api:name "List Pathways" ;
 		api:description "Returns the list of pathways in the cache.";
+		api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
+        <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.
+?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>." ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
