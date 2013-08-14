@@ -1,6 +1,6 @@
 echo '{
-  "basePath": "https://beta.openphacts.org",
-  "apiVersion": "v1.2",
+  "basePath": "https://beta.openphacts.org/1.3/",
+  "apiVersion": "v1.3",
   "apis": [' 
 for file in ./*.ttl
 do
@@ -43,7 +43,7 @@ do
 	vars=`sed -n 's/[[:space:]]*api:variable[[:space:]]*//p' $file | sed 's,[[:space:]]*;[[:space:]]*$,,'`
 	for var in `sed -n 's/[[:space:]]*api:variable[[:space:]]*//p' $file | sed 's,[[:space:]]*;[[:space:]]*$,,' | grep -v '/'`
 	do
-                if [[ `echo $var | sed 's,:[[:print:]]*$,,'` == cs_api ]]
+                if [[ `echo $var | sed 's,:[[:print:]]*$,,'` == ops_api ]]
                 then    
                         for sub_var in `sed -n "/^[[:space:]]*$var/,/^[[:space:]]*$/p" $file | sed -n 's,[[:space:]]*api:subType[[:space:]]*,,p'  | sed 's,[[:space:]]*.[[:space:]]*$,,'`
                         do      
@@ -51,7 +51,7 @@ do
 				echo '              "name": "'`sed -n "/$var[[:space:]]*api:name/p" $file | sed 's/[[:print:]]*[[:space:]][[:space:]]*"//' | sed 's/"[[:print:]]*//'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
 				sed -n "/^[[:space:]]*$sub_var/,/api:value/s/[[:space:]]*[[:print:]]*api:value/              *description*: /p" $file | sed 's,*,",g' | sed 's/[[:space:]]*.[[:space:]]*$/ ,/'
                                 echo '              "paramType": "query",'
-				if [[ "$sub_var" == "cs_api_search:Molecule" ]]
+				if [[ "$sub_var" == "ops_api_search:Molecule" ]]
 				then
 					echo '              "required": true,'
 				fi
