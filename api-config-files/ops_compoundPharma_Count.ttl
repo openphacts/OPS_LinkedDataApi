@@ -182,28 +182,6 @@ chembl:pChembl api:name "pChembl" ;
                 ?item a chembl:Activity ;
                         chembl:hasMolecule ?chembl_uri ;
                         chembl:hasAssay ?assay_uri .
-                OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri .
-                        OPTIONAL { ?target_uri dcterms:title ?target_name }
-                        OPTIONAL { ?target_uri chembl:organismName ?target_organism }
-                }
-                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-                OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-                OPTIONAL { ?item chembl:publishedType ?published_type }
-                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
-                OPTIONAL { ?item chembl:publishedValue ?published_value }
-                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
-                OPTIONAL { ?item chembl:standardType ?standard_type }
-                OPTIONAL { ?item chembl:standardRelation ?standard_relation }
-                OPTIONAL { ?item chembl:standardValue ?standard_value }
-                OPTIONAL { ?item chembl:standardUnits ?standard_unit }
-                OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
-		OPTIONAL { ?item chembl:pChembl ?pChembl }
-                OPTIONAL { ?item chembl:hasDocument ?document .
-                	OPTIONAL { ?document owl:sameAs ?doi }
-               	 	OPTIONAL { ?document bibo:pmid ?pmid }
-                }
-                OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode1 .
-                        ?bNode1 a sio:CHEMINF_000198 ;
-                                sio:SIO_000300 ?molweight. }
+                OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri . }
          } 
 } }" .

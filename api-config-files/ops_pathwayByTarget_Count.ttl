@@ -118,8 +118,6 @@ GRAPH <http://www.wikipathways.org> {
                 a wp:GeneProduct ;
                 dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
-	OPTIONAL { ?pathway dcterms:description ?description }
-	OPTIONAL { ?pathway wp:pathwayOntology ?ontology }
 }
 OPTIONAL {
 GRAPH <http://www.conceptwiki.org> {

@@ -168,26 +168,6 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_uri .
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
-                OPTIONAL { ?chembl_uri chembl:organismName ?target_organism }
-                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-                OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-                OPTIONAL { ?item chembl:publishedType ?published_type }
-                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
-                OPTIONAL { ?item chembl:publishedValue ?published_value }
-                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
-                OPTIONAL { ?item chembl:standardType ?standard_type }
-                OPTIONAL { ?item chembl:standardRelation ?standard_relation }
-                OPTIONAL { ?item chembl:standardValue ?standard_value }
-                OPTIONAL { ?item chembl:standardUnits ?standard_unit }
-                OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
-		OPTIONAL { ?item chembl:pChembl ?pChembl }
-                OPTIONAL { ?item chembl:hasDocument ?document .
-                	OPTIONAL { ?document owl:sameAs ?doi }
-               	 	OPTIONAL { ?document bibo:pmid ?pmid }
-                }
-                OPTIONAL { ?compound_chembl sio:SIO_000008 ?bNode1 .
-                        ?bNode1 a sio:CHEMINF_000198 ;
-                                sio:SIO_000300 ?molweight. }
 }
 GRAPH <http://ops.rsc-us.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl;

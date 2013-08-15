@@ -87,10 +87,10 @@
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:title ?title ; 
+	?rev dc:identifier ?ops_item ; 
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
-		dc:identifier ?ops_item . 
+		dc:title ?title . 
 	?organism_uri rdfs:label ?organism . 
 	OPTIONAL { ?rev dcterms:description ?description }
 	OPTIONAL { ?rev wp:pathwayOntology ?ontology }

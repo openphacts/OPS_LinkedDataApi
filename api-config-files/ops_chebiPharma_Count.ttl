@@ -172,27 +172,6 @@ chembl:pChembl api:name "pChembl" ;
 			chembl:hasMolecule ?compound_chembl ;
                		chembl:hasAssay ?assay_uri .
         	?assay_uri chembl:hasTarget ?target_uri .
-		OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-        	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-	        OPTIONAL { ?target_uri dcterms:title ?target_name }
-        	OPTIONAL { ?target_uri chembl:organismName ?target_organism }
-		OPTIONAL { ?activity_uri chembl:publishedType ?published_type }
-		OPTIONAL { ?activity_uri chembl:publishedRelation ?published_relation }
-		OPTIONAL { ?activity_uri chembl:publishedValue ?published_value }
-		OPTIONAL { ?activity_uri chembl:publishedUnits ?published_unit }
- 		OPTIONAL { ?activity_uri chembl:standardType ?std_type }
-	        OPTIONAL { ?activity_uri chembl:standardRelation ?relation }
-	        OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
-	        OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
-	        OPTIONAL { ?activity_uri chembl:hasQUDT ?qudt_uri }
-		OPTIONAL { ?activity_uri chembl:pChembl ?pChembl }
-	        OPTIONAL { ?activity_uri chembl:hasDocument ?document .
-        		OPTIONAL { ?document owl:sameAs ?doi }
-        		OPTIONAL { ?document bibo:pmid ?pmid }
-	        }
-	        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
-              		?full_mwt a sio:CHEMINF_000198 ;
- 	      			sio:SIO_000300 ?molweight. }
 	}
 	GRAPH <http://ops.rsc-us.org> {
 		?compound_ocrs skos:exactMatch ?compound_chembl .

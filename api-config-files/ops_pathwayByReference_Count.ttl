@@ -116,6 +116,4 @@ GRAPH <http://www.wikipathways.org> {
         ?pw_uri dcterms:isPartOf ?pathway ;
                 a wp:PublicationReference .
 	?organism_uri rdfs:label ?organism . 
-	OPTIONAL { ?pathway dcterms:description ?description }
-	OPTIONAL { ?pathway wp:pathwayOntology ?ontology }
 } } }" .
