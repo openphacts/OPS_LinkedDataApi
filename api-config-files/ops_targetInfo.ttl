@@ -42,7 +42,9 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_names </span>;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_name </span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:molecularWeight ?mass </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span>.
 ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?targetComponent </span>;
@@ -51,7 +53,6 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?targetComponent <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; 
         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span>." ;
@@ -90,6 +91,8 @@
 	uniprot:Function_Annotation ?function ;
 	uniprot:classifiedWith ?class ;
 	uniprot:alternativeName ?alt_name ;
+	uniprot:mass ?mass ;
+        ops:molecularWeight ?mass ; 
 	rdfs:seeAlso ?target_pdb ;
 	rdfs:seeAlso ?ppi ;
         void:inDataset <http://purl.uniprot.org> .
@@ -98,7 +101,6 @@
 	rdfs:label ?synonym ;	
 	void:inDataset <http://www.ebi.ac.uk/chembl>.
 ?targetComponent dcterms:description ?description .
-
 ?db_uri drugbank:cellularLocation ?cellularLocation ;
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
@@ -113,7 +115,10 @@
 		?uniprot_uri uniprot:existence ?existence .
 		OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }
 		OPTIONAL { ?uniprot_uri uniprot:sequence ?seq_uri .
-			?seq_uri rdf:value ?sequence . }
+			?seq_uri rdf:value ?sequence ;
+				uniprot:mass ?mass . 
+			[] uniprot:sequenceFor ?uniprot_uri, 
+					?seq_uri}
 		OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri .
 			?fun_uri a uniprot:Function_Annotation ;
 			rdfs:comment ?function . }
@@ -129,7 +134,6 @@ OPTIONAL {
          GRAPH <http://linkedlifedata.com/resource/drugbank> {
                 OPTIONAL { ?db_uri drugbank:numberOfResidues ?numberOfResidues }
 		OPTIONAL { ?db_uri drugbank:cellularLocation ?cellularLocation }
-		OPTIONAL { ?db_uri drugbank:molecularWeight ?molecularWeight }
 		OPTIONAL { ?db_uri drugbank:theoreticalPi ?theoreticalPi }
         }
 }
