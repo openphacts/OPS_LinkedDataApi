@@ -7,7 +7,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/>.
 
 <#tree> a api:API ;
-	rdfs:label "Concept Hierarchies"@en ;
+	rdfs:label "Concept Class Hierarchies"@en ;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
