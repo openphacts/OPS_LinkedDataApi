@@ -1,0 +1,75 @@
+@base <http://www.openphacts.org/api#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+
+<#target> a api:API ;
+	rdfs:label "Target"@en ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable _:hierarchy ;
+	api:variable <#input> ;
+	api:dataset <http://www.ebi.ac.uk/chembl> ;
+	api:dataset <http://purl.uniprot.org/enzyme/> ;
+        api:dataset <http://www.geneontology.org> ;
+	api:vocabulary rdfs: ;
+	api:vocabulary skos: ;
+	api:vocabulary uniprot: ;
+	api:vocabulary dcterms: ;
+	api:description "An API configuration to return information about targets." ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Classifications for interacting compounds." ;
+		api:description "A page of classes that compounds that interact with the given target URI have been classified with. Currently only the ChEBI Ontology is supported. " ;
+		api:itemTemplate "{uri}" ;
+		api:variable <http://www.ebi.ac.uk/chebi> ;
+		api:uriTemplate "/target/classificationsViaCompounds?uri={uri}" ;
+		api:exampleRequestPath "/target/classificationsViaCompounds?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F36cf7334-84c4-4980-aa55-3f2a0ab70b21" ;
+                api:exampleRequestPath "/target/classificationsViaCompounds?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F36cf7334-84c4-4980-aa55-3f2a0ab70b21&tree=go" ;
+		api:viewer <#targetClassViaCompoundViewer> ;
+		api:defaultViewer <#targetClassViaCompoundViewer> ] .
+
+<http://www.ebi.ac.uk/chebi> api:label "ChEBI Ontoology" .
+
+<http://www.ebi.ac.uk/chebi> api:name "chebi" .
+
+_:hierarchy api:name "tree" ;
+	api:label "tree" ;
+	api:value "Restrict results by hierarchy. Currently one of 'chembl', 'enzyme', 'go'" ;
+	api:filterVariable "?g" ;
+	rdfs:subPropertyOf api:graphFilter ;
+	a rdf:Property .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A target URI.  e.g.: " ;
+        rdfs:range rdfs:Resource .
+
+<#targetClassViaCompoundViewer> a api:Viewer ;
+	api:name "targetClassViaCompoundViewer";
+	api:template 
+"?ops_item skos:exactMatch ?chembl_target_uri ;
+	skos:exactMatch ?cw_target_uri .
+?chembl_target_uri ops:interactsWithMoleculeOfClass ?chebi_class ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?cw_target_uri skos:prefLabel ?cw_label . 
+?chebi_class skos:prefLabel ?chebi_label ;
+	void:inDataset <http://www.ebi.ac.uk/chebi> . 
+<http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .";
+	api:where 
+"	GRAPH <http://www.ebi.ac.uk/chembl> {
+		?activity chembl:hasAssay/chembl:hasTarget ?chembl_target_uri ;
+			chembl:hasMolecule/owl:sameAs ?chebi_class
+	}
+	GRAPH ?g {
+		?chebi_class rdfs:label ?chebi_label
+	}
+	GRAPH <http://www.conceptwiki.org> {
+		?cw_target_uri skos:prefLabel ?cw_label
+	}" 

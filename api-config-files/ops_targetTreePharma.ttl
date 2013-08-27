@@ -1,0 +1,268 @@
+@base <http://www.openphacts.org/api#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix goa: <http://www.semantic-systems-biology.org/ontology/rdf/GOA#> .
+@prefix sio: <http://semanticscience.org/resource/> .
+
+
+<#target> a api:API ;
+	rdfs:label "Target"@en ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#input> ;
+	api:variable chembl:organism ;
+	api:variable _:targetOrganism ;
+	api:variable chembl:standardType;
+	api:variable chembl:standardValue ;
+ 	api:variable chembl:hasQUDT ;
+	api:variable chembl:standardRelation ;
+	api:variable chembl:organismName ;
+	api:variable chembl:pChembl ;
+	api:dataset <http://www.ebi.ac.uk/chembl> ;
+	api:dataset <http://purl.uniprot.org/enzyme/> ;
+        api:dataset <http://www.geneontology.org> ;
+	api:vocabulary rdfs: ;
+	api:vocabulary skos: ;
+	api:vocabulary uniprot: ;
+	api:vocabulary dcterms: ;
+	api:description "An API configuration to return information about targets." ;
+	api:endpoint [ 
+		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Millimolar> ;
+		api:variable <http://www.openphacts.org/units/Nanomolar> ;
+		api:variable <http://qudt.org/vocab/unit#Percent> ;
+		api:variable <http://www.openphacts.org/units/MilligramPerMilliliter> ;
+		api:variable <http://qudt.org/vocab/unit#MinuteTime> ;
+		api:variable <http://qudt.org/vocab/unit#Gram> ;
+		api:variable <http://www.openphacts.org/units/NanogramPerMilliliter> ;
+		api:variable <http://qudt.org/vocab/unit#Hour> ;
+		api:variable <http://www.openphacts.org/units/PicogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Micromolar> ;
+		api:variable <http://www.openphacts.org/units/Molar> ;
+		api:variable <http://www.openphacts.org/units/MilligramPerDeciliter> ;
+		api:variable <http://qudt.org/vocab/unit#Day> ;
+		api:variable <http://qudt.org/vocab/unit#SecondTime> ;
+		api:variable <http://www.openphacts.org/units/Picomolar> ;
+		api:variable <http://qudt.org/vocab/unit#Centimeter> ;
+		api:variable <http://www.openphacts.org/units/GramPerLiter> ;
+		api:variable <http://qudt.org/vocab/unit#InternationalUnitPerLiter> ;
+		api:variable <http://qudt.org/vocab/unit#Kilogram> ;
+		api:variable <http://qudt.org/vocab/unit#DegreeCelsius> ;
+		api:variable <http://qudt.org/vocab/unit#MilliSecond> ;
+		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
+		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
+		api:variable <http://qudt.org/vocab/unit#Liter> ;
+		a api:ListEndpoint ;
+		api:name "Target Class Pharmacology Paginated" ;
+		api:description "A page of items corresponding to acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
+		api:itemTemplate "{uri}" ;
+		api:uriTemplate "/target/tree/pharmacology/pages?uri={uri}" ;
+		api:exampleRequestPath "/target/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
+		api:exampleRequestPath "/target/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=IC50&activity_unit=nanomolar&assay_organism=Rattus%20norvegicus&target_organism=Rattus%20norvegicus&minEx-activity_value=50000&maxEx-activity_value=200000";
+		api:selector [
+			api:where 
+"	GRAPH ?g {
+                ?class rdfs:subClassOf ?ops_item
+        }
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+                { ?target_chembl chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
+                { ?target_chembl chembl:hasProteinClassification ?class} UNION
+                { ?target_chembl chembl:hasTargetComponent/skos:exactMatch ?uniprot
+                GRAPH <http://www.openphacts.org/goa>{
+                        {?uniprot obo:C ?class} UNION
+                        {?uniprot obo:F ?class} UNION
+                        {?uniprot obo:P ?class}
+                }}
+		?assay_uri chembl:hasTarget ?target_chembl ;
+			chembl:hasActivity ?item . 
+		?item chembl:hasMolecule ?compound_chembl .
+		?target_chembl chembl:hasTargetComponent ?target_component .
+	}
+        GRAPH <http://ops.rsc-us.org> {
+                ?compound_ocrs skos:exactMatch ?compound_chembl .
+                ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                        cheminf:CHEMINF_000399 ?inchi_key;
+                        cheminf:CHEMINF_000018 ?smiles .
+	}
+	GRAPH <http://www.conceptwiki.org> {
+                ?compound_cw skos:exactMatch ?compound_ocrs ;
+                        skos:prefLabel ?compound_name .
+        }" 
+		];
+		api:viewer <#targetTreePharmaViewer> ;
+		api:defaultViewer <#targetTreePharmaViewer> ] .
+
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
+<http://purl.uniprot.org/enzyme/> api:label "Enzyme Classification" .
+<http://www.geneontology.org> api:name "Gene Ontology" .
+
+chembl:organismName api:name "assay_organism" ;
+	api:label "assay_organism" ;
+	api:value "A literal organism in ChEMBL." ;
+	api:filterVariable "?assay_uri";
+	a rdf:Property .
+
+_:targetOrganism api:name "target_organism" ;
+	api:label "target_organism" ;
+	api:value "A literal target organism in ChEMBL." ;
+	api:filterVariable "?target_chembl";
+	rdfs:subPropertyOf chembl:organismName ;
+	a rdf:Property .
+
+chembl:standardType api:name "activity_type" ;
+	api:label "activity_type" ;
+	api:filterVariable "?item";
+	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
+	a rdf:Property .
+
+chembl:hasQUDT api:name "activity_unit" ;
+        api:label "activity_unit" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:standardValue api:name "activity_value" ;
+	api:label "activity_value" ;
+	api:value "Return activity values equal to this number." ;
+	api:filterVariable "?item";
+	a rdf:Property .
+
+chembl:standardRelation api:name "relation" ;
+        api:label "activity_relation" ;
+        api:value ">, >=,= , < , <=" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:pChembl api:name "pChembl" ;
+	api:label "pChembl" ;
+	api:filterVariable "?item";
+        api:value "The pChembl value of an activity" ;
+	a rdf:Property .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ;
+        rdfs:range rdfs:Resource .
+
+
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
+<http://qudt.org/vocab/unit#Percent> api:name "percent" .
+<http://www.openphacts.org/units/MilligramPerMilliliter> api:name "milligram_per_milliliter" .
+<http://qudt.org/vocab/unit#MinuteTime> api:name "minute_time" .
+<http://qudt.org/vocab/unit#Gram> api:name "gram" .
+<http://www.openphacts.org/units/NanogramPerMilliliter> api:name "nanogram_per_milliliter" .
+<http://qudt.org/vocab/unit#Hour> api:name "hour" .
+<http://www.openphacts.org/units/PicogramPerMilliliter> api:name "picogram_per_milliliter" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://www.openphacts.org/units/Molar> api:name "molar" .
+<http://www.openphacts.org/units/MilligramPerDeciliter> api:name "milligram_per_deciliter" .
+<http://qudt.org/vocab/unit#Day> api:name "day" .
+<http://qudt.org/vocab/unit#SecondTime> api:name "second_time" .
+<http://www.openphacts.org/units/Picomolar> api:name "picomolar" .
+<http://qudt.org/vocab/unit#Centimeter> api:name "centimeter" .
+<http://www.openphacts.org/units/GramPerLiter> api:name "gram_per_liter" .
+<http://qudt.org/vocab/unit#InternationalUnitPerLiter> api:name "international_unit_per_liter" .
+<http://qudt.org/vocab/unit#Kilogram> api:name "kilogram" .
+<http://qudt.org/vocab/unit#DegreeCelsius> api:name "degree_celsius" .
+<http://qudt.org/vocab/unit#MilliSecond> api:name "milli_second" .
+<http://qudt.org/vocab/unit#Millimeter> api:name "millimeter" .
+<http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
+<http://qudt.org/vocab/unit#Liter> api:name "liter" .
+
+<#targetTreePharmaViewer> a api:Viewer ;
+	api:name "targetTreePharmaViewer";
+	api:template 
+"?item chembl:hasMolecule ?compound_chembl;
+        chembl:publishedType ?published_type ;
+        chembl:publishedRelation ?published_relation ;
+        chembl:publishedValue ?published_value ;
+        chembl:publishedUnits ?published_unit ;
+        chembl:standardType ?std_type;
+        chembl:standardRelation ?relation;
+        chembl:standardValue ?std_value;
+        chembl:standardUnits ?std_unit;
+        chembl:hasQUDT ?qudt_uri;
+        chembl:hasAssay ?assay_uri ;
+        chembl:pChembl ?pChembl ;
+        chembl:hasDocument ?doi ;
+        bibo:pmid ?pmid ;
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
+?assay_uri chembl:hasTarget ?target_chembl ;
+        dcterms:description ?assay_description ;
+        chembl:assayOrganismName ?assay_organism .
+?target_chembl dcterms:title ?target_name;
+        chembl:targetOrganismName ?target_organism ;
+        chembl:hasTargetComponent ?target_comp_chembl ;
+	ops:classifiedUnder ?class .
+?compound_chembl ?full_mwt ?molweight ;
+        skos:exactMatch ?compound_ocrs ;
+        skos:exactMatch ?compound_cw .
+?compound_ocrs ops:smiles ?smiles ;
+        ops:inchi ?inchi ;
+        ops:inchikey ?inchi_key;
+        ops:ro5_violations ?num_ro5_violations ;
+        void:inDataset <http://ops.rsc-us.org> .
+?compound_cw skos:prefLabel ?compound_name ;
+        void:inDataset <http://www.conceptwiki.org/> .
+";
+	api:where 
+"	?target_chembl chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo:C|chembl:hasTargetComponent/skos:exactMatch/obo:F|chembl:hasTargetComponent/skos:exactMatch/obo:P ?class .
+	GRAPH ?g {
+		?class rdfs:subClassOf ?ops_item
+	}
+        GRAPH <http://ops.rsc-us.org> {
+                ?compound_ocrs skos:exactMatch ?compound_chembl .
+                ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                        cheminf:CHEMINF_000399 ?inchi_key;
+                        cheminf:CHEMINF_000018 ?smiles .
+                OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+                        a cheminf:CHEMINF_000367;
+                        qudt:numericValue ?num_ro5_violations . }
+        }
+        GRAPH <http://www.conceptwiki.org> {
+                ?compound_cw skos:exactMatch ?compound_ocrs ;
+                        skos:prefLabel ?compound_name .
+        }
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+                ?item a chembl:Activity ;
+                        chembl:hasAssay ?assay_uri ;
+                        chembl:hasMolecule ?compound_chembl .
+                ?assay_uri chembl:hasTarget ?target_chembl .
+                ?target_chembl chembl:hasTargetComponent ?target_comp_chembl .
+                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+                OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+                OPTIONAL { ?target_chembl dcterms:title ?target_name }
+                OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+                OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
+                OPTIONAL { ?item chembl:standardType ?std_type }
+                OPTIONAL { ?item chembl:standardRelation ?relation }
+                OPTIONAL { ?item chembl:standardValue ?std_value }
+                OPTIONAL { ?item chembl:standardUnits ?std_unit }
+                OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+                OPTIONAL { ?item chembl:pChembl ?pChembl }
+                OPTIONAL { ?item chembl:hasDocument ?document .
+                        OPTIONAL { ?document owl:sameAs ?doi }
+                        OPTIONAL { ?document bibo:pmid ?pmid }
+                }
+                OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
+                                ?full_mwt a sio:CHEMINF_000198 ;
+                                        sio:SIO_000300 ?molweight. }
+        }" .
