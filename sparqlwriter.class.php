@@ -71,7 +71,6 @@ class SparqlWriter {
 	    if (empty($orderBy['orderBy']) AND stristr($template,'ORDER BY')===FALSE) {
 		$orderBy['orderBy']='ORDER BY ?item';
 	    }
-	    $filterGraph = $this->getFilterGraph();
 #            $addToSelect = preg_replace('/ORDER BY/','',$orderBy['orderBy']);
 #	    $addToSelect = preg_replace('/DESC\(/i','',$addToSelect);
 #            $addToSelect = preg_replace('/\)/','',$addToSelect);
@@ -79,8 +78,11 @@ class SparqlWriter {
 #            $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
 #Antonis            return $this->fillQueryTemplate($template, $bindings)." LIMIT {$limit} OFFSET {$offset}";            
 #	    $template = substr($template,0, strrpos($template, "}"));
-#	    if (stripos($template, 'SELECT')!==false) {
-		$template = preg_replace('/GRAPH/'," {$filterGraph} GRAPH",$template,1);
+	    if (stripos($template, 'SELECT')!==false) {
+                $template = preg_replace('/(.*)(\}\s*GROUP BY.*)/i', "$1 {$this->getFilterGraph()} $2",$template,1);
+	    } else {
+                $template = preg_replace('/(.*\})\s*$/', "$1 {$this->getFilterGraph()} ",$template,1);
+	    }
 		$sparql= "SELECT DISTINCT ?item WHERE {" .  "{$template} } {$orderBy['orderBy']}";
 		if (strcasecmp($limit,"all")!==0) { 
 			$sparql.="  LIMIT {$limit} OFFSET {$offset}";
@@ -490,7 +492,7 @@ _SPARQL_;
     	$params = $this->_request->getParams();
     	$vars = $this->_config->getApiConfigVariableBindings();
     	$ep_vars = $this->_config->getEndpointConfigVariableBindings();
-    	$filterGraph = "{\n";
+    	$filterGraph = "";
     	
     	$count=1;//TODO ??
     	foreach ($params as $param_name => $param_value) {
@@ -498,8 +500,10 @@ _SPARQL_;
     			foreach ($vars as $var_name => $var_props) {
     				if ($param_name==$var_name AND $param_value !=""){
     					$filterPredicate = $this->findSuperProperty($var_props['uri']);
-
-    					if (stripos($param_value , "|")!== false){
+					if ($filterPredicate === API.'graphFilter'){
+						$this->getFilterGraphForGraphValue($param_value, $var_props, $ep_vars, $filterGraph);	
+					}
+    					elseif (stripos($param_value , "|")!== false){
     						$this->getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, $filterGraph);
     					}
     					else {
@@ -525,10 +529,13 @@ _SPARQL_;
     			}
     		}
     	}
-    	if ($filterGraph != "{\n"){
-    		$filterGraph .= "\n}";
+    	if ($filterGraph != ""){
     		return $filterGraph;
     	}
+    }
+
+    private function getFilterGraphForGraphValue($param_value, $var_props, $ep_vars, &$filterGraph){
+	$filterGraph = "FILTER ( {$var_props['sparqlVar']} = <{$ep_vars[$param_value]['uri']}> )";
     }
     
     private function getFilterForBoundaryValue($var_props, $var_name, $param_value, $relation, $isExclusive = FALSE, &$filterGraph){
@@ -552,6 +559,9 @@ _SPARQL_;
     		if (isset($ep_vars[$param_value]['uri'])) {
     			$token = '<' . $ep_vars[$token]['uri'] . '>';
     		}
+		elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
+                	$param_value = '<' . $param_value . '>';
+        	}
     		else {
     			if (is_numeric($token)) {
     				$token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
@@ -569,6 +579,9 @@ _SPARQL_;
     	if (isset($ep_vars[$param_value]['uri'])) {
     		$param_value = '<' . $ep_vars[$param_value]['uri'] . '>';
     	}
+	elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
+		$param_value = '<' . $param_value . '>';
+	}
     	else {
     		if (is_numeric($param_value)) {
     			$param_value = '"' . $param_value  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
@@ -577,7 +590,7 @@ _SPARQL_;
     			$param_value = '"' . $param_value  . '"';
     		}
     	}
-    	$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". } ";
+    	$filterGraph.= '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". }";
     }
     
     private function findSuperProperty($variableURI){
@@ -602,8 +615,8 @@ _SPARQL_;
 	    if ($this->_config->getEndpointType() == API.'ListEndpoint'){
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " .  $whereGraph  . " }"));
 	    }
-	    else {	
-            	$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/GRAPH/i',  $this->getFilterGraph() . "\n GRAPH", $whereGraph , 1) . " }"));
+	    else {
+            	$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/([^}]*\})([\s\}]*)$/', "$1 {$this->getFilterGraph()} $2", $whereGraph , 1) . " }"));
 	    }
             $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri);
@@ -619,16 +632,18 @@ _SPARQL_;
             return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
-            $query = preg_replace('/GRAPH/'," {$this->getFilterGraph()} GRAPH",$query,1);
+            $query = preg_replace('/(.*\})([\s\}]*)$/',"$1 {$this->getFilterGraph()} $2",$query);
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri);
-	    if (/*$this->_config->getEndpointType() == API.'ListEndpoint' */strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
-            	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+	    if (strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
+//            	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+		$filterGraph = "FILTER ( ";
             	foreach($uriList as $uri) {
-                	$expandedQuery .= "?item = <{$uri}> || ";
+                	$filterGraph .= "?item = <{$uri}> || ";
             	}
-            	$expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
-            	$expandedQuery .= ") }";
+            	$filterGraph = substr($filterGraph, 0, strlen($filterGraph) - 3);
+            	$filterGraph .= " ) ";
+		$expandedQuery = preg_replace('/(.*\})([\s\}])*$/',"} {$filterGraph} }",$expandedQuery);
 	    }
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
