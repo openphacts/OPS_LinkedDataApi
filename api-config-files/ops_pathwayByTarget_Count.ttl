@@ -58,7 +58,7 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
 		api:uriTemplate "/pathways/byTarget/count?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways/byTarget/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F51918c32-776d-4156-bc22-540cda2b1f44" ;
+		api:exampleRequestPath "/pathways/byTarget/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2Fac1191aa-d28f-4102-94ec-0b67b40aeade" ;
 		api:viewer <#pathwayByTargetCountViewer> ;
 		api:defaultViewer <#pathwayByTargetCountViewer> . ] .
 

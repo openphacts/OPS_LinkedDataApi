@@ -61,5 +61,5 @@ rdfs:label api:name "activity_type" ;
 SELECT COUNT( DISTINCT ?unit) AS ?count WHERE {
   GRAPH <http://www.openphacts.org/units>  {
    ?type chembl:hasQUDT ?unit  .
-  } } 
-}" .
+  } 
+}}" .

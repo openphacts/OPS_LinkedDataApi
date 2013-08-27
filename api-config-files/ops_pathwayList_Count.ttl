@@ -109,4 +109,6 @@ GRAPH <http://www.wikipathways.org> {
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
 	?organism_uri rdfs:label ?organism . 
-} } }" .
+  }
+ }
+}" .

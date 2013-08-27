@@ -44,7 +44,7 @@
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_name </span>;
         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:molecularWeight ?mass </span>;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span>.
 ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?targetComponent </span>;

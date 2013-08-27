@@ -68,7 +68,8 @@ ops:pathway_count ?count " ;
 SELECT DISTINCT ?item COUNT(?pathway) AS ?count WHERE {
   GRAPH <http://www.wikipathways.org>  {
    ?pathway wp:organism ?item  .
-  } } GROUP BY ?item
+  }
+ } GROUP BY ?item
 }
 GRAPH <http://www.wikipathways.org> {
 	?item rdfs:label ?label 
