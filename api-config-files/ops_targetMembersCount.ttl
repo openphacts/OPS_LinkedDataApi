@@ -80,5 +80,6 @@ GRAPH ?g {
 { ?item obo:C ?child_node }
 UNION { ?item obo:F ?child_node }
 UNION { ?item obo:P ?child_node }
-UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node } 
+UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
+	[] chembl:hasTarget ?item } 
 } }" .

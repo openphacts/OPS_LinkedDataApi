@@ -10,7 +10,6 @@
 	rdfs:label "Concept Class Hierarchies"@en ;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable _:hierarchy ;
 	api:variable <#input> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://purl.uniprot.org/enzyme/> ;
@@ -20,8 +19,8 @@
 	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology and the Gene Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get the parent nodes in the supported hierarchies for a given class URI." ;
-		api:description "A representation of all child nodes of the given class in the supportted hierarchies." ;
+		api:name "Parent nodes" ;
+		api:description "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl/target> ;
@@ -41,13 +40,6 @@
 <http://purl.uniprot.org/enzyme> api:name "enzyme" .
 <http://www.ebi.ac.uk/chebi> api:name "chebi" .
 <http://www.geneontology.org> api:name "go" .
-
-_:hierarchy api:name "root" ;
-	api:label "root" ;
-	api:value "Restrict results by hierarchy. Currently one of 'chembl', 'chebi', 'enzyme', 'go'" ;
-	api:filterVariable "?g_short" ;
-	rdfs:subPropertyOf api:graphFilter ;
-	a rdf:Property .
 
 <#input> api:name "uri" ;
         api:label "uri";

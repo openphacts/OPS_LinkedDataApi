@@ -19,8 +19,8 @@
 	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology and the Gene Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get the root classes for target classification schemes" ;
-		api:description "A representation of the root classes of the Protein Classification in Chembl." ;
+		api:name "Root nodes" ;
+		api:description "A representation of the root classes in each hierachy. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
 		api:itemTemplate "http://www.openphacts.org/api#conceptHierarchy" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl/target> ;

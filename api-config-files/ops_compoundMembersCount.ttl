@@ -22,7 +22,7 @@
 	api:description "An API configuration to return information about compounds." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Count members of Compound Class." ;
+		api:name "Count members of Compound Class" ;
 		api:description "The number of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
@@ -36,7 +36,7 @@
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
         rdfs:range rdfs:Resource .
 
 <#compoundMemberCountViewer> a api:Viewer ;
@@ -55,8 +55,8 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 GRAPH <http://ops.rsc-us.org> {
         ?compound_ocrs skos:exactMatch ?item
 }
-GRAPH <http://www.conceptwiki.org> {
+OPTIONAL {GRAPH <http://www.conceptwiki.org> {
         ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
-}
+} }
 } }" .

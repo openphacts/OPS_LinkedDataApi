@@ -36,8 +36,10 @@ class OpsIms {
 	else {
 		$variables = array(
 			'?chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
+			'?chembl_compound_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/molecule/' ,
 			'?uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
-			'?cw_target_uri'=>'http://www.conceptwiki.org/concept/'
+			'?cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
+                        '?cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
 			);
 		foreach ($variables AS $name => $pattern ){
 		    if (strpos($query, $name)!==false) {

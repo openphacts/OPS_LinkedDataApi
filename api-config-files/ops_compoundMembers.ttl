@@ -22,7 +22,7 @@
 	api:description "An API configuration to return information about compounds." ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "Members of Compound Class." ;
+		api:name "Members of Compound Class" ;
 		api:description "A list of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
@@ -39,10 +39,10 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 GRAPH <http://ops.rsc-us.org> {
         ?compound_ocrs skos:exactMatch ?item
 }
-GRAPH <http://www.conceptwiki.org> {
+OPTIONAL { GRAPH <http://www.conceptwiki.org> {
         ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
-}" 
+}}" 
 		];
 		api:viewer <#compoundMemberViewer> ;
 		api:defaultViewer <#compoundMemberViewer> ] .
@@ -52,7 +52,7 @@ GRAPH <http://www.conceptwiki.org> {
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
         rdfs:range rdfs:Resource .
 
 <#compoundMemberViewer> a api:Viewer ;
@@ -65,7 +65,7 @@ GRAPH <http://www.conceptwiki.org> {
 "GRAPH <http://ops.rsc-us.org> {
         ?compound_ocrs skos:exactMatch ?item
 }
-GRAPH <http://www.conceptwiki.org> {
+OPTIONAL { GRAPH <http://www.conceptwiki.org> {
         ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
-}" .
+} }" .

@@ -94,10 +94,10 @@
                         cheminf:CHEMINF_000399 ?inchi_key;
                         cheminf:CHEMINF_000018 ?smiles .
 	}
-	GRAPH <http://www.conceptwiki.org> {
+	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_ocrs ;
                         skos:prefLabel ?compound_name .
-        }" 
+        } }" 
 		];
 		api:viewer <#targetTreePharmaViewer> ;
 		api:defaultViewer <#targetTreePharmaViewer> ] .
@@ -234,10 +234,10 @@ chembl:pChembl api:name "pChembl" ;
                         a cheminf:CHEMINF_000367;
                         qudt:numericValue ?num_ro5_violations . }
         }
-        GRAPH <http://www.conceptwiki.org> {
+        OPTIONAL { GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_ocrs ;
                         skos:prefLabel ?compound_name .
-        }
+        } }
 	GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?item a chembl:Activity ;
                         chembl:hasAssay ?assay_uri ;

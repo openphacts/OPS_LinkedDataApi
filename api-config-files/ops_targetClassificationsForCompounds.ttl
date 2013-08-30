@@ -4,22 +4,16 @@
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix ops: <http://www.openphacts.org/api#> .
-@prefix cheminf: <http://semanticscience.org/resource/> .
-@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
-@prefix bibo: <http://purl.org/ontology/bibo/> .
-@prefix cito: <http://purl.org/spar/cito/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
 @prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
-@prefix goa: <http://www.semantic-systems-biology.org/ontology/rdf/GOA#> .
-@prefix sio: <http://semanticscience.org/resource/> .
-
+@prefix void: <http://rdfs.org/ns/void#> .
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable <#input> ;
+	api:variable _:hierarchy ;
 	api:variable chembl:organism ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
@@ -28,6 +22,7 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
+	api:variable <#input> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://purl.uniprot.org/enzyme/> ;
         api:dataset <http://www.geneontology.org> ;
@@ -37,6 +32,11 @@
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about targets." ;
 	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Classifications for interacting Compounds" ;
+		api:description "The classes Compounds that interact with the given target URI have been classified with. Currently only the ChEBI Ontology is supported. " ;
+		api:itemTemplate "{uri}" ;
+		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 		api:variable <http://www.openphacts.org/units/Millimolar> ;
 		api:variable <http://www.openphacts.org/units/Nanomolar> ;
@@ -62,72 +62,71 @@
 		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
-		a api:ItemEndpoint ;
-		api:name "Target Class Pharmacology Count" ;
-		api:description "The total number of  acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
-		api:itemTemplate "{uri}" ;
-		api:uriTemplate "/target/tree/pharmacology/count?uri={uri}" ;
-		api:exampleRequestPath "/target/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
-                api:exampleRequestPath "/target/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=IC50&activity_unit=nanomolar&assay_organism=Rattus%20norvegicus&target_organism=Rattus%20norvegicus&minEx-activity_value=50000&maxEx-activity_value=200000";
-		api:viewer <#targetTreePharmaCountViewer> ;
-		api:defaultViewer <#targetTreePharmaCountViewer> ] .
+		api:uriTemplate "/target/classificationsForCompounds?uri={uri}" ;
+		api:exampleRequestPath "/target/classificationsForCompounds?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FP00918" ;
+                api:exampleRequestPath "/target/classificationsForCompounds?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FP00918&activity_type=IC50" ;
+		api:viewer <#targetClassForCompoundViewer> ;
+		api:defaultViewer <#targetClassForCompoundViewer> ] .
 
-<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://purl.uniprot.org/enzyme/> api:label "Enzyme Classification" .
-<http://www.geneontology.org> api:name "Gene Ontology" .
+<http://www.ebi.ac.uk/chebi> api:label "ChEBI Ontoology" .
+
+<http://www.ebi.ac.uk/chebi> api:name "chebi" .
+
+_:hierarchy api:name "tree" ;
+	api:label "tree" ;
+	api:value "Restrict results by hierarchy. Currently the only allowed value is 'chebi'." ;
+	api:filterVariable "?g" ;
+	rdfs:subPropertyOf api:graphFilter ;
+	a rdf:Property .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A target URI.  e.g.: http://purl.uniprot.org/uniprot/P00918" ;
+        rdfs:range rdfs:Resource .
 
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
-	api:filterVariable "?assay_uri";
+	api:filterVariable "?assay";
 	a rdf:Property .
 
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
-	api:filterVariable "?target_chembl";
+	api:filterVariable "?chembl_target_uri";
 	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
 chembl:standardType api:name "activity_type" ;
 	api:label "activity_type" ;
-	api:filterVariable "?item";
+	api:filterVariable "?activity";
 	api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
         api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
-        api:filterVariable "?item";
+        api:filterVariable "?activity";
         a rdf:Property .
 
 chembl:standardValue api:name "activity_value" ;
 	api:label "activity_value" ;
 	api:value "Return activity values equal to this number." ;
-	api:filterVariable "?item";
+	api:filterVariable "?activity";
 	a rdf:Property .
 
 chembl:standardRelation api:name "relation" ;
         api:label "activity_relation" ;
         api:value ">, >=,= , < , <=" ;
-        api:filterVariable "?item";
+        api:filterVariable "?activity";
         a rdf:Property .
 
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
-	api:filterVariable "?item";
+	api:filterVariable "?activity";
         api:value "The pChembl value of an activity" ;
 	a rdf:Property .
 
-<#input> api:name "uri" ;
-        api:label "uri";
-        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ;
-        rdfs:range rdfs:Resource .
-
-
-<http://www.conceptwiki.org> api:label "ConceptWiki" .
-<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
@@ -154,38 +153,26 @@ chembl:pChembl api:name "pChembl" ;
 <http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
 <http://qudt.org/vocab/unit#Liter> api:name "liter" .
 
-<#targetTreePharmaCountViewer> a api:Viewer ;
-	api:name "targetTreePharmaCountViewer";
+<#targetClassForCompoundViewer> a api:Viewer ;
+	api:name "targetClassForCompoundViewer";
 	api:template 
-"?ops_item ops:targetPharmacologyTotalResults ?count . ";
+"?ops_item skos:exactMatch ?chembl_target_uri ;
+	skos:exactMatch ?cw_target_uri .
+?chembl_target_uri ops:interactsWithMoleculeOfClass ?chebi_class ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?cw_target_uri skos:prefLabel ?cw_label . 
+?chebi_class skos:prefLabel ?chebi_label ;
+	void:inDataset <http://www.ebi.ac.uk/chebi> . 
+<http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .";
 	api:where 
-"{
-SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
-	GRAPH ?g {
-		?class rdfs:subClassOf ?ops_item
-	}
-        GRAPH <http://www.ebi.ac.uk/chembl> {
-		{ ?target_chembl chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
-		{ ?target_chembl chembl:hasProteinClassification ?class} UNION 
-		{ ?target_chembl chembl:hasTargetComponent/skos:exactMatch ?uniprot 
-		GRAPH <http://www.openphacts.org/goa>{
-			{?uniprot obo:C ?class} UNION 
-			{?uniprot obo:F ?class} UNION 
-			{?uniprot obo:P ?class}
-		}}
-                ?assay_uri chembl:hasTarget ?target_chembl ;
-                        chembl:hasActivity ?item .
-                ?item chembl:hasMolecule ?compound_chembl .
-                ?target_chembl chembl:hasTargetComponent ?target_component .
-        }
-        GRAPH <http://ops.rsc-us.org> {
-                ?compound_ocrs skos:exactMatch ?compound_chembl .
-                ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
-                        cheminf:CHEMINF_000399 ?inchi_key;
-                        cheminf:CHEMINF_000018 ?smiles .
+"	GRAPH ?g {
+                ?chebi_class rdfs:label ?chebi_label
         }
         OPTIONAL { GRAPH <http://www.conceptwiki.org> {
-                ?compound_cw skos:exactMatch ?compound_ocrs ;
-                        skos:prefLabel ?compound_name .
+                ?cw_target_uri skos:prefLabel ?cw_label
         } }
-} }" .
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+		?assay chembl:hasTarget ?chembl_target_uri .
+		?activity chembl:hasAssay ?assay ;
+			chembl:hasMolecule/owl:sameAs ?chebi_class . 
+	}" 

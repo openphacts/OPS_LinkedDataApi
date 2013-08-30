@@ -47,7 +47,8 @@
 { ?item obo:C ?child_node }
 UNION { ?item obo:F ?child_node } 
 UNION { ?item obo:P ?child_node }
-UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node } " 
+UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
+	[] chembl:hasTarget ?item } " 
 		];
 		api:viewer <#targetMemberViewer> ;
 		api:defaultViewer <#targetMemberViewer> ] .
@@ -79,13 +80,15 @@ uniprot:organism api:name "target_organism_uri" ;
 
 <#targetMemberViewer> a api:Viewer ;
 	api:name "targetMemberViewer";
-	api:template "?item skos:prefLabel ?chembl_name ;
+	api:template 
+"?item skos:prefLabel ?chembl_name ;
 	chembl:targetOrganismName ?chembl_organism ;
 	a ?chembl_type ;
         skos:prefLabel ?uniprot_name, ?goa_name ;
 	uniprot:organism ?uniprot_organism ;
 	void:inDataset ?dataset .";
-	api:where "{ GRAPH <http://purl.uniprot.org> {
+	api:where 
+"{ GRAPH <http://purl.uniprot.org> {
 	?item rdfs:label ?uniprot_name
 	OPTIONAL { ?item uniprot:organism ?uniprot_organism }
 } }

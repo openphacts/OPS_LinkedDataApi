@@ -26,14 +26,14 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Target Classifications" ;
-		api:description "A page of classes the given target URI has been classified with. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. " ;
+		api:description "The classes the given target URI has been classified with. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. " ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl> ;
 		api:variable <http://www.geneontology.org> ;
 		api:uriTemplate "/target/classifications?uri={uri}" ;
-		api:exampleRequestPath "/target/classifications?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F36cf7334-84c4-4980-aa55-3f2a0ab70b21" ;
-                api:exampleRequestPath "/target/classifications?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F36cf7334-84c4-4980-aa55-3f2a0ab70b21&tree=go" ;
+		api:exampleRequestPath "/target/classifications?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FP14756" ;
+                api:exampleRequestPath "/target/classifications?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FP14756&tree=go" ;
 		api:viewer <#targetClassificationsViewer> ;
 		api:defaultViewer <#targetClassificationsViewer> ] .
 
@@ -54,7 +54,7 @@ _:hierarchy api:name "tree" ;
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A target URI.  e.g.: " ;
+        api:value "A target URI.  e.g.: http://purl.uniprot.org/uniprot/P14756" ;
         rdfs:range rdfs:Resource .
 
 <#targetClassificationsViewer> a api:Viewer ;
@@ -65,9 +65,9 @@ _:hierarchy api:name "tree" ;
 ?chembl_target_uri chembl:hasProteinClassification ?chembl_class ;
 	ops:hasEnzymeClassification ?enzyme_class ; 
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
-?uniprot_target_uri ops:goComponent ?go_component ; 
-	ops:goFunction ?go_function ;
-	ops:goProcess ?go_process ; 
+?uniprot_target_uri ops:hasGoComponent ?go_component ; 
+	ops:hasGoFunction ?go_function ;
+	ops:hasGoProcess ?go_process ; 
 	void:inDataset <http://www.openphacts.org/goa> .
 ?cw_target_uri skos:prefLabel ?cw_label . 
 ?chembl_class skos:prefLabel ?chembl_label ;
@@ -83,32 +83,34 @@ _:hierarchy api:name "tree" ;
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
-	api:where "{ GRAPH <http://www.ebi.ac.uk/chembl> {
-	{ ?chembl_target_uri chembl:hasProteinClassification ?chembl_class 
-        GRAPH ?g { 
-		?chembl_class rdfs:label ?chembl_label 
-	} } UNION
-	{ ?chembl_target_uri chembl:hasTargetComponent/chembl:targetCmptXref ?enzyme_class .
-	?enzyme_class a chembl:EnzymeClassRef 
-	GRAPH ?g {
-        	?enzyme_class uniprot:name ?enzyme_label 
-	}}
-	?chembl_target_uri dcterms:title ?target_name 
+	api:where 
+"OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+	?cw_target_uri skos:prefLabel ?cw_label
+} } 
+{ GRAPH <http://www.ebi.ac.uk/chembl> {
+        { ?chembl_target_uri chembl:hasProteinClassification ?chembl_class
+        GRAPH ?g {
+                ?chembl_class rdfs:label ?chembl_label
+        } } UNION
+        { ?chembl_target_uri chembl:hasTargetComponent/chembl:targetCmptXref ?enzyme_class .
+        ?enzyme_class a chembl:EnzymeClassRef
+        GRAPH ?g {
+                ?enzyme_class uniprot:name ?enzyme_label
+        }}
+        ?chembl_target_uri dcterms:title ?target_name
 } } UNION {
 GRAPH <http://www.openphacts.org/goa> {
-	{ ?uniprot_target_uri obo:C ?go_component 
-	GRAPH ?g {
-		?go_component rdfs:label ?go_c_label 
-	} } UNION
+        { ?uniprot_target_uri obo:C ?go_component
+        GRAPH ?g {
+                ?go_component rdfs:label ?go_c_label
+        } } UNION
         { ?uniprot_target_uri obo:F ?go_function
-	GRAPH ?g {
-		?go_function rdfs:label ?go_f_label 
-	} } UNION
-        { ?uniprot_target_uri obo:P ?go_process 
-	GRAPH ?g {
-		?go_process rdfs:label ?go_p_label 
-	} }
-} }
-GRAPH <http://www.conceptwiki.org> {
-	?cw_target_uri skos:prefLabel ?cw_label
+        GRAPH ?g {
+                ?go_function rdfs:label ?go_f_label
+        } } UNION
+        { ?uniprot_target_uri obo:P ?go_process
+        GRAPH ?g {
+                ?go_process rdfs:label ?go_p_label
+        } } 
+} . 
 }" 

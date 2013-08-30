@@ -108,9 +108,9 @@
         void:inDataset <http://linkedlifedata.com/resource/drugbank>.
 " ;
 	api:where "
-	GRAPH <http://www.conceptwiki.org> {
+	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
 		?cw_uri skos:prefLabel ?target_name.
-	}
+	} }
 	GRAPH <http://purl.uniprot.org> {
 		?uniprot_uri uniprot:existence ?existence .
 		OPTIONAL { ?uniprot_uri uniprot:organism ?organism . }

@@ -190,11 +190,11 @@ chembl:pChembl api:name "pChembl" ;
 	api:selector [
 		api:where 
 "GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?assay_uri chembl:hasTarget ?chembl_uri .
+        ?assay_uri chembl:hasTarget ?chembl_target_uri .
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
-	OPTIONAL { ?chembl_uri dcterms:title ?target_name_chembl }
-        OPTIONAL { ?chembl_uri chembl:assayOrganismName ?target_organism }
+	OPTIONAL { ?chembl_target_uri dcterms:title ?target_name_chembl }
+        OPTIONAL { ?chembl_target_uri chembl:assayOrganismName ?target_organism }
         OPTIONAL { ?assay_uri chembl:targetOrganismName ?assay_organism }
         OPTIONAL { ?assay_uri dcterms:description ?assay_description }
 	OPTIONAL { ?item chembl:publishedType ?published_type }
@@ -223,13 +223,12 @@ GRAPH <http://ops.rsc-us.org> {
         OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
-
 }
-GRAPH <http://www.conceptwiki.org> {
-        ?cw_uri skos:prefLabel ?target_name .
+OPTIONAL {GRAPH <http://www.conceptwiki.org> {
+        ?cw_target_uri skos:prefLabel ?target_name .
         ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
-}" ;
+} }" ;
 	] ;
 	api:defaultViewer <#targetPharmacologyListViewer> .
 
@@ -274,7 +273,12 @@ GRAPH <http://www.conceptwiki.org> {
 	void:inDataset <http://www.conceptwiki.org/> .
 " ; 
 	api:where 
-"GRAPH <http://www.ebi.ac.uk/chembl> {
+"OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+        ?cw_uri skos:prefLabel ?target_name .
+        ?compound_cw skos:exactMatch ?compound_ocrs ;
+                skos:prefLabel ?compound_name .
+} }
+GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_uri .
         ?assay_uri chembl:hasActivity ?item .
         ?item chembl:hasMolecule ?compound_chembl .
@@ -309,9 +313,4 @@ GRAPH <http://ops.rsc-us.org> {
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
 
-}
-GRAPH <http://www.conceptwiki.org> {
-        ?cw_uri skos:prefLabel ?target_name .
-        ?compound_cw skos:exactMatch ?compound_ocrs ;
-                skos:prefLabel ?compound_name .
 }" .
