@@ -205,10 +205,9 @@ chembl:pChembl api:name "pChembl" ;
                         ?item a chembl:Activity ;
                         	chembl:hasMolecule ?chembl_uri ;
                                 chembl:hasAssay ?assay_uri .
-                        OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri .
-                                OPTIONAL { ?target_uri dcterms:title ?target_name }
-                                OPTIONAL { ?target_uri chembl:organismName ?target_organism }
-                        }
+                        ?assay_uri chembl:hasTarget ?target_uri .
+                        OPTIONAL { ?target_uri dcterms:title ?target_name }
+                        OPTIONAL { ?target_uri chembl:organismName ?target_organism }
                         OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
                         OPTIONAL { ?assay_uri dcterms:description ?assay_description }
                         OPTIONAL { ?item chembl:publishedType ?published_type }

@@ -26,7 +26,7 @@
 	api:description "An API configuration to return information about targets." ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "Members of Target Class." ;
+		api:name "Members of Target Class" ;
 		api:description "A list of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
@@ -44,9 +44,12 @@
 		IF(?g = <http://www.ebi.ac.uk/chembl/target/inference>, <http://www.ebi.ac.uk/chembl/target> ,
 			IF(?g = <http://www.geneontology.org/inference>, <http://www.geneontology.org> , 'Error'))) AS ?g_short )
 }
-{ ?item obo:C ?child_node }
-UNION { ?item obo:F ?child_node } 
-UNION { ?item obo:P ?child_node }
+{ ?item obo:C ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:F ?child_node .
+?item uniprot:reviewed true } 
+UNION { ?item obo:P ?child_node .
+?item uniprot:reviewed true }
 UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
 	[] chembl:hasTarget ?item } " 
 		];
@@ -88,7 +91,22 @@ uniprot:organism api:name "target_organism_uri" ;
 	uniprot:organism ?uniprot_organism ;
 	void:inDataset ?dataset .";
 	api:where 
-"{ GRAPH <http://purl.uniprot.org> {
+"GRAPH ?g {
+        ?child_node rdfs:subClassOf ?ops_item .
+        FILTER ( isURI(?child_node) )
+        BIND (IF(?g = <http://purl.uniprot.org/enzyme/inference>, <http://purl.uniprot.org/enzyme> ,
+                IF(?g = <http://www.ebi.ac.uk/chembl/target/inference>, <http://www.ebi.ac.uk/chembl/target> ,
+                        IF(?g = <http://www.geneontology.org/inference>, <http://www.geneontology.org> , 'Error'))) AS ?g_short )
+}
+{ ?item obo:C ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:F ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:P ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
+        [] chembl:hasTarget ?item } 
+{ GRAPH <http://purl.uniprot.org> {
 	?item rdfs:label ?uniprot_name
 	OPTIONAL { ?item uniprot:organism ?uniprot_organism }
 } }

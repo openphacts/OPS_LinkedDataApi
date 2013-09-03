@@ -252,7 +252,10 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 ?compound_chembl ?full_mwt ?molweight ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> ." ;
 	api:where 
-"		GRAPH <http://ops.rsc-us.org> {
+"		GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
+        		?class rdfs:subClassOf ?ops_item
+		}
+		GRAPH <http://ops.rsc-us.org> {
                         ?compound_ocrs skos:exactMatch ?compound_chembl .
                         ?compound_ocrs cheminf:CHEMINF_000018 ?smiles ;
                                 cheminf:CHEMINF_000396 ?inchi ;

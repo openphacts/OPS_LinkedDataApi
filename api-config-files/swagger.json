@@ -59,8 +59,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -83,8 +107,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_format",
@@ -529,8 +577,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -547,8 +619,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_format",
@@ -641,8 +737,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -665,8 +785,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_page",
@@ -857,8 +1001,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -875,8 +1043,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_format",
@@ -975,8 +1167,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -993,8 +1209,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_page",
@@ -1628,7 +1868,7 @@
           "parameters": [
             {
               "name":  "uri" ,
-              "description":  "A target URI. e.g.: http://www.conceptwiki.org/concept/51918c32-776d-4156-bc22-540cda2b1f44" ,
+              "description":  "A target URI. e.g.: http://identifiers.org/ncbigene/282478" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -1710,7 +1950,7 @@
           "parameters": [
             {
               "name":  "uri" ,
-              "description":  "A target URI. e.g.: http://www.conceptwiki.org/concept/51918c32-776d-4156-bc22-540cda2b1f44" ,
+              "description":  "A target URI. e.g.: http://identifiers.org/ncbigene/282478" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -2925,8 +3165,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -2949,8 +3213,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_format",
@@ -3249,7 +3537,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Members of Target Class." ,
+          "summary":  "Members of Target Class" ,
           "description":  "A list of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<hr>",
           "group": "Target" ,
           "parameters": [
@@ -3425,8 +3713,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -3449,8 +3761,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_format",
@@ -3555,8 +3891,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -3579,8 +3939,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_page",
@@ -3617,8 +4001,6 @@
                   "DESC(?compound_name)",
                   "?compound_ocrs",
                   "DESC(?compound_ocrs)",
-                  "?cw_target_uri",
-                  "DESC(?cw_target_uri)",
                   "?cw_uri",
                   "DESC(?cw_uri)",
                   "?doc_uri",
@@ -3781,8 +4163,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -3805,8 +4211,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_format",
@@ -3905,8 +4335,32 @@
             {
               "name":  "activity_value" ,
               "description":  "Return activity values equal to this number." ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-activity_value" ,
+              "description":  "Return activity values greater than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-activity_value" ,
+              "description":  "Return activity values greater than this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-activity_value" ,
+              "description":  "Return activity values less than or equal to this number." ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-activity_value" ,
+              "description":  "Return activity values less than this number." ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name":  "activity_unit" ,
@@ -3929,8 +4383,32 @@
             {
               "name":  "pChembl" ,
               "description":  "The pChembl value of an activity" ,
-              "paramType": "query",
-              "dataType": "string"
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-pChembl" ,
+              "description":  "The pChembl value of an activity" ,
+              "dataType": "double",
+              "paramType": "query"
             },
             {
               "name": "_page",

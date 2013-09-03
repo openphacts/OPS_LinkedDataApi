@@ -193,42 +193,13 @@ chembl:pChembl api:name "pChembl" ;
         ?assay_uri chembl:hasTarget ?chembl_target_uri .
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
-	OPTIONAL { ?chembl_target_uri dcterms:title ?target_name_chembl }
-        OPTIONAL { ?chembl_target_uri chembl:assayOrganismName ?target_organism }
-        OPTIONAL { ?assay_uri chembl:targetOrganismName ?assay_organism }
-        OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-	OPTIONAL { ?item chembl:publishedType ?published_type }
-        OPTIONAL { ?item chembl:publishedRelation ?published_relation }
-        OPTIONAL { ?item chembl:publishedValue ?published_value }
-        OPTIONAL { ?item chembl:publishedUnits ?published_unit }
-        OPTIONAL { ?item chembl:standardType ?standard_type }
-	OPTIONAL { ?item chembl:standardRelation ?standard_relation }
-	OPTIONAL { ?item chembl:standardValue ?standard_value }
-	OPTIONAL { ?item chembl:standardUnits ?standard_unit }
-	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
-	OPTIONAL { ?item chembl:pChembl ?pChembl }
-        OPTIONAL { ?item chembl:hasDocument ?doc_uri .
-		OPTIONAL { ?doc_uri owl:sameAs ?doi }
-		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
-	}	
-        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
-              		?full_mwt a sio:CHEMINF_000198 ;
- 	      			sio:SIO_000300 ?molweight. }
 }
 GRAPH <http://ops.rsc-us.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl .
         ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
                 cheminf:CHEMINF_000018 ?smiles .
-        OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
-                a cheminf:CHEMINF_000367;
-                qudt:numericValue ?num_ro5_violations . }
-}
-OPTIONAL {GRAPH <http://www.conceptwiki.org> {
-        ?cw_target_uri skos:prefLabel ?target_name .
-        ?compound_cw skos:exactMatch ?compound_ocrs ;
-                skos:prefLabel ?compound_name .
-} }" ;
+}" ;
 	] ;
 	api:defaultViewer <#targetPharmacologyListViewer> .
 

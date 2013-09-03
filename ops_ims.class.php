@@ -40,6 +40,7 @@ class OpsIms {
 			'?uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
 			'?cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
                         '?cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
+			'?ocrs_compound_uri'=>'http://ops.rsc-us.org/'
 			);
 		foreach ($variables AS $name => $pattern ){
 		    if (strpos($query, $name)!==false) {

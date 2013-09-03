@@ -97,7 +97,7 @@ wp:organism api:name "pathway_organism" ;
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/51918c32-776d-4156-bc22-540cda2b1f44" ;
+        api:value "A target URI. e.g.: http://identifiers.org/ncbigene/282478" ;
         rdfs:range rdfs:Resource .
 
 <#pathwayByTargetCountViewer> a api:Viewer ;

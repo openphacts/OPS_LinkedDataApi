@@ -182,6 +182,6 @@ chembl:pChembl api:name "pChembl" ;
                 ?item a chembl:Activity ;
                         chembl:hasMolecule ?chembl_uri ;
                         chembl:hasAssay ?assay_uri .
-                OPTIONAL { ?assay_uri chembl:hasTarget ?target_uri . }
+                ?assay_uri chembl:hasTarget ?target_uri .
          } 
 } }" .
