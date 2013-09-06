@@ -89,6 +89,7 @@
 	uniprot:organism ?organism ;
 	uniprot:sequence ?sequence ;
 	uniprot:Function_Annotation ?function ;
+	ops:interactsWith ?inter_prot ;
 	uniprot:classifiedWith ?class ;
 	uniprot:alternativeName ?alt_name ;
 	uniprot:mass ?mass ;
@@ -96,6 +97,7 @@
 	rdfs:seeAlso ?target_pdb ;
 	rdfs:seeAlso ?ppi ;
         void:inDataset <http://purl.uniprot.org> .
+?inter_prot rdfs:label ?inter_label .
 ?chembl_uri chembl:hasTargetComponent ?targetComponent ;
 	a ?target_type ;
 	rdfs:label ?synonym ;	
@@ -122,6 +124,11 @@
 		OPTIONAL { ?uniprot_uri uniprot:annotation ?fun_uri .
 			?fun_uri a uniprot:Function_Annotation ;
 			rdfs:comment ?function . }
+		OPTIONAL { ?intact1 owl:sameAs ?uniprot_uri .
+			?interaction uniprot:participant ?intact1, ?intact2 .
+			FILTER(?intact1!=?intact2)
+			?intact2 owl:sameAs ?inter_prot .
+			?inter_prot rdfs:label ?inter_label . }
 		OPTIONAL { ?uniprot_uri uniprot:classifiedWith ?class . }
 		OPTIONAL { ?uniprot_uri uniprot:alternativeName ?alt_name_uri .
 			?alt_name_uri uniprot:fullName ?alt_name . }
