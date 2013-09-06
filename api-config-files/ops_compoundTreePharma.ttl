@@ -35,6 +35,7 @@
  	api:variable chembl:hasQUDT ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:pChembl ;
+        api:variable _:type ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
@@ -74,6 +75,22 @@
 <http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
 <http://qudt.org/vocab/unit#Liter> api:name "liter" .
 
+<http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> api:name "single_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> api:name "protein_complex_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> api:name "protein_family" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> api:name "protein_selectivity_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> api:name "protein_complex" .
+<http://rdf.ebi.ac.uk/terms/chembl#Organism> api:name "organism" .
+<http://rdf.ebi.ac.uk/terms/chembl#CellLine> api:name "cell_line" .
+<http://rdf.ebi.ac.uk/terms/chembl#Tissue> api:name "tissue" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> api:name "ppi" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> api:name "unknown" .
+<http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> api:name "nucleic_acid" .
+<http://rdf.ebi.ac.uk/terms/chembl#SubCellular> api:name "sub_cellular" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> api:name "unclassified" .
+<http://rdf.ebi.ac.uk/terms/chembl#ADMET> api:name "admet" .
+<http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
 
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -118,6 +135,14 @@ chembl:pChembl api:name "pChembl" ;
         api:value "The pChembl value of an activity" ;
 	a rdf:Property .
 
+_:type api:name "target_type" ;
+        api:label "target_type" ;
+        api:filterVariable "?target_uri";
+        api:value "One of the types listed at /target/types. e.g. single_protein" ;
+        rdfs:subPropertyOf rdf:type ;
+        a rdf:Property .
+
+
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
@@ -150,6 +175,22 @@ chembl:pChembl api:name "pChembl" ;
 	api:variable <http://qudt.org/vocab/unit#Millimeter> ;
 	api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 	api:variable <http://qudt.org/vocab/unit#Liter> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#Organism> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#CellLine> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#Tissue> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#SubCellular> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ADMET> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
+        api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 	api:name "Compound Class Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values for a given Compound class. Currently only the ChEBI Ontology is supported." ;
 	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\">chembl:hasMolecule ?compound_chembl</span> ;
@@ -238,9 +279,14 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_uri dcterms:title ?target_name ;
 	chembl:targetOrganismName ?target_organism ;
+        chembl:hasTargetComponent ?protein ;
+        a ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> . 
 ?compound_chembl skos:exactMatch ?compound_cw ;
 		skos:exactMatch ?class .
+?protein skos:exactMatch ?cw_target .
+?cw_target skos:prefLabel ?protein_name ;
+        void:inDataset <http://www.conceptwiki.org> .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
 ?compound_chembl skos:exactMatch ?compound_ocrs .
@@ -274,10 +320,17 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
                 		chembl:hasAssay ?assay_uri .
 			?compound_chembl owl:sameAs ?class .
         		?assay_uri chembl:hasTarget ?target_uri .
+		        ?target_uri a ?target_type .
         		OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         		OPTIONAL { ?assay_uri dcterms:description ?assay_description }
         		OPTIONAL { ?target_uri dcterms:title ?target_name }
         		OPTIONAL { ?target_uri chembl:organismName ?target_organism }
+		        OPTIONAL { ?target_uri chembl:hasTargetComponent ?protein .
+		                OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+                		        ?cw_target skos:exactMatch ?protein ;
+                                		skos:prefLabel ?protein_name
+		                } }
+		        }
 			OPTIONAL { ?item chembl:publishedType ?published_type }
 			OPTIONAL { ?item chembl:publishedRelation ?published_relation }
 			OPTIONAL { ?item chembl:publishedValue ?published_value }

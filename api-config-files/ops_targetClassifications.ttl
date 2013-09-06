@@ -71,7 +71,7 @@ _:hierarchy api:name "tree" ;
 	void:inDataset <http://www.openphacts.org/goa> .
 ?cw_target_uri skos:prefLabel ?cw_label . 
 ?chembl_class skos:prefLabel ?chembl_label ;
-	void:inDataset <http://www.ebi.ac.uk/chembl/target> . 
+	void:inDataset <http://www.ebi.ac.uk/chembl> . 
 ?enzyme_class skos:prefLabel ?enzyme_label ;
 	void:inDataset <http://purl.uniprot.org/enzyme> .
 ?go_component skos:prefLabel ?go_c_label ;

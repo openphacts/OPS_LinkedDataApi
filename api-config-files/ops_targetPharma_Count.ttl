@@ -31,6 +31,7 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
+        api:variable _:type ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
@@ -72,6 +73,22 @@
 		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Organism> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#CellLine> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Tissue> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#SubCellular> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ADMET> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 		api:exampleRequestPath "/target/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c";
 		api:exampleRequestPath "/target/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=1&activity_unit=nanomolar&assay_organism=Mus%20musculus";
 		api:viewer <#targetPharmacologyCountViewer> ; 
@@ -108,6 +125,22 @@
 <http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
 <http://qudt.org/vocab/unit#Liter> api:name "liter" .
 
+<http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> api:name "single_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> api:name "protein_complex_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> api:name "protein_family" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> api:name "protein_selectivity_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> api:name "protein_complex" .
+<http://rdf.ebi.ac.uk/terms/chembl#Organism> api:name "organism" .
+<http://rdf.ebi.ac.uk/terms/chembl#CellLine> api:name "cell_line" .
+<http://rdf.ebi.ac.uk/terms/chembl#Tissue> api:name "tissue" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> api:name "ppi" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> api:name "unknown" .
+<http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> api:name "nucleic_acid" .
+<http://rdf.ebi.ac.uk/terms/chembl#SubCellular> api:name "sub_cellular" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> api:name "unclassified" .
+<http://rdf.ebi.ac.uk/terms/chembl#ADMET> api:name "admet" .
+<http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
 
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -152,6 +185,13 @@ chembl:pChembl api:name "pChembl" ;
 	api:filterVariable "?item";
         api:value "The pChembl value of an activity" ;
 	a rdf:Property .
+
+_:type api:name "target_type" ;
+        api:label "target_type" ;
+        api:filterVariable "?chembl_uri";
+        api:value "One of the types listed at /target/types. e.g. single_protein" ;
+	rdfs:subPropertyOf rdf:type ;
+        a rdf:Property .
 
 <#input> api:name "uri" ;
 	api:label "uri";

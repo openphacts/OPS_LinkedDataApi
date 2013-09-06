@@ -28,6 +28,7 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
+        api:variable _:type ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://purl.uniprot.org/enzyme/> ;
         api:dataset <http://www.geneontology.org> ;
@@ -62,6 +63,22 @@
 		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Organism> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#CellLine> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Tissue> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#SubCellular> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ADMET> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 		a api:ItemEndpoint ;
 		api:name "Target Class Pharmacology Count" ;
 		api:description "The total number of  acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
@@ -119,11 +136,17 @@ chembl:pChembl api:name "pChembl" ;
         api:value "The pChembl value of an activity" ;
 	a rdf:Property .
 
+_:type api:name "target_type" ;
+        api:label "target_type" ;
+        api:filterVariable "?target_chembl";
+        api:value "One of the types listed at /target/types. e.g. single_protein" ;
+	rdfs:subPropertyOf rdf:type ;
+        a rdf:Property .
+
 <#input> api:name "uri" ;
         api:label "uri";
         api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ;
         rdfs:range rdfs:Resource .
-
 
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
@@ -154,6 +177,23 @@ chembl:pChembl api:name "pChembl" ;
 <http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
 <http://qudt.org/vocab/unit#Liter> api:name "liter" .
 
+<http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> api:name "single_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> api:name "protein_complex_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> api:name "protein_family" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> api:name "protein_selectivity_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> api:name "protein_complex" .
+<http://rdf.ebi.ac.uk/terms/chembl#Organism> api:name "organism" .
+<http://rdf.ebi.ac.uk/terms/chembl#CellLine> api:name "cell_line" .
+<http://rdf.ebi.ac.uk/terms/chembl#Tissue> api:name "tissue" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> api:name "ppi" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> api:name "unknown" .
+<http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> api:name "nucleic_acid" .
+<http://rdf.ebi.ac.uk/terms/chembl#SubCellular> api:name "sub_cellular" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> api:name "unclassified" .
+<http://rdf.ebi.ac.uk/terms/chembl#ADMET> api:name "admet" .
+<http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
+
 <#targetTreePharmaCountViewer> a api:Viewer ;
 	api:name "targetTreePharmaCountViewer";
 	api:template 
@@ -164,20 +204,6 @@ SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
 	}
-        GRAPH <http://www.ebi.ac.uk/chembl> {
-		{ ?target_chembl chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
-		{ ?target_chembl chembl:hasProteinClassification ?class} UNION 
-		{ ?target_chembl chembl:hasTargetComponent/skos:exactMatch ?uniprot 
-		GRAPH <http://www.openphacts.org/goa>{
-			{?uniprot obo:C ?class} UNION 
-			{?uniprot obo:F ?class} UNION 
-			{?uniprot obo:P ?class}
-		}}
-                ?assay_uri chembl:hasTarget ?target_chembl ;
-                        chembl:hasActivity ?item .
-                ?item chembl:hasMolecule ?compound_chembl .
-                ?target_chembl chembl:hasTargetComponent ?target_component .
-        }
         GRAPH <http://ops.rsc-us.org> {
                 ?compound_ocrs skos:exactMatch ?compound_chembl .
                 ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
@@ -188,4 +214,18 @@ SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
                 ?compound_cw skos:exactMatch ?compound_ocrs ;
                         skos:prefLabel ?compound_name .
         } }
+        GRAPH <http://www.ebi.ac.uk/chembl> {
+                { ?target_chembl chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
+                { ?target_chembl chembl:hasProteinClassification ?class} UNION
+                { ?target_chembl chembl:hasTargetComponent/skos:exactMatch ?uniprot
+                GRAPH <http://www.openphacts.org/goa>{
+                        {?uniprot obo:C ?class} UNION
+                        {?uniprot obo:F ?class} UNION
+                        {?uniprot obo:P ?class}
+                }}
+                ?assay_uri chembl:hasTarget ?target_chembl ;
+                        chembl:hasActivity ?item .
+                ?item chembl:hasMolecule ?compound_chembl .
+                ?target_chembl chembl:hasTargetComponent ?target_component .
+        }
 } }" .
