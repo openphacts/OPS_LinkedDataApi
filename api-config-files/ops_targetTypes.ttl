@@ -1,0 +1,79 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
+
+<#target> a api:API ;
+        rdfs:label "Target"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:dataset <http://www.conceptwiki.org> ;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
+	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:vocabulary <http://www.openphacts.org/api#> ;
+	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
+	api:description "An API configuration to return information about targets" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Target Types" ;
+		api:description "A list of target types in the LDC." ;
+		api:uriTemplate "/target/types" ;
+        	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
+		api:exampleRequestPath "/target/types";
+		api:viewer <#targetTypesViewer> ; 
+		api:defaultViewer <#targetTypesViewer> . ] .
+
+<http://www.openphacts.org/api#> api:label "ops" .
+<http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+
+<#targetTypesViewer> a api:Viewer ;
+	api:name "targetTypesViewer" ;
+	api:template 
+"<http://www.ebi.ac.uk/chembl> ops:hasTargetType ?target_type .
+?target_type ops:targetCount ?target_count .
+<http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> rdfs:label 'single_protein' .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> rdfs:label 'protein_complex_group' .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> rdfs:label 'protein_family' .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> rdfs:label 'protein_selectivity_group' .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> rdfs:label 'protein_complex' .
+<http://rdf.ebi.ac.uk/terms/chembl#Organism> rdfs:label 'organism' .
+<http://rdf.ebi.ac.uk/terms/chembl#CellLine> rdfs:label 'cell_line' .
+<http://rdf.ebi.ac.uk/terms/chembl#Tissue> rdfs:label 'tissue' .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> rdfs:label 'ppi' .
+<http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> rdfs:label 'unknown' .
+<http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> rdfs:label 'nucleic_acid' .
+<http://rdf.ebi.ac.uk/terms/chembl#SubCellular> rdfs:label 'sub_cellular' .
+<http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> rdfs:label 'unclassified' .
+<http://rdf.ebi.ac.uk/terms/chembl#ADMET> rdfs:label 'admet' .
+<http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> rdfs:label 'chimeric_protein' .
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> rdfs:label 'phenotype' ." ; 
+	api:where
+"{ SELECT DISTINCT ?target_type (COUNT(DISTINCT ?chembl_target) AS ?target_count) WHERE {
+GRAPH <http://www.ebi.ac.uk/chembl> {
+        [] chembl:hasTarget ?chembl_target .
+	?chembl_target a ?target_type .
+}
+} GROUP BY ?target_type  
+}" .
