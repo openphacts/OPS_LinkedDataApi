@@ -186,6 +186,12 @@ do
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }

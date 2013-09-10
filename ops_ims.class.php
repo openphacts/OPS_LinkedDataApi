@@ -2,7 +2,7 @@
 
 class OpsIms {
 
-    function expandQuery ( $query , $input_uri, $lensURI ) {
+    function expandQuery ( $query , $input_uri, $lens ) {
         $variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
         
         $params='';
@@ -20,11 +20,11 @@ class OpsIms {
             $url .= '&parameter=' ;
             $url .= urlencode($params);
             $url .= '&lensUri=';
-            if (empty($lensURI)){
+            if (empty($lens)){
                 $url .= 'Default';
             }
             else{
-                $url .= $lensURI;
+                $url .= $lens;
             }
             
             $ch = curl_init($url);
@@ -63,11 +63,11 @@ class OpsIms {
                         $url .= '&rdfFormat=Turtle';
                         $url .= "&targetUriPattern={$pattern}";
                         $url .= '&lensUri=';
-                        if ($lensURI==''){
+                        if ($lens==''){
                             $url .= 'Default';
                         }
                         else{
-                            $url .= $lensURI;
+                            $url .= $lens;
                         }
                         
                         $ch = curl_init($url);

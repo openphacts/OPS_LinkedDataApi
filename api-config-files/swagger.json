@@ -3,6 +3,77 @@
   "apiVersion": "v1.3",
   "apis": [
     {
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "path": "/compound/classificationsForTargets" ,
       "operations": [
         {
@@ -175,6 +246,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -257,6 +334,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -333,6 +416,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -408,6 +497,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -520,6 +615,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -647,6 +748,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -687,6 +794,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -698,7 +811,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given compound<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?standard_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?standard_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?standard_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?standard_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTarget ?target_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:hasDescription ?assay_description  </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?chembl_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span>.<br> ?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given compound<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?standard_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?standard_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?standard_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?standard_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTarget ?target_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:hasDescription ?assay_description  </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?chembl_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span><br><br><hr>",
           "group": "Compound" ,
           "parameters": [
             {
@@ -813,6 +926,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_page",
               "description": "A number; the page that should be viewed",
               "dataType": "integer",
@@ -837,24 +956,32 @@
                   "DESC(?assay_uri)",
                   "?bNode1",
                   "DESC(?bNode1)",
+                  "?chembl_compound_uri",
+                  "DESC(?chembl_compound_uri)",
                   "?chembl_uri",
                   "DESC(?chembl_uri)",
                   "?compound_name",
                   "DESC(?compound_name)",
+                  "?cw_compound_uri",
+                  "DESC(?cw_compound_uri)",
+                  "?cw_target",
+                  "DESC(?cw_target)",
                   "?cw_uri",
                   "DESC(?cw_uri)",
+                  "?db_compound_uri",
+                  "DESC(?db_compound_uri)",
                   "?db_uri",
                   "DESC(?db_uri)",
                   "?doc_uri",
                   "DESC(?doc_uri)",
                   "?doi",
                   "DESC(?doi)",
+                  "?drug_name",
+                  "DESC(?drug_name)",
                   "?drugType",
                   "DESC(?drugType)",
                   "?drugType_uri",
                   "DESC(?drugType_uri)",
-                  "?drug_name",
-                  "DESC(?drug_name)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchiKey",
@@ -865,12 +992,18 @@
                   "DESC(?molweight)",
                   "?num_ro5_violations",
                   "DESC(?num_ro5_violations)",
+                  "?ocrs_compound_uri",
+                  "DESC(?ocrs_compound_uri)",
                   "?ocrs_uri",
                   "DESC(?ocrs_uri)",
                   "?pChembl",
                   "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
+                  "?protein",
+                  "DESC(?protein)",
+                  "?protein_name",
+                  "DESC(?protein_name)",
                   "?published_relation",
                   "DESC(?published_relation)",
                   "?published_type",
@@ -895,6 +1028,8 @@
                   "DESC(?target_name)",
                   "?target_organism",
                   "DESC(?target_organism)",
+                  "?target_type",
+                  "DESC(?target_type)",
                   "?target_uri",
                   "DESC(?target_uri)"
                 ],
@@ -944,6 +1079,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1071,6 +1212,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -1110,6 +1257,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1237,6 +1390,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_page",
               "description": "A number; the page that should be viewed",
               "dataType": "integer",
@@ -1269,6 +1428,8 @@
                   "DESC(?compound_name)",
                   "?compound_ocrs",
                   "DESC(?compound_ocrs)",
+                  "?cw_target",
+                  "DESC(?cw_target)",
                   "?document",
                   "DESC(?document)",
                   "?doi",
@@ -1291,6 +1452,10 @@
                   "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
+                  "?protein",
+                  "DESC(?protein)",
+                  "?protein_name",
+                  "DESC(?protein_name)",
                   "?published_relation",
                   "DESC(?published_relation)",
                   "?published_type",
@@ -1315,6 +1480,8 @@
                   "DESC(?target_name)",
                   "?target_organism",
                   "DESC(?target_organism)",
+                  "?target_type",
+                  "DESC(?target_type)",
                   "?target_uri",
                   "DESC(?target_uri)"
                 ],
@@ -1364,6 +1531,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1433,6 +1606,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1515,6 +1694,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1646,6 +1831,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -1727,6 +1918,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1852,6 +2049,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -1933,6 +2136,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2064,6 +2273,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -2139,6 +2354,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2216,6 +2437,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -2291,6 +2518,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2368,6 +2601,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -2442,6 +2681,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2558,6 +2803,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -2659,6 +2910,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -2704,12 +2961,12 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?activity",
+                  "DESC(?activity)",
                   "?act_label",
                   "DESC(?act_label)",
                   "?act_type",
                   "DESC(?act_type)",
-                  "?activity",
-                  "DESC(?activity)",
                   "?count",
                   "DESC(?count)",
                   "?item",
@@ -2763,6 +3020,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2839,6 +3102,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -2890,12 +3159,12 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?activity",
+                  "DESC(?activity)",
                   "?act_label",
                   "DESC(?act_label)",
                   "?act_type",
                   "DESC(?act_type)",
-                  "?activity",
-                  "DESC(?activity)",
                   "?count",
                   "DESC(?count)",
                   "?item",
@@ -2951,6 +3220,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3027,6 +3302,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -3102,6 +3383,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3281,6 +3568,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -3363,6 +3656,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -3438,6 +3737,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3527,6 +3832,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -3603,10 +3914,10 @@
                   "DESC(?dataset)",
                   "?g",
                   "DESC(?g)",
-                  "?g_short",
-                  "DESC(?g_short)",
                   "?goa_name",
                   "DESC(?goa_name)",
+                  "?g_short",
+                  "DESC(?g_short)",
                   "?item",
                   "DESC(?item)",
                   "?ops_item",
@@ -3662,6 +3973,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3789,6 +4106,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -3829,6 +4152,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -3840,7 +4169,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given target<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?std_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?target_uri <span style=\"BACKGROUND-COLOR: #33CC99\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:targetOrganismName ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org/&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given target<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?std_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?target_uri <span style=\"BACKGROUND-COLOR: #33CC99\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:targetOrganismName ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span><br><br><hr>",
           "group": "Target" ,
           "parameters": [
             {
@@ -3967,6 +4296,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_page",
               "description": "A number; the page that should be viewed",
               "dataType": "integer",
@@ -3991,8 +4326,6 @@
                   "DESC(?assay_uri)",
                   "?chembl_target_uri",
                   "DESC(?chembl_target_uri)",
-                  "?chembl_uri",
-                  "DESC(?chembl_uri)",
                   "?compound_chembl",
                   "DESC(?compound_chembl)",
                   "?compound_cw",
@@ -4001,8 +4334,10 @@
                   "DESC(?compound_name)",
                   "?compound_ocrs",
                   "DESC(?compound_ocrs)",
-                  "?cw_uri",
-                  "DESC(?cw_uri)",
+                  "?cw_target",
+                  "DESC(?cw_target)",
+                  "?cw_target_uri",
+                  "DESC(?cw_target_uri)",
                   "?doc_uri",
                   "DESC(?doc_uri)",
                   "?doi",
@@ -4023,6 +4358,10 @@
                   "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
+                  "?protein",
+                  "DESC(?protein)",
+                  "?protein_name",
+                  "DESC(?protein_name)",
                   "?published_relation",
                   "DESC(?published_relation)",
                   "?published_type",
@@ -4057,6 +4396,8 @@
                   "DESC(?target_name_chembl)",
                   "?target_organism",
                   "DESC(?target_organism)",
+                  "?target_type",
+                  "DESC(?target_type)",
                   "?target_uri",
                   "DESC(?target_uri)"
                 ],
@@ -4106,6 +4447,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4239,6 +4586,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -4278,6 +4631,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4411,6 +4770,12 @@
               "paramType": "query"
             },
             {
+              "name":  "target_type" ,
+              "description":  "One of the types listed at /target/types. e.g. single_protein" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_page",
               "description": "A number; the page that should be viewed",
               "dataType": "integer",
@@ -4443,6 +4808,8 @@
                   "DESC(?compound_name)",
                   "?compound_ocrs",
                   "DESC(?compound_ocrs)",
+                  "?cw_target",
+                  "DESC(?cw_target)",
                   "?document",
                   "DESC(?document)",
                   "?doi",
@@ -4467,6 +4834,10 @@
                   "DESC(?pChembl)",
                   "?pmid",
                   "DESC(?pmid)",
+                  "?protein",
+                  "DESC(?protein)",
+                  "?protein_name",
+                  "DESC(?protein_name)",
                   "?published_relation",
                   "DESC(?published_relation)",
                   "?published_type",
@@ -4497,6 +4868,8 @@
                   "DESC(?target_name)",
                   "?target_organism",
                   "DESC(?target_organism)",
+                  "?target_type",
+                  "DESC(?target_type)",
                   "?uniprot",
                   "DESC(?uniprot)"
                 ],
@@ -4546,6 +4919,87 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/target/types" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Target Types" ,
+          "description":  "A list of target types in the LDC.<hr>",
+          "group": "Target" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4623,6 +5077,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -4699,6 +5159,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -4773,6 +5239,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4880,6 +5352,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -4955,6 +5433,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -5029,6 +5513,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5166,6 +5656,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -5240,6 +5736,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5365,6 +5867,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -5446,6 +5954,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5542,6 +6056,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -5630,6 +6150,12 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
             }
           ]
         }
@@ -5711,6 +6237,12 @@
               },
               "dataType": "string",
               "required": false,
+              "paramType": "query"
+            },
+	    {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
               "paramType": "query"
             }
           ]
