@@ -21,6 +21,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -61,12 +67,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -205,6 +205,12 @@
               "dataType": "double",
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -245,12 +251,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -293,6 +293,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -333,12 +339,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -375,6 +375,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -415,12 +421,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -457,6 +457,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -497,12 +503,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -575,6 +575,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -615,12 +621,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -753,6 +753,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -793,12 +799,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1039,6 +1039,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1079,12 +1085,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1217,6 +1217,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1257,12 +1263,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1491,6 +1491,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1531,12 +1537,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1566,6 +1566,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1606,12 +1612,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1654,6 +1654,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1694,12 +1700,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1790,6 +1790,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1830,12 +1836,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -1878,6 +1878,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -1918,12 +1924,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2008,6 +2008,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2048,12 +2054,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2096,6 +2096,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2136,12 +2142,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2232,6 +2232,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2272,12 +2278,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2314,6 +2314,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2354,12 +2360,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2396,6 +2396,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2436,12 +2442,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2478,6 +2478,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2518,12 +2524,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2560,6 +2560,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2600,12 +2606,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2641,6 +2641,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2681,12 +2687,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2762,6 +2762,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2802,12 +2808,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2869,6 +2869,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -2909,12 +2915,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -2980,6 +2980,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3020,12 +3026,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3061,6 +3061,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3101,12 +3107,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3180,6 +3180,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3220,12 +3226,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3261,6 +3261,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3301,12 +3307,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3343,6 +3343,12 @@
               "paramType": "path",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3383,12 +3389,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3527,6 +3527,12 @@
               "dataType": "double",
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3567,12 +3573,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3615,6 +3615,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3655,12 +3661,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3697,6 +3697,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3737,12 +3743,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3791,6 +3791,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3831,12 +3837,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -3933,6 +3933,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -3973,12 +3979,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4111,6 +4111,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -4151,12 +4157,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4407,6 +4407,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -4447,12 +4453,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4591,6 +4591,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -4631,12 +4637,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4879,6 +4879,12 @@
               "required": false,
               "paramType": "query"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -4919,12 +4925,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -4954,6 +4954,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -4994,12 +5000,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5036,6 +5036,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -5076,12 +5082,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5118,6 +5118,12 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -5158,12 +5164,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5199,6 +5199,12 @@
               "paramType": "query",
               "dataType": "string"
             },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
             {
               "name": "_format",
               "description": "The desired result format.",
@@ -5239,12 +5245,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5352,12 +5352,6 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
             }
           ]
         }
@@ -5433,12 +5427,6 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
             }
           ]
         }
@@ -5513,12 +5501,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5656,12 +5638,6 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
             }
           ]
         }
@@ -5736,12 +5712,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -5867,12 +5837,6 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
             }
           ]
         }
@@ -5954,12 +5918,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
@@ -6056,12 +6014,6 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
             }
           ]
         }
@@ -6150,12 +6102,6 @@
               "dataType": "string",
               "required": false,
               "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
             }
           ]
         }
@@ -6237,12 +6183,6 @@
               },
               "dataType": "string",
               "required": false,
-              "paramType": "query"
-            },
-	    {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
               "paramType": "query"
             }
           ]
