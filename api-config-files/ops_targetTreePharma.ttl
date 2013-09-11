@@ -235,6 +235,7 @@ _:type api:name "target_type" ;
         chembl:hasQUDT ?qudt_uri;
         chembl:hasAssay ?assay_uri ;
         chembl:pChembl ?pChembl ;
+	chembl:activityComment ?act_comment ;
         chembl:hasDocument ?doi ;
         bibo:pmid ?pmid ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
@@ -309,6 +310,7 @@ _:type api:name "target_type" ;
                 OPTIONAL { ?item chembl:standardUnits ?std_unit }
                 OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
                 OPTIONAL { ?item chembl:pChembl ?pChembl }
+        	OPTIONAL { ?item chembl:activityComment ?act_comment }
                 OPTIONAL { ?item chembl:hasDocument ?document .
                         OPTIONAL { ?document owl:sameAs ?doi }
                         OPTIONAL { ?document bibo:pmid ?pmid }

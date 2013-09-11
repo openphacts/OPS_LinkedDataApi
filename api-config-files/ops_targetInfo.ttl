@@ -101,9 +101,10 @@
 ?chembl_target_uri chembl:hasTargetComponent ?target_component ;
 	a ?target_type ;
 	rdfs:label ?synonym ;	
-	void:inDataset <http://www.ebi.ac.uk/chembl>.
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_component dcterms:description ?description ;
-	skos:exactMatch ?cw_target .
+	skos:exactMatch ?cw_target ;
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
 ?db_target_uri drugbank:cellularLocation ?cellularLocation ;

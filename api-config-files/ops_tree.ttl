@@ -68,10 +68,10 @@ SELECT DISTINCT ?root_node ?g_short WHERE {
 		[] rdfs:subClassOf ?root_node . 
 		MINUS {?root_node rdfs:subClassOf []}
 		FILTER ( isURI(?root_node) )
-		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, <http://purl.uniprot.org/enzyme> , 
-			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, <http://www.ebi.ac.uk/chembl/target> ,
-				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, <http://www.ebi.ac.uk/chebi> , 
-					IF(?g = <http://www.geneontology.org>, <http://www.geneontology.org> , 'Error')))) AS ?g_short )
+		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, IRI(<http://purl.uniprot.org/enzyme>) , 
+			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, IRI(<http://www.ebi.ac.uk/chembl/target>) ,
+				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, IRI(<http://www.ebi.ac.uk/chebi>) , 
+					IF(?g = <http://www.geneontology.org>, IRI(<http://www.geneontology.org>) , 'Error')))) AS ?g_short )
 	} 
 }
 }

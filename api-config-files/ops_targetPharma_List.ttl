@@ -259,6 +259,7 @@ GRAPH <http://ops.rsc-us.org> {
 	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
 	chembl:pChembl ?pChembl ;
+	chembl:activityComment ?act_comment ;
 	bibo:pmid ?pmid ;
 	chembl:hasDocument ?doi ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
@@ -313,6 +314,7 @@ GRAPH <http://ops.rsc-us.org> {
 	OPTIONAL { ?item chembl:standardUnits ?standard_unit }
 	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
 	OPTIONAL { ?item chembl:pChembl ?pChembl }
+	OPTIONAL { ?item chembl:activityComment ?act_comment }
         OPTIONAL { ?item chembl:hasDocument ?doc_uri .
 		OPTIONAL { ?doc_uri owl:sameAs ?doi }
 		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
@@ -329,5 +331,8 @@ GRAPH <http://ops.rsc-us.org> {
         OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
-
+	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+		?compound_cw skos:exactMatch ?compound_ocrs ;
+			skos:prefLabel ?compound_name
+	}}
 }" .

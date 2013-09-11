@@ -38,7 +38,8 @@
 ?dataset void:triples ?tripleNo .
 ?dataset void:dataDump ?dataDump .
 ?dataset dcat:landingPage ?landingPage . 
-?dataset foaf:homepage ?homepage .";
+?dataset foaf:homepage ?homepage .
+?dataset a void:Dataset . ";
 	api:where
 "GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
 { ?dataset a void:Dataset .
