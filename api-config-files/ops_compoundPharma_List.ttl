@@ -258,7 +258,7 @@ _:type api:name "target_type" ;
 "?item chembl:hasMolecule ?chembl_compound_uri ;
 	chembl:standardType ?standard_type ;
 	chembl:standardRelation ?standard_relation ;
-	chembl:standardValue ?standard_value ;
+	chembl:standardValue ?casted_standard_value ;
 	chembl:standardUnits ?standard_unit ;
 	chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
@@ -338,7 +338,8 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	OPTIONAL { ?item chembl:publishedUnits ?published_unit }
 	OPTIONAL { ?item chembl:standardType ?standard_type }
 	OPTIONAL { ?item chembl:standardRelation ?standard_relation }
-	OPTIONAL { ?item chembl:standardValue ?standard_value }
+	OPTIONAL { ?item chembl:standardValue ?standard_value .
+	BIND (xsd:decimal(?standard_value) as ?casted_standard_value)}
 	OPTIONAL { ?item chembl:standardUnits ?standard_unit }
 	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
 	OPTIONAL { ?item chembl:pChembl ?pChembl }

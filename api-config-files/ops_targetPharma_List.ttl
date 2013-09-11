@@ -254,7 +254,7 @@ GRAPH <http://ops.rsc-us.org> {
 	chembl:publishedUnits ?published_unit ;
 	chembl:standardType ?standard_type ;
 	chembl:standardRelation ?standard_relation ;
-	chembl:standardValue ?standard_value ;
+	chembl:standardValue ?casted_standard_value ;
 	chembl:standardUnits ?standard_unit ;
 	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
@@ -308,7 +308,8 @@ GRAPH <http://ops.rsc-us.org> {
         OPTIONAL { ?item chembl:publishedUnits ?published_unit }
         OPTIONAL { ?item chembl:standardType ?standard_type }
 	OPTIONAL { ?item chembl:standardRelation ?standard_relation }
-	OPTIONAL { ?item chembl:standardValue ?standard_value }
+	OPTIONAL { ?item chembl:standardValue ?standard_value .
+	BIND (xsd:decimal(?standard_value) as ?casted_standard_value)}
 	OPTIONAL { ?item chembl:standardUnits ?standard_unit }
 	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
 	OPTIONAL { ?item chembl:pChembl ?pChembl }

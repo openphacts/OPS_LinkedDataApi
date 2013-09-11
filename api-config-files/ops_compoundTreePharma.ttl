@@ -261,7 +261,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 "?item chembl:hasMolecule ?compound_chembl;
 	chembl:standardType ?std_type;
 	chembl:standardRelation ?relation;
-	chembl:standardValue ?std_value;
+	chembl:standardValue ?casted_std_value;
 	chembl:standardUnits ?std_unit;
 	chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
@@ -337,7 +337,8 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 			OPTIONAL { ?item chembl:publishedUnits ?published_unit }
         		OPTIONAL { ?item chembl:standardType ?std_type }
         		OPTIONAL { ?item chembl:standardRelation ?relation }
-        		OPTIONAL { ?item chembl:standardValue ?std_value }
+        		OPTIONAL { ?item chembl:standardValue ?std_value .
+			BIND(xsd:decimal(?std_value) as ?casted_std_value) }
         		OPTIONAL { ?item chembl:standardUnits ?std_unit }
         		OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
 			OPTIONAL { ?item chembl:pChembl ?pChembl }
