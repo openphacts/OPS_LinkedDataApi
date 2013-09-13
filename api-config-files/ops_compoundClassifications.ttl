@@ -1,0 +1,109 @@
+@base <http://www.openphacts.org/api#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix go: <http://www.geneontology.org/formats/oboInOwl#> .
+
+<#compound> a api:API ;
+	rdfs:label "Compound"@en ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable _:hierarchy ;
+	api:variable <#input> ;
+	api:dataset <http://www.ebi.ac.uk/chebi> ;
+        api:dataset <http://www.geneontology.org> ;
+	api:vocabulary rdfs: ;
+	api:vocabulary skos: ;
+	api:vocabulary uniprot: ;
+	api:vocabulary dcterms: ;
+	api:description "An API configuration to return information about compounds." ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Compound Classifications" ;
+		api:description "The classes the given compound URI has been classified with. Currently supported hierarchies are the ChEBI Ontology and the Gene Ontology. " ;
+		api:itemTemplate "{uri}" ;
+		api:variable <http://www.ebi.ac.uk/chebi> ;
+		api:variable <http://www.geneontology.org> ;
+		api:uriTemplate "/compound/classifications?uri={uri}" ;
+		api:exampleRequestPath "/compound/classifications?uri=http%3A%2F%2Fops.rsc-us.org%2FOPS6958" ;
+                api:exampleRequestPath "/compound/classifications?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_15904&tree=go" ;
+		api:viewer <#compoundClassificationsViewer> ;
+		api:defaultViewer <#compoundClassificationsViewer> ] .
+
+<http://www.ebi.ac.uk/chebi> api:label "ChEBI Ontology" .
+<http://www.geneontology.org> api:label "Gene Ontology" .
+
+<http://www.ebi.ac.uk/chebi> api:name "chebi" .
+<http://www.geneontology.org> api:name "go" .
+
+_:hierarchy api:name "tree" ;
+	api:label "tree" ;
+	api:value "Restrict results by hierarchy. Currently one of 'chebi', 'go'" ;
+	api:filterVariable "?g" ;
+	rdfs:subPropertyOf api:graphFilter ;
+	a rdf:Property .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A compound URI.  e.g.: http://ops.rsc-us.org/OPS6958" ;
+        rdfs:range rdfs:Resource .
+
+<#compoundClassificationsViewer> a api:Viewer ;
+	api:name "compoundClassificationsViewer";
+	api:template 
+"?ops_item skos:exactMatch ?chembl_compound_uri ;
+	skos:exactMatch ?cw_compound_uri .
+?chembl_compound_uri ops:hasChebiClassification ?chebi_class ; 
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?chebi_input ops:hasGoClassification ?go_class ;
+	skos:prefLabel ?chebi_input_label ; 
+	void:inDataset <http://www.geneontology.org> .
+?go_input ops:hasChebiClassification ?chebi_class ;
+	skos:prefLabel ?go_input_label ;
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
+?cw_compound_uri skos:prefLabel ?cw_label ; 
+	void:inDataset <http://www.conceptwiki.org> .
+?chebi_class skos:prefLabel ?chebi_label ;
+	void:inDataset <http://www.ebi.ac.uk/chebi> . 
+?go_class skos:prefLabel ?go_label ;
+	void:inDataset <http://www.geneontology.org> .
+<http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
+	api:where 
+"	{ GRAPH <http://www.ebi.ac.uk/chembl> {
+		?chembl_compound_uri owl:sameAs ?chebi_class 
+        	GRAPH ?g { 
+			?chebi_class rdfs:label ?chebi_label 
+		} 
+	} 
+	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+                ?cw_compound_uri skos:prefLabel ?cw_label
+        }} } UNION
+	{ GRAPH <http://www.geneontology.org> {
+		BIND(?ops_item AS ?chebi_input)
+		BIND( CONCAT('CHEBI:',STRAFTER(STR(?ops_item),'_')) AS ?input_label )
+        	?go_class go:hasDefinition/go:hasDbXref/rdfs:label ?input_label
+		GRAPH <http://www.ebi.ac.uk/chebi> {
+			?chebi_input rdfs:label ?chebi_input_label
+		}
+		GRAPH ?g {
+                        ?go_class rdfs:label ?go_label
+		}}  
+	} UNION
+        { GRAPH <http://www.geneontology.org> {
+		BIND(?ops_item AS ?go_input)
+                ?ops_item go:hasDefinition/go:hasDbXref/rdfs:label ?output_label
+		BIND(IRI(CONCAT('http://purl.obolibrary.org/obo/CHEBI_', STRAFTER(?output_label, ':'))) AS ?chebi_class)
+		GRAPH <http://www.geneontology.org> {
+			?go_input rdfs:label ?go_input_label
+		}
+		GRAPH ?g {
+                        ?chebi_class rdfs:label ?chebi_label
+                }} .
+        }" 

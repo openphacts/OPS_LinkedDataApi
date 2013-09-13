@@ -18,7 +18,7 @@
 		api:description "Returns a set of URLs associated to the input URL." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?url </span>." ;
 		api:uriTemplate "/mapURL?URL={URL}" ;
-		api:externalRequestTemplate "http://ims-test.openlinksw.com/QueryExpander/mapURL?URL={URL}" ;
+		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapUri?Uri={URL}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
 		api:exampleRequestPath "/mapURL?URL=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
 		api:viewer <#externalResponseViewer> ;

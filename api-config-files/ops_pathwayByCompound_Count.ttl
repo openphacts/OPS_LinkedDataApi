@@ -36,6 +36,7 @@
 		a api:ItemEndpoint ;
 		api:name "Count Pathways by Compound" ;
 		api:description "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.";
+		api:resultsDescription "&lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span>. " ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
@@ -116,8 +117,6 @@ GRAPH <http://www.wikipathways.org> {
                 a wp:Metabolite ;
                 dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
-	OPTIONAL { ?pathway dcterms:description ?description }
-	OPTIONAL { ?pathway wp:pathwayOntology ?ontology }
 }
 OPTIONAL {
 GRAPH <http://www.conceptwiki.org> {

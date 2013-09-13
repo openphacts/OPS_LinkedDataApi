@@ -415,11 +415,11 @@ class Labeller {
         if (preg_match('~^.*[\/\#]([^\/\#]+)$~', $uri, $m)) {
           $localname = $m[1];
           if (preg_match('~[^A-Z][A-Z][^A-Z]~', $localname)) {
-            $parts = preg_split('/([A-Z][^A-Z]*)/', $localname, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-            $parts = array_map('strtolower', $parts);
-            if ($parts[0] == 'has') {
-              array_shift($parts);
-            }
+            #$parts = preg_split('/([A-Z][^A-Z]*)/', $localname, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+            #$parts = array_map('strtolower', $parts);
+            #if ($parts[0] == 'has') {
+            #  array_shift($parts);
+            #}
             $label = join(' ', $parts);
             if ($capitalize) {
               return ucfirst($label);

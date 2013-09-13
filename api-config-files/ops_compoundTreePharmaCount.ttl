@@ -15,11 +15,12 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
-@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#>
+@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
 
-<#chebi> a api:API ;
-        rdfs:label "ChEBI Ontology"@en ;
+<#compound> a api:API ;
+        rdfs:label "Compound"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
@@ -30,6 +31,7 @@
  	api:variable chembl:hasQUDT ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:pChembl ;
+        api:variable _:type ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
@@ -38,13 +40,13 @@
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
-	api:description "An API configuration to return information about classes in the ChEBI Ontology" ;
+	api:description "An API configuration to return information about compounds" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "ChEBI Class Pharmacology Count" ;
-		api:description "The total number of acitivity values in the LDC for a given ChEBI Ontology class." ;
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:chebiPharmacologyTotalResults ?count </span>." ;
-		api:uriTemplate "/compound/chebi/pharmacology/count?uri={uri}" ;
+		api:name "Compound Class Pharmacology Count" ;
+		api:description "The total number of activity values in the LDC for a given Compound class. Currently only the ChEBI Ontology is supported. " ;
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:compoundPharmacologyTotalResults ?count </span>." ;
+		api:uriTemplate "/compound/tree/pharmacology/count?uri={uri}" ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 		api:variable <http://www.openphacts.org/units/Millimolar> ;
 		api:variable <http://www.openphacts.org/units/Nanomolar> ;
@@ -70,17 +72,34 @@
 		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Organism> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#CellLine> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Tissue> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#SubCellular> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ADMET> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
+                api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
         	api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_3304";
-		api:exampleRequestPath "/compound/chebi/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_3304&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
-		api:viewer <#chebiPharmacologyCountViewer> ; 
-		api:defaultViewer <#chebiPharmacologyCountViewer> . ] .
+		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
+		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+		api:viewer <#compoundClassPharmaCountViewer> ; 
+		api:defaultViewer <#compoundClassPharmaCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
@@ -107,6 +126,22 @@
 <http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
 <http://qudt.org/vocab/unit#Liter> api:name "liter" .
 
+<http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> api:name "single_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> api:name "protein_complex_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> api:name "protein_family" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> api:name "protein_selectivity_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> api:name "protein_complex" .
+<http://rdf.ebi.ac.uk/terms/chembl#Organism> api:name "organism" .
+<http://rdf.ebi.ac.uk/terms/chembl#CellLine> api:name "cell_line" .
+<http://rdf.ebi.ac.uk/terms/chembl#Tissue> api:name "tissue" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> api:name "ppi" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> api:name "unknown" .
+<http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> api:name "nucleic_acid" .
+<http://rdf.ebi.ac.uk/terms/chembl#SubCellular> api:name "sub_cellular" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> api:name "unclassified" .
+<http://rdf.ebi.ac.uk/terms/chembl#ADMET> api:name "admet" .
+<http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
 
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -152,49 +187,42 @@ chembl:pChembl api:name "pChembl" ;
         api:value "The pChembl value of an activity" ;
 	a rdf:Property .
 
+_:type api:name "target_type" ;
+        api:label "target_type" ;
+        api:filterVariable "?target_uri";
+        api:value "One of the types listed at /target/types. e.g. single_protein" ;
+	rdfs:subPropertyOf rdf:type ;
+        a rdf:Property .
+
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_38834" ;
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
 	rdfs:range rdfs:Resource .
 
-<#chebiPharmacologyCountViewer> a api:Viewer ;
-	api:name "chebiPharmacologyCountViewer" ;
+<#compoundClassPharmaCountViewer> a api:Viewer ;
+	api:name "compoundClassPharmaCountViewer" ;
 	api:template 
-"?ops_item ops:chebiPharmacologyTotalResults ?count . " ; 
+"?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(?activity_uri) AS ?count) {
 	GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         	?subclass rdfs:subClassOf ?ops_item .
 	}
-	GRAPH <http://www.ebi.ac.uk/chembl> {
-		?compound_chembl owl:sameAs ?subclass .
-        	?activity_uri a chembl:Activity ;
-			chembl:hasMolecule ?compound_chembl ;
-               		chembl:hasAssay ?assay_uri .
-        	?assay_uri chembl:hasTarget ?target_uri .
-		OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-        	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-	        OPTIONAL { ?target_uri dcterms:title ?target_name }
-        	OPTIONAL { ?target_uri chembl:organismName ?target_organism }
-		OPTIONAL { ?activity_uri chembl:publishedType ?published_type }
-		OPTIONAL { ?activity_uri chembl:publishedRelation ?published_relation }
-		OPTIONAL { ?activity_uri chembl:publishedValue ?published_value }
-		OPTIONAL { ?activity_uri chembl:publishedUnits ?published_unit }
- 		OPTIONAL { ?activity_uri chembl:standardType ?std_type }
-	        OPTIONAL { ?activity_uri chembl:standardRelation ?relation }
-	        OPTIONAL { ?activity_uri chembl:standardValue ?std_value }
-	        OPTIONAL { ?activity_uri chembl:standardUnits ?std_unit }
-	        OPTIONAL { ?activity_uri chembl:hasQUDT ?qudt_uri }
-		OPTIONAL { ?activity_uri chembl:pChembl ?pChembl }
-	        OPTIONAL { ?activity_uri chembl:hasDocument ?document .
-        		OPTIONAL { ?document owl:sameAs ?doi }
-        		OPTIONAL { ?document bibo:pmid ?pmid }
-	        }
-	        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
-              		?full_mwt a sio:CHEMINF_000198 ;
- 	      			sio:SIO_000300 ?molweight. }
-	}
 	GRAPH <http://ops.rsc-us.org> {
-		?compound_ocrs skos:exactMatch ?compound_chembl .
-	} 
+		?compound_ocrs skos:exactMatch ?compound_chembl ;
+			cheminf:CHEMINF_000018 ?smiles ;
+			cheminf:CHEMINF_000396 ?inchi ;
+        		cheminf:CHEMINF_000399 ?inchiKey . 
+	}
+	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+        	?compound_cw skos:exactMatch ?compound_ocrs ;
+                	skos:prefLabel ?compound_name .
+	} }
+	        GRAPH <http://www.ebi.ac.uk/chembl> {
+                ?compound_chembl owl:sameAs ?subclass .
+                ?activity_uri a chembl:Activity ;
+                        chembl:hasMolecule ?compound_chembl ;
+                        chembl:hasAssay ?assay_uri .
+                ?assay_uri chembl:hasTarget ?target_uri .
+        }
 } }" .

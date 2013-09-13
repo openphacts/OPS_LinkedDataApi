@@ -129,7 +129,7 @@ ops:activity_count ?count " ;
 SELECT DISTINCT ?type_label COUNT(?activity) AS ?count WHERE {
   GRAPH <http://www.ebi.ac.uk/chembl>  {
    ?activity chembl:standardType ?type_label  .
-  } } GROUP BY ?type_label 
+  } } GROUP BY ?type_label  
 }
 GRAPH <http://www.openphacts.org/units> {
 	?item rdfs:label ?type_label 

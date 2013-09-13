@@ -26,6 +26,7 @@ class LinkedDataApiRequest {
         '_select',#
         '_lang', # is a comma-separated list of languages
         '_callback', # for JSONP
+        '_lens',
         'callback', # for JSONP
 	'app_id',
 	'app_key',
