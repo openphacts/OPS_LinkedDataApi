@@ -164,7 +164,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -712,7 +712,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -884,7 +884,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -948,6 +948,8 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?act_comment",
+                  "DESC(?act_comment)",
                   "?assay_description",
                   "DESC(?assay_description)",
                   "?assay_organism",
@@ -956,6 +958,8 @@
                   "DESC(?assay_uri)",
                   "?bNode1",
                   "DESC(?bNode1)",
+                  "?casted_standard_value",
+                  "DESC(?casted_standard_value)",
                   "?chembl_compound_uri",
                   "DESC(?chembl_compound_uri)",
                   "?chembl_uri",
@@ -1176,7 +1180,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -1354,7 +1358,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -1412,12 +1416,16 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?act_comment",
+                  "DESC(?act_comment)",
                   "?assay_description",
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
+                  "?casted_std_value",
+                  "DESC(?casted_std_value)",
                   "?class",
                   "DESC(?class)",
                   "?compound_chembl",
@@ -1552,6 +1560,442 @@
           "description":  "(UNDER DEVELOPMENT) Returns information about currently loaded data sources.<hr>",
           "group": "Data Sources" ,
           "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/goterm/target/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Target Count from GO Term" ,
+          "description":  "Returns a count of targets corresponding to an input GO Term.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetForGOTermTotalResults ?count . </span><br><br><hr>",
+          "group": "Gene Ontology" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A GO Term URI. e.g.: http://www.geneontology.org/go#GO:0003674" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/goterm/target/pages" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Target List from GO Term" ,
+          "description":  "Returns a list of targets corresponding to an input GO Term.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:annotationFor ?item </span><br><br><hr>",
+          "group": "Gene Ontology" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A GO Term URI. e.g.: http://www.geneontology.org/go#GO:0003674" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?item",
+                  "DESC(?item)",
+                  "?ops_item",
+                  "DESC(?ops_item)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/go/node" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Gene Ontology Class" ,
+          "description":  "A representation of a given Gene Ontology class, its parent and siblings.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:subClassOf ?parent </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?item_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #33CC99\"> ops:sibling ?sibling </span>.<br> ?sibling <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?sibling_name </span>.<br> ?parent <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?parent_name</span><br><br><hr>",
+          "group": "Gene Ontology" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "An Gene Onyology Class URI. e.g.: http://purl.org/obo/owl/GO#GO_0065009" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/go/members" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Gene Ontology Class Members" ,
+          "description":  "A representation of all members of a given Gene Ontology class.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:has_member ?member </span>.<br> ?member <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?name </span><br><br><hr>",
+          "group": "Gene Ontology" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "An Gene Onyology Class URI. e.g.: http://purl.org/obo/owl/GO#GO_0065009" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+{
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/go/root" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Get Gene Ontology Root Classes" ,
+          "description":  "A representation of the root classes of the Gene Ontology.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:rootNode ?rootClass . </span><br><br><hr>",
+          "group": "Gene Ontology" ,
+          "parameters": [
+            {
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
             {
               "name": "app_id",
               "description": "Your access application id",
@@ -3486,7 +3930,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -4064,7 +4508,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -4254,7 +4698,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -4318,12 +4762,16 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?act_comment",
+                  "DESC(?act_comment)",
                   "?assay_description",
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
+                  "?casted_standard_value",
+                  "DESC(?casted_standard_value)",
                   "?chembl_target_uri",
                   "DESC(?chembl_target_uri)",
                   "?compound_chembl",
@@ -4544,7 +4992,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -4728,7 +5176,7 @@
               "dataType": "string"
             },
             {
-              "name":  "relation" ,
+              "name":  "activity_relation" ,
               "description":  ">, >=,= , < , <=" ,
               "paramType": "query",
               "dataType": "string"
@@ -4792,12 +5240,16 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?act_comment",
+                  "DESC(?act_comment)",
                   "?assay_description",
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
+                  "?casted_std_value",
+                  "DESC(?casted_std_value)",
                   "?class",
                   "DESC(?class)",
                   "?compound_chembl",

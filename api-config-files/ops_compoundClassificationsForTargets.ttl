@@ -122,7 +122,7 @@ chembl:standardValue api:name "activity_value" ;
         api:filterVariable "?activity";
         a rdf:Property .
 
-chembl:standardRelation api:name "relation" ;
+chembl:standardRelation api:name "activity_relation" ;
         api:label "activity_relation" ;
         api:value ">, >=,= , < , <=" ;
         api:filterVariable "?activity";
