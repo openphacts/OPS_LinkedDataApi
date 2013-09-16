@@ -94,12 +94,12 @@
 	ops:hbd ?hbd ;
 	ops:ro5_violations ?num_ro5_violations ;
 	ops:psa ?psa;
+	ops:rtb ?rtb;
+	ops:molweight ?molweight ;
+	ops:molformula ?molformula ;
 	void:inDataset <http://ops.rsc.org> .
 ?ops_item skos:exactMatch ?chembl_uri . 
-?chembl_uri ?bNode1 ?molformula ;
-	?bNode2 ?molweight ;
-	?bNode3 ?mw_freebase ;
-	?bNode4 ?rtb ;
+?chembl_uri ?bNode1 ?mw_freebase ;
 	a ?mol_type;
 	void:inDataset <http://www.ebi.ac.uk/chembl>.
 ?ops_item skos:exactMatch ?db_uri .
@@ -117,6 +117,13 @@ GRAPH <http://ops.rsc.org> {
 	?ocrs_uri cheminf:CHEMINF_000018 ?smiles.
 	?ocrs_uri cheminf:CHEMINF_000396 ?inchi.
 	?ocrs_uri cheminf:CHEMINF_000399 ?inchiKey.
+	OPTIONAL { ?ocrs_uri cheminf:CHEMINF_000490 ?molformula . }
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
+			a cheminf:CHEMINF_000484 ;
+			qudt:numericValue ?molweight . }
+	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ; 
+		      a cheminf:CHEMINF_000348 ;
+		      qudt:numericValue ?rtb . }
 	OPTIONAL { [] obo:IAO_0000136 ?ocrs_uri ;
 		a cheminf:CHEMINF_000321;
 		qudt:numericValue ?alogp . }
@@ -137,17 +144,8 @@ OPTIONAL {
 GRAPH <http://www.ebi.ac.uk/chembl> {
 	?chembl_uri a ?mol_type .
 	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode1 .
-		?bNode1 a sio:CHEMINF_000042 ;
-			sio:SIO_000300 ?molformula. }
-	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode2 .
-		?bNode2 a sio:CHEMINF_000198 ;
-			sio:SIO_000300 ?molweight. }
-	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode3 .
-		?bNode3 a sio:CHEMINF_000350 ;
+		?bNode1 a sio:CHEMINF_000350 ;
 			sio:SIO_000300 ?mw_freebase. }
-	OPTIONAL { ?chembl_uri sio:SIO_000008 ?bNode4 .
-		?bNode4 a sio:CHEMINF_000311 ;
-			sio:SIO_000300 ?rtb. }
 }
 }
 OPTIONAL { 
