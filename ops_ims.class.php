@@ -37,7 +37,7 @@ class OpsIms {
 
             //echo $query;
             //echo '<br><br>';
-	        //echo $url;
+	    //echo $url;
             $output = simplexml_load_string($response)->expandedQuery ;
         }
         else {
@@ -47,7 +47,7 @@ class OpsIms {
                     '?uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
                     '?cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
                     '?cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
-                    '?ocrs_compound_uri'=>'http://ops.rsc-us.org/' ,
+                    '?ocrs_compound_uri'=>'http://ops.rsc.org/' ,
                     '?db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
                     '?db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             );
