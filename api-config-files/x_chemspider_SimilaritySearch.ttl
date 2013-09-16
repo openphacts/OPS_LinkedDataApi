@@ -23,7 +23,7 @@
 		api:description "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?inputMoleculeSmiles </span>;
-		<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?similarMolecule </span>;
+		<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?similarMolecule </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Threshold ?searchThreshold </span>; 
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Alpha ?searchAlpha </span>; 

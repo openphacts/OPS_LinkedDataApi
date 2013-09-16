@@ -210,7 +210,7 @@ _:type api:name "target_type" ;
 	 OPTIONAL { GRAPH <http://www.conceptwiki.org> {
                 ?cw_uri skos:prefLabel ?compound_name.
          } }
-         GRAPH <http://ops.rsc-us.org> {
+         GRAPH <http://ops.rsc.org> {
                 ?ocrs_uri cheminf:CHEMINF_000018 ?smiles ;
                         cheminf:CHEMINF_000396 ?inchi ;
                         cheminf:CHEMINF_000399 ?inchiKey .

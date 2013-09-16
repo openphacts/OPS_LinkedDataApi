@@ -204,7 +204,7 @@ SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
 	}
-        GRAPH <http://ops.rsc-us.org> {
+        GRAPH <http://ops.rsc.org> {
                 ?compound_ocrs skos:exactMatch ?compound_chembl .
                 ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
                         cheminf:CHEMINF_000399 ?inchi_key;

@@ -201,6 +201,7 @@ _:type api:name "target_type" ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?standard_relation </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?standard_value </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?standard_unit </span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
@@ -223,7 +224,7 @@ _:type api:name "target_type" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey</span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span>.";
@@ -232,7 +233,7 @@ _:type api:name "target_type" ;
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=IC50&maxEx-activity_value=100&minEx-activity_value=40&activity_unit=nanomolar&assay_organism=Mus%20musculus";
 	api:selector [
 		api:where 
-"                GRAPH <http://ops.rsc-us.org> {
+"                GRAPH <http://ops.rsc.org> {
                         ?ocrs_uri cheminf:CHEMINF_000018 ?smiles ;
                                 cheminf:CHEMINF_000396 ?inchi ;
                                 cheminf:CHEMINF_000399 ?inchiKey .
@@ -291,7 +292,7 @@ _:type api:name "target_type" ;
 	ops:inchi ?inchi ;
 	ops:inchikey ?inchiKey;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://ops.rsc-us.org> .
+	void:inDataset <http://ops.rsc.org> .
 ?chembl_compound_uri ?bNode1 ?molweight ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_compound_uri skos:exactMatch ?db_compound_uri .
@@ -309,7 +310,7 @@ _:type api:name "target_type" ;
 OPTIONAL { GRAPH <http://www.conceptwiki.org> {
 	?cw_compound_uri skos:prefLabel ?compound_name.
 }}
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
 		cheminf:CHEMINF_000399 ?inchiKey .

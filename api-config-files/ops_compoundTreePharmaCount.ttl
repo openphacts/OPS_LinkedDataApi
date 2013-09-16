@@ -208,7 +208,7 @@ _:type api:name "target_type" ;
 	GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         	?subclass rdfs:subClassOf ?ops_item .
 	}
-	GRAPH <http://ops.rsc-us.org> {
+	GRAPH <http://ops.rsc.org> {
 		?compound_ocrs skos:exactMatch ?compound_chembl ;
 			cheminf:CHEMINF_000018 ?smiles ;
 			cheminf:CHEMINF_000396 ?inchi ;

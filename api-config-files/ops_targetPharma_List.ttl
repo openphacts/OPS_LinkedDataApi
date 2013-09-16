@@ -212,8 +212,8 @@ _:type api:name "target_type" ;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span>; 
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-	?target_uri <span style=\"BACKGROUND-COLOR: #33CC99\"> dcterms:title ?target_name </span>;
-		<span style=\"BACKGROUND-COLOR: #33CC99\"> chembl:targetOrganismName ?target_organism </span>;
+	?target_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:title ?target_name </span>;
+		<span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:targetOrganismName ?target_organism </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
 	?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
@@ -222,7 +222,7 @@ _:type api:name "target_type" ;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc-us.org&gt; </span>.
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.
 	?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>." ;
 
@@ -235,7 +235,7 @@ _:type api:name "target_type" ;
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
 }
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl .
         ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
@@ -283,7 +283,7 @@ GRAPH <http://ops.rsc-us.org> {
 	ops:inchi ?inchi ;
 	ops:inchikey ?inchi_key;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://ops.rsc-us.org> .
+	void:inDataset <http://ops.rsc.org> .
 ?compound_cw skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
 " ; 
@@ -323,7 +323,7 @@ GRAPH <http://ops.rsc-us.org> {
               		?full_mwt a sio:CHEMINF_000198 ;
  	      			sio:SIO_000300 ?molweight. }
 }
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl .
         ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;

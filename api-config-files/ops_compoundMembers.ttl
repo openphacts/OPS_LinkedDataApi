@@ -36,7 +36,7 @@
 GRAPH <http://www.ebi.ac.uk/chembl> { 
 	?item owl:sameAs ?child_node 
 }
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?item
 }
 OPTIONAL { GRAPH <http://www.conceptwiki.org> {
@@ -68,7 +68,7 @@ OPTIONAL { GRAPH <http://www.conceptwiki.org> {
 GRAPH <http://www.ebi.ac.uk/chembl> {
         ?item owl:sameAs ?child_node
 }
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?item
 }
 OPTIONAL { GRAPH <http://www.conceptwiki.org> {

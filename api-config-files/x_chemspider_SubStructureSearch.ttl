@@ -22,7 +22,7 @@
 		api:description "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?inputMoleculeSmiles </span>;
-		<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?resultMolecule </span>;
+		<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?resultMolecule </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:search:MolType ?searchMolType </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchTautomers ?searchMatchTautomers </span>; 		
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span>;

@@ -88,7 +88,7 @@ _:hierarchy api:name "tree" ;
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A compound URI.  e.g.: http://ops.rsc-us.org/OPS6958" ;
+        api:value "A compound URI.  e.g.: http://ops.rsc.org/OPS6958" ;
         rdfs:range rdfs:Resource .
 
 chembl:organismName api:name "assay_organism" ;

@@ -16,7 +16,7 @@
 		api:name "Map URL" ;
 		api:enableCache true ;
 		api:description "Returns a set of URLs associated to the input URL." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #33CC99\"> skos:exactMatch ?url </span>." ;
+		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?url </span>." ;
 		api:uriTemplate "/mapURL?URL={URL}" ;
 		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapUri?Uri={URL}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;

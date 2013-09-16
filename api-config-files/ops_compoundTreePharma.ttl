@@ -198,6 +198,7 @@ _:type api:name "target_type" ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardRelation ?relation</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardValue ?std_value</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardUnits ?std_unit</span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedType ?published_type</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedRelation ?published_relation</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedValue ?published_value</span> ;
@@ -208,7 +209,7 @@ _:type api:name "target_type" ;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\">chembl:hasDocument ?doi</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\">bibo:pmid ?pmid</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .
-?assay_uri <span style=\"BACKGROUND-COLOR: #33CC99\">chembl:hasTarget ?target_uri</span> ;
+?assay_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\">chembl:hasTarget ?target_uri</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:assayOrganismName ?assay_organism</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">dcterms:description ?assay_description</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .
@@ -217,7 +218,7 @@ _:type api:name "target_type" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .
 ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:exactMatch ?compound_cw</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">skos:exactMatch ?compound_ocrs</span> ;
-	<span style=\"BACKGROUND-COLOR: #33CC99\">skos:exactMatch ?class</span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\">skos:exactMatch ?class</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">?full_mwt ?molweight</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .
 ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:prefLabel ?compound_name</span> ;
@@ -226,7 +227,7 @@ _:type api:name "target_type" ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">ops:inchi ?inchi</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">ops:inchikey ?inchiKey</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\">ops:ro5_violations ?num_ro5_violations</span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://ops.rsc-us.org&gt;</span> .
+	<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://ops.rsc.org&gt;</span> .
 " ;
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
@@ -235,7 +236,7 @@ _:type api:name "target_type" ;
 "GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
 	?class rdfs:subClassOf ?ops_item
 }
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl .
 	?compound_ocrs cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
@@ -295,14 +296,14 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	ops:inchi ?inchi ;
 	ops:inchikey ?inchiKey;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://ops.rsc-us.org> .
+	void:inDataset <http://ops.rsc.org> .
 ?compound_chembl ?full_mwt ?molweight ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> ." ;
 	api:where 
 "		GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
         		?class rdfs:subClassOf ?ops_item
 		}
-		GRAPH <http://ops.rsc-us.org> {
+		GRAPH <http://ops.rsc.org> {
                         ?compound_ocrs skos:exactMatch ?compound_chembl .
                         ?compound_ocrs cheminf:CHEMINF_000018 ?smiles ;
                                 cheminf:CHEMINF_000396 ?inchi ;

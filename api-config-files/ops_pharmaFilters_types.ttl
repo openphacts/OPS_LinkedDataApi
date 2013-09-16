@@ -60,7 +60,7 @@
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
 		api:name "Activity types" ;
 		api:description "A list of activity types which have been normalised" ;
-		api:resultsDescription "&lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #33CC99\"> ops:normalised_activity_type ?act_type </span>.
+		api:resultsDescription "&lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?act_type </span>.
 ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\">ops:activity_count ?count </span>." ;
 		api:uriTemplate "/pharmacology/filters/activities" ;

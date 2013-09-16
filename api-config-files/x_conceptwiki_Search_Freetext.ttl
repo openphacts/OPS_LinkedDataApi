@@ -20,7 +20,7 @@
 		api:description "Returns a set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;	
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm </span>;
-	<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?uuidURL </span>;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit </span>.
 ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match </span>;

@@ -14,7 +14,7 @@
 	api:contentNegotiation api:parameterBased ;
 	api:variable ops_api:searchOptions ;
 	api:variable ops_api:commonOptions ;
-	api:dataset <http://ops.rsc-us.org> ;
+	api:dataset <http://ops.rsc.org> ;
 	api:description "An API configuration to return the result of an exact chemical structure search." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
@@ -37,7 +37,7 @@
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<http://ops.rsc-us.org> api:label "OpenPHACTS Chemistry Registration Service" .
+<http://ops.rsc.org> api:label "OpenPHACTS Chemistry Registration Service" .
 
 
 ops_api:searchOptions api:name "searchOptions" ;

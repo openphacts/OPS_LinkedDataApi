@@ -22,11 +22,11 @@
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID</span> ;
-	<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:result ?uuidURL</span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL</span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit</span> .
 ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel</span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match</span> ;
-	<span style=\"BACKGROUND-COLOR: #33CC99\"> ops_api:semanticTag ?tagBNode</span> ;			
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:semanticTag ?tagBNode</span> ;			
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel</span> ;			
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode</span> .
 ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID</span> ;

@@ -214,7 +214,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
 }
-GRAPH <http://ops.rsc-us.org> {
+GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl;
 		cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
