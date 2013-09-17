@@ -84,6 +84,9 @@
         ?organism_uri rdfs:label ?organism .
         OPTIONAL { ?item dcterms:description ?description }
         OPTIONAL { ?item wp:pathwayOntology ?ontology }
+}
+GRAPH <http://www.conceptwiki.org> {
+	?cw_uri skos:prefLabel ?prefLabel .
 }" .
 	        ] ;
 		api:viewer <#pathwayByTargetViewer> ;
@@ -157,7 +160,6 @@ wp:organism api:name "pathway_organism" ;
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }
-OPTIONAL {
 GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?prefLabel .
-} }" .
+}" .

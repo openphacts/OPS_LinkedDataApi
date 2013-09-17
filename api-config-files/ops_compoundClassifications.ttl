@@ -82,9 +82,9 @@ _:hierarchy api:name "tree" ;
 			?chebi_class rdfs:label ?chebi_label 
 		} 
 	} 
-	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+	GRAPH <http://www.conceptwiki.org> {
                 ?cw_compound_uri skos:prefLabel ?cw_label
-        }} } UNION
+        } } UNION
 	{ GRAPH <http://www.geneontology.org> {
 		BIND(?ops_item AS ?chebi_input)
 		BIND( CONCAT('CHEBI:',STRAFTER(STR(?ops_item),'_')) AS ?input_label )

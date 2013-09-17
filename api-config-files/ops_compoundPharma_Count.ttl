@@ -207,9 +207,9 @@ _:type api:name "target_type" ;
 "?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
-	 OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+	 GRAPH <http://www.conceptwiki.org> {
                 ?cw_uri skos:prefLabel ?compound_name.
-         } }
+         } 
          GRAPH <http://ops.rsc.org> {
                 ?ocrs_uri cheminf:CHEMINF_000018 ?smiles ;
                         cheminf:CHEMINF_000396 ?inchi ;

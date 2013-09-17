@@ -84,9 +84,9 @@ _:hierarchy api:name "tree" ;
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
 	api:where 
-"OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+"GRAPH <http://www.conceptwiki.org> {
 	?cw_target_uri skos:prefLabel ?cw_label
-} } 
+}
 { GRAPH <http://www.ebi.ac.uk/chembl> {
         { ?chembl_target_uri chembl:hasProteinClassification ?chembl_class
         GRAPH ?g {

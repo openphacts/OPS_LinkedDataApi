@@ -204,11 +204,10 @@ _:type api:name "target_type" ;
 "?ops_item ops:targetPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
-OPTIONAL { GRAPH <http://www.conceptwiki.org> {
-        ?cw_uri skos:prefLabel ?target_name .
+GRAPH <http://www.conceptwiki.org> {
         ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
-} }
+} 
 GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_uri .
 	?assay_uri chembl:hasActivity ?item .

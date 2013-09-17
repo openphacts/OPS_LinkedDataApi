@@ -214,11 +214,11 @@ _:type api:name "target_type" ;
 			cheminf:CHEMINF_000396 ?inchi ;
         		cheminf:CHEMINF_000399 ?inchiKey . 
 	}
-	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+	GRAPH <http://www.conceptwiki.org> {
         	?compound_cw skos:exactMatch ?compound_ocrs ;
                 	skos:prefLabel ?compound_name .
-	} }
-	        GRAPH <http://www.ebi.ac.uk/chembl> {
+	}
+	GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?compound_chembl owl:sameAs ?subclass .
                 ?activity_uri a chembl:Activity ;
                         chembl:hasMolecule ?compound_chembl ;

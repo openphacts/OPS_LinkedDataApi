@@ -168,9 +168,9 @@ chembl:pChembl api:name "pChembl" ;
 "	GRAPH ?g {
                 ?chebi_class rdfs:label ?chebi_label
         }
-        OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+        GRAPH <http://www.conceptwiki.org> {
                 ?cw_target_uri skos:prefLabel ?cw_label
-        } }
+        }
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?assay chembl:hasTarget ?chembl_target_uri .
 		?activity chembl:hasAssay ?assay ;

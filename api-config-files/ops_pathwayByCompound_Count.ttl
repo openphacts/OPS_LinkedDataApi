@@ -118,7 +118,6 @@ GRAPH <http://www.wikipathways.org> {
                 dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
 }
-OPTIONAL {
 GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?prefLabel .
-} } } }" .
+} } }" .

@@ -180,9 +180,9 @@ chembl:pChembl api:name "pChembl" ;
 			chembl:hasAssay ?assay .
 		?assay chembl:hasTarget ?chembl_target
 	} 
-	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+	GRAPH <http://www.conceptwiki.org> {
                 ?cw_compound_uri skos:prefLabel ?cw_label
-        } }
+        }
 	?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo:C|chembl:hasTargetComponent/skos:exactMatch/obo:F|chembl:hasTargetComponent/skos:exactMatch/obo:P ?class
 	{ GRAPH ?g {
 		{ ?class rdfs:label ?class_label } UNION

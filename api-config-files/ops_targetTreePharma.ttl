@@ -147,6 +147,10 @@
 		?item chembl:hasMolecule ?compound_chembl .
 		?target_chembl chembl:hasTargetComponent ?target_component .
 	}
+	GRAPH <http://www.conceptwiki.org> {
+                ?compound_cw skos:exactMatch ?compound_ocrs ;
+                        skos:prefLabel ?compound_name .
+        } 
         GRAPH <http://ops.rsc.org> {
                 ?compound_ocrs skos:exactMatch ?compound_chembl .
                 ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
