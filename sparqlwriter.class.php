@@ -613,8 +613,11 @@ _SPARQL_;
         AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)
         AND $ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
             $query='Something went wrong';
-	    if ($this->_config->getEndpointType() == API.'ListEndpoint'){
+	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " .  $whereGraph  . " }"));
+	    }
+	    elseif ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")== 0 ) {
+                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/([^}]*[\s\}]*)(\}\s*$)/', "$1 {$this->getFilterGraph()} $2", $whereGraph , 1) . " }"));
 	    }
 	    else {
             	$query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/([^}]*\})([\s\}]*)$/', "$1 {$this->getFilterGraph()} $2", $whereGraph , 1) . " }"));
