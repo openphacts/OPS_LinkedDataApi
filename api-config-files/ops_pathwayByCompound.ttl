@@ -141,7 +141,8 @@ wp:organism api:name "pathway_organism" ;
 ?organism_uri rdfs:label ?organism . 
 ?pw_uri a wp:Metabolite ; 
 	skos:exactMatch ?cw_uri .
-?cw_uri skos:prefLabel ?prefLabel .
+?cw_uri skos:prefLabel ?prefLabel ;
+	void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {

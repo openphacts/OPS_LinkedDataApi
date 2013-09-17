@@ -70,7 +70,8 @@
 <#pathwayViewer> a api:Viewer ;
 	api:name "pathwayViewer" ;
 	api:template 
-"?ops_item sioc:latest_version ?rev .
+"?ops_item sioc:latest_version ?rev ;
+        void:inDataset <http://www.wikipathways.org>.
 ?rev dc:title ?title ; 
 	wp:organism ?organism_uri ; 
 	foaf:page ?page ;
