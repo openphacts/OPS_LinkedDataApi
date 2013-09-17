@@ -10,7 +10,8 @@
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
-@prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix obo_goa: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix goa: <http://www.semantic-systems-biology.org/ontology/rdf/GOA#> .
 @prefix sio: <http://semanticscience.org/resource/> .
 
@@ -137,9 +138,9 @@
                 { ?target_chembl chembl:hasProteinClassification ?class} UNION
                 { ?target_chembl chembl:hasTargetComponent/skos:exactMatch ?uniprot
                 GRAPH <http://www.openphacts.org/goa>{
-                        {?uniprot obo:C ?class} UNION
-                        {?uniprot obo:F ?class} UNION
-                        {?uniprot obo:P ?class}
+                        {?uniprot obo_goa:C ?class} UNION
+                        {?uniprot obo_goa:F ?class} UNION
+                        {?uniprot obo_goa:P ?class}
                 }}
 		?assay_uri chembl:hasTarget ?target_chembl ;
 			chembl:hasActivity ?item . 
@@ -290,13 +291,13 @@ _:type api:name "target_type" ;
 	chembl:hasTargetComponent ?protein ;
         a ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?compound_chembl ?full_mwt ?molweight ;
-        skos:exactMatch ?compound_ocrs ;
+?compound_chembl skos:exactMatch ?compound_ocrs ;
         skos:exactMatch ?compound_cw ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?compound_ocrs ops:smiles ?smiles ;
         ops:inchi ?inchi ;
         ops:inchikey ?inchi_key;
+	ops:molweight ?molweight ;
         ops:ro5_violations ?num_ro5_violations ;
         void:inDataset <http://ops.rsc.org> .
 ?protein skos:exactMatch ?cw_target .
@@ -306,7 +307,7 @@ _:type api:name "target_type" ;
         void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where 
-"	?target_chembl chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo:C|chembl:hasTargetComponent/skos:exactMatch/obo:F|chembl:hasTargetComponent/skos:exactMatch/obo:P ?class .
+"	?target_chembl chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
 	}
@@ -318,11 +319,14 @@ _:type api:name "target_type" ;
                 OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                         a cheminf:CHEMINF_000367;
                         qudt:numericValue ?num_ro5_violations . }
+		OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+			a cheminf:CHEMINF_000484 ;
+			qudt:numericValue ?molweight . }
         }
-        OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+        GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_ocrs ;
                         skos:prefLabel ?compound_name .
-        } }
+        } 
 	GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?item a chembl:Activity ;
                         chembl:hasAssay ?assay_uri ;
@@ -355,7 +359,4 @@ _:type api:name "target_type" ;
                         OPTIONAL { ?document owl:sameAs ?doi }
                         OPTIONAL { ?document bibo:pmid ?pmid }
                 }
-                OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
-                                ?full_mwt a sio:CHEMINF_000198 ;
-                                        sio:SIO_000300 ?molweight. }
         }" .

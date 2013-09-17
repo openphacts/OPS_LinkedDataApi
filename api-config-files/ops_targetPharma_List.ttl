@@ -276,12 +276,12 @@ GRAPH <http://ops.rsc.org> {
 ?protein skos:exactMatch ?cw_target .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
-?compound_chembl ?full_mwt ?molweight ;
-	skos:exactMatch ?compound_ocrs ; 
+?compound_chembl skos:exactMatch ?compound_ocrs ; 
 	skos:exactMatch ?compound_cw . 
 ?compound_ocrs ops:smiles ?smiles ;
 	ops:inchi ?inchi ;
 	ops:inchikey ?inchi_key;
+	ops:molweight ?molweight ;
         ops:ro5_violations ?num_ro5_violations ;
 	void:inDataset <http://ops.rsc.org> .
 ?compound_cw skos:prefLabel ?compound_name ;
@@ -319,15 +319,15 @@ GRAPH <http://ops.rsc.org> {
 		OPTIONAL { ?doc_uri owl:sameAs ?doi }
 		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
 	}	
-        OPTIONAL { ?compound_chembl sio:SIO_000008 ?full_mwt .
-              		?full_mwt a sio:CHEMINF_000198 ;
- 	      			sio:SIO_000300 ?molweight. }
 }
 GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl .
         ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
                 cheminf:CHEMINF_000018 ?smiles .
+	OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+		a cheminf:CHEMINF_000484 ;
+		qudt:numericValue ?molweight . }
         OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
