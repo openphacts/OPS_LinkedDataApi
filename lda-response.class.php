@@ -6,6 +6,7 @@ define('HTTP_Not_Found', 'HTTP/1.1 404 Not Found');
 define('HTTP_Internal_Server_Error', 'HTTP/1.1 500 Internal Server Error');
 define('HTTP_Bad_Request', 'HTTP/1.1 400 Bad Request');
 define('HTTP_Gateway_Timeout', 'HTTP/1.1 504 Gateway Timeout');
+define('HTTP_No_Content', 204);
 
 require_once 'lib/moriarty/moriarty.inc.php';
 require_once 'lib/moriarty/sparqlservice.class.php';
@@ -397,11 +398,20 @@ class LinkedDataApiResponse {
         //make request to external service
         $ch = curl_init($externalServiceRequest);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        if ($response==false){
+        curl_setopt($ch, CURLOPT_HEADER, array ("Accept: application/xml, application/json"));
+        
+        $fullResponse = curl_exec($ch);
+        
+        if ($fullResponse==false){      
             throw new ErrorException("Request: ".$externalServiceRequest." failed");
         }
+        
+        if (curl_getinfo($ch, CURLINFO_HTTP_CODE)===HTTP_No_Content){
+            throw new EmptyResponseException("Request: ".$externalServiceRequest." returned an empty response");
+        }
+        
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $response = substr($fullResponse, $headerSize);
         
         //call the appropriate converter by checking api:externalResponseHandler
         $this->pageUri = $this->Request->getUriWithoutPageParam();
@@ -409,6 +419,7 @@ class LinkedDataApiResponse {
         
         require $externalResponseHandler;
         
+        curl_close($ch);
         return $rdfData;
     }
     

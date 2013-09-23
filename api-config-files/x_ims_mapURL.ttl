@@ -8,8 +8,9 @@
 	rdfs:label "Mapping service betweem URLs"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable <#URL> ;
+	api:variable <#Uri> ;
 	api:variable <#targetURISpace> ;
+	api:variable <#graph> ;
 	api:description "An API configuration to return a set of URLs associated to the input URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
@@ -18,20 +19,25 @@
 		api:description "Returns a set of URLs associated to the input URL." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?url </span>." ;
 		api:uriTemplate "/mapUri?Uri={Uri}" ;
-		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapUri?Uri={Uri}" ;
+		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9092/QueryExpander/mapUri?Uri={Uri}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
-		api:exampleRequestPath "/mapURL?URL=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
+		api:exampleRequestPath "/mapUri?Uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<#URL> api:name "Uri" ;
+<#Uri> api:name "Uri" ;
 	api:label "Uri";
-	api:value "An input URL to be mapped." ;
+	api:value "An input Uri to be mapped." ;
 	rdfs:range rdfs:Resource .
 
-<#targetURISpace> api:name "targetURISpace" ;
-	api:label "targetURISpace";
-	api:value "List of URI spaces separated by '|' characters. Restricts the results to targets in this/these URISpace(s). The URI space of a URL is the one defined when the mapping is loaded. E.g. http://www.conceptwiki.org/concept/" .
+<#targetUriPattern> api:name "targetUriPattern" ;
+	api:label "targetUriPattern";
+	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s) " .
+
+<#graph> api:name "graph" ;
+	api:label "graph";
+	api:value "Limits the results to ones required for this OpenRdf context/graph." ;
+	rdfs:range rdfs:Resource .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;

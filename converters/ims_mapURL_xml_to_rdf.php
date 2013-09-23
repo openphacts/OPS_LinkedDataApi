@@ -14,12 +14,10 @@ if ($xmlData->count()==0){
 }
 
 $unreservedParameters = $this->Request->getUnreservedParams();
-$inputURL = $unreservedParameters["URL"];
+$inputURL = $unreservedParameters["Uri"];
 foreach ($xmlData->{"targetUri"} as $mapping){
         $targetURL = (string)$mapping[0];
-        if (!empty($targetURL) AND $targetURL!==$inputURL){
-            $this->DataGraph->add_resource_triple($inputURL, SKOS.'exactMatch', $targetURL);
-        }
+        $this->DataGraph->add_resource_triple($inputURL, SKOS.'exactMatch', $targetURL);
 }
 
 $rdfData = $this->DataGraph->to_ntriples();
