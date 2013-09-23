@@ -89,10 +89,10 @@
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?std_type </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?relation </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?activity_unit </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;
@@ -146,6 +146,14 @@
 			chembl:hasActivity ?item . 
 		?item chembl:hasMolecule ?compound_chembl .
 		?target_chembl chembl:hasTargetComponent ?target_component .
+                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+                OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+                OPTIONAL { ?item chembl:standardType ?activity_type }
+                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
+                OPTIONAL { ?item chembl:standardValue ?std_value .
+                BIND (xsd:decimal(?std_value) as ?activity_value) }
+                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+
 	}
 	GRAPH <http://www.conceptwiki.org> {
                 ?compound_cw skos:exactMatch ?compound_ocrs ;
@@ -274,10 +282,9 @@ _:type api:name "target_type" ;
         chembl:publishedRelation ?published_relation ;
         chembl:publishedValue ?published_value ;
         chembl:publishedUnits ?published_unit ;
-        chembl:standardType ?std_type;
-        chembl:standardRelation ?relation;
-        chembl:standardValue ?casted_std_value;
-        chembl:standardUnits ?std_unit;
+        chembl:standardType ?activity_type;
+        chembl:standardRelation ?activity_relation;
+        chembl:standardValue ?activity_value;
         chembl:hasQUDT ?qudt_uri;
         chembl:hasAssay ?assay_uri ;
         chembl:pChembl ?pChembl ;
@@ -285,6 +292,7 @@ _:type api:name "target_type" ;
         chembl:hasDocument ?doi ;
         bibo:pmid ?pmid ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
+?qudt_uri skos:prefLabel ?activity_unit .
 ?assay_uri chembl:hasTarget ?target_chembl ;
         dcterms:description ?assay_description ;
         chembl:assayOrganismName ?assay_organism ;
@@ -351,11 +359,11 @@ _:type api:name "target_type" ;
                 OPTIONAL { ?item chembl:publishedRelation ?published_relation }
                 OPTIONAL { ?item chembl:publishedValue ?published_value }
                 OPTIONAL { ?item chembl:publishedUnits ?published_unit }
-                OPTIONAL { ?item chembl:standardType ?std_type }
-                OPTIONAL { ?item chembl:standardRelation ?relation }
+                OPTIONAL { ?item chembl:standardType ?activity_type }
+                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
                 OPTIONAL { ?item chembl:standardValue ?std_value .
-		BIND (xsd:decimal(?std_value) as ?casted_std_value) }
-                OPTIONAL { ?item chembl:standardUnits ?std_unit }
+		BIND (xsd:decimal(?std_value) as ?activity_value) }
+                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
                 OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
                 OPTIONAL { ?item chembl:pChembl ?pChembl }
         	OPTIONAL { ?item chembl:activityComment ?act_comment }

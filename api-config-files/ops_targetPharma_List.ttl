@@ -102,7 +102,7 @@ chembl:organismName api:name "assay_organism" ;
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
-	api:filterVariable "?chembl_uri";
+	api:filterVariable "?chembl_target_uri";
 	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
@@ -198,10 +198,10 @@ _:type api:name "target_type" ;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?std_type </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?relation </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?std_value </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?std_unit </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?activity_unit </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;
@@ -234,6 +234,14 @@ _:type api:name "target_type" ;
         ?assay_uri chembl:hasTarget ?chembl_target_uri .
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
+        OPTIONAL { ?chembl_target_uri chembl:organismName ?target_organism }	
+        OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+        OPTIONAL { ?item chembl:standardType ?activity_type }
+        OPTIONAL { ?item chembl:standardRelation ?activity_relation }
+        OPTIONAL { ?item chembl:standardValue ?standard_value .
+        BIND (xsd:decimal(?standard_value) as ?activity_value)}
+        OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+        OPTIONAL { ?item chembl:pChembl ?pChembl }
 }
 GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?compound_chembl .
@@ -256,10 +264,9 @@ GRAPH <http://www.conceptwiki.org> {
         chembl:publishedRelation ?published_relation ;
 	chembl:publishedValue ?published_value ;
 	chembl:publishedUnits ?published_unit ;
-	chembl:standardType ?standard_type ;
-	chembl:standardRelation ?standard_relation ;
-	chembl:standardValue ?casted_standard_value ;
-	chembl:standardUnits ?standard_unit ;
+	chembl:standardType ?activity_type ;
+	chembl:standardRelation ?activity_relation ;
+	chembl:standardValue ?activity_value ;
 	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
 	chembl:pChembl ?pChembl ;
@@ -267,13 +274,13 @@ GRAPH <http://www.conceptwiki.org> {
 	bibo:pmid ?pmid ;
 	chembl:hasDocument ?doi ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?qudt_uri skos:prefLabel ?activity_unit .
 ?assay_uri chembl:assayOrganismName ?assay_organism ;
-	chembl:hasTarget ?chembl_target_uri ; 
+	chembl:hasTarget ?chembl_target ; 
 	dcterms:description ?assay_description ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?chembl_target_uri dcterms:title ?target_name_chembl ;
+?chembl_target dcterms:title ?target_name_chembl ;
 	chembl:targetOrganismName ?target_organism ;
-	skos:exactMatch ?cw_target_uri ;
         chembl:hasTargetComponent ?protein ;
         a ?target_type ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
@@ -293,13 +300,13 @@ GRAPH <http://www.conceptwiki.org> {
 " ; 
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?assay_uri chembl:hasTarget ?chembl_target_uri .
+        ?assay_uri chembl:hasTarget ?chembl_target .
         ?assay_uri chembl:hasActivity ?item .
         ?item chembl:hasMolecule ?compound_chembl .
-        ?chembl_target_uri a ?target_type .
-	OPTIONAL { ?chembl_target_uri dcterms:title ?target_name_chembl }
-        OPTIONAL { ?chembl_target_uri chembl:organismName ?target_organism }
-	OPTIONAL { ?chembl_target_uri chembl:hasTargetComponent ?protein .
+        ?chembl_target a ?target_type .
+	OPTIONAL { ?chembl_target dcterms:title ?target_name_chembl }
+        OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
+	OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_target skos:exactMatch ?protein ;
                                 skos:prefLabel ?protein_name
@@ -311,11 +318,11 @@ GRAPH <http://www.conceptwiki.org> {
         OPTIONAL { ?item chembl:publishedRelation ?published_relation }
         OPTIONAL { ?item chembl:publishedValue ?published_value }
         OPTIONAL { ?item chembl:publishedUnits ?published_unit }
-        OPTIONAL { ?item chembl:standardType ?standard_type }
-	OPTIONAL { ?item chembl:standardRelation ?standard_relation }
+        OPTIONAL { ?item chembl:standardType ?activity_type }
+	OPTIONAL { ?item chembl:standardRelation ?activity_relation }
 	OPTIONAL { ?item chembl:standardValue ?standard_value .
-	BIND (xsd:decimal(?standard_value) as ?casted_standard_value)}
-	OPTIONAL { ?item chembl:standardUnits ?standard_unit }
+	BIND (xsd:decimal(?standard_value) as ?activity_value)}
+	OPTIONAL { ?item chembl:standardUnits ?activity_unit }
 	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
 	OPTIONAL { ?item chembl:pChembl ?pChembl }
 	OPTIONAL { ?item chembl:activityComment ?act_comment }
