@@ -218,8 +218,11 @@ _:type api:name "target_type" ;
         	?compound_cw skos:exactMatch ?compound_ocrs ;
                 	skos:prefLabel ?compound_name .
 	}
+	GRAPH <http://www.ebi.ac.uk/chebi> {
+        	?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?subclass .
+	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
-                ?compound_chembl owl:sameAs ?subclass .
+                ?compound_chembl owl:sameAs ?chebi_compound .
                 ?activity_uri a chembl:Activity ;
                         chembl:hasMolecule ?compound_chembl ;
                         chembl:hasAssay ?assay_uri .

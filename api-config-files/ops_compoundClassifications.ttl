@@ -60,6 +60,7 @@ _:hierarchy api:name "tree" ;
 "?ops_item skos:exactMatch ?chembl_compound_uri ;
 	skos:exactMatch ?cw_compound_uri .
 ?chembl_compound_uri ops:hasChebiClassification ?chebi_class ; 
+	ops:hasChebiClassification ?chebi_other_class ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chebi_input ops:hasGoClassification ?go_class ;
 	skos:prefLabel ?chebi_input_label ; 
@@ -70,16 +71,29 @@ _:hierarchy api:name "tree" ;
 ?cw_compound_uri skos:prefLabel ?cw_label ; 
 	void:inDataset <http://www.conceptwiki.org> .
 ?chebi_class skos:prefLabel ?chebi_label ;
-	void:inDataset <http://www.ebi.ac.uk/chebi> . 
+	ops:classificationType rdf:type ;
+        void:inDataset <http://www.ebi.ac.uk/chebi> .
+rdf:type skos:prefLabel 'Type' .
+?chebi_other_class skos:prefLabel ?chebi_other_label ;
+        ops:classificationType ?chebi_class_type ;
+        void:inDataset <http://www.ebi.ac.uk/chebi> .
+?chebi_class_type skos:prefLabel ?chebi_class_type_label .
 ?go_class skos:prefLabel ?go_label ;
 	void:inDataset <http://www.geneontology.org> .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
 	api:where 
 "	{ GRAPH <http://www.ebi.ac.uk/chembl> {
-		?chembl_compound_uri owl:sameAs ?chebi_class 
+		?chembl_compound_uri owl:sameAs ?chebi_compound
         	GRAPH ?g { 
-			?chebi_class rdfs:label ?chebi_label 
+			{ ?chebi_compound rdfs:subClassOf ?chebi_class .
+			?chebi_class rdfs:label ?chebi_label .
+			FILTER(!isBlank(?chebi_class)) }
+			OPTIONAL { ?chebi_compound rdfs:subClassOf _:bNode .
+				_:bNode owl:someValuesFrom ?chebi_other_class ;
+					owl:onProperty ?chebi_class_type .
+	                        ?chebi_other_class rdfs:label ?chebi_other_label .
+	                        ?chebi_class_type rdfs:label ?chebi_class_type_label }
 		} 
 	} 
 	GRAPH <http://www.conceptwiki.org> {

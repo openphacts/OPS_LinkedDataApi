@@ -50,7 +50,10 @@ GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         ?child_node rdfs:subClassOf ?ops_item .
 }
 GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?item owl:sameAs ?child_node
+        ?item owl:sameAs ?chebi_compound
+}
+GRAPH <http://www.ebi.ac.uk/chebi> {
+        ?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
 }
 GRAPH <http://ops.rsc.org> {
         ?compound_ocrs skos:exactMatch ?item
