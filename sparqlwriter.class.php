@@ -625,13 +625,15 @@ _SPARQL_;
             $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
 	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
-	    	$expandedQuery = substr($expandedQuery, 0, strrpos($expandedQuery,"}")-1) . "\n FILTER ( ";
+	    	$filterGraph = "FILTER ( ";
 	   	foreach($uriList as $uri) {
-			$expandedQuery .= "?item = <{$uri}> || ";
+			$filterGraph .= "?item = <{$uri}> || ";
 	    	}
-	    	$expandedQuery = substr($expandedQuery, 0, strlen($expandedQuery) - 3);
-	    	$expandedQuery .= ") }";
+	    	$filterGraph = substr($filterGraph, 0, strlen($filterGraph) - 3);
+	    	$filterGraph .= ")";
 	    }
+	    $expandedQuery = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\?item)/s","$1
+		{$filterGraph} $2",$expandedQuery);
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
@@ -647,8 +649,12 @@ _SPARQL_;
             	}
             	$filterGraph = substr($filterGraph, 0, strlen($filterGraph) - 3);
             	$filterGraph .= " ) ";
-		$expandedQuery = preg_replace('/(.*\})([\s\}])*$/',"} {$filterGraph} }",$expandedQuery);
+            $expandedQuery = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\?item)/s","$1
+                {$filterGraph} $2",$expandedQuery);
 	    }
+            elseif ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")== 0 ) {
+                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/([^}]*[\s\}]*)(\}\s*$)/', "$1 {$this->getFilterGraph()} $2", $whereGraph , 1) . " }"));
+            }
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
         } else if($viewerUri==API.'describeViewer' AND strlen($this->_request->getParam('_properties')) === 0 ){
