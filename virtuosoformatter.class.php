@@ -15,6 +15,7 @@ class VirtuosoFormatter {
 		$output = preg_replace("/[ ]*sql:GROUP_DIGEST[ ]*\([ ]*[ a-z\?,_]*, [\"'] , [\"']/i" , '$0 , 1000 , 1' , $output);
 		//$output = preg_replace('#(\?[a-z,]*_uri[ ]*=[ ]*)(<http://.*>)#iU' , '$1 IRI($2)' , $output);
 		$output = preg_replace('/\([ ]*COUNT[ ]*\([ ]*\?/' , '( COUNT (DISTINCT ?' , $output);
+		$output = preg_replace("/(^\s+|\s+$)/m"," ",$output); 
 		return $output ;
 	}
  
