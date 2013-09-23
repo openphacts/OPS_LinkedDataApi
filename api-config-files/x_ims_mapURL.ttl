@@ -9,8 +9,9 @@
 	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#Uri> ;
-	api:variable <#targetURISpace> ;
+	api:variable <#targetUriPattern> ;
 	api:variable <#graph> ;
+	api:variable <#lensUri> ;
 	api:description "An API configuration to return a set of URLs associated to the input URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
@@ -31,13 +32,18 @@
 	rdfs:range rdfs:Resource .
 
 <#targetUriPattern> api:name "targetUriPattern" ;
-	api:label "targetUriPattern";
-	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s) " .
+	api:label "targetUriPattern" ;
+	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." . 
 
 <#graph> api:name "graph" ;
 	api:label "graph";
 	api:value "Limits the results to ones required for this OpenRdf context/graph." ;
 	rdfs:range rdfs:Resource .
+
+<#lensUri> api:name "lensUri" ;
+	api:label "lensUri";
+	api:value "Lens URI." .
+
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
