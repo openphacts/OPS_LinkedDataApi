@@ -336,7 +336,7 @@ UNION { GRAPH <http://ops.rsc.org> {
 } }
 UNION { GRAPH <http://www.ebi.ac.uk/chembl> {
 	?item a chembl:Activity ;
-		chembl:hasMolecule ?chembl_compound ;
+		chembl:hasMolecule ?chembl_compound_uri ;
 		chembl:hasAssay ?assay_uri .
 	?assay_uri chembl:hasTarget ?target_uri .
 	?target_uri a ?target_type .
