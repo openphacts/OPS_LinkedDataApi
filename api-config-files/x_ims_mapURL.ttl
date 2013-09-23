@@ -17,15 +17,15 @@
 		api:enableCache true ;
 		api:description "Returns a set of URLs associated to the input URL." ;
 		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?url </span>." ;
-		api:uriTemplate "/mapURL?URL={URL}" ;
-		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapUri?Uri={URL}" ;
+		api:uriTemplate "/mapUri?Uri={Uri}" ;
+		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapUri?Uri={Uri}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
 		api:exampleRequestPath "/mapURL?URL=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<#URL> api:name "URL" ;
-	api:label "URL";
+<#URL> api:name "Uri" ;
+	api:label "Uri";
 	api:value "An input URL to be mapped." ;
 	rdfs:range rdfs:Resource .
 
