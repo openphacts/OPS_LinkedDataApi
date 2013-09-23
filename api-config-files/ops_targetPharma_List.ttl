@@ -209,7 +209,7 @@ _:type api:name "target_type" ;
 		<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 	?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span>; 
+		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target_uri </span>; 
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 	?target_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:title ?target_name </span>;
@@ -276,10 +276,10 @@ GRAPH <http://www.conceptwiki.org> {
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?qudt_uri skos:prefLabel ?activity_unit .
 ?assay_uri chembl:assayOrganismName ?assay_organism ;
-	chembl:hasTarget ?chembl_target ; 
+	chembl:hasTarget ?chembl_target_uri ; 
 	dcterms:description ?assay_description ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?chembl_target dcterms:title ?target_name_chembl ;
+?chembl_target_uri dcterms:title ?target_name_chembl ;
 	chembl:targetOrganismName ?target_organism ;
         chembl:hasTargetComponent ?protein ;
         a ?target_type ;
@@ -300,13 +300,13 @@ GRAPH <http://www.conceptwiki.org> {
 " ; 
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?assay_uri chembl:hasTarget ?chembl_target .
+        ?assay_uri chembl:hasTarget ?chembl_target_uri .
         ?assay_uri chembl:hasActivity ?item .
         ?item chembl:hasMolecule ?compound_chembl .
-        ?chembl_target a ?target_type .
-	OPTIONAL { ?chembl_target dcterms:title ?target_name_chembl }
-        OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
-	OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
+        ?chembl_target_uri a ?target_type .
+	OPTIONAL { ?chembl_target_uri dcterms:title ?target_name_chembl }
+        OPTIONAL { ?chembl_target_uri chembl:organismName ?target_organism }
+	OPTIONAL { ?chembl_target_uri chembl:hasTargetComponent ?protein .
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_target skos:exactMatch ?protein ;
                                 skos:prefLabel ?protein_name
