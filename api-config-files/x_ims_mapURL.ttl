@@ -11,6 +11,7 @@
 	api:variable <#Uri> ;
 	api:variable <#targetUriPattern> ;
 	api:variable <#graph> ;
+	api:variable <#lensUri> ;
 	api:description "An API configuration to return a set of URLs associated to the input URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
@@ -38,6 +39,11 @@
 	api:label "graph";
 	api:value "Limits the results to ones required for this OpenRdf context/graph." ;
 	rdfs:range rdfs:Resource .
+
+<#lensUri> api:name "lensUri" ;
+	api:label "lensUri";
+	api:value "Lens URI." .
+
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" ;
