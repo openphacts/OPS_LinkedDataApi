@@ -35,7 +35,8 @@
 		a api:ItemEndpoint ;
 		api:name "Pathway Information" ;
 		api:description "Returns information about a single pathway that corresponds to {uri}.";
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
+		api:resultsDescription "?ops:item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.
+?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
 ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;
@@ -70,37 +71,33 @@
 <#pathwayViewer> a api:Viewer ;
 	api:name "pathwayViewer" ;
 	api:template 
-"?ops_item sioc:latest_version ?rev ;
+"?ops_item skos:exactMatch ?pw_uri .
+?pw_uri sioc:latest_version ?rev ;
         void:inDataset <http://www.wikipathways.org>.
 ?rev dc:title ?title ; 
 	wp:organism ?organism_uri ; 
 	foaf:page ?page ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
-	dcterms:hasPart ?reference ;
-	dcterms:hasPart ?metabolite ;
-	dcterms:hasPart ?gene_product;
+	dcterms:hasPart ?part ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
-?reference a wp:PublicationReference .
-?metabolite a wp:Metabolite .
-?gene_product a wp:GeneProduct .
+?part a ?type .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:identifier ?ops_item ; 
+	?rev dc:identifier ?pw_uri ; 
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:title ?title . 
-	?organism_uri rdfs:label ?organism . 
+	?organism_uri rdfs:label ?organism .
+	?part_internal dcterms:isPartOf ?rev ;
+		a ?type ;
+		dc:identifier ?part .
 	OPTIONAL { ?rev dcterms:description ?description }
 	OPTIONAL { ?rev wp:pathwayOntology ?ontology }
 	OPTIONAL { ?reference dcterms:isPartOf ?rev ;
 			a wp:PublicationReference }
-	OPTIONAL { ?metabolite_internal dcterms:isPartOf ?rev ;
-			a wp:Metabolite ;
-			dc:identifier ?metabolite }
-	OPTIONAL { ?gene_product_internal dcterms:isPartOf ?rev ;
-			a wp:GeneProduct ;
-			dc:identifier ?gene_product }
+	FILTER (!regex(?part,'noIdentifier'))
+	FILTER (?type = wp:Protein || ?type = wp:GeneProduct || ?type = wp:Metabolite || ?type = wp:Reference ) 
 }" .

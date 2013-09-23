@@ -35,7 +35,8 @@
 		a api:ItemEndpoint ;
 		api:name "Get Targets for Pathway" ;
 		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.
+?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
 ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
         <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?gene_product </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>" ;
@@ -60,15 +61,17 @@
 <#pathwayTargetViewer> a api:Viewer ;
 	api:name "pathwayTargetViewer" ;
 	api:template 
-"?ops_item sioc:latest_version ?rev .
+"?ops_item skos:exactMatch ?pw_uri .
+?pw_uri sioc:latest_version ?rev .
 ?rev dc:title ?title ; 
 	dcterms:hasPart ?gene_product;
 	void:inDataset <http://www.wikipathways.org>";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:identifier ?ops_item .
+	?rev dc:identifier ?pw_uri .
 	?rev dc:title ?title . 
 	?gene_product_internal dcterms:isPartOf ?rev ;
-		a wp:GeneProduct ;
+		a ?type ;
 		dc:identifier ?gene_product .
+	FILTER ( ?type = wp:GeneProduct || ?type = wp:Protein )
 }" .

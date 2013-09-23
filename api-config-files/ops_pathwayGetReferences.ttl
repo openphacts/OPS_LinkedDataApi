@@ -35,7 +35,8 @@
 		a api:ItemEndpoint ;
 		api:name "Get References for Pathway" ;
 		api:description "Returns references that are part of the pathway that corresponds to {uri}.";
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
+		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.
+?pw uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
 ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
         <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?reference </span>;
         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>." ;
@@ -60,14 +61,16 @@
 <#pathwayReferenceViewer> a api:Viewer ;
 	api:name "pathwayReferenceViewer" ;
 	api:template 
-"?ops_item sioc:latest_version ?rev . 
+"?ops_item skos:exactMatch ?pw_uri .
+?pw_uri sioc:latest_version ?rev . 
 ?rev dc:title ?title ; 
 	dcterms:hasPart ?reference ;
 	void:inDataset <http://www.wikipathways.org> .";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:identifier ?ops_item ;
+	?rev dc:identifier ?pw_uri ;
 		dc:title ?title .
 	?reference dcterms:isPartOf ?rev ;
-		a wp:PublicationReference 
+		a wp:PublicationReference
+	FILTER(!isBlank(?reference)) 
 }" .
