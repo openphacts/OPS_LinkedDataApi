@@ -6073,14 +6073,19 @@
             },
             {
               "name":  "Uri" ,
-              "description":  "An input URL to be mapped." ,
+              "description":  "An input Uri to be mapped." ,
               "paramType": "query",
-              "required": true,
               "dataType": "string"
             },
             {
-              "name":  "targetURISpace" ,
-              "description":  "List of URI spaces separated by '|' characters. Restricts the results to targets in this/these URISpace(s). The URI space of a URL is the one defined when the mapping is loaded. E.g. http://www.conceptwiki.org/concept/" ,
+              "name":  "targetUriPattern" ,
+              "description":  "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "graph" ,
+              "description":  "Limits the results to ones required for this OpenRdf context/graph." ,
               "paramType": "query",
               "dataType": "string"
             },
