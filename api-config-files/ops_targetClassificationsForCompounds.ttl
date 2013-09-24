@@ -33,8 +33,8 @@
 	api:description "An API configuration to return information about targets." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Classifications for interacting Compounds" ;
-		api:description "The classes Compounds that interact with the given target URI have been classified with. Currently only the ChEBI Ontology is supported. " ;
+		api:name "Classification of Compounds specific for a Target" ;
+		api:description "The hierarchy classes for the different Compounds that interact with a given Target. Currently only the ChEBI Ontology is supported. " ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;

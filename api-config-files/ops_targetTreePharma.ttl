@@ -109,13 +109,13 @@
 		<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
-	?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
+	?compound_chembl  <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
 	?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight</span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.
 	?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span>.
