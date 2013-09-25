@@ -313,17 +313,17 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	drugbank:genericName ?drug_name ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
 	api:where 
-"{
+"OPTIONAL {
       GRAPH <http://linkedlifedata.com/resource/drugbank> {
         ?db_compound_uri drugbank:genericName ?drug_name ;
           drugbank:drugType ?drugType_uri .
         ?drugType_uri rdfs:label ?drugType.
   } 
 }
-UNION { GRAPH <http://www.conceptwiki.org> {
+GRAPH <http://www.conceptwiki.org> {
 	?cw_compound_uri skos:prefLabel ?compound_name.
-} }
-UNION { GRAPH <http://ops.rsc.org> {
+}
+GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
 		cheminf:CHEMINF_000399 ?inchiKey .
@@ -333,8 +333,8 @@ UNION { GRAPH <http://ops.rsc.org> {
 	OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound_uri ;
 			a cheminf:CHEMINF_000367;
 			qudt:numericValue ?num_ro5_violations . }
-} }
-UNION { GRAPH <http://www.ebi.ac.uk/chembl> {
+}
+GRAPH <http://www.ebi.ac.uk/chembl> {
 	?item a chembl:Activity ;
 		chembl:hasMolecule ?chembl_compound_uri ;
 		chembl:hasAssay ?assay_uri .
@@ -366,4 +366,4 @@ UNION { GRAPH <http://www.ebi.ac.uk/chembl> {
 		OPTIONAL { ?doc_uri owl:sameAs ?doi }
 		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
 	}	
-} }" .
+}" .
