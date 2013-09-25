@@ -109,13 +109,13 @@
 		<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
-	?compound_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?full_mwt ?molweight </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
+	?compound_chembl  <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
 	?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;
+		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight</span>;
 		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
 		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.
 	?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span>.
@@ -146,13 +146,13 @@
 			chembl:hasActivity ?item . 
 		?item chembl:hasMolecule ?compound_chembl .
 		?target_chembl chembl:hasTargetComponent ?target_component .
-                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-                OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
-                OPTIONAL { ?item chembl:standardType ?activity_type }
-                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
-                OPTIONAL { ?item chembl:standardValue ?std_value .
+                { ?assay_uri chembl:organismName ?assay_organism }
+                UNION { ?target_chembl chembl:organismName ?target_organism }
+                UNION { ?item chembl:standardType ?activity_type }
+                UNION { ?item chembl:standardRelation ?activity_relation }
+                UNION { ?item chembl:standardValue ?std_value .
                 BIND (xsd:decimal(?std_value) as ?activity_value) }
-                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+                UNION { ?item chembl:standardUnits ?activity_unit }
 
 	}
 	GRAPH <http://www.conceptwiki.org> {

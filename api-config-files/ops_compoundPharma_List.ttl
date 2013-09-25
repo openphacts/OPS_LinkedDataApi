@@ -192,7 +192,7 @@ _:type api:name "target_type" ;
         api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 	api:name "Compound Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;	
-	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_uri </span>;
+	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;
@@ -213,16 +213,16 @@ _:type api:name "target_type" ;
 ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span>. 
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-?chembl_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
+?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>;	
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?molweight </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
 ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
 ?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey</span>;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span>;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.
 ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;
@@ -313,17 +313,17 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	drugbank:genericName ?drug_name ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
 	api:where 
-"{
+"OPTIONAL {
       GRAPH <http://linkedlifedata.com/resource/drugbank> {
         ?db_compound_uri drugbank:genericName ?drug_name ;
           drugbank:drugType ?drugType_uri .
         ?drugType_uri rdfs:label ?drugType.
   } 
 }
-UNION { GRAPH <http://www.conceptwiki.org> {
+GRAPH <http://www.conceptwiki.org> {
 	?cw_compound_uri skos:prefLabel ?compound_name.
-} }
-UNION { GRAPH <http://ops.rsc.org> {
+}
+GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
 		cheminf:CHEMINF_000399 ?inchiKey .
@@ -333,8 +333,8 @@ UNION { GRAPH <http://ops.rsc.org> {
 	OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound_uri ;
 			a cheminf:CHEMINF_000367;
 			qudt:numericValue ?num_ro5_violations . }
-} }
-UNION { GRAPH <http://www.ebi.ac.uk/chembl> {
+}
+GRAPH <http://www.ebi.ac.uk/chembl> {
 	?item a chembl:Activity ;
 		chembl:hasMolecule ?chembl_compound_uri ;
 		chembl:hasAssay ?assay_uri .
@@ -366,4 +366,4 @@ UNION { GRAPH <http://www.ebi.ac.uk/chembl> {
 		OPTIONAL { ?doc_uri owl:sameAs ?doi }
 		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
 	}	
-} }" .
+}" .

@@ -34,8 +34,8 @@
 	api:description "An API configuration to return information about compounds." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Classifications for interacting Targets" ;
-		api:description "The classes targets that interact with the given compound URI have been classified with. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. " ;
+		api:name "Classification of Targets specific for a Compound" ;
+		api:description "The hierarchy of classes for the different Targets that interact with a given Compound. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. " ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl> ;
