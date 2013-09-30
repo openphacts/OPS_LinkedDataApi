@@ -269,6 +269,7 @@ GRAPH <http://www.conceptwiki.org> {
 	chembl:standardValue ?activity_value ;
 	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
+	chembl:assayTestType ?assay_type ;
 	chembl:pChembl ?pChembl ;
 	chembl:activityComment ?act_comment ;
 	bibo:pmid ?pmid ;
@@ -314,6 +315,7 @@ GRAPH <http://www.conceptwiki.org> {
         }
         OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+        OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
 	OPTIONAL { ?item chembl:publishedType ?published_type }
         OPTIONAL { ?item chembl:publishedRelation ?published_relation }
         OPTIONAL { ?item chembl:publishedValue ?published_value }
