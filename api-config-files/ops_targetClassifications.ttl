@@ -14,6 +14,7 @@
 	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
+	api:variable _:type ;
 	api:variable <#input> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://purl.uniprot.org/enzyme/> ;
@@ -31,6 +32,22 @@
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl> ;
 		api:variable <http://www.geneontology.org> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> ;
+       		api:variable <http://rdf.ebi.ac.uk/terms/chembl#Organism> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#CellLine> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#Tissue> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#SubCellular> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> ;
+        	api:variable <http://rdf.ebi.ac.uk/terms/chembl#ADMET> ;
+        	api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
+	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 		api:uriTemplate "/target/classifications?uri={uri}" ;
 		api:exampleRequestPath "/target/classifications?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FP14756" ;
                 api:exampleRequestPath "/target/classifications?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FP14756&tree=go" ;
@@ -57,12 +74,38 @@ _:hierarchy api:name "tree" ;
         api:value "A target URI.  e.g.: http://purl.uniprot.org/uniprot/P14756" ;
         rdfs:range rdfs:Resource .
 
+_:type api:name "target_type" ;
+        api:label "target_type" ;
+        api:filterVariable "?chembl_target_uri";
+        api:value "One of the types listed at /target/types. e.g. single_protein" ;
+        rdfs:subPropertyOf rdf:type ;
+        a rdf:Property .
+
+<http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> api:name "single_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup> api:name "protein_complex_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily> api:name "protein_family" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup> api:name "protein_selectivity_group" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex> api:name "protein_complex" .
+<http://rdf.ebi.ac.uk/terms/chembl#Organism> api:name "organism" .
+<http://rdf.ebi.ac.uk/terms/chembl#CellLine> api:name "cell_line" .
+<http://rdf.ebi.ac.uk/terms/chembl#Tissue> api:name "tissue" .
+<http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction> api:name "ppi" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget> api:name "unknown" .
+<http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid> api:name "nucleic_acid" .
+<http://rdf.ebi.ac.uk/terms/chembl#SubCellular> api:name "sub_cellular" .
+<http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> api:name "unclassified" .
+<http://rdf.ebi.ac.uk/terms/chembl#ADMET> api:name "admet" .
+<http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
+
 <#targetClassificationsViewer> a api:Viewer ;
 	api:name "targetClassificationsViewer";
 	api:template "?ops_item skos:exactMatch ?chembl_target_uri ;
 	skos:exactMatch ?uniprot_target_uri ;
 	skos:exactMatch ?cw_target_uri .
 ?chembl_target_uri chembl:hasProteinClassification ?chembl_class ;
+	dcterms:title ?target_name ;
+	a ?target_type ;
 	ops:hasEnzymeClassification ?enzyme_class ; 
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?uniprot_target_uri ops:hasGoComponent ?go_component ; 
@@ -97,7 +140,8 @@ _:hierarchy api:name "tree" ;
         GRAPH ?g {
                 ?enzyme_class uniprot:name ?enzyme_label
         }}
-        ?chembl_target_uri dcterms:title ?target_name
+        ?chembl_target_uri dcterms:title ?target_name ;
+		a ?target_type .
 } } UNION {
 GRAPH <http://www.openphacts.org/goa> {
         { ?uniprot_target_uri obo:C ?go_component

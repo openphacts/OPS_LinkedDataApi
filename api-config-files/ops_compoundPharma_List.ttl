@@ -287,6 +287,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 ?qudt_uri skos:prefLabel ?activity_unit .
 ?assay_uri chembl:hasTarget ?target_uri ;
         chembl:assayOrganismName ?assay_organism ;
+	chembl:assayTestType ?assay_type ;
 	dcterms:description ?assay_description  ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_uri dcterms:title ?target_name ;
@@ -350,6 +351,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
         }
 	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
 	OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+        OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
 	OPTIONAL { ?item chembl:publishedType ?published_type }
 	OPTIONAL { ?item chembl:publishedRelation ?published_relation }
 	OPTIONAL { ?item chembl:publishedValue ?published_value }

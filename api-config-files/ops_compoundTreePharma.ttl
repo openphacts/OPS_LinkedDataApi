@@ -291,6 +291,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 ?assay_uri chembl:hasTarget ?target_uri ;
         chembl:assayOrganismName ?assay_organism ;
 	dcterms:description ?assay_description ;
+	chembl:assayTestType ?assay_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_uri dcterms:title ?target_name ;
 	chembl:targetOrganismName ?target_organism ;
@@ -343,6 +344,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 		        ?target_uri a ?target_type .
         		OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
         		OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+		        OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
         		OPTIONAL { ?target_uri dcterms:title ?target_name }
         		OPTIONAL { ?target_uri chembl:organismName ?target_organism }
 		        OPTIONAL { ?target_uri chembl:hasTargetComponent ?protein .
