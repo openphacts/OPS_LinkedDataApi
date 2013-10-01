@@ -41,8 +41,8 @@
 ?dataset foaf:homepage ?homepage .
 ?dataset a void:Dataset . ";
 	api:where
-"GRAPH <http://www.openphacts.org/api/datasetDescriptors> 
-{ ?dataset a void:Dataset .
+"GRAPH <http://www.openphacts.org/api/datasetDescriptors> { 
+?dataset a void:Dataset .
 ?description foaf:primaryTopic ?top_dataset .
 OPTIONAL { ?dataset dcterms:title ?title . }
 OPTIONAL { ?dataset void:subset ?subset . } 

@@ -63,7 +63,7 @@ GRAPH <http://www.conceptwiki.org> {
 	api:template 
 "?item skos:exactMatch ?compound_ocrs ;
 	skos:exactMatch ?compound_cw .
-?compound_cw skos:prefLabel ?compound_name ";
+?compound_cw skos:prefLabel ?compound_name .";
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         ?child_node rdfs:subClassOf ?ops_item .
