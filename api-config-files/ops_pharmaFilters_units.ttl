@@ -57,7 +57,7 @@ _:act_type api:name "act_type" ;
 	api:template 
 " ?item qudt:unit ?unit ;
 	rdfs:label ?act_label . 
-?unit rdfs:label ?unit_label " ; 
+?unit rdfs:label ?unit_label . " ; 
 	api:where
 "GRAPH <http://www.openphacts.org/units> {
 	?item rdfs:label ?act_label ;

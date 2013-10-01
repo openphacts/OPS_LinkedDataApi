@@ -64,7 +64,7 @@ api:orderBy ""] ;
 	api:template 
 "<http://www.ebi.ac.uk/chembl> ops:normalised_activity_unit ?item .
 ?item rdfs:label ?qudt_label ;
-ops:activity_count ?count " ; 
+ops:activity_count ?count ." ; 
 	api:where
 "{
 SELECT DISTINCT ?item COUNT(?activity) AS ?count WHERE {

@@ -55,7 +55,7 @@
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
 	api:where "{
 SELECT DISTINCT ?child_node ?g_short WHERE {
 	VALUES ?g {

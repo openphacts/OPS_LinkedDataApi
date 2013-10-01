@@ -1,0 +1,14 @@
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .
+?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MolType ?searchMolType </span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?result </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchTautomers ?searchMatchTautomers </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;
+ops_api_common:HasSpectr <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hasSpectra </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span> .
+?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .

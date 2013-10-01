@@ -312,7 +312,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?db_compound_uri drugbank:drugType ?drugType ;
 	drugbank:genericName ?drug_name ;
-	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
+	void:inDataset <http://linkedlifedata.com/resource/drugbank> ." ; 
 	api:where 
 "OPTIONAL {
       GRAPH <http://linkedlifedata.com/resource/drugbank> {

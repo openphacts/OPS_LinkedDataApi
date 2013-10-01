@@ -50,12 +50,12 @@ _:hierarchy api:name "root" ;
 	api:name "treeRootViewer";
 	api:template "ops:conceptHierarchy dcterms:hasPart ?g_short .
 ?g_short ops:rootNode ?root_node .
-?root_node skos:prefLabel ?name , 
-		?label .
+?root_node skos:prefLabel ?name ;
+	skos:prefLabel ?label .
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
 	api:where "{
 SELECT DISTINCT ?root_node ?g_short WHERE {
 	VALUES ?g {
