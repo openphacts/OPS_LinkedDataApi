@@ -5,7 +5,7 @@ define('SEARCH_RESULTS_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResu
 define('SEARCH_RESULTS_WITH_RELEVANCE_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResultWithRelevance&rid=');
 
 define('OPS_PREFIX', 'http://www.openphacts.org/api/');
-define('CHEMSPIDER_PREFIX', 'http://ops.rsc-us.org/OPS');
+define('CHEMSPIDER_PREFIX', 'http://ops.rsc.org/OPS');
 
 define('EXACT_STRUCTURE_SEARCH', 0);
 define('SUBSTRUCTURE_SEARCH', 1);
