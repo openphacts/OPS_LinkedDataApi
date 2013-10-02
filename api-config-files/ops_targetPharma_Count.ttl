@@ -21,7 +21,7 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:variable _:targetOrganism ;
@@ -45,7 +45,6 @@
 		a api:ItemEndpoint ;
 		api:name "Target Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given target" ;
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetPharmacologyTotalResults ?count </span>." ;
 		api:uriTemplate "/target/pharmacology/count?uri={uri}" ;
         	api:itemTemplate "{uri}" ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;

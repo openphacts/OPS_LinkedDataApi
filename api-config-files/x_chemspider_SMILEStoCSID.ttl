@@ -8,7 +8,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable cheminf:CHEMINF_000018 ;
 	api:dataset <http://ops.rsc.org> ;
@@ -16,7 +16,6 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000018 ?smiles </span>." ;
 
 		api:name "SMILES to URL" ;
 		api:enableCache true ;

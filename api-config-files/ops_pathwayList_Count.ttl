@@ -22,7 +22,7 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable wp:organism ; 
 	api:dataset <http://www.wikipathways.org> ;
@@ -35,7 +35,6 @@
 		a api:ItemEndpoint ;
 		api:name "Count Pathways" ;
 		api:description "Returns the number of pathways in the cache.";
-		api:resultsDescription "&lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span>." ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;

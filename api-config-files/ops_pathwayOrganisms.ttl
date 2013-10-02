@@ -21,7 +21,7 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -35,9 +35,6 @@
 		a api:ListEndpoint ;
 		api:name "Organisms used in Pathways" ;
 		api:description "A list of organism URIs and labels for which pathway data is available." ;
-		api:resultsDescription "&lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:pathway_organism ?item .
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?label ;
-<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count " ;
 		api:uriTemplate "/pathways/organisms" ;
         	api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways/organisms";

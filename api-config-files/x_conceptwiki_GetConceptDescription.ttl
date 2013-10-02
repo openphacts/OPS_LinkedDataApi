@@ -7,7 +7,7 @@
 
 <#conceptWiki> a api:API ;
 	rdfs:label "Concept Wiki services"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#uuid> ;
 	api:variable <#branch> ;
@@ -17,20 +17,6 @@
 		api:name "Get concept description" ;
 		api:enableCache false ;
 		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
-		api:resultsDescription "?conceptURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;			
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:definition ?definitionText </span>.
-?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;
-?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?sourceURL </span>;
-?sourceURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?sourcePrefLabel </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>." ;
 
 		
 		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;

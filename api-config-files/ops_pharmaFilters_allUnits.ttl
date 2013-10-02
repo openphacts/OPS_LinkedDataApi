@@ -20,7 +20,7 @@
 
 <#filters> a api:API ;
         rdfs:label "Pharmacology Filters"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -34,8 +34,6 @@
 		a api:ListEndpoint ;
 		api:name "Activity units" ;
 		api:description "A list of activity units which have been normalised" ;
-		api:resultsDescription "&lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?act_type </span>.
-?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>." ;
 		api:uriTemplate "/pharmacology/filters/units" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/units";

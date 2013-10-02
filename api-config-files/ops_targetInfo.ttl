@@ -17,7 +17,7 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:dataset <http://www.conceptwiki.org> ;
@@ -31,31 +31,6 @@
 		a api:ItemEndpoint ;
 		api:name "Target Information" ;
 		api:description "Returns information about a single target that corresponds to {uri}.";
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_uri </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.
-?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.
-?uniprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:existence ?existence </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_name </span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span>.
-?chembl_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?targetComponent </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdf:type ?target_type </span>;
-	<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonym </span>;	
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-?targetComponent <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
-?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; 
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span>." ;
 
 		api:uriTemplate "/target?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;

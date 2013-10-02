@@ -10,7 +10,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable ops_api:searchOptions ;
 	api:variable ops_api:commonOptions ;
@@ -21,19 +21,6 @@
 		a api:ExternalHTTPService ;
 		api:name "Chemical Structure Similarity Search" ;
 		api:description "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?inputMoleculeSmiles </span>;
-		<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?similarMolecule </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Threshold ?searchThreshold </span>; 
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Alpha ?searchAlpha </span>; 
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Beta ?searchBeta </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span>." ;
 
 		api:enableCache false ;
 		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
