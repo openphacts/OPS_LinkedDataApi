@@ -132,7 +132,7 @@ chembl:standardRelation api:name "activity_relation" ;
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
 	api:filterVariable "?item";
-        api:value "The pChembl value of an activity" ;
+        api:value "Return activities with a pChembl value equal to this number." ;
 	a rdf:Property .
 
 _:type api:name "target_type" ;
@@ -312,7 +312,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?db_compound_uri drugbank:drugType ?drugType ;
 	drugbank:genericName ?drug_name ;
-	void:inDataset <http://linkedlifedata.com/resource/drugbank> " ; 
+	void:inDataset <http://linkedlifedata.com/resource/drugbank> ." ; 
 	api:where 
 "OPTIONAL {
       GRAPH <http://linkedlifedata.com/resource/drugbank> {

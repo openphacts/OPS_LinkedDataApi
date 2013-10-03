@@ -62,7 +62,7 @@ api:orderBy ""] ;
 	api:template 
 "<http://www.wikipathways.org> ops:pathway_organism ?item .
 ?item rdfs:label ?label ;
-ops:pathway_count ?count " ; 
+ops:pathway_count ?count ." ; 
 	api:where
 "{
 SELECT DISTINCT ?item COUNT(?pathway) AS ?count WHERE {

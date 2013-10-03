@@ -86,8 +86,9 @@ uniprot:organism api:name "target_organism_uri" ;
 	api:template 
 "?item skos:prefLabel ?chembl_name ;
 	chembl:targetOrganismName ?chembl_organism ;
-	a ?chembl_type ;
-        skos:prefLabel ?uniprot_name, ?goa_name ;
+        skos:prefLabel ?uniprot_name ;
+	skos:prefLabel ?goa_name ;
+	rdf:type ?target_type ;
 	uniprot:organism ?uniprot_organism ;
 	void:inDataset ?dataset .";
 	api:where 
@@ -112,7 +113,8 @@ UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:t
 } }
 UNION {
 GRAPH <http://www.ebi.ac.uk/chembl> {
-	?item dcterms:title ?chembl_name 
+	?item dcterms:title ?chembl_name ;
+		a ?target_type .
 	OPTIONAL { ?item chembl:organismName ?chembl_organism }
 } }
 UNION {

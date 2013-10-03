@@ -65,7 +65,7 @@
 ?pw_uri sioc:latest_version ?rev .
 ?rev dc:title ?title ; 
 	dcterms:hasPart ?gene_product;
-	void:inDataset <http://www.wikipathways.org>";
+	void:inDataset <http://www.wikipathways.org> .";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
 	?rev dc:identifier ?pw_uri .

@@ -213,7 +213,7 @@ chembl:standardRelation api:name "activity_relation" ;
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
 	api:filterVariable "?item";
-        api:value "The pChembl value of an activity" ;
+        api:value "Return activities with a pChembl value equal to this number." ;
 	a rdf:Property .
 
 _:type api:name "target_type" ;
@@ -319,8 +319,7 @@ _:type api:name "target_type" ;
 ?compound_cw skos:prefLabel ?compound_name ;
         void:inDataset <http://www.conceptwiki.org> .
 ";
-	api:where 
-"	?target_chembl chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
+	api:where "?target_chembl chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
 	}

@@ -1,0 +1,9 @@
+?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:parentNode ?parent_node </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .
+?parent_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_label </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_name </span> .
+<http://purl.uniprot.org/enzyme> <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .
+<http://www.ebi.ac.uk/chembl/target> <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .
+<http://www.ebi.ac.uk/chebi> <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .
+<http://www.geneontology.org> <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .

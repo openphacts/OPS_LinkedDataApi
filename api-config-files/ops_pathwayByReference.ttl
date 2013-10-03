@@ -136,7 +136,7 @@ wp:organism api:name "pathway_organism" ;
 	dcterms:hasPart ?pw_uri ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
-?pw_uri a wp:PublicationReference  
+?pw_uri a wp:PublicationReference . 
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {

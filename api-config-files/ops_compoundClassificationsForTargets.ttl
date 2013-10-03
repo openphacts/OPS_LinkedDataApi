@@ -131,7 +131,7 @@ chembl:standardRelation api:name "activity_relation" ;
 chembl:pChembl api:name "pChembl" ;
         api:label "pChembl" ;
         api:filterVariable "?activity";
-        api:value "The pChembl value of an activity" ;
+        api:value "Return activities with a pChembl value equal to this number." ;
         a rdf:Property .
 
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
@@ -173,7 +173,7 @@ chembl:pChembl api:name "pChembl" ;
 	void:inDataset ?g .
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl> skos:prefLabel 'ChEMBL Target Hierarchy' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' . ";
 	api:where 
 "	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?activity chembl:hasMolecule ?chembl_compound_uri ;

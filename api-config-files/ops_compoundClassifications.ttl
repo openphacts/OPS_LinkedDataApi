@@ -81,7 +81,7 @@ rdf:type skos:prefLabel 'Type' .
 ?go_class skos:prefLabel ?go_label ;
 	void:inDataset <http://www.geneontology.org> .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' ";
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' . ";
 	api:where 
 "	{ GRAPH <http://www.ebi.ac.uk/chembl> {
 		?chembl_compound_uri owl:sameAs ?chebi_compound
