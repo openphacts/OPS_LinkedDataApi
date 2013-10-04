@@ -44,6 +44,11 @@ class LinkedDataApiRequest {
         $this->uri = $this->getUri();
     }
     
+    public static function eliminateVersioningFromRequest(){
+        $regex = '/^\/[0-9]+\.[0-9]+/';
+        $_SERVER['REQUEST_URI'] = preg_replace($regex, '\1', $_SERVER['REQUEST_URI']);
+    }
+    
     public static function eliminateDebugParams(){
         $params = array('XDEBUG_SESSION_START', 'KEY');
         foreach($params as $param){
