@@ -55,12 +55,17 @@ class LinkedDataApiRequest {
     }
     
     function getParams(){
+	$post = file_get_contents('php://input');
         if ($this->params!=null){
             return $this->params;
         }
         if(!empty($_SERVER['QUERY_STRING'])){
             $this->params = queryStringToParams($_SERVER['QUERY_STRING']);            
-        } else {
+        } 
+	elseif(!empty($post)){
+            $this->params = queryStringToParams($post);
+        }
+	else {
             $this->params = array();
         }
         return $this->params;
