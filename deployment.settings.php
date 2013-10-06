@@ -14,5 +14,5 @@ define('PUELIA_MEMCACHE_HOST', 'localhost');
 define('PUELIA_MEMCACHE_PORT', '11211');
 define ('IMS_EXPAND_ENDPOINT', 'http://openphacts.cs.man.ac.uk:9093/QueryExpander/expandXML?query=');
 define ('CHEMSPIDER_ENDPOINT', 'http://crs.beta.rsc-us.org/JSON.ashx');
-define ('IMS_MAP_ENDPOINT', 'http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapBySetRDF?Uri=')
+define ('IMS_MAP_ENDPOINT', 'http://openphacts.cs.man.ac.uk:9093/QueryExpander/mapBySetRDF')
 ?>

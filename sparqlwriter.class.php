@@ -497,7 +497,7 @@ _SPARQL_;
     	
     	$count=1;//TODO ??
     	foreach ($params as $param_name => $param_value) {
-    		if ($param_name != 'uri'){
+    		if ($param_name != 'uri' && $param_name != 'uri_list'){
     			foreach ($vars as $var_name => $var_props) {
     				if ($param_name==$var_name AND $param_value !=""){
     					$filterPredicate = $this->findSuperProperty($var_props['uri']);
@@ -602,6 +602,16 @@ _SPARQL_;
     	}
     
     	return $current;
+    }
+
+    function getViewQueryForBatchUriList($uriList, $viewerUri) {
+	if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
+	  AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
+		$query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/([^}]*[\s\}]*)(\}\s*$)/', "$1 {$this->getFilterGraph()} $2", $whereGraph , 1) . " }");
+		$ims = new OpsIms();
+		return $ims->expandBatchQuery($query, $uriList, $this->_request->getParam('_lens'));
+	}
+
     }
        
     function getViewQueryForUriList($uriList, $viewerUri){
