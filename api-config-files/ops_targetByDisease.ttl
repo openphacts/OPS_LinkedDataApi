@@ -14,6 +14,7 @@
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
 
 
 <#targetsByDisease> a api:API ;
@@ -26,7 +27,7 @@
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
-		a api:ListEndpoint ;
+		a api:IntermediateExpansionEndpoint ;
 		api:name "Target by Disease" ;
 		api:description "Returns a list of targets which correspond to the disease {uri}.";
 		api:uriTemplate "/target/byDisease?uri={uri}" ;
@@ -56,20 +57,20 @@
 <#diseaseByTargetViewer> a api:Viewer ;
 	api:name "diseaseByTargetViewer" ;
 	api:template 
-"?item foaf:name ?diseaseName ;
-	ops:diseaseClass ?diseaseClass ;
-	ops:forGene ?dg_gene_uri ;
-	rdfs:seeAlso ?bio2rd_uri ;	
+"?ops_item ops:forGene ?item ;	
 	void:inDataset <http://rdf.imim.es> .
-?diseaseClass foaf:name ?diseaseClassName .
-?dg_gene_uri ops:encodes ?cw_target_uri .
+?uniprot_target_uri uniprot:existence ?existence .
 ?cw_target_uri skos:prefLabel ?prefLabel ;
 	void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where
-"GRAPH <http://www.conceptwiki.org> {
+"OPTIONAL{
+GRAPH <http://www.conceptwiki.org> {
 	?cw_target_uri skos:prefLabel ?prefLabel .
-}
+}}
+GRAPH <http://purl.uniprot.org> {
+	?uniprot_target_uri uniprot:existence ?existence .
+} 
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?item .
 	?item a ncit:C16612 .
