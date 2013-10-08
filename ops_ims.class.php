@@ -23,7 +23,7 @@ class OpsIms {
             }
         }
         if ($params !='') {
-            $output = $this->expandQueryThroughExpander($params, $input_uri, $lens);
+            $output = $this->expandQueryThroughExpander($query, $params, $input_uri, $lens);
         }
         else {        
             $output = $this->expandQueryThroughIMS($query, $input_uri, $lens);
@@ -80,7 +80,7 @@ class OpsIms {
        return $output;
    }
    
-   private function expandQueryThroughExpander($params, $input_uri, $lens){
+   private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
        $output = $query ;
        
        $url = IMS_EXPAND_ENDPOINT;
