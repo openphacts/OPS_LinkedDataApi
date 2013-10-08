@@ -79,16 +79,10 @@ class LinkedDataApiResponse {
     function process(){
         try{
             if($param = $this->Request->hasUnrecognisedReservedParams()){
-                logError("Bad Request: Unrecognised reserved Param: {$param}");
-                $this->errorMessages[]="Unrecognised reserved Param: {$param}";
-                $this->setStatusCode(HTTP_Bad_Request);
-                $this->serve();
+                throw new BadRequestException("Bad Request: Unrecognised reserved Param: {$param}");
             }
             else if ($param=$this->Request->hasEmptyParamValues()){
-            	logError("Bad Request: Empty value not accepted for parameter: {$param}");
-            	$this->errorMessages[]="Empty value not accepted for parameter: {$param}";
-            	$this->setStatusCode(HTTP_Bad_Request);
-            	$this->serve();
+            	throw new BadRequestException("Bad Request: Empty value not accepted for parameter: {$param}");
             }
             
             $endpointUri = $this->ConfigGraph->getEndpointUri();
@@ -105,24 +99,22 @@ class LinkedDataApiResponse {
             logDebug("Viewer URI: " . $viewerUri);
             
             if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
-                $this->errorMessages[]="Unknown Properties in Request: {$param}";
-                $this->setStatusCode(HTTP_Bad_Request);
-                $this->serve();
+                throw new BadRequestException("Unknown Properties in Request: {$param}");
             } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
-                $this->setStatusCode(HTTP_Bad_Request);
                 $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
-                logError($msg);
-                $this->errorMessages[]=$msg;
-                $this->serve();
+                throw new BadRequestException($msg); 
             } else if (!$this->SanitizationHandler->hasValidURIParameters()){
-                $this->setStatusCode(HTTP_Bad_Request);
-                $msg = "URIs in the request not well formed";
-                logError($msg);
-                $this->errorMessages[]=$msg;
-                $this->serve();
+                throw new BadRequestException("URIs in the request not well formed");
             }
-        } catch (Exception $e) {
+        } 
+        catch (BadRequestException $e){
+        	$this->setStatusCode(HTTP_Bad_Request);
+        	$this->errorMessages[]=$e->getMessage();
+        	logError($e->getMessage());
+        	$this->serve();
+        }
+        catch (Exception $e) {
             $this->setStatusCode(HTTP_Internal_Server_Error);
             $this->errorMessages[]=$e->getMessage();
             logError($e->getMessage());
@@ -155,39 +147,46 @@ class LinkedDataApiResponse {
         //$noCacheRequestFactory->read_from_cache(FALSE);
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
         
-        //try
-        switch($this->ConfigGraph->getEndpointType()){
-            case API.'ListEndpoint' :
-            case PUELIA.'SearchEndpoint' :
-                $this->loadDataFromList();
-                break;
-            case API.'ItemEndpoint' :
-                $this->loadDataFromItem();
-                break;
-            case API.'ExternalHTTPService' :
-                $this->loadDataFromExternalService();
-                break;
-            case API.'IntermediateExpansionEndpoint' :
-            case API.'BatchEndpoint' :
-                $this->loadDataFromBatch();
-                break;
-            default:{
-                $this->setStatusCode(HTTP_Internal_Server_Error);
-                logError("Unsupported Endpoint Type");
-                $apiUri = $this->ConfigGraph->getApiUri();
-                $this->errorMessages[]=" The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
-                $this->serve();
-                break;
-            }
+        try{
+        	switch($this->ConfigGraph->getEndpointType()){
+        		case API.'ListEndpoint' :
+        		case PUELIA.'SearchEndpoint' :
+        			$this->loadDataFromList();
+        			break;
+        		case API.'ItemEndpoint' :
+        			$this->loadDataFromItem();
+        			break;
+        		case API.'ExternalHTTPService' :
+        			$this->loadDataFromExternalService();
+        			break;
+        		case API.'IntermediateExpansionEndpoint' :
+        		case API.'BatchEndpoint' :
+        			$this->loadDataFromBatch();
+        			break;
+        		default:{
+        			$this->setStatusCode(HTTP_Internal_Server_Error);
+        			logError("Unsupported Endpoint Type");
+        			$apiUri = $this->ConfigGraph->getApiUri();
+        			$this->errorMessages[]=" The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
+        			$this->serve();
+        			break;
+        		}
+        	}
         }
-        //catch(EmptyResponseException e){}
-        //catch (EmptyResponseException $e){
-        //    logError("EmptyResponseException: ".$e->getMessage());
-        //   $this->setStatusCode(HTTP_Not_Found);
-        //    $this->errorMessages[]=$e->getMessage();
-        //    $this->serve();
-        //    exit;
-        //}
+        catch(EmptyResponseException $e){
+        	logError("EmptyResponseException: ".$e->getMessage());
+        	$this->setStatusCode(HTTP_Not_Found);
+        	$this->errorMessages[]=$e->getMessage();
+        	$this->serve();
+        	exit;
+        }
+        catch(Exception $e){
+        	$this->setStatusCode(HTTP_Internal_Server_Error);
+        	$this->errorMessages[]=$e->getMessage();
+        	$this->serve();
+        	exit;
+        }
+        
         $this->addMetadataToPage();
         
     }
@@ -248,22 +247,6 @@ class LinkedDataApiResponse {
         }
         $this->pageUri = $pageUri;
     }
-
-    /*function loadDataFromListBatch(){
-        $list=$this->getListOfUris();
-        if (empty($list)) {
-            $this->serve();
-            return;
-        }
-        
-        logDebug("Viewer URI is $viewerUri");
-        $array  = $this->SparqlWriter->getViewQueryForBatchUriList($list, $viewerUri);
-        $this->viewQuery  = $array['expandedQuery'];
-        if (LOG_VIEW_QUERIES) {
-            logViewQuery( $this->Request, $this->viewQuery);
-        }
-        $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-    }*/
 
     function loadDataFromBatch(){
         $list=$this->getListOfUris();

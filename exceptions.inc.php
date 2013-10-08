@@ -11,4 +11,6 @@ class UnknownPropertyException extends Exception {}
 class TimeoutException extends Exception {}
 
 class EmptyResponseException extends Exception {}
+
+class BadRequestException extends Exception {}
 ?>

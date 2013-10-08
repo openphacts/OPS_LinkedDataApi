@@ -3,16 +3,16 @@
 
 abstract class DataHandler {
     
-    protected var $request = false;
-    protected var $configGraph = false;
-    protected var $dataGraph = false;
-    protected var $viewer = false;
-    protected var $viewQuery = '';
+    protected $Request = false;
+    protected $ConfigGraph = false;
+    protected $DataGraph = false;
+    protected $viewer = false;
+    protected $viewQuery = '';
     
     function __construct($Request, $ConfigGraph, $DataGraph, $Viewer){
-        $this->request = $Request;
-        $this->configGraph = $ConfigGraph;
-        $this->dataGraph = $DataGraph;
+        $this->$Request = $Request;
+        $this->$ConfigGraph = $ConfigGraph;
+        $this->$DataGraph = $DataGraph;
         $this->viewer = $Viewer;
     }
     
