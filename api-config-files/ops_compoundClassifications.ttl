@@ -12,7 +12,7 @@
 
 <#compound> a api:API ;
 	rdfs:label "Compound"@en ;
-	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
 	api:variable <#input> ;

@@ -20,7 +20,7 @@
 
 <#filters> a api:API ;
         rdfs:label "Pharmacology Filters"@en ;
-        api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:vocabulary <http://semanticscience.org/resource/> ;

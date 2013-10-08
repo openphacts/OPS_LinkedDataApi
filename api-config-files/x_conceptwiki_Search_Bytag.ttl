@@ -7,7 +7,7 @@
 
 <#conceptWiki> a api:API ;
 	rdfs:label "Concept Wiki services"@en;
-	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#q> ;
 	api:variable <#limit> ;
