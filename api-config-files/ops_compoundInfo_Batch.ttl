@@ -31,14 +31,13 @@
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:description "An API configuration to return information about compounds" ;
 	api:endpoint [ 
-		a api:ItemEndpoint ;
-		api:name "Compound Information" ;
-		api:description "Returns information about a single compound that corresponds to {uri}.";
-		api:uriTemplate "/compound?uri={uri}" ;
-	        api:itemTemplate "{uri}" ;
+		a api:BatchEndpoint ;
+		api:name "Compound Information Batch Mode" ;
+		api:description "Returns information about compound provided in a list sperated by '|'.";
+		api:uriTemplate "/compound/batch?uri_list={uri_list}" ;
 		api:exampleRequestPath "/compound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
-		api:viewer <#compoundViewer> ;
-		api:defaultViewer <#compoundViewer> ] .
+		api:viewer <#compoundBatchViewer> ;
+		api:defaultViewer <#compoundBatchViewer> ] .
 
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
@@ -48,18 +47,16 @@
 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> api:label "drugbank" .
 <http://www.w3.org/2004/02/skos/core#> api:label "skos" .
 
-<#input> api:name "uri" ;
-	api:label "uri";
-	api:value "A compound URI. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ;
+<#input> api:name "uri_list" ;
+	api:label "uri_list";
+	api:value "A list of compound URIs. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ;
 	rdfs:range rdfs:Resource .  
 
-<#compoundViewer> a api:Viewer ;
-	api:name "compoundViewer" ;
+<#compoundBatchViewer> a api:Viewer ;
+	api:name "compoundBatchViewer" ;
 	api:template 
-"?ops_item skos:exactMatch ?cw_compound_uri .
-?cw_compound_uri skos:prefLabel ?compound_name ;
+"?cw_compound_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
-?ops_item skos:exactMatch ?ocrs_compound_uri .
 ?ocrs_compound_uri ops:smiles ?smiles ;
 	ops:inchi ?inchi ;
 	ops:inchikey ?inchiKey ;
@@ -72,11 +69,9 @@
 	ops:molweight ?molweight ;
 	ops:molformula ?molformula ;
 	void:inDataset <http://ops.rsc.org> .
-?ops_item skos:exactMatch ?chembl_compound_uri . 
 ?chembl_compound_uri ?bNode1 ?mw_freebase ;
 	a ?mol_type;
 	void:inDataset <http://www.ebi.ac.uk/chembl>.
-?ops_item skos:exactMatch ?db_compound_uri .
 ?db_compound_uri drugbank:biotransformation ?biotransformation ;
 	drugbank:description ?description ;
 	drugbank:proteinBinding ?proteinBinding ;

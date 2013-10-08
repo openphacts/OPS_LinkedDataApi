@@ -166,6 +166,9 @@ class LinkedDataApiResponse {
             case API.'ExternalHTTPService' :
                 $this->loadDataFromExternalService();
                 break;
+	    case API.'BatchEndpoint' : 
+		$this->loadDataFromBatchList();
+		break;
             default:{
                 $this->setStatusCode(HTTP_Internal_Server_Error);
                 logError("Unsupported Endpoint Type");
@@ -235,6 +238,63 @@ class LinkedDataApiResponse {
             $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
         }
         $this->pageUri = $pageUri;
+    }
+
+    function loadDataFromBatchList(){
+	$list=$this->getListOfUris();
+        if (!empty($list)) {
+		$viewerUri = $this->getViewer();
+                logDebug("Viewer URI is $viewerUri");
+                $array  = $this->SparqlWriter->getViewQueryForBatchUriList($list, $viewerUri);
+		$this->viewQuery  = $array['expandedQuery'];
+                if (LOG_VIEW_QUERIES) {
+                  logViewQuery( $this->Request, $this->viewQuery);
+                }
+		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
+                if($response->is_success()){
+                    $rdf = $response->body;
+                    if(isset($response->headers['content-type'])){
+                      if(strpos($response->headers['content-type'], 'turtle')){
+                          $this->DataGraph->add_turtle($rdf);
+                      } else {
+                          $this->DataGraph->add_rdf($rdf);
+                      }
+                    } else {
+                      $this->DataGraph->add_rdf($rdf);
+                    }
+                    if ($this->DataGraph->is_empty()){
+                        $this->setStatusCode(HTTP_Not_Found);
+                        logError("Data not found in the triple store");
+                        $this->serve();
+                        return;
+                    }
+		    $this->DataGraph->add_turtle($array['imsRDF']);
+		    $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
+                    $this->listUri = $listUri;
+		    $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
+                    $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
+		    $this->DataGraph->add_literal_triple($pageUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
+	            $rdfListUri = '_:itemsList';
+		    $this->DataGraph->add_resource_triple($listUri, API.'items', $rdfListUri);
+	            $this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);
+	            foreach($list as $no => $resourceUri){
+	                $nextNo = ($no+1);
+	                $nextList = (($no+1) == count($list))? RDF_NIL : '_:itemsList'.$nextNo;
+	                $this->DataGraph->add_resource_triple($rdfListUri, RDF_FIRST, $resourceUri);
+	                $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
+        	        $rdfListUri = $nextList;
+	            }
+		}
+		else {
+	            logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+	            $this->setStatusCode(HTTP_Internal_Server_Error);
+	            $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
+	        }
+	}
+	else {
+		$this->serve();
+        	return;
+	}
     }
 
     function loadDataFromList(){
@@ -506,9 +566,18 @@ class LinkedDataApiResponse {
     }
 
 #Antonis botch
-    function getDummyListOfUris(){
+    function getExplicitListOfUris(){
 	$list=array();
-	$list[]='http://www.openphacts.org/api#Pharmacology';
+	foreach($this->Request->getUnreservedParams() as $k => $v){
+	    if ($k = 'uri_list') {
+		$uri = strtok($v, '|');
+		while ($uri !== false) {
+		  $list[]=$uri;
+		  $uri = strtok('|');
+		}
+	    }
+	}
+	return $list;
     }
 
     function getListOfUrisFromSparqlEndpoint(){
@@ -569,8 +638,8 @@ class LinkedDataApiResponse {
 
         switch($this->ConfigGraph->getEndpointType()){
             #Antonis botch
-            case API.'OPSListEndpoint' :
-                $this->list_of_item_uris = $this->getDummyListOfUris();
+            case API.'BatchEndpoint' :
+                $this->list_of_item_uris = $this->getExplicitListOfUris();
                 break;
             case API.'ListEndpoint' :
                 $this->list_of_item_uris = $this->getListOfUrisFromSparqlEndpoint();
@@ -973,7 +1042,7 @@ class LinkedDataApiResponse {
 	        switch($endpointType){
 	            case API.'ListEndpoint' :
 	                #Antonis botch
-	            case API.'OPSListEndpoint':
+	            case API.'BatchEndpoint':
 	            case PUELIA.'SearchEndpoint':
 	                $pageUri = $this->Request->getUriWithPageParam();
 	                break;

@@ -25,7 +25,7 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organismName ;
 	api:variable _:targetOrganism ;
@@ -132,7 +132,7 @@ chembl:standardRelation api:name "activity_relation" ;
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
 	api:filterVariable "?item";
-        api:value "The pChembl value of an activity" ;
+        api:value "Return activities with a pChembl value equal to this number." ;
 	a rdf:Property .
 
 _:type api:name "target_type" ;

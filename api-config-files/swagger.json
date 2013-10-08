@@ -8,7 +8,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Classification of Targets specific for a Compound" ,
-          "description":  "The hierarchy of classes for the different Targets that interact with a given Compound. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. <hr>",
+          "description":  "The hierarchy of classes for the different Targets that interact with a given Compound. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. <br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:interactsWithTargetOfClass ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?cw_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?class <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?class_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -106,35 +106,35 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -192,7 +192,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Classifications" ,
-          "description":  "The classes the given compound URI has been classified with. Currently supported hierarchies are the ChEBI Ontology and the Gene Ontology. <hr>",
+          "description":  "The classes the given compound URI has been classified with. Currently supported hierarchies are the ChEBI Ontology and the Gene Ontology. <br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:hasChebiClassification ?chebi_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:hasChebiClassification ?chebi_other_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chebi_input <span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:hasGoClassification ?go_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?chebi_input_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.geneontology.org&gt; </span> .<br> ?go_input <span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:hasChebiClassification ?chebi_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?go_input_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?cw_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?chebi_class <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?chebi_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationType rdf:type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chebi&gt; </span> .<br> rdf:type <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Type' </span> .<br> ?chebi_other_class <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?chebi_other_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationType ?chebi_class_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chebi&gt; </span> .<br> ?chebi_class_type <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?chebi_class_type_label </span> .<br> ?go_class <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?go_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.geneontology.org&gt; </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -222,7 +222,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -280,7 +280,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Information" ,
-          "description":  "Returns information about a single compound that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>.<br> ?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hba ?hba </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:rtb ?rtb </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molformula ?molformula </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:psa ?psa</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_uri </span>. <br> ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode3 ?mw_freebase </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span>.<br> ?ops_item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_uri </span>.<br> ?db_uri  <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:biotransformation ?biotransformation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:description ?description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:proteinBinding ?proteinBinding </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:toxicity ?toxicity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span><br><br><hr>",
+          "description":  "Returns information about a single compound that corresponds to {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_compound_uri </span> .<br> ?ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hba ?hba </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:psa ?psa </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:rtb ?rtb </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molformula ?molformula </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_compound_uri </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?mw_freebase </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?mol_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?ops_item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_compound_uri </span> .<br> ?db_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:biotransformation ?biotransformation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:proteinBinding ?proteinBinding </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:toxicity ?toxicity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -304,7 +304,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -362,7 +362,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count members of Compound Class" ,
-          "description":  "The number of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<hr>",
+          "description":  "The number of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:memberCount ?count </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -386,7 +386,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -444,7 +444,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Members of Compound Class" ,
-          "description":  "A list of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<hr>",
+          "description":  "A list of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_nam </span> e<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -506,7 +506,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -564,7 +564,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Pharmacology Count" ,
-          "description":  "The total number of acitivity values in the LDC for a given compound<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:compoundPharmacologyTotalResults ?count </span><br><br><hr>",
+          "description":  "The total number of acitivity values in the LDC for a given compound<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:compoundPharmacologyTotalResults ?count </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -650,31 +650,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -684,7 +684,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -742,7 +742,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given compound<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?activity_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTarget ?target_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:hasDescription ?assay_description  </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_uri </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?ocrs_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given compound<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:hasTarget ?target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?ocrs_compound_uri </span> .<br> ?ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?db_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -828,31 +828,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -893,6 +893,8 @@
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
+                  "?assay_type",
+                  "DESC(?assay_type)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
                   "?chembl_compound_uri",
@@ -913,12 +915,12 @@
                   "DESC(?doc_uri)",
                   "?doi",
                   "DESC(?doi)",
+                  "?drug_name",
+                  "DESC(?drug_name)",
                   "?drugType",
                   "DESC(?drugType)",
                   "?drugType_uri",
                   "DESC(?drugType_uri)",
-                  "?drug_name",
-                  "DESC(?drug_name)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchiKey",
@@ -970,7 +972,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1028,7 +1030,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Class Pharmacology Count" ,
-          "description":  "The total number of activity values in the LDC for a given Compound class. Currently only the ChEBI Ontology is supported. <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:compoundPharmacologyTotalResults ?count </span><br><br><hr>",
+          "description":  "The total number of activity values in the LDC for a given Compound class. Currently only the ChEBI Ontology is supported. <br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:compoundPharmacologyTotalResults ?count </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -1114,31 +1116,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -1148,7 +1150,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1206,7 +1208,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Class Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values for a given Compound class. Currently only the ChEBI Ontology is supported.<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\">chembl:hasMolecule ?compound_chembl</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardType ?activity_type</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardRelation ?activity_relation</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardValue ?activity_value</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:standardUnits ?activity_unit</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedType ?published_type</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedRelation ?published_relation</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedValue ?published_value</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:publishedUnits ?published_unit</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:hasQUDT ?qudt_uri</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">chembl:hasAssay ?assay_uri</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:pChembl ?pChembl</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\">chembl:hasDocument ?doi</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\">bibo:pmid ?pmid</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\">chembl:hasTarget ?target_uri</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:assayOrganismName ?assay_organism</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">dcterms:description ?assay_description</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\">dcterms:title ?target_name</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">chembl:targetOrganismName ?target_organism</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:exactMatch ?compound_cw</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">skos:exactMatch ?compound_ocrs</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\">skos:exactMatch ?class</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt;</span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\">skos:prefLabel ?compound_name</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://www.conceptwiki.org&gt;</span> .<br> ?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\">ops:smiles ?smiles</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">ops:inchi ?inchi</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">ops:inchikey ?inchiKey</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\">ops:ro5_violations ?num_ro5_violations</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">void:inDataset &lt;http://ops.rsc.org&gt;</span> .<br> ", 
+          "description":  "A page of items corresponding to acitivity values for a given Compound class. Currently only the ChEBI Ontology is supported.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:hasTarget ?target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> .<br> ?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -1292,31 +1294,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -1357,6 +1359,8 @@
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
+                  "?assay_type",
+                  "DESC(?assay_type)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
                   "?chebi_compound",
@@ -1426,7 +1430,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1484,7 +1488,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Data Sources" ,
-          "description":  "(UNDER DEVELOPMENT) Returns information about currently loaded data sources.<hr>",
+          "description":  "(UNDER DEVELOPMENT) Returns information about currently loaded data sources.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.openphacts.org/linked_data_cache&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> a void:Dataset </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:subset ?top_dataset </span> .<br> ?top_dataset <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:isPrimaryTopicOf ?description </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?title </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFCC99\"> void:subset ?subset </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> prov:wasDerivedFrom ?derivedFrom </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:triples ?tripleNo </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:dataDump ?dataDump </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcat:landingPage ?landingPage </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:homepage ?homepage </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #66FFCC\"> a void:Dataset </span> .<br> ",
           "group": "Data Sources" ,
           "parameters": [
             {
@@ -1501,7 +1505,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1559,7 +1563,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count Pathways by Compound" ,
-          "description":  "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span><br><br><hr>",
+          "description":  "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -1589,7 +1593,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1647,7 +1651,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Pathways by Compound" ,
-          "description":  "Returns a list of pathways which have as part the Metabolite that corresponds to  {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:Metabolite </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?prefLabel </span><br><br><hr>",
+          "description":  "Returns a list of pathways which have as part the Metabolite that corresponds to  {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:Metabolite </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span> .<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?prefLabel </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -1725,7 +1729,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1783,7 +1787,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count Pathways by Reference" ,
-          "description":  "Returns the number of pathways which have as part the Reference that corresponds to  {uri}.<br>                 <hr>Response template: <hr><br> &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span><br><br><hr>",
+          "description":  "Returns the number of pathways which have as part the Reference that corresponds to  {uri}.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -1813,7 +1817,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -1871,7 +1875,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Pathways by Reference" ,
-          "description":  "Returns a list of pathways which have as part the Reference that corresponds to  {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:PublicationReference </span><br><br><hr>",
+          "description":  "Returns a list of pathways which have as part the Reference that corresponds to  {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:PublicationReferenc </span> e<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -1943,7 +1947,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2001,7 +2005,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count Pathways by Target" ,
-          "description":  "Returns the number of pathways which have as part the Gene Product that corresponds to  {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span><br><br><hr>",
+          "description":  "Returns the number of pathways which have as part the Gene Product that corresponds to  {uri}.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2031,7 +2035,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2089,7 +2093,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Pathways by Target" ,
-          "description":  "Returns a list of pathways which have as part the Gene Product that corresponds to  {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> <span style=\"BACKGROUND-COLOR: #66FFCC\"> ?item dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:GeneProduct </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?prefLabel </span><br><br><hr>",
+          "description":  "Returns a list of pathways which have as part the Gene Product that corresponds to  {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:GeneProduct </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span> .<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?prefLabel </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2167,7 +2171,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2225,7 +2229,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Get Compounds for Pathway" ,
-          "description":  "Returns the compounds that are part of the pathway that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?metabolite </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span><br><br><hr>",
+          "description":  "Returns the compounds that are part of the pathway that corresponds to {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> .<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?metabolite </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2249,7 +2253,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2307,7 +2311,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Get References for Pathway" ,
-          "description":  "Returns references that are part of the pathway that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.<br> ?pw uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?reference </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span><br><br><hr>",
+          "description":  "Returns references that are part of the pathway that corresponds to {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> .<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?reference </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2331,7 +2335,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2389,7 +2393,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Get Targets for Pathway" ,
-          "description":  "Returns information targets that are part of the pathway that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?gene_product </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span><br><br><hr>",
+          "description":  "Returns information targets that are part of the pathway that corresponds to {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> .<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?gene_product </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2413,7 +2417,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2471,7 +2475,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Pathway Information" ,
-          "description":  "Returns information about a single pathway that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops:item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?reference </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?metabolite </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?gene_product </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.<br> ?reference <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:PublicationReference </span>.<br> ?metabolite <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:Metabolite </span>.<br> ?gene_product <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:GeneProduct </span><br><br><hr>",
+          "description":  "Returns information about a single pathway that corresponds to {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?part <span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?type </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2495,7 +2499,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2553,7 +2557,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count Pathways" ,
-          "description":  "Returns the number of pathways in the cache.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span><br><br><hr>",
+          "description":  "Returns the number of pathways in the cache.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2576,7 +2580,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2634,7 +2638,7 @@
         {
           "httpMethod": "GET",
           "summary":  "List Pathways" ,
-          "description":  "Returns the list of pathways in the cache.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span><br><br><hr>",
+          "description":  "Returns the list of pathways in the cache.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2697,7 +2701,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2755,7 +2759,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Organisms used in Pathways" ,
-          "description":  "A list of organism URIs and labels for which pathway data is available.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:pathway_organism ?item .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?label ;<br> <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count ", 
+          "description":  "A list of organism URIs and labels for which pathway data is available.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:pathway_organism ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?coun </span> t<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -2804,7 +2808,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2862,7 +2866,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Activity units" ,
-          "description":  "A list of activity units which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span><br><br><hr>",
+          "description":  "A list of activity units which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_unit ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?qudt_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -2896,12 +2900,12 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?activity",
+                  "DESC(?activity)",
                   "?act_label",
                   "DESC(?act_label)",
                   "?act_type",
                   "DESC(?act_type)",
-                  "?activity",
-                  "DESC(?activity)",
                   "?count",
                   "DESC(?count)",
                   "?item",
@@ -2915,7 +2919,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -2973,7 +2977,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count activity types" ,
-          "description":  "The number of activity types which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_type_count ?count </span><br><br><hr>",
+          "description":  "The number of activity types which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_type_count ?coun </span> t<br> ",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -2996,7 +3000,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3054,7 +3058,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Activity types" ,
-          "description":  "A list of activity types which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?act_type </span>.<br> ?act_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\">ops:activity_count ?count </span><br><br><hr>",
+          "description":  "A list of activity types which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?type_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -3094,12 +3098,12 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
+                  "?activity",
+                  "DESC(?activity)",
                   "?act_label",
                   "DESC(?act_label)",
                   "?act_type",
                   "DESC(?act_type)",
-                  "?activity",
-                  "DESC(?activity)",
                   "?count",
                   "DESC(?count)",
                   "?item",
@@ -3115,7 +3119,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3173,7 +3177,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Number of activity units" ,
-          "description":  "A list of activity units which have been normalised<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_unit_count ?count </span><br><br><hr>",
+          "description":  "A list of activity units which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:normalised_activity_unit_count ?count </span> .<br> ",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -3196,7 +3200,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3254,7 +3258,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Units for activity type" ,
-          "description":  "A list of units that activities of the specified type have been normalised to.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?act_type <span style=\"BACKGROUND-COLOR: #A9A9F5\"> qudt:unit ?unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. <br> ?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label </span><br><br><hr>",
+          "description":  "A list of units that activities of the specified type have been normalised to.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> qudt:unit ?unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span> .<br> ?unit <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?unit_labe </span> l<br> ",
           "group": "Pharmacology Filters" ,
           "parameters": [
             {
@@ -3278,7 +3282,7 @@
               "paramType": "path",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3336,7 +3340,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Classification of Compounds specific for a Target" ,
-          "description":  "The hierarchy classes for the different Compounds that interact with a given Target. Currently only the ChEBI Ontology is supported. <hr>",
+          "description":  "The hierarchy classes for the different Compounds that interact with a given Target. Currently only the ChEBI Ontology is supported. <br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_target_uri </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:interactsWithMoleculeOfClass ?chebi_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:interactsWithMoleculeOfClass ?chebi_other_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?cw_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?cw_label </span> .<br> ?chebi_class <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?chebi_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chebi&gt; </span> .<br> ?chebi_other_class <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?chebi_other_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationType ?chebi_class_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chebi&gt; </span> .<br> ?chebi_class_type <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?chebi_class_type_label </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -3434,35 +3438,35 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3520,7 +3524,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Classifications" ,
-          "description":  "The classes the given target URI has been classified with. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. <hr>",
+          "description":  "The classes the given target URI has been classified with. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. <br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_target_uri </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:hasProteinClassification ?chembl_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:hasEnzymeClassification ?enzyme_class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:hasGoComponent ?go_component </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:hasGoFunction ?go_function </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:hasGoProcess ?go_process </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.openphacts.org/goa&gt; </span> .<br> ?cw_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?cw_label </span> .<br> ?chembl_class <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?chembl_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?enzyme_class <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?enzyme_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org/enzyme&gt; </span> .<br> ?go_component <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?go_c_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.geneontology.org&gt; </span> .<br> ?go_function <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?go_f_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.geneontology.org&gt; </span> .<br> ?go_process <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?go_p_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.geneontology.org&gt; </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -3556,7 +3560,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3614,7 +3618,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Information" ,
-          "description":  "Returns information about a single target that corresponds to {uri}.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_uri </span>.<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> ?uniprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> uniprot:existence ?existence </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:alternativeName ?alt_name </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span>;<br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span>;<br>         <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span>.<br> ?chembl_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?targetComponent </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdf:type ?target_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?synonym </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> ?targetComponent <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;<br> ?db_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:cellularLocation ?cellularLocation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span>; <br>         <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt;</span><br><br><hr>",
+          "description":  "Returns information about a single target that corresponds to {uri}.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?uniprot_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_target_uri </span> .<br> ?cw_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:existence ?existence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:interactsWith ?inter_prot </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:alternativeName ?alt_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?ppi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?inter_prot <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?inter_label </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?target_component </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?synonym </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_component <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?db_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:cellularLocation ?cellularLocation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -3638,7 +3642,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3696,7 +3700,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Count members for Target class" ,
-          "description":  "The number of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<hr>",
+          "description":  "The number of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:memberCount ?count </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -3732,7 +3736,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3790,7 +3794,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Members of Target Class" ,
-          "description":  "A list of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<hr>",
+          "description":  "A list of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?chembl_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?chembl_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?uniprot_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?goa_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?uniprot_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?dataset </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -3847,22 +3851,22 @@
                   "DESC(?chembl_name)",
                   "?chembl_organism",
                   "DESC(?chembl_organism)",
-                  "?chembl_type",
-                  "DESC(?chembl_type)",
                   "?child_node",
                   "DESC(?child_node)",
                   "?dataset",
                   "DESC(?dataset)",
                   "?g",
                   "DESC(?g)",
-                  "?g_short",
-                  "DESC(?g_short)",
                   "?goa_name",
                   "DESC(?goa_name)",
+                  "?g_short",
+                  "DESC(?g_short)",
                   "?item",
                   "DESC(?item)",
                   "?ops_item",
                   "DESC(?ops_item)",
+                  "?target_type",
+                  "DESC(?target_type)",
                   "?uniprot_name",
                   "DESC(?uniprot_name)",
                   "?uniprot_organism",
@@ -3874,7 +3878,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -3932,7 +3936,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Pharmacology Count" ,
-          "description":  "The total number of acitivity values in the LDC for a given target<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetPharmacologyTotalResults ?count </span><br><br><hr>",
+          "description":  "The total number of acitivity values in the LDC for a given target<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetPharmacologyTotalResults ?count </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -4018,31 +4022,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -4052,7 +4056,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -4110,7 +4114,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for a given target<br> &nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?activity_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target_uri </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?target_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:targetOrganismName ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_chembl  <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span><br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for a given target<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> .<br> ?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -4208,31 +4212,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -4273,6 +4277,8 @@
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
+                  "?assay_type",
+                  "DESC(?assay_type)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
                   "?chembl_target_uri",
@@ -4340,7 +4346,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -4398,7 +4404,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Class Pharmacology Count" ,
-          "description":  "The total number of  acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<hr>",
+          "description":  "The total number of  acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetPharmacologyTotalResults ?count </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -4490,31 +4496,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -4524,7 +4530,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -4582,7 +4588,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Class Pharmacology Paginated" ,
-          "description":  "A page of items corresponding to acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?activity_unit </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?target_chembl <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:title ?target_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:targetOrganismName ?target_organism </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:classifiedUnder ?class </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_chembl  <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. <br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight</span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span>;<br>         &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span><br><br><hr>",
+          "description":  "A page of items corresponding to acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_chembl <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:classifiedUnder ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?compound_chembl <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -4674,31 +4680,31 @@
             },
             {
               "name":  "pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "min-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "minEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value greater than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "max-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than or equal to this number." ,
               "dataType": "double",
               "paramType": "query"
             },
             {
               "name":  "maxEx-pChembl" ,
-              "description":  "The pChembl value of an activity" ,
+              "description":  "Return activities with a pChembl value less than this number." ,
               "dataType": "double",
               "paramType": "query"
             },
@@ -4739,6 +4745,8 @@
                   "DESC(?assay_description)",
                   "?assay_organism",
                   "DESC(?assay_organism)",
+                  "?assay_type",
+                  "DESC(?assay_type)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
                   "?class",
@@ -4814,7 +4822,7 @@
               "required": false,
               "paramType": "query"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -4872,7 +4880,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Types" ,
-          "description":  "A list of target types in the LDC.<hr>",
+          "description":  "A list of target types in the LDC.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:hasTargetType ?target_type </span> .<br> ?target_type <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetCount ?target_count </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#SingleProtein&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'single_protein' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ProteinComplexGroup&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'protein_complex_group' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ProteinFamily&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'protein_family' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ProteinSelectivityGroup&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'protein_selectivity_group' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ProteinComplex&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'protein_complex' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#Organism&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'organism' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#CellLine&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'cell_line' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#Tissue&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'tissue' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ProteinProteinInteraction&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'ppi' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#UnknownTarget&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'unknown' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#NucleicAcid&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'nucleic_acid' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#SubCellular&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'sub_cellular' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'unclassified' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ADMET&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'admet' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'chimeric_protein' </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/chembl#Phenotype&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label 'phenotype' </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -4889,7 +4897,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -4947,7 +4955,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Child nodes" ,
-          "description":  "A representation of all child nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<hr>",
+          "description":  "A representation of all child nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:childNode ?child_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?child_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?child_label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
           "group": "Concept Class Hierarchies" ,
           "parameters": [
             {
@@ -4971,7 +4979,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -5029,7 +5037,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Parent nodes" ,
-          "description":  "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<hr>",
+          "description":  "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:parentNode ?parent_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?parent_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_name </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
           "group": "Concept Class Hierarchies" ,
           "parameters": [
             {
@@ -5053,7 +5061,7 @@
               "paramType": "query",
               "threescale_name": "app_keys"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -5111,7 +5119,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Root nodes" ,
-          "description":  "A representation of the root classes in each hierachy. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<hr>",
+          "description":  "A representation of the root classes in each hierachy. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ops:conceptHierarchy <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?g_short </span> .<br> ?g_short <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:rootNode ?root_node </span> .<br> ?root_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
           "group": "Concept Class Hierarchies" ,
           "parameters": [
             {
@@ -5134,7 +5142,7 @@
               "paramType": "query",
               "dataType": "string"
             },
-{
+            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",
@@ -5192,7 +5200,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Chemical Structure Exact Search" ,
-          "description":  "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchType ?searchMatchType </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span><br><br><hr>",
+          "description":  "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  {pageUri} <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:isPrimaryTopicOf {pageUri} </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchType ?searchMatchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> .<br> ",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -5298,7 +5306,7 @@
         {
           "httpMethod": "GET",
           "summary":  "InchiKey to URL" ,
-          "description":  "Returns a ChemSpider URL corresponding to an input InChIKey string. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000399 ?inchi_key </span><br><br><hr>",
+          "description":  "Returns a ChemSpider URL corresponding to an input InChIKey string. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000399 ?inchi_key </span> .<br> ",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -5373,7 +5381,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Inchi to URL" ,
-          "description":  "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000396 ?inchi </span><br><br><hr>",
+          "description":  "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000396 ?inchi </span> .<br> ",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -5448,7 +5456,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Chemical Structure Similarity Search" ,
-          "description":  "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?inputMoleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?similarMolecule </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Threshold ?searchThreshold </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Alpha ?searchAlpha </span>; <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Beta ?searchBeta </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span><br><br><hr>",
+          "description":  "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  {pageUri} <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:isPrimaryTopicOf {pageUri} </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Threshold ?searchThreshold </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Alpha ?searchAlpha </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Beta ?searchBeta </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_common:HasSpectra ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_result:Start ?start </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_result:Count ?count </span> .<br> ?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .<br> ",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -5584,7 +5592,7 @@
         {
           "httpMethod": "GET",
           "summary":  "SMILES to URL" ,
-          "description":  "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000018 ?smiles </span><br><br><hr>",
+          "description":  "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  {pageUri} <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:isPrimaryTopicOf {pageUri} </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000018 ?smiles </span> .<br> ",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -5659,7 +5667,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Chemical Structure Substructure Search" ,
-          "description":  "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?inputMoleculeSmiles </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?resultMolecule </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:search:MolType ?searchMolType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchTautomers ?searchMatchTautomers </span>; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasSpectra ?hasSpectra </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span><br><br><hr>",
+          "description":  "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MolType ?searchMolType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchTautomers ?searchMatchTautomers </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> ops_api_common:HasSpectr <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span> .<br> ?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .<br> ",
           "group": "ChemSpider structure search" ,
           "parameters": [
             {
@@ -5783,7 +5791,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Get concept description" ,
-          "description":  "Get the description of a concept, based on a concept URL. Driven by ConceptWiki.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?conceptURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:definition ?definitionText </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?sourceURL </span>;<br> ?sourceURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?sourcePrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span><br><br><hr>",
+          "description":  "Get the description of a concept, based on a concept URL. Driven by ConceptWiki.<br><hr><br>Response template: <br><br><hr><br>  ?conceptURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:definition ?definitionText </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?sourceURL </span>;<br> ?sourceURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?sourcePrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> ",
           "group": "Concept Wiki services" ,
           "parameters": [
             {
@@ -5865,7 +5873,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Map free text to a concept URL based on semantic tag" ,
-          "description":  "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit</span> .<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:semanticTag ?tagBNode</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode</span> .<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel</span> .<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType</span><br><br><hr>",
+          "description":  "Search for a set of concept URLs based on free text and an input tag, which specifies the semantic type. Driven by ConceptWiki.<br><hr><br>Response template: <br><br><hr><br>  ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit</span> .<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:semanticTag ?tagBNode</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode</span> .<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel</span> .<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType</span> .<br> ",
           "group": "Concept Wiki services" ,
           "parameters": [
             {
@@ -5960,7 +5968,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Map free text to a concept URL" ,
-          "description":  "Returns a set of concept URLs associated to the input free text. Driven by ConceptWiki.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit </span>.<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span><br><br><hr>",
+          "description":  "Returns a set of concept URLs associated to the input free text. Driven by ConceptWiki.<br><hr><br>Response template: <br><br><hr><br>  ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit </span>.<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>.<br> ",
           "group": "Concept Wiki services" ,
           "parameters": [
             {
@@ -6048,7 +6056,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Map URL" ,
-          "description":  "Returns a set of URLs associated to the input URL.<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<hr>Response template: <hr><br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?url </span><br><br><hr>",
+          "description":  "Returns a set of URLs associated to the input URL.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?url </span> .<br> ",
           "group": "Mapping service betweem URLs" ,
           "parameters": [
             {

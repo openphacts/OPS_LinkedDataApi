@@ -11,7 +11,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
 	api:variable _:type ;
