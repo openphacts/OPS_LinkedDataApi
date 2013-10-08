@@ -155,6 +155,7 @@ class LinkedDataApiResponse {
         //$noCacheRequestFactory->read_from_cache(FALSE);
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
         
+        //try
         switch($this->ConfigGraph->getEndpointType()){
             case API.'ListEndpoint' :
             case PUELIA.'SearchEndpoint' :
@@ -179,7 +180,14 @@ class LinkedDataApiResponse {
                 break;
             }
         }
-        
+        //catch(EmptyResponseException e){}
+        //catch (EmptyResponseException $e){
+        //    logError("EmptyResponseException: ".$e->getMessage());
+        //   $this->setStatusCode(HTTP_Not_Found);
+        //    $this->errorMessages[]=$e->getMessage();
+        //    $this->serve();
+        //    exit;
+        //}
         $this->addMetadataToPage();
         
     }
