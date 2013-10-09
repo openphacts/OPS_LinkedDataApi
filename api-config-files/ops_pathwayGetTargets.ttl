@@ -35,11 +35,6 @@
 		a api:ItemEndpoint ;
 		api:name "Get Targets for Pathway" ;
 		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.
-?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
-?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
-        <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?gene_product </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>" ;
 		api:uriTemplate "/pathway/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/pathway/getTargets?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1008" ;

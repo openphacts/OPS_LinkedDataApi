@@ -35,7 +35,6 @@
 		a api:ItemEndpoint ;
 		api:name "Number of activity units" ;
 		api:description "A list of activity units which have been normalised" ;
-		api:resultsDescription "&lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_unit_count ?count </span>." ;
 		api:uriTemplate "/pharmacology/filters/count_units" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/count_units";

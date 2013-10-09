@@ -48,7 +48,6 @@
 		a api:ItemEndpoint ;
 		api:name "Compound Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given compound" ;
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:compoundPharmacologyTotalResults ?count </span>." ;
 		api:uriTemplate "/compound/pharmacology/count?uri={uri}" ;
         	api:itemTemplate "{uri}" ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;

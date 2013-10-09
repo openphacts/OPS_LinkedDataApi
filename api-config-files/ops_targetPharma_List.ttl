@@ -193,38 +193,6 @@ _:type api:name "target_type" ;
         api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 	api:name "Target Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values in the LDC for a given target" ;
-	api:resultsDescription "?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?compound_chembl</span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardUnits ?activity_unit </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri</span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span>;
-		<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span>;
-		<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-	?assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:assayOrganismName ?assay_organism </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target_uri </span>; 
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>.
-	?target_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:title ?target_name </span>;
-		<span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:targetOrganismName ?target_organism </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span>. 
-	?compound_chembl  <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span>; 
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span>. 
-	?compound_ocrs <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchi_key</span>;
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span>
-		<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span>.
-	?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span>;
-		<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span>." ;
 
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c";
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c&activity_type=Potency&activity_unit=nanomolar&maxEx-activity_value=10&minEx-activity_value=1&assay_organism=Mus%20musculus";
