@@ -10,6 +10,7 @@ class OpsIms {
             '?ocrs_compound_uri'=>'http://ops.rsc.org/' ,
             '?db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
             '?db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
+            '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
     );
     
     var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');

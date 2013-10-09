@@ -35,17 +35,22 @@
 	        api:selector [
         	api:where
 "GRAPH <http://www.conceptwiki.org> {
-	?cw_target_uri skos:prefLabel ?prefLabel .
+	?cw_target_uri skos:prefLabel ?cw_prefLabel .
 }
 GRAPH <http://purl.uniprot.org> {
-	OPTIONAL {?uniprot_target_uri uniprot:existence ?existence .}
+	?uniprot_target_uri uniprot:existence ?existence .
 }
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?dg_gene_uri .
+	?dg_gene_uri rdf:type ncit:C16612 .
 	?dg_gene_uri rdfs:label ?geneLabel .
+
 	?gene_disease_assoc sio:SIO_000628 ?item .
-	?item sio:SIO_000095 ?diseaseClass .
-	?item foaf:name ?diseaseName .
+	?item sio:SIO_000095 ?diseaseClass ;
+		foaf:name ?diseaseName ;
+		rdfs:seeAlso ?bio2rdf_uri .
+
+	?diseaseClass foaf:name ?diseaseClassName .
 }" ;
 	        ] ;
 		api:viewer <#diseaseByTargetViewer> ;
@@ -65,7 +70,7 @@ GRAPH <http://rdf.imim.es> {
 "?item foaf:name ?diseaseName ;
 	ops:diseaseClass ?diseaseClass ;
 	ops:forGene ?dg_gene_uri ;
-	rdfs:seeAlso ?bio2rd_uri ;	
+	rdfs:seeAlso ?bio2rdf_uri ;	
 	void:inDataset <http://rdf.imim.es> .
 ?diseaseClass foaf:name ?diseaseClassName .
 ?dg_gene_uri ops:encodes ?uniprot_target_uri .
@@ -78,16 +83,17 @@ GRAPH <http://rdf.imim.es> {
 	?cw_target_uri skos:prefLabel ?cw_prefLabel .
 }
 GRAPH <http://purl.uniprot.org> {
-	OPTIONAL {?uniprot_target_uri uniprot:existence ?existence .}
+	?uniprot_target_uri uniprot:existence ?existence .
 }
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?dg_gene_uri .
+	?dg_gene_uri rdf:type ncit:C16612 .
 	?dg_gene_uri rdfs:label ?geneLabel .
 
 	?gene_disease_assoc sio:SIO_000628 ?item .
 	?item sio:SIO_000095 ?diseaseClass ;
 		foaf:name ?diseaseName ;
-		rdfs:seeAlso ?bio2rd_uri .
+		rdfs:seeAlso ?bio2rdf_uri .
 
 	?diseaseClass foaf:name ?diseaseClassName .
 }" .
