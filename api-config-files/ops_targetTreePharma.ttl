@@ -107,13 +107,13 @@
 			chembl:hasActivity ?item . 
 		?item chembl:hasMolecule ?compound_chembl .
 		?target_chembl chembl:hasTargetComponent ?target_component .
-                { ?assay_uri chembl:organismName ?assay_organism }
-                UNION { ?target_chembl chembl:organismName ?target_organism }
-                UNION { ?item chembl:standardType ?activity_type }
-                UNION { ?item chembl:standardRelation ?activity_relation }
-                UNION { ?item chembl:standardValue ?std_value .
+                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+                OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
+                OPTIONAL { ?item chembl:standardType ?activity_type }
+                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
+                OPTIONAL { ?item chembl:standardValue ?std_value .
                 BIND (xsd:decimal(?std_value) as ?activity_value) }
-                UNION { ?item chembl:standardUnits ?activity_unit }
+                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
 
 	}
 	GRAPH <http://www.conceptwiki.org> {

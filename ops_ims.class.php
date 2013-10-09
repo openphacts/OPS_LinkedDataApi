@@ -69,32 +69,31 @@ class OpsIms {
        }
        return $output;
    }
-
-	private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
-		$output = $query ;
-			
-		$url = IMS_EXPAND_ENDPOINT;
-		$url .= urlencode($query) ;
-		$params=substr($params, 2);
-		$url .= '&parameter=' ;
-		$url .= urlencode($params);
-		$url .= '&lensUri=';
-		
-	    if (empty($lens)){
-	       $url .= 'Default';
-	    }
-	    else{
-	       $url .= $lens;
-	    }
-	       
-	    $url .= '&inputURI=' . urlencode($input_uri) ;
-	    $response = $this->getResponse($url, "application/xml");
-	       
-	    //echo $query;
-	    //echo '<br><br>';
-	    //echo $url;
-	    $output = simplexml_load_string($response)->expandedQuery ;
-	    return $output;
+   
+   private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
+       $output = $query ;
+       
+       $url = IMS_EXPAND_ENDPOINT;
+       $url .= urlencode($query) ;
+       $params=substr($params, 2);
+       $url .= '&parameter=' ;
+       $url .= urlencode($params);
+       $url .= '&lensUri=';
+       if (empty($lens)){
+           $url .= 'Default';
+       }
+       else{
+           $url .= $lens;
+       }
+       
+       $url .= '&inputURI=' . urlencode($input_uri) ;
+       $response = $this->getResponse($url, "application/xml");
+       
+       //echo $query;
+       //echo '<br><br>';
+       //echo $url;
+       $output = simplexml_load_string($response)->expandedQuery ;
+       return $output;
    }
 
   function expandBatchQuery( $query , $uriList, $lens) {

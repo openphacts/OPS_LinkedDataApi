@@ -637,22 +637,24 @@ _SPARQL_;
 	    else {
 	        $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " . preg_replace('/([^}]*\})([\s\}]*)$/', "$1 {$this->getFilterGraph()} $2", $whereGraph , 1) . " }"));
 	    }
-	    
+	     
 	    $ims = new OpsIms();
 	    $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
 	    if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
+
 	        $filterGraph = "FILTER ( ";
 	        foreach($uriList as $uri) {
 	            $filterGraph .= "?item = <{$uri}> || ";
 	        }
 	        $filterGraph = substr($filterGraph, 0, strlen($filterGraph) - 3);
 	        $filterGraph .= ")";
+	        $expandedQuery = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\?item)/s","$1
+	        {$filterGraph} $2",$expandedQuery);
 	    }
-	    $expandedQuery = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\?item)/s",
-	                        "$1{$filterGraph} $2",$expandedQuery);
-            $formatter = new VirtuosoFormatter();
-            return $formatter->formatQuery($expandedQuery);
-        } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
+
+	    $formatter = new VirtuosoFormatter();
+	    return $formatter->formatQuery($expandedQuery);
+	} else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
             $query = preg_replace('/(.*\})([\s\}]*)$/',"$1 {$this->getFilterGraph()} $2",$query);
             $ims = new OpsIms();
