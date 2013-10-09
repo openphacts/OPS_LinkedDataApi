@@ -34,10 +34,10 @@ class OpsIms {
    
    private function expandQueryThroughIMS($query, $input_uri, $lens){
        $output = $query ;
-       foreach ($this->IMS_variables AS $name => $pattern ){
-           if (strpos($query, $name)!==false) {
+       foreach ($this->IMS_variables AS $variableName => $pattern ){
+           if (strpos($query, $variableName)!==false) {
                if (strpos($input_uri, $pattern)!==false){
-                   $filter = " FILTER ({$name} = <{$input_uri}>) ";
+                   $filter = " FILTER ({$variableName} = <{$input_uri}>) ";
                    //echo $filter;
                }
                else {
@@ -57,21 +57,11 @@ class OpsIms {
                    //echo $url;
                    $graph = new SimpleGraph() ;
                    $graph->add_rdf($response);
-                   $filter = " FILTER ( ";
-                   foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
-                       foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
-                           $filter.= "{$name} = <" . $mapping["value"] . "> || ";
-                       }
-                   }
-                   if ($filter != " FILTER ( ") {
-                       $filter = substr($filter,0,strlen($filter)-3);
-                       $filter.= " )";
-                   }
-                   else $filter = " FILTER ( {$name} = 'No mappings found' )" ;
+                   $filter = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
                    //echo $filter;
                }
                if (isset($filter) AND $filter != " FILTER ( ") {
-                   $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$name.")/s","$1
+                   $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s","$1
                    {$filter} $2",$output);
                    //echo $output;
                }
@@ -138,31 +128,42 @@ class OpsIms {
 		$graph = new SimpleGraph() ;
 		$graph->add_rdf($response);
 		$rdf.=$response;
-		foreach ($uriList AS $input_uri){
-		    foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
-			foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
-			    $expanded[] = $mapping["value"];
-			}
-		    }
-		}
-		$filter = " FILTER ( ";
-		foreach ($expanded AS $mapping) {
-		    $filter.= "{$name} = <{$mapping}> ||";
-		}
-		if ($filter != " FILTER ( ") {
-		    $filter = substr($filter,0,strlen($filter)-3);
-		    $filter.= " )";
-		}
-		else $filter = " FILTER ( {$name} = 'No mappings found' )" ;
+		
+		$filter = $this->buildFilterFromMappings($graph, $uriList, $name, $expanded);		
 		if (isset($filter) AND $filter != " FILTER ( ") {
-		    $output['expandedQuery'] = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$name.")/s","$1
-{$filter} $2",$output['expandedQuery']);
+		    $output['expandedQuery'] = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$name.")/s",
+		    								"$1{$filter} $2",
+		    								$output['expandedQuery']);
 		}
 	    }
 	}
 	//echo $rdf;
 	$output['imsRDF']=$rdf;
 	return $output;
+  }
+  
+  private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
+  	foreach ($uriList AS $input_uri){
+  		foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
+  			foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
+  				$expanded[] = $mapping["value"];
+  			}
+  		}
+  	}
+  	if (count($expanded)>0){
+  		$filter = " FILTER ( ";
+  		foreach ($expanded AS $mapping) {
+  			$filter.= "{$variableName} = <{$mapping}> ||";
+  		}
+  		 
+  		$filter = substr($filter,0,strlen($filter)-3);
+  		$filter.= " )";
+  	}
+  	else{
+  		$filter = " FILTER ( {$variableName} = 'No mappings found' )" ;
+  	}
+
+  	return $filter;
   }
   
   private function getResponse($url, $mimetype){

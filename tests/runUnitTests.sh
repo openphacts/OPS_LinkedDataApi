@@ -5,6 +5,13 @@
 grep api:exampleRequestPath $2/*.ttl | cut -d '"' -f 2 >unitTestRequests
 while read line
 do
-	url=$1$line'&app_id=81aaf1fe&app_key=17db324ee4f3552169ebcdfd3df8e7d8'
+	hasQ=$(echo $line | grep -o '?')
+	if [ -n "$hasQ" ]
+	then
+		url=$1$line'&app_id=81aaf1fe&app_key=17db324ee4f3552169ebcdfd3df8e7d8'
+	else 
+		url=$1$line	
+	fi
+	#echo $url
 	curl -v -X GET "$url" >/dev/null
 done <unitTestRequests
