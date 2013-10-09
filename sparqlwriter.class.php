@@ -641,9 +641,9 @@ _SPARQL_;
 	    	}
 	    	$filterGraph = substr($filterGraph, 0, strlen($filterGraph) - 3);
 	    	$filterGraph .= ")";
+	    	$expandedQuery = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\?item)/s","$1
+		   {$filterGraph} $2",$expandedQuery);
 	    }
-	    $expandedQuery = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\?item)/s","$1
-		{$filterGraph} $2",$expandedQuery);
             $formatter = new VirtuosoFormatter();
             return $formatter->formatQuery($expandedQuery);
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){

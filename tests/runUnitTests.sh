@@ -6,5 +6,5 @@ grep api:exampleRequestPath $2/*.ttl | cut -d '"' -f 2 >unitTestRequests
 while read line
 do
 	url=$1$line'&app_id=81aaf1fe&app_key=17db324ee4f3552169ebcdfd3df8e7d8'
-	curl -v -X GET "$url"
+	curl -v -X GET "$url" >/dev/null
 done <unitTestRequests
