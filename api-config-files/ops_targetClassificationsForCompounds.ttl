@@ -13,7 +13,6 @@
 	rdfs:label "Target"@en ;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable _:hierarchy ;
 	api:variable chembl:organism ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
@@ -71,13 +70,6 @@
 <http://www.ebi.ac.uk/chebi> api:label "ChEBI Ontoology" .
 
 <http://www.ebi.ac.uk/chebi> api:name "chebi" .
-
-_:hierarchy api:name "tree" ;
-	api:label "tree" ;
-	api:value "Restrict results by hierarchy. Currently the only allowed value is 'chebi'." ;
-	api:filterVariable "?g" ;
-	rdfs:subPropertyOf api:graphFilter ;
-	a rdf:Property .
 
 <#input> api:name "uri" ;
         api:label "uri";

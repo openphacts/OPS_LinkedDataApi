@@ -193,7 +193,6 @@ _:type api:name "target_type" ;
         api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 	api:name "Compound Class Pharmacology Paginated" ;
 	api:description "A page of items corresponding to acitivity values for a given Compound class. Currently only the ChEBI Ontology is supported." ;
-" ;
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:selector [
