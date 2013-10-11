@@ -1,20 +1,19 @@
 <?php
 
-require_once '../lda.inc.php';
-require_once 'data_handler.class.php';
+require_once 'lda.inc.php';
+require_once 'data_handlers/data_handler.class.php';
 
 class ItemDataHandler extends DataHandler{
     
-    private $list_of_item_uris = false;
     private $pageUri = false;
     private $endpointUrl = '';
     
-    function __construct($Request, $ConfigGraph, $DataGraph, $Viewer, $endpointUrl) {
-        parent::__construct($Request, $ConfigGraph, $DataGraph, $Viewer);
+    function __construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint, $endpointUrl) {
+        parent::__construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint);
         $this->endpointUrl = $endpointUrl;
     }
     
-    protected function loadData(){
+    function loadData(){
         $uri = $this->ConfigGraph->getCompletedItemTemplate();
         $this->list_of_item_uris = array($uri);
         
@@ -42,10 +41,6 @@ class ItemDataHandler extends DataHandler{
             logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
         }
-    }
-
-    function getItemURIList(){//TODO should be called in addMetadata
-        return $this->list_of_item_uris;
     }
     
     function getPageUri(){
