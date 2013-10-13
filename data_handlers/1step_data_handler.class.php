@@ -1,14 +1,15 @@
 <?php
 
+require_once 'data_handlers/data_handler.interf.php';
 
-abstract class DataHandler {
+abstract class OneStepDataHandler implements DataHandlerInterface {
     
     protected $Request = false;
     protected $ConfigGraph = false;
     protected $DataGraph = false;
     protected $SparqlWriter = false;
     protected $SparqlEndpoint = false;
-    protected $viewer = false;
+    protected $viewerUri = false;
     protected $viewQuery = '';
     protected $list_of_item_uris = null;
     
@@ -16,23 +17,27 @@ abstract class DataHandler {
         $this->Request = $Request;
         $this->ConfigGraph = $ConfigGraph;
         $this->DataGraph = $DataGraph;
-        $this->viewer = $Viewer;
+        $this->$viewerUri = $Viewer;
         $this->SparqlWriter = $SparqlWriter;
         $this->SparqlEndpoint = $SparqlEndpoint;
     }
     
-    abstract protected function loadData();
+    abstract function loadData();
     
     function getItemURIList(){//TODO should be called in addMetadata
     	return $this->list_of_item_uris;
     }
     
     function getViewer(){
-    	return $this->viewer;
+    	return $this->$viewerUri;
     }
     
     function getViewQuery(){
     	return $this->viewQuery;
+    }
+    
+    function getSelectQuery(){
+    	return '';
     }
 }
 

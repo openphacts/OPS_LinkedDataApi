@@ -2,9 +2,9 @@
 
 
 require_once 'lda.inc.php';
-require_once 'data_handlers/data_handler.class.php';
+require_once 'data_handlers/1step_data_handler.class.php';
 
-class ExternalServiceDataHandler extends DataHandler{
+class ExternalServiceDataHandler extends OneStepDataHandler{
 	
 	private $useDatastore = false;
 	private $pageUri = false;
@@ -25,8 +25,7 @@ class ExternalServiceDataHandler extends DataHandler{
 			//build query
 			$this->pageUri = $this->Request->getUriWithoutPageParam();
 		
-			$viewer = $this->getViewer();
-			$this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $viewer);
+			$this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $this->viewerUri);
 			if (LOG_VIEW_QUERIES) {
 				logViewQuery($this->Request, $this->viewQuery);
 			}
@@ -116,3 +115,5 @@ class ExternalServiceDataHandler extends DataHandler{
 	
 	
 }
+
+?>

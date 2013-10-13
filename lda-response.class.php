@@ -15,6 +15,7 @@ require_once 'graphs/linkeddataapigraph.class.php';
 require_once 'parameter_property_mapper.class.php';
 require_once 'sanitization_handler.class.php';
 require_once 'sparqlwriter.class.php';
+require_once 'data_handlers/data_handler_factory.class.php';
 require_once 'data_handlers/item_data_handler.class.php';
 require_once 'data_handlers/external_service_data_handler.class.php';
 
@@ -124,8 +125,6 @@ class LinkedDataApiResponse {
             logError($e->getMessage());
             $this->serve();
         }
-        
-        $requestUri = $this->Request->getUri();
 
         $endpointUri = $this->ConfigGraph->getEndpointUri();
         $this->endpointUrl = $endpointUri;
@@ -153,33 +152,32 @@ class LinkedDataApiResponse {
         
         try{
         	switch($this->ConfigGraph->getEndpointType()){
-        		case API.'ListEndpoint' :
-        		case PUELIA.'SearchEndpoint' :
-        			$this->loadDataFromList();
+        		case API.'ListEndpoint' :        			
+        			$this->dataHandler = DataHandlerFactory::createListDataHandler($this->Request, 
+        										$this->ConfigGraph, $this->DataGraph, $viewerUri, 
+        										$this->SparqlWriter, $this->SparqlEndpoint);
         			break;
-        		case API.'ItemEndpoint' :
-        	
-        			$this->dataHandler = new ItemDataHandler($this->Request, 
+        		case API.'ItemEndpoint' :      	
+        			$this->dataHandler = DataHandlerFactory::createItemDataHandler($this->Request, 
         					$this->ConfigGraph, $this->DataGraph, $viewerUri,
         					$this->SparqlWriter, $this->SparqlEndpoint,
         					$this->endpointUrl);
-        			$this->dataHandler->loadData();
-        			
-        			$this->pageUri = $this->dataHandler->getPageUri();
         			break;
         		case API.'ExternalHTTPService' :
-        			$this->dataHandler = new ExternalServiceDataHandler($this->Request,
+        			$this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($this->Request,
         					$this->ConfigGraph, $this->DataGraph, $viewerUri,
         					$this->SparqlWriter, $this->SparqlEndpoint,
         					$this->endpointUrl);
-        			
-        			$this->dataHandler->loadData();
-        			$this->pageUri = $this->dataHandler->getPageUri();
-        			
         			break;
         		case API.'IntermediateExpansionEndpoint' :
+        			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($this->Request,
+        					$this->DataGraph, $viewerUri,
+        					$this->SparqlWriter, $this->SparqlEndpoint);
+        			break;
         		case API.'BatchEndpoint' :
-        			$this->loadDataFromBatch();
+        			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($this->Request,
+        					$this->DataGraph, $viewerUri,
+        					$this->SparqlWriter, $this->SparqlEndpoint);
         			break;
         		default:{
         			$this->setStatusCode(HTTP_Internal_Server_Error);
@@ -190,6 +188,9 @@ class LinkedDataApiResponse {
         			break;
         		}
         	}
+        	
+        	$this->dataHandler->loadData();
+        	$this->pageUri = $this->dataHandler->getPageUri();
         }
         catch(EmptyResponseException $e){
         	logError("EmptyResponseException: ".$e->getMessage());
@@ -215,7 +216,8 @@ class LinkedDataApiResponse {
         $this->addMetadataToPage();
         
     }
-
+    
+//TODO remove
     function loadDataFromBatch(){
         $list=$this->getListOfUris();
         if (empty($list)) {
@@ -249,6 +251,7 @@ class LinkedDataApiResponse {
 		}
     }
     
+    //TODO remove
     private function buildDataGraphFromIMSAndTripleStore($tripleStoreResponse, $imsRDF, $list){
         $rdf = $tripleStoreResponse->body;
         if(isset($tripleStoreResponse->headers['content-type'])){
@@ -284,6 +287,7 @@ class LinkedDataApiResponse {
         return true;
     }
 
+    //TODO remove
     function loadDataFromList(){
         $list = $this->getListOfUris();
 	    if (!empty($list)) {
@@ -393,6 +397,7 @@ class LinkedDataApiResponse {
         }
     }
     
+    //TODO remove
     function getListOfUrisFromSearchEndpoint(){
         // get searchindexendpoint
         $rssTextSearchIndex = $this->ConfigGraph->getRssTextSearchIndex();
@@ -433,7 +438,7 @@ class LinkedDataApiResponse {
         return array();
     }
 
-#Antonis botch
+//TODO remove
     function getExplicitListOfUris(){
 	    $list=array();
 	    foreach($this->Request->getUnreservedParams() as $k => $v){
@@ -448,6 +453,7 @@ class LinkedDataApiResponse {
 	    return $list;
     }
 
+//TODO remove
     function getListOfUrisFromSparqlEndpoint(){
         $list = array();
         try {
@@ -499,6 +505,7 @@ class LinkedDataApiResponse {
 
     }
     
+    //TODO remove
     function getListOfUris(){
 
     	if ($this->dataHandler){
@@ -623,7 +630,7 @@ class LinkedDataApiResponse {
 	
 	function addRelatedPages(){
 	    $viewerUri = $this->getViewer();
-	    if($list = $this->getListOfUris() and is_array($list)){
+	    if($list = $this->dataHandler->getItemURIList() and is_array($list)){
 	        foreach($list as $itemUri){
 	            if($relatedPages = $this->ConfigGraph->getViewerRelatedPagesForItemUri($viewerUri, $itemUri)){
 	                foreach($relatedPages as $pageUri => $label){
@@ -742,11 +749,12 @@ class LinkedDataApiResponse {
 		 $this->DataGraph->add_resource_triple('_:sparqlEndpoint', RDF.'type', SD.'Service');
 		 $this->DataGraph->add_resource_triple('_:sparqlEndpoint', SD.'url', $this->SparqlEndpoint->uri);
 
-		 if(!empty($this->selectQuery)){//TODO use method from data handler
+		 $selectQuery = $this->dataHandler->getSelectQuery();
+		 if(!empty($selectQuery)){
 			 $this->DataGraph->add_resource_triple('_:execution', API.'selectionResult', '_:selectionResult');
 			 $this->DataGraph->add_resource_triple('_:selectionResult', RDF.'type', SPARQL.'QueryResult');
 			 $this->DataGraph->add_resource_triple('_:selectionResult', SPARQL.'query', '_:selectionQuery');
-			 $this->DataGraph->add_literal_triple('_:selectionQuery', RDF.'value', $this->selectQuery);
+			 $this->DataGraph->add_literal_triple('_:selectionQuery', RDF.'value', $selectQuery);
 			 $this->DataGraph->add_resource_triple('_:selectionResult', SPARQL.'endpoint', '_:sparqlEndpoint');
 		 } 
 	}

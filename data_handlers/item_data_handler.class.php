@@ -1,9 +1,9 @@
 <?php
 
 require_once 'lda.inc.php';
-require_once 'data_handlers/data_handler.class.php';
+require_once 'data_handlers/1step_data_handler.class.php';
 
-class ItemDataHandler extends DataHandler{
+class ItemDataHandler extends OneStepDataHandler{
     
     private $pageUri = false;
     private $endpointUrl = '';
@@ -17,7 +17,7 @@ class ItemDataHandler extends DataHandler{
         $uri = $this->ConfigGraph->getCompletedItemTemplate();
         $this->list_of_item_uris = array($uri);
         
-        $this->viewQuery  = $this->SparqlWriter->getViewQueryForUri($uri, $this->viewer);
+        $this->viewQuery  = $this->SparqlWriter->getViewQueryForUri($uri, $this->viewerUri);
         if (LOG_VIEW_QUERIES) {
             logViewQuery($this->Request, $this->viewQuery);
         }
