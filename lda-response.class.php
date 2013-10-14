@@ -155,7 +155,8 @@ class LinkedDataApiResponse {
         		case API.'ListEndpoint' :        			
         			$this->dataHandler = DataHandlerFactory::createListDataHandler($this->Request, 
         										$this->ConfigGraph, $this->DataGraph, $viewerUri, 
-        										$this->SparqlWriter, $this->SparqlEndpoint);
+        										$this->SparqlWriter, $this->SparqlEndpoint,
+        										$this->endpointUrl);
         			break;
         		case API.'ItemEndpoint' :      	
         			$this->dataHandler = DataHandlerFactory::createItemDataHandler($this->Request, 
@@ -172,12 +173,14 @@ class LinkedDataApiResponse {
         		case API.'IntermediateExpansionEndpoint' :
         			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($this->Request,
         					$this->DataGraph, $viewerUri,
-        					$this->SparqlWriter, $this->SparqlEndpoint);
+        					$this->SparqlWriter, $this->SparqlEndpoint,
+        					$this->endpointUrl);
         			break;
         		case API.'BatchEndpoint' :
         			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($this->Request,
         					$this->DataGraph, $viewerUri,
-        					$this->SparqlWriter, $this->SparqlEndpoint);
+        					$this->SparqlWriter, $this->SparqlEndpoint,
+        					$this->endpointUrl);
         			break;
         		default:{
         			$this->setStatusCode(HTTP_Internal_Server_Error);
@@ -630,7 +633,7 @@ class LinkedDataApiResponse {
 	
 	function addRelatedPages(){
 	    $viewerUri = $this->getViewer();
-	    if($list = $this->dataHandler->getItemURIList() and is_array($list)){
+	    if($this->dataHandler!=null and $list = $this->dataHandler->getItemURIList() and is_array($list)){
 	        foreach($list as $itemUri){
 	            if($relatedPages = $this->ConfigGraph->getViewerRelatedPagesForItemUri($viewerUri, $itemUri)){
 	                foreach($relatedPages as $pageUri => $label){

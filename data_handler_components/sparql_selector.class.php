@@ -30,7 +30,6 @@ class SparqlSelector implements Selector{
 			throw $e;
 		}
 
-		logDebug($this->selectQuery);
 		$response = $this->SparqlEndpoint->query($this->selectQuery, PUELIA_SPARQL_ACCEPT_MIMES);
 
 		if($response->is_success()){

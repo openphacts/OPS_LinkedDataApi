@@ -12,13 +12,15 @@ class MultipleExpansionViewer implements Viewer {
 	private $viewerUri;
 	private $viewQuery;
 	private $pageUri;
+	private $endpointUrl;
 	
-	function __construct($Request, $DataGraph, $SparqlWriter, $SparqlEndpoint, $viewerUri){
+	function __construct($Request, $DataGraph, $SparqlWriter, $SparqlEndpoint, $viewerUri, $endpointUrl){
 		$this->Request = $Request;
 		$this->DataGraph = $DataGraph;
 		$this->SparqlWriter = $SparqlWriter;
 		$this->SparqlEndpoint = $SparqlEndpoint;
 		$this->viewerUri = $viewerUri;
+		$this->endpointUrl = $endpointUrl;
 	}
 	
 	public function applyViewerAndBuildDataGraph($itemList){
