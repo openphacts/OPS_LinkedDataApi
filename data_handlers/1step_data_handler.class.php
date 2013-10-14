@@ -22,9 +22,9 @@ abstract class OneStepDataHandler implements DataHandlerInterface {
         $this->SparqlEndpoint = $SparqlEndpoint;
     }
     
-    abstract function loadData();
+    //the loadData method is left as abstract
     
-    function getItemURIList(){//TODO should be called in addMetadata
+    function getItemURIList(){
     	return $this->list_of_item_uris;
     }
     
