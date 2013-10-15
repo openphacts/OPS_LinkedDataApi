@@ -3,7 +3,7 @@
 config_dir="$1"
 tmp_dir="$2"
 output_dir="$3"
-if [[ `diff -rN "$config_dir" "$tmp_dir"` ]] ; then
+if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --exclude="colorCoding" --exclude="docs" "$config_dir" "$tmp_dir"` ]] ; then
     today=`date "+%Y%m%d"`
     mkdir $output_dir/$today
     echo "Changes detected, dumping SPARQL queries to: $output_dir/$today"
