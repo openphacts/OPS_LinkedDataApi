@@ -24,23 +24,17 @@ class LinkedDataApiResponse {
     var $statusCode = HTTP_OK;
     var $Request = false;
     var $ConfigGraph = false;
-    var $SparqlWriter = false;
     var $SanitizationHandler = false;
     var $ParameterPropertyMapper = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
-    var $useDatastore = false;//TODO remove
     var $cacheable = false;    
     var $pageUri = false;
-    var $selectQuery = '';
-    var $viewQuery = '';
     var $viewer = false;
     var $errorMessages = array();
-    var $listUri = false;
     var $endpointUrl = false;
     var $overrideUserConfig= false;
     var $HttpRequestFactory=null;
-    var $list_of_item_uris = null;
     var $outputFormats;
     
     var $dataHandler = null;
@@ -99,7 +93,7 @@ class LinkedDataApiResponse {
             
             $this->ParameterPropertyMapper = new ParameterPropertyMapper($this->ConfigGraph);
             $this->SanitizationHandler = new SanitizationHandler($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
-            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
+            $sparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
             
@@ -155,31 +149,31 @@ class LinkedDataApiResponse {
         		case API.'ListEndpoint' :        			
         			$this->dataHandler = DataHandlerFactory::createListDataHandler($this->Request, 
         										$this->ConfigGraph, $this->DataGraph, $viewerUri, 
-        										$this->SparqlWriter, $this->SparqlEndpoint,
+        										$sparqlWriter, $this->SparqlEndpoint,
         										$this->endpointUrl);
         			break;
         		case API.'ItemEndpoint' :      	
         			$this->dataHandler = DataHandlerFactory::createItemDataHandler($this->Request, 
         					$this->ConfigGraph, $this->DataGraph, $viewerUri,
-        					$this->SparqlWriter, $this->SparqlEndpoint,
+        					$sparqlWriter, $this->SparqlEndpoint,
         					$this->endpointUrl);
         			break;
         		case API.'ExternalHTTPService' :
         			$this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($this->Request,
         					$this->ConfigGraph, $this->DataGraph, $viewerUri,
-        					$this->SparqlWriter, $this->SparqlEndpoint,
+        					$sparqlWriter, $this->SparqlEndpoint,
         					$this->endpointUrl);
         			break;
         		case API.'IntermediateExpansionEndpoint' :
         			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($this->Request,
         					$this->DataGraph, $viewerUri,
-        					$this->SparqlWriter, $this->SparqlEndpoint,
+        					$sparqlWriter, $this->SparqlEndpoint,
         					$this->endpointUrl);
         			break;
         		case API.'BatchEndpoint' :
         			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($this->Request,
         					$this->DataGraph, $viewerUri,
-        					$this->SparqlWriter, $this->SparqlEndpoint,
+        					$sparqlWriter, $this->SparqlEndpoint,
         					$this->endpointUrl);
         			break;
         		default:{
@@ -219,159 +213,7 @@ class LinkedDataApiResponse {
         $this->addMetadataToPage();
         
     }
-    
-//TODO remove
-    function loadDataFromBatch(){
-        $list=$this->getListOfUris();
-        if (empty($list)) {
-            $this->serve();
-            return;
-        }
-        
-		$viewerUri = $this->getViewer();
-        logDebug("Viewer URI is $viewerUri");
-        $array  = $this->SparqlWriter->getViewQueryForBatchUriList($list, $viewerUri);
-        //TODO should go a check on array
-		$this->viewQuery  = $array['expandedQuery'];
-        if (LOG_VIEW_QUERIES) {
-            logViewQuery( $this->Request, $this->viewQuery);
-        }
-		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-		        
-		if($response->is_success()){
-		    $added = $this->buildDataGraphFromIMSAndTripleStore($response, $array['imsRDF'], $list);
-		    if ($added==false){
-		        $this->setStatusCode(HTTP_Not_Found);
-		        logError("Data not found in the triple store");
-		        $this->serve();
-		        return;
-		    }
-		}
-		else {
-		    logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-		    $this->setStatusCode(HTTP_Internal_Server_Error);
-		    $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-		}
-    }
-    
-    //TODO remove
-    private function buildDataGraphFromIMSAndTripleStore($tripleStoreResponse, $imsRDF, $list){
-        $rdf = $tripleStoreResponse->body;
-        if(isset($tripleStoreResponse->headers['content-type'])){
-            if(strpos($tripleStoreResponse->headers['content-type'], 'turtle')){
-                $this->DataGraph->add_turtle($rdf);
-            } else {
-                $this->DataGraph->add_rdf($rdf);
-            }
-        } else {
-            $this->DataGraph->add_rdf($rdf);
-        }
-        if ($this->DataGraph->is_empty()){
-            return false;
-        }
-        
-        $this->DataGraph->add_turtle($imsRDF);
-        $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-        $this->pageUri = $listUri;
-        $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
-        $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
-        $this->DataGraph->add_literal_triple($listUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
-        $rdfListUri = '_:itemsList';
-        $this->DataGraph->add_resource_triple($listUri, API.'items', $rdfListUri);
-        $this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);
-        foreach($list as $no => $resourceUri){
-            $nextNo = ($no+1);
-            $nextList = (($no+1) == count($list))? RDF_NIL : '_:itemsList'.$nextNo;
-            $this->DataGraph->add_resource_triple($rdfListUri, RDF_FIRST, $resourceUri);
-            $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
-            $rdfListUri = $nextList;
-        }
-        
-        return true;
-    }
-
-    //TODO remove
-    function loadDataFromList(){
-        $list = $this->getListOfUris();
-	    if (!empty($list)) {
-        	$viewerUri = $this->getViewer();
-        	logDebug("Viewer URI is $viewerUri");
-        	$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $viewerUri);
-        	if (LOG_VIEW_QUERIES) {
-        	  logViewQuery( $this->Request, $this->viewQuery);
-        	}
-        	$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-        	if($response->is_success()){
-        	    $rdf = $response->body;
-        	    if(isset($response->headers['content-type'])){
-        	      if(strpos($response->headers['content-type'], 'turtle')){
-        	          $this->DataGraph->add_turtle($rdf);
-        	      } else {
-        	          $this->DataGraph->add_rdf($rdf);
-        	      }
-        	    } else {
-        	      $this->DataGraph->add_rdf($rdf);
-        	    }
-        	    
-        	    if ($this->DataGraph->is_empty()){
-        	        $this->setStatusCode(HTTP_Not_Found);
-        	        logError("Data not found in the triple store");
-        	        $this->serve();
-        	        return;
-        	    }
-        	    
-           	 $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-           	 $this->listUri = $listUri;
-           	 $pageUri = $this->Request->getUriWithPageParam();
-            	 $currentPage = $this->Request->getPage();
-	         $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
-        	 $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
-        	 $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
-            	 if($label = $this->ConfigGraph->getPageTitle()){
-			$this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-	         }
-            $this->DataGraph->add_resource_triple($listUri, DCT.'hasPart', $pageUri);
-            $this->DataGraph->add_resource_triple($pageUri, DCT.'isPartOf', $listUri);
-            $this->DataGraph->add_resource_triple($pageUri, XHV.'first', $this->Request->getUriWithPageParam(1));
-            if(count($list) >= $this->SparqlWriter->getLimit()){
-                $this->DataGraph->add_resource_triple($pageUri, XHV.'next', $this->Request->getUriWithPageParam($currentPage+1));
-            }
-            if($currentPage > 1){
-                $this->DataGraph->add_resource_triple($pageUri, XHV.'prev', $this->Request->getUriWithPageParam($currentPage-1));
-            }
-            $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'itemsPerPage', $this->SparqlWriter->getLimit(), null, XSD.'integer');
-            $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'startIndex', $this->SparqlWriter->getOffset(), null, XSD.'integer');
-            $this->DataGraph->add_literal_triple($pageUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
-            $rdfListUri = '_:itemsList';
-
-#			if($datasetUri = $this->ConfigGraph->getDatasetUri()){
-#            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
-#			}
-
-
-            $this->DataGraph->add_resource_triple($pageUri, API.'items', $rdfListUri);
-            $this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);
-            foreach($list as $no => $resourceUri){
-                $nextNo = ($no+1);
-                $nextList = (($no+1) == count($list))? RDF_NIL : '_:itemsList'.$nextNo;
-                $this->DataGraph->add_resource_triple($rdfListUri, RDF_FIRST, $resourceUri);
-                $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
-                $rdfListUri = $nextList;
-            }
-            
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-            
-        } }
-        else{//empty list returned from selector
-            $this->serve();
-            return;
-        }
-        
-    }
-    
+       
     function getViewer(){
         if($this->viewer)
             return $this->viewer;
@@ -398,144 +240,6 @@ class LinkedDataApiResponse {
                 return  API.'describeViewer';
             }
         }
-    }
-    
-    //TODO remove
-    function getListOfUrisFromSearchEndpoint(){
-        // get searchindexendpoint
-        $rssTextSearchIndex = $this->ConfigGraph->getRssTextSearchIndex();
-        // construct url with search parameter
-        $searchQuery = $this->Request->getParam('_search');
-        $filterstring = implode('&', $this->ConfigGraph->getAllFilters());
-        foreach($this->Request->getUnreservedParams() as $k => $v){
-            list($k, $v) = array(urlencode($k), urlencode($v));
-            $filterstring.="&{$k}={$v}";
-        }
-
-        $params = queryStringToParams($filterstring);
-        $query_filter='';
-        foreach($params as $k => $v){
-            if($uri = $this->ConfigGraph->getUriForVocabPropertyLabel($v)){
-                $v = $uri;
-            }
-            $query_filter.=' '.$k.':'.addcslashes($v, ':');
-        }
-        $queryUri = $rssTextSearchIndex.'?query='.urlencode($searchQuery.$query_filter);
-        logDebug($queryUri);
-        $request = $this->HttpRequestFactory->make('GET', $queryUri);
-        $request->set_accept(PUELIA_RDF_ACCEPT_MIMES);
-        // do request
-        $response = $request->execute();
-        if($response->is_success()){
-            $ListGraph =  new PueliaGraph();
-            $ListGraph->add_rdf($response->body);
-            //get Sequence
-            $SequenceUri = $ListGraph->get_first_resource($queryUri, RSS_ITEMS);
-            $this->list_of_item_uris = $ListGraph->get_sequence_values($SequenceUri);
-            return $this->list_of_item_uris;
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} Search Query URI: {$queryUri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The endpoint used for this search did not return a successful response.";
-        }
-        return array();
-    }
-
-//TODO remove
-    function getExplicitListOfUris(){
-	    $list=array();
-	    foreach($this->Request->getUnreservedParams() as $k => $v){
-	        if ($k = 'uri_list') {
-		        $uri = strtok($v, '|');
-		        while ($uri !== false) {
-		            $list[]=$uri;
-		            $uri = strtok('|');
-		        }
-	        }
-	    }
-	    return $list;
-    }
-
-//TODO remove
-    function getListOfUrisFromSparqlEndpoint(){
-        $list = array();
-        try {
-            $this->selectQuery = $this->SparqlWriter->getSelectQueryForUriList();
-            if(LOG_SELECT_QUERIES){
-                logSelectQuery($this->Request, $this->selectQuery);
-            }
-        } catch (Exception $e){
-            logError($e->getMessage());
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="There was a problem generating the SPARQL query for this request. There may be a configuration error.";
-            $this->serve();
-        }
-        #Antonis botch
-        logDebug($this->selectQuery);
-        $response = $this->SparqlEndpoint->query($this->selectQuery, PUELIA_SPARQL_ACCEPT_MIMES);
-
-        if($response->is_success()){
-            $body = trim($response->body);
-            if($body[0]=='{')//is JSON
-            {
-                $sparqlResults = json_decode($response->body, true);
-                $results = $sparqlResults['results']['bindings'];
-            }
-            else // is XML
-            {
-                $xml = $response->body;
-                $results = $this->SparqlEndpoint->parse_select_results($xml);
-            }
-            
-            if (empty($results)){
-                $this->setStatusCode(HTTP_Not_Found);
-                logError("The selector did not find data in the triple store");
-            }
-            else {
-                foreach($results as $row){
-                    if(isset($row['item'])) $list[]=$row['item']['value'];
-                }
-            }
-
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} Select Query <<<{$this->selectQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-
-        }
-        $this->list_of_item_uris = $list;
-        return $list;
-
-    }
-    
-    //TODO remove
-    function getListOfUris(){
-
-    	if ($this->dataHandler){
-    		return $this->dataHandler->getItemURIList();
-    	}
-    	
-        if($this->list_of_item_uris) 
-            return $this->list_of_item_uris;
-
-        switch($this->ConfigGraph->getEndpointType()){
-            #Antonis botch
-            case API.'BatchEndpoint' :
-                $this->list_of_item_uris = $this->getExplicitListOfUris();
-                break;
-            case API.'IntermediateExpansionEndpoint' :
-            case API.'ListEndpoint' :
-                $this->list_of_item_uris = $this->getListOfUrisFromSparqlEndpoint();
-                break;
-            case PUELIA.'SearchEndpoint' :
-                $this->list_of_item_uris = $this->getListOfUrisFromSearchEndpoint();
-                break;
-            default:
-                return false;
-                break;
-        }
-
-        return $this->list_of_item_uris;
     }
 
     function setStatusCode($code){
@@ -825,7 +529,6 @@ class LinkedDataApiResponse {
 	    }
 	}
 
-  
 	function getFormatter(){
 	    if($format = $this->Request->getParam('_format')){
 	        if($this->ConfigGraph->getApiContentNegotiation()==API.'parameterBased'){

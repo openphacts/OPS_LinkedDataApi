@@ -17,7 +17,7 @@ abstract class OneStepDataHandler implements DataHandlerInterface {
         $this->Request = $Request;
         $this->ConfigGraph = $ConfigGraph;
         $this->DataGraph = $DataGraph;
-        $this->$viewerUri = $Viewer;
+        $this->viewerUri = $Viewer;
         $this->SparqlWriter = $SparqlWriter;
         $this->SparqlEndpoint = $SparqlEndpoint;
     }
