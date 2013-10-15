@@ -9,7 +9,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix sio: <http://semanticscience.org/resource/>
+@prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
@@ -39,8 +39,13 @@
 	?gene_disease_assoc sio:SIO_000628 ?item .
 	?item a ncit:C16612 .
 	?item rdfs:label ?geneLabel .
-
- 	?gene_disease_assoc sio:SIO_000628 ?ops_item .
+	?item void:inDataset ?geneDataset .
+ 	
+	?ops_item foaf:name ?diseaseName ;
+		void:inDataset ?diseaseDataset .
+	?gene_disease_assoc sio:SIO_000628 ?ops_item ;
+		sio:SIO_000253 ?primarySource .
+	OPTIONAL { ?gene_disease_assoc sio:SIO_000772 ?pubmed_id . }
 }" ;
 	        ] ;
 		api:viewer <#diseaseByTargetViewer> ;
@@ -57,9 +62,13 @@
 <#diseaseByTargetViewer> a api:Viewer ;
 	api:name "diseaseByTargetViewer" ;
 	api:template 
-"?ops_item ops:forGene ?item ;	
-	void:inDataset <http://rdf.imim.es> .
-?uniprot_target_uri uniprot:existence ?existence .
+"?ops_item foaf:name ?diseaseName ;
+	void:inDataset ?diseaseDataset .
+?item ops:forDisease ?ops_item ;
+	ops:associationPmid ?pubmed_id ;
+	ops:associationPrimarySource ?primarySource ;
+	void:inDataset ?geneDataset .
+?uniprot_target_uri void:inDataset <http://purl.uniprot.org> .
 ?cw_target_uri skos:prefLabel ?prefLabel ;
 	void:inDataset <http://www.conceptwiki.org> .
 ";
@@ -75,6 +84,11 @@ GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?item .
 	?item a ncit:C16612 .
 	?item rdfs:label ?geneLabel .
-
- 	?gene_disease_assoc sio:SIO_000628 ?ops_item .
+	?item void:inDataset ?geneDataset .
+ 	
+	?ops_item foaf:name ?diseaseName ;
+		void:inDataset ?diseaseDataset .
+	?gene_disease_assoc sio:SIO_000628 ?ops_item ;
+		sio:SIO_000253 ?primarySource .
+	OPTIONAL { ?gene_disease_assoc sio:SIO_000772 ?pubmed_id . }
 }" .
