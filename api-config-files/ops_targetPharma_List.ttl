@@ -314,7 +314,6 @@ GRAPH <http://ops.rsc.org> {
                 qudt:numericValue ?num_ro5_violations . }
 	
 }
-GRAPH <http://www.conceptwiki.org> {
 		?compound_cw skos:exactMatch ?compound_ocrs ;
 			skos:prefLabel ?compound_name
-	}" .
+	" .
