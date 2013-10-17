@@ -15,6 +15,7 @@ require_once 'graphs/linkeddataapigraph.class.php';
 require_once 'parameter_property_mapper.class.php';
 require_once 'sanitization_handler.class.php';
 require_once 'sparqlwriter.class.php';
+require_once 'data_handlers/data_handler_params.class.php';
 require_once 'data_handlers/data_handler_factory.class.php';
 require_once 'data_handlers/item_data_handler.class.php';
 require_once 'data_handlers/external_service_data_handler.class.php';
@@ -120,8 +121,7 @@ class LinkedDataApiResponse {
             $this->serve();
         }
 
-        $endpointUri = $this->ConfigGraph->getEndpointUri();
-        $this->endpointUrl = $endpointUri;
+        $this->endpointUrl = $this->ConfigGraph->getEndpointUri();
         if(strpos($this->endpointUrl, '_:')===0) 
             $this->endpointUrl = CONFIG_URL;
         
@@ -144,37 +144,26 @@ class LinkedDataApiResponse {
         //$noCacheRequestFactory->read_from_cache(FALSE);
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
         
-        try{
-        	switch($this->ConfigGraph->getEndpointType()){
-        		case API.'ListEndpoint' :        			
-        			$this->dataHandler = DataHandlerFactory::createListDataHandler($this->Request, 
+        $dataHandlerParams = new DataHandlerParams($this->Request, 
         										$this->ConfigGraph, $this->DataGraph, $viewerUri, 
         										$sparqlWriter, $this->SparqlEndpoint,
         										$this->endpointUrl);
+        try{
+        	switch($this->ConfigGraph->getEndpointType()){
+        		case API.'ListEndpoint' :        			
+        			$this->dataHandler = DataHandlerFactory::createListDataHandler($dataHandlerParams);
         			break;
         		case API.'ItemEndpoint' :      	
-        			$this->dataHandler = DataHandlerFactory::createItemDataHandler($this->Request, 
-        					$this->ConfigGraph, $this->DataGraph, $viewerUri,
-        					$sparqlWriter, $this->SparqlEndpoint,
-        					$this->endpointUrl);
+        			$this->dataHandler = DataHandlerFactory::createItemDataHandler($dataHandlerParams);
         			break;
         		case API.'ExternalHTTPService' :
-        			$this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($this->Request,
-        					$this->ConfigGraph, $this->DataGraph, $viewerUri,
-        					$sparqlWriter, $this->SparqlEndpoint,
-        					$this->endpointUrl);
+        			$this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($dataHandlerParams);
         			break;
         		case API.'IntermediateExpansionEndpoint' :
-        			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($this->Request,
-        					$this->DataGraph, $viewerUri,
-        					$sparqlWriter, $this->SparqlEndpoint,
-        					$this->endpointUrl);
+        			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($dataHandlerParams);
         			break;
         		case API.'BatchEndpoint' :
-        			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($this->Request,
-        					$this->DataGraph, $viewerUri,
-        					$sparqlWriter, $this->SparqlEndpoint,
-        					$this->endpointUrl);
+        			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($dataHandlerParams);
         			break;
         		default:{
         			$this->setStatusCode(HTTP_Internal_Server_Error);

@@ -10,16 +10,18 @@ abstract class OneStepDataHandler implements DataHandlerInterface {
     protected $SparqlWriter = false;
     protected $SparqlEndpoint = false;
     protected $viewerUri = false;
+    protected $endpointUrl = '';
     protected $viewQuery = '';
     protected $list_of_item_uris = null;
     
-    function __construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint){
-        $this->Request = $Request;
-        $this->ConfigGraph = $ConfigGraph;
-        $this->DataGraph = $DataGraph;
-        $this->viewerUri = $Viewer;
-        $this->SparqlWriter = $SparqlWriter;
-        $this->SparqlEndpoint = $SparqlEndpoint;
+    function __construct($dataHandlerParams){
+        $this->Request = $dataHandlerParams->Request;
+        $this->ConfigGraph = $dataHandlerParams->ConfigGraph;
+        $this->DataGraph = $dataHandlerParams->DataGraph;
+        $this->viewerUri = $dataHandlerParams->viewerUri;
+        $this->SparqlWriter = $dataHandlerParams->SparqlWriter;
+        $this->SparqlEndpoint = $dataHandlerParams->SparqlEndpoint;
+        $this->endpointUrl = $dataHandlerParams->endpointUrl;
     }
     
     //the loadData method is left as abstract

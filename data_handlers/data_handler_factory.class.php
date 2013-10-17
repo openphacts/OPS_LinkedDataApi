@@ -10,44 +10,34 @@ require_once 'data_handler_components/multiple_expansion_viewer.class.php';
 
 class DataHandlerFactory{
 	
-	public static function createListDataHandler($Request, $ConfigGraph, $DataGraph, $viewerUri, $SparqlWriter, $SparqlEndpoint, $endpointUrl){		
-		$sparqlSelector = new SparqlSelector($Request, $SparqlWriter, $SparqlEndpoint);
-		$singleExpansionViewer = new SingleExpansionViewer($Request, $ConfigGraph, $DataGraph, $SparqlWriter, $SparqlEndpoint, $viewerUri, $endpointUrl);
+	public static function createListDataHandler($dataHandlerParams){		
+		$sparqlSelector = new SparqlSelector($dataHandlerParams->Request, $dataHandlerParams->SparqlWriter, $dataHandlerParams->SparqlEndpoint);
+		$singleExpansionViewer = new SingleExpansionViewer($dataHandlerParams);
 		
 		return new TwoStepDataHandler($sparqlSelector, $singleExpansionViewer);
 	}
 	
-	public static function createBatchDataHandler($Request, $DataGraph, $viewerUri, $SparqlWriter, $SparqlEndpoint, $endpointUrl){
-		$requestSelector = new RequestSelector($Request);
-		$multipleExpansionViewer = new MultipleExpansionViewer($Request, $DataGraph, $SparqlWriter, $SparqlEndpoint, $viewerUri, $endpointUrl);
+	public static function createBatchDataHandler($dataHandlerParams){
+		$requestSelector = new RequestSelector($dataHandlerParams->Request);
+		$multipleExpansionViewer = new MultipleExpansionViewer($dataHandlerParams);
 		
 		return new TwoStepDataHandler($requestSelector, $multipleExpansionViewer);
 	}
 	
-	public static function createIntermediateExpansionDataHandler($Request, $DataGraph, $viewerUri, $SparqlWriter, $SparqlEndpoint, $endpointUrl){
+	public static function createIntermediateExpansionDataHandler($dataHandlerParams){
 		
-		$sparqlSelector = new SparqlSelector($Request, $SparqlWriter, $SparqlEndpoint);
-		$multipleExpansionViewer = new MultipleExpansionViewer($Request, $DataGraph, $SparqlWriter, $SparqlEndpoint, $viewerUri, $endpointUrl);
+		$sparqlSelector = new SparqlSelector($dataHandlerParams->Request, $dataHandlerParams->SparqlWriter, $dataHandlerParams->SparqlEndpoint);
+		$multipleExpansionViewer = new MultipleExpansionViewer($dataHandlerParams, PAGINATION_ON);
 		
 		return new TwoStepDataHandler($sparqlSelector, $multipleExpansionViewer);
 	}
 	
-	public static function createItemDataHandler($Request,
-				$ConfigGraph, $DataGraph, $viewerUri,
-				$SparqlWriter, $SparqlEndpoint, $endpointUrl){
-		return new ItemDataHandler($Request,
-				$ConfigGraph, $DataGraph, $viewerUri,
-				$SparqlWriter, $SparqlEndpoint,
-				$endpointUrl);
+	public static function createItemDataHandler($dataHandlerParams){
+		return new ItemDataHandler($dataHandlerParams);
 	}
 	
-	public static function createExternalServiceDataHandler($Request,
-				$ConfigGraph, $DataGraph, $viewerUri,
-				$SparqlWriter, $SparqlEndpoint, $endpointUrl){
-		return new ExternalServiceDataHandler($Request,
-				$ConfigGraph, $DataGraph, $viewerUri,
-				$SparqlWriter, $SparqlEndpoint,
-				$endpointUrl);
+	public static function createExternalServiceDataHandler($dataHandlerParams){
+		return new ExternalServiceDataHandler($dataHandlerParams);
 	}
 	
 }

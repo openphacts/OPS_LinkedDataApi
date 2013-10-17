@@ -2,25 +2,32 @@
 
 
 require_once 'data_handler_components/viewer.interf.php';
+require_once 'data_handler_components/pagination_behavior.class.php';
 
 class MultipleExpansionViewer implements Viewer {
 	
-	private $Request;
-	private $DataGraph;
-	private $SparqlWriter;
-	private $SparqlEndpoint;
-	private $viewerUri;
-	private $viewQuery;
-	private $pageUri;
-	private $endpointUrl;
+	protected $Request;
+	protected $DataGraph;
+	protected $SparqlWriter;
+	protected $SparqlEndpoint;
+	protected $viewerUri;
+	protected $viewQuery;
+	protected $pageUri;
+	protected $endpointUrl;
 	
-	function __construct($Request, $DataGraph, $SparqlWriter, $SparqlEndpoint, $viewerUri, $endpointUrl){
-		$this->Request = $Request;
-		$this->DataGraph = $DataGraph;
-		$this->SparqlWriter = $SparqlWriter;
-		$this->SparqlEndpoint = $SparqlEndpoint;
-		$this->viewerUri = $viewerUri;
-		$this->endpointUrl = $endpointUrl;
+	private $paginationBehavior = false;
+	
+	function __construct($dataHandlerParams, $enablePagination=PAGINATION_OFF){
+		$this->Request = $dataHandlerParams->Request;
+		$this->DataGraph = $dataHandlerParams->DataGraph;
+		$this->SparqlWriter = $dataHandlerParams->SparqlWriter;
+		$this->SparqlEndpoint = $dataHandlerParams->SparqlEndpoint;
+		$this->viewerUri = $dataHandlerParams->viewerUri;
+		$this->endpointUrl = $dataHandlerParams->endpointUrl;
+		
+		if ($enablePagination==PAGINATION_ON){
+		    $this->paginationBehavior = new PaginationBehavior($dataHandlerParams);
+		}
 	}
 	
 	public function applyViewerAndBuildDataGraph($itemList){
@@ -56,23 +63,35 @@ class MultipleExpansionViewer implements Viewer {
 		if ($this->DataGraph->is_empty()){
 			throw new EmptyResponseException("Data not found in the triple store");
 		}
-	
+		
 		$this->DataGraph->add_turtle($imsRDF);
-		$listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-		$this->pageUri = $listUri;
-		$this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
-		$this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
-		$this->DataGraph->add_literal_triple($listUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
-		$rdfListUri = '_:itemsList';
-		$this->DataGraph->add_resource_triple($listUri, API.'items', $rdfListUri);
-		$this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);
-		foreach($list as $no => $resourceUri){
-			$nextNo = ($no+1);
-			$nextList = (($no+1) == count($list))? RDF_NIL : '_:itemsList'.$nextNo;
-			$this->DataGraph->add_resource_triple($rdfListUri, RDF_FIRST, $resourceUri);
-			$this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
-			$rdfListUri = $nextList;
+		
+		if ($this->paginationBehavior){
+		    $this->pageUri = $this->paginationBehavior->addListMetadataToDataGraph($list);
 		}
+		else{
+		    $this->pageUri = $this->addListMetadataToDataGraph($list);
+		}
+	}
+	
+	protected function addListMetadataToDataGraph($list){
+	    $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
+	   
+	    $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
+	    $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
+	    $this->DataGraph->add_literal_triple($listUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
+	    $rdfListUri = '_:itemsList';
+	    $this->DataGraph->add_resource_triple($listUri, API.'items', $rdfListUri);
+	    $this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);
+	    foreach($list as $no => $resourceUri){
+	        $nextNo = ($no+1);
+	        $nextList = (($no+1) == count($list))? RDF_NIL : '_:itemsList'.$nextNo;
+	        $this->DataGraph->add_resource_triple($rdfListUri, RDF_FIRST, $resourceUri);
+	        $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
+	        $rdfListUri = $nextList;
+	    }
+	    
+	    return $listUri;
 	}
 	
 	public function getViewQuery(){

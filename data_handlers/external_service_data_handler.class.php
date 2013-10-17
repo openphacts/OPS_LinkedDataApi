@@ -8,11 +8,9 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 	
 	private $useDatastore = false;
 	private $pageUri = false;
-	private $endpointUrl = '';
 	
-	function __construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint, $endpointUrl) {
-		parent::__construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint);
-		$this->endpointUrl = $endpointUrl;
+	function __construct($dataHandlerParams) {
+		parent::__construct($dataHandlerParams);
 	}
 	
 	function loadData(){

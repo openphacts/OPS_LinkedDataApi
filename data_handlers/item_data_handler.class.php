@@ -6,11 +6,10 @@ require_once 'data_handlers/1step_data_handler.class.php';
 class ItemDataHandler extends OneStepDataHandler{
     
     private $pageUri = false;
-    private $endpointUrl = '';
     
-    function __construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint, $endpointUrl) {
-        parent::__construct($Request, $ConfigGraph, $DataGraph, $Viewer, $SparqlWriter, $SparqlEndpoint);
-        $this->endpointUrl = $endpointUrl;
+    
+    function __construct($dataHandlerParams) {
+        parent::__construct($dataHandlerParams);
     }
     
     function loadData(){
