@@ -18,7 +18,7 @@
 
 
 <#targetsByDisease> a api:API ;
-        rdfs:label "Disease"@en ;
+        rdfs:label "Target"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
@@ -56,7 +56,7 @@
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A target URI. e.g.: http://purl.uniprot.org/uniprot/Q9Y5Y9" ;
+        api:value "A disease URI. e.g.: http://linkedlifedata.com/resource/umls/id/C0004238" ;
         rdfs:range rdfs:Resource .
 
 <#diseaseByTargetViewer> a api:Viewer ;
