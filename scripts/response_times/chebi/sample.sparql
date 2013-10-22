@@ -1,0 +1,29 @@
+PREFIX chembl: <http://rdf.farmbio.uu.se/chembl/onto/#>
+PREFIX chemspider: <http://rdf.chemspider.com/#>
+SELECT DISTINCT ?class WHERE {
+GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
+	?class rdfs:subClassOf ?ops_item .
+ }
+ GRAPH <http://data.kasabi.com/dataset/chembl-rdf> {
+        ?compound_chembl skos:exactMatch ?class ;
+        	owl:equivalentClass ?equiv_compound .
+                ?equiv_compound skos:exactMatch ?compound_cs .
+        ?item chembl:forMolecule ?compound_chembl ;
+                chembl:onAssay ?assay_uri .
+        ?assay_uri chembl:hasTarget ?target_uri ;
+                owl:equivalentClass ?equiv_assay .
+}
+GRAPH <http://www.conceptwiki.org> {
+        ?compound_cw skos:exactMatch ?compound_cs ;
+                skos:prefLabel ?compound_name .
+}
+GRAPH <http://www.chemspider.com> {
+        ?compound_cs chemspider:smiles ?smiles 
+}
+GRAPH <http://www.ebi.ac.uk/chebi/direct> {
+	?subclass rdfs:subClassOf ?class . 
+	?class rdfs:subClassOf ?superclass . 
+	?sibling rdfs:subClassOf ?superclass . 
+FILTER(?sibling != ?class)
+}
+} LIMIT 50
