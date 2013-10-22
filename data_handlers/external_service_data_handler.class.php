@@ -82,6 +82,9 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 	
 		$headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
 		$response = substr($fullResponse, $headerSize);
+		if (empty($response)){
+		    throw new EmptyResponseException("No results returned from the backing service");
+		}
 	
 		//call the appropriate converter by checking api:externalResponseHandler
 		$this->pageUri = $this->Request->getUriWithoutPageParam();

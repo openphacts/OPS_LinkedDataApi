@@ -12,6 +12,10 @@ if ($decodedResponse===FALSE OR $decodedResponse===NULL){
     throw new ErrorException("Error decoding external service response: ".$response);
 }
 
+if (empty($decodedResponse)){
+    throw new EmptyResponseException("No results returned from the ConceptWiki");
+}
+
 $searchType = getSearchType($this->Request->getPathWithoutExtension());
 $resultBNode = '_:searchResult';
 $this->DataGraph->add_literal_triple($resultBNode, RDF_TYPE, $searchType);
