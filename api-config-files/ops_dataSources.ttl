@@ -12,7 +12,7 @@
 
 <#dataSources> a api:API ;
         rdfs:label "Data Sources"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:vocabulary <http://rdfs.org/ns/void#> ;
 	api:description "An API configuration to return information about the loaded data sources" ;
@@ -33,8 +33,12 @@
                                        void:subset ?top_dataset .
 ?top_dataset foaf:isPrimaryTopicOf ?description .
 ?dataset dcterms:title ?title .
+?dataset dcterms:description ?dctDescription .
 ?dataset void:subset ?subset .
 ?dataset prov:wasDerivedFrom ?derivedFrom .
+?dataset prov:hadPrimarySource ?primarySource .
+?dataset prov:wasQuotedFrom ?quotedFrom .
+?dataset prov:wasRevisionOf ?revisionOf .
 ?dataset void:triples ?tripleNo .
 ?dataset void:dataDump ?dataDump .
 ?dataset dcat:landingPage ?landingPage . 
@@ -46,9 +50,14 @@
 ?description foaf:primaryTopic ?top_dataset .
 OPTIONAL { ?dataset dcterms:title ?title . }
 OPTIONAL { ?dataset void:subset ?subset . } 
-OPTIONAL { ?dataset prov:wasDerivedFrom ?derivedFrom . } 
+OPTIONAL { ?dataset dcterms:description ?dctDescription . }
+OPTIONAL { {?dataset prov:wasDerivedFrom ?derivedFrom . }
+UNION { ?dataset prov:hadPrimarySource ?primarySource . }
+UNION { ?dataset prov:wasQuotedFrom ?quotedFrom . }
+UNION { ?dataset prov:wasRevisionOf ?revisionOf . }
+} 
 OPTIONAL { ?dataset void:dataDump ?dataDump . }
 OPTIONAL { ?dataset void:triples ?tripleNo . }
-OPTIONAL { ?dataset foaf:homepage ?homepage . }
-OPTIONAL { ?dataset dcat:landingPage ?landingPage . }
+OPTIONAL { {?dataset foaf:homepage ?homepage . }
+UNION { ?dataset dcat:landingPage ?landingPage . } }
 }" .
