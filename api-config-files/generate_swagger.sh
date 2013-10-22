@@ -109,7 +109,7 @@ do
 	        	echo '            },'
 		fi
 	done
-	if [[ `sed -n '/api:ListEndpoint/p' $file` ]]
+	if [[ `sed -n '/api:ListEndpoint/p' $file` ]] || [[ `sed -n '/api:IntermediateExpansionEndpoint/p' $file` ]]
 	then
 	      echo '            {
               "name": "_page",
