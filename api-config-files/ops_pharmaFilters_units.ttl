@@ -34,9 +34,6 @@
 		a api:ItemEndpoint ;
 		api:name "Units for activity type" ;
 		api:description "A list of units that activities of the specified type have been normalised to." ;
-		api:resultsDescription "?act_type <span style=\"BACKGROUND-COLOR: #A9A9F5\"> qudt:unit ?unit </span>;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span>. 
-?unit <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?unit_label </span>." ;
 		api:uriTemplate "/pharmacology/filters/units/{act_name}" ;
         	api:itemTemplate "http://www.openphacts.org/terms/chembl#{act_name}" ;
 		api:variable _:act_type	; 

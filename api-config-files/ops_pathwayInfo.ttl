@@ -35,21 +35,6 @@
 		a api:ItemEndpoint ;
 		api:name "Pathway Information" ;
 		api:description "Returns information about a single pathway that corresponds to {uri}.";
-		api:resultsDescription "?ops:item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span>.
-?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span>.
-?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?reference </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?metabolite </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?gene_product </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.
-?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.
-?reference <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:PublicationReference </span>.
-?metabolite <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:Metabolite </span>.
-?gene_product <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:GeneProduct </span>." ;
 		api:uriTemplate "/pathway?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/pathway?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP176" ;

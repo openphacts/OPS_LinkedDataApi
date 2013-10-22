@@ -45,7 +45,6 @@
 		a api:ItemEndpoint ;
 		api:name "Target Pharmacology Count" ;
 		api:description "The total number of acitivity values in the LDC for a given target" ;
-		api:resultsDescription "?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:targetPharmacologyTotalResults ?count </span>." ;
 		api:uriTemplate "/target/pharmacology/count?uri={uri}" ;
         	api:itemTemplate "{uri}" ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
@@ -183,7 +182,7 @@ chembl:standardRelation api:name "activity_relation" ;
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
 	api:filterVariable "?item";
-        api:value "The pChembl value of an activity" ;
+        api:value "Return activities with a pChembl value equal to this number." ;
 	a rdf:Property .
 
 _:type api:name "target_type" ;

@@ -15,7 +15,6 @@
 	api:endpoint [
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
-		api:resultsDescription "?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000396 ?inchi </span>. " ;
 
 		api:name "Inchi to URL" ;
 		api:enableCache true ;

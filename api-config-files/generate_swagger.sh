@@ -11,8 +11,10 @@ do
           "httpMethod": "GET",'
 	sed -n '/a [[:print:]]*Endpoint/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/' 
         sed -n '/a api:ExternalHTTPService/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/'
-	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:resultsDescription/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:resultsDescription/<hr>Response template: <hr><br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<&\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' |  sed 's|</span>[[:space:]]*[.;,]*[[:space:]]*",[[:print:]]*$|</span><br><br><hr>",|' | sed 's/<br>[[:space:]]*$/<hr>",/'
-	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:resultsDescription/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:resultsDescription/<hr>Response template: <hr><br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<&\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' | sed 's|</span>[[:space:]]*[.;,]*[[:space:]]*",[[:print:]]*$|</span><br><br><hr>",|' | sed 's/<br>[[:space:]]*$/<hr>",/'
+	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/"[[:space:]]*[,.;][[:space:]]*$/<br><hr><br>Response template: <br><br><hr><br> /'| tr '\n' ' '
+	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/"[[:space:]]*[,.;][[:space:]]*$/<br><hr><br>Response template: <br><br><hr><br> /' | tr '\n' ' '
+        cat docs/`basename $file .ttl`.doc | sed -e 's,<,\&lt;,g' -e 's,>,\&gt;,g' -e 's,&lt;span,<span,' -e 's,"&gt;,">,' -e 's,&lt;/span&gt;,</span>,' -e 's,$,<br>,' -e 's,\t,\&nbsp;\&nbsp;\&nbsp;\&nbsp;,g' | tr '\n' ' ' | sed 's/$/",\
+/'
 	sed -n '/a api:API/,/rdfs:label/s/[[:space:]]*rdfs:label \([[:print:]]*\)"[[:print:]]*/          "group": \1"/p' $file | sed 's/$/ ,/'
         echo '          "parameters": ['
 	inputLine=`sed -n '/<#input>/p' $file`
@@ -107,7 +109,7 @@ do
 	        	echo '            },'
 		fi
 	done
-	if [[ `sed -n '/api:ListEndpoint/p' $file` ]]
+	if [[ `sed -n '/api:ListEndpoint/p' $file` ]] || [[ `sed -n '/api:IntermediateExpansionEndpoint/p' $file` ]]
 	then
 	      echo '            {
               "name": "_page",
@@ -148,7 +150,7 @@ do
 
 	if [[ ! `sed -n '/api:ExternalHTTPService/p' $file` ]]
 	then
-		echo '{
+		echo '            {
               "name": "_lens",
               "description": "The Lens name",
               "dataType": "string",

@@ -15,30 +15,30 @@ require_once 'graphs/linkeddataapigraph.class.php';
 require_once 'parameter_property_mapper.class.php';
 require_once 'sanitization_handler.class.php';
 require_once 'sparqlwriter.class.php';
+require_once 'data_handlers/data_handler_params.class.php';
+require_once 'data_handlers/data_handler_factory.class.php';
+require_once 'data_handlers/item_data_handler.class.php';
+require_once 'data_handlers/external_service_data_handler.class.php';
 
 class LinkedDataApiResponse {
     
     var $statusCode = HTTP_OK;
     var $Request = false;
     var $ConfigGraph = false;
-    var $SparqlWriter = false;
     var $SanitizationHandler = false;
     var $ParameterPropertyMapper = false;
     var $DataGraph = false;
     var $SparqlEndpoint = false;
-    var $useDatastore = false;
     var $cacheable = false;    
     var $pageUri = false;
-    var $selectQuery = '';
-    var $viewQuery = '';
     var $viewer = false;
     var $errorMessages = array();
-    var $listUri = false;
     var $endpointUrl = false;
     var $overrideUserConfig= false;
     var $HttpRequestFactory=null;
-    var $list_of_item_uris = null;
     var $outputFormats;
+    
+    var $dataHandler = null;
 
     function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
         global $outputFormats;
@@ -79,16 +79,10 @@ class LinkedDataApiResponse {
     function process(){
         try{
             if($param = $this->Request->hasUnrecognisedReservedParams()){
-                logError("Bad Request: Unrecognised reserved Param: {$param}");
-                $this->errorMessages[]="Unrecognised reserved Param: {$param}";
-                $this->setStatusCode(HTTP_Bad_Request);
-                $this->serve();
+                throw new BadRequestException("Bad Request: Unrecognised reserved Param: {$param}");
             }
             else if ($param=$this->Request->hasEmptyParamValues()){
-            	logError("Bad Request: Empty value not accepted for parameter: {$param}");
-            	$this->errorMessages[]="Empty value not accepted for parameter: {$param}";
-            	$this->setStatusCode(HTTP_Bad_Request);
-            	$this->serve();
+            	throw new BadRequestException("Bad Request: Empty value not accepted for parameter: {$param}");
             }
             
             $endpointUri = $this->ConfigGraph->getEndpointUri();
@@ -100,39 +94,34 @@ class LinkedDataApiResponse {
             
             $this->ParameterPropertyMapper = new ParameterPropertyMapper($this->ConfigGraph);
             $this->SanitizationHandler = new SanitizationHandler($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
-            $this->SparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
+            $sparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
             
             if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
-                $this->errorMessages[]="Unknown Properties in Request: {$param}";
-                $this->setStatusCode(HTTP_Bad_Request);
-                $this->serve();
+                throw new BadRequestException("Unknown Properties in Request: {$param}");
             } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
-                $this->setStatusCode(HTTP_Bad_Request);
                 $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
-                logError($msg);
-                $this->errorMessages[]=$msg;
-                $this->serve();
+                throw new BadRequestException($msg); 
             } else if (!$this->SanitizationHandler->hasValidURIParameters()){
-                $this->setStatusCode(HTTP_Bad_Request);
-                $msg = "URIs in the request not well formed";
-                logError($msg);
-                $this->errorMessages[]=$msg;
-                $this->serve();
+                throw new BadRequestException("URIs in the request not well formed");
             }
-        } catch (Exception $e) {
+        } 
+        catch (BadRequestException $e){
+        	$this->setStatusCode(HTTP_Bad_Request);
+        	$this->errorMessages[]=$e->getMessage();
+        	logError($e->getMessage());
+        	$this->serve();
+        }
+        catch (Exception $e) {
             $this->setStatusCode(HTTP_Internal_Server_Error);
             $this->errorMessages[]=$e->getMessage();
             logError($e->getMessage());
             $this->serve();
         }
-        
-        $requestUri = $this->Request->getUri();
 
-        $endpointUri = $this->ConfigGraph->getEndpointUri();
-        $this->endpointUrl = $endpointUri;
+        $this->endpointUrl = $this->ConfigGraph->getEndpointUri();
         if(strpos($this->endpointUrl, '_:')===0) 
             $this->endpointUrl = CONFIG_URL;
         
@@ -155,296 +144,73 @@ class LinkedDataApiResponse {
         //$noCacheRequestFactory->read_from_cache(FALSE);
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
         
-        switch($this->ConfigGraph->getEndpointType()){
-            case API.'ListEndpoint' : 
-            case PUELIA.'SearchEndpoint' :
-                $this->loadDataFromList();    
-                break;
-            case API.'ItemEndpoint' :
-                $this->loadDataFromItem();
-                break;
-            case API.'ExternalHTTPService' :
-                $this->loadDataFromExternalService();
-                break;
-            default:{
-                $this->setStatusCode(HTTP_Internal_Server_Error);
-                logError("Unsupported Endpoint Type");
-                $apiUri = $this->ConfigGraph->getApiUri();
-                $this->errorMessages[]=" The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
-                $this->serve();
-                break;
-            }           
+        $dataHandlerParams = new DataHandlerParams($this->Request, 
+        										$this->ConfigGraph, $this->DataGraph, $viewerUri, 
+        										$sparqlWriter, $this->SparqlEndpoint,
+        										$this->endpointUrl);
+        try{
+        	switch($this->ConfigGraph->getEndpointType()){
+        		case API.'ListEndpoint' :        			
+        			$this->dataHandler = DataHandlerFactory::createListDataHandler($dataHandlerParams);
+        			break;
+        		case API.'ItemEndpoint' :      	
+        			$this->dataHandler = DataHandlerFactory::createItemDataHandler($dataHandlerParams);
+        			break;
+        		case API.'ExternalHTTPService' :
+        			$this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($dataHandlerParams);
+        			break;
+        		case API.'IntermediateExpansionEndpoint' :
+        			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($dataHandlerParams);
+        			break;
+        		case API.'BatchEndpoint' :
+        			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($dataHandlerParams);
+        			break;
+        		default:{
+        			$this->setStatusCode(HTTP_Internal_Server_Error);
+        			logError("Unsupported Endpoint Type");
+        			$apiUri = $this->ConfigGraph->getApiUri();
+        			$this->errorMessages[]=" The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
+        			$this->serve();
+        			break;
+        		}
+        	}
+        	
+        	$this->dataHandler->loadData();
+        	$this->pageUri = $this->dataHandler->getPageUri();
+        }
+        catch(EmptyResponseException $e){
+        	logError("EmptyResponseException: ".$e->getMessage());
+        	$this->setStatusCode(HTTP_Not_Found);
+        	$this->errorMessages[]=$e->getMessage();
+        	$this->serve();
+        	exit;
+        }
+        catch (TimeoutException $e){
+        	logError("TimeoutException: ".$e->getMessage());
+        	$this->setStatusCode(HTTP_Gateway_Timeout);
+        	$this->errorMessages[]=$e->getMessage();
+        	$this->serve();
+        	exit;
+        }
+        catch(Exception $e){
+        	$this->setStatusCode(HTTP_Internal_Server_Error);
+        	$this->errorMessages[]=$e->getMessage();
+        	$this->serve();
+        	exit;
         }
         
         $this->addMetadataToPage();
         
     }
-
-    function loadDataFromItem(){
-        $uri = $this->ConfigGraph->getCompletedItemTemplate();
-        $this->list_of_item_uris = array($uri);
-        $viewerUri = $this->getViewer();
-        $this->viewQuery  = $this->SparqlWriter->getViewQueryForUri($uri, $viewerUri);
-        if (LOG_VIEW_QUERIES) {
-            logViewQuery($this->Request, $this->viewQuery);
-        }
-        
-        $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-        $pageUri = $this->Request->getUriWithoutPageParam();
-        if($response->is_success()){
-            $rdf = $response->body;
-            $this->DataGraph->add_rdf($rdf);
-            
-            if ($this->DataGraph->is_empty()){
-                $this->setStatusCode(HTTP_Not_Found);
-                logError("Data not found in the triple store");
-                $this->serve();
-                return;
-            }
-            
-            #	    echo $uri;
-            $this->DataGraph->add_resource_triple($pageUri, FOAF.'primaryTopic', $uri);
-            $label = $this->DataGraph->get_first_literal($uri, SKOS.'prefLabel');
-            #            if(!empty($label) || $label = $this->DataGraph->get_label($uri)){
-            #              $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-            #            }
-
-            $this->DataGraph->add_resource_triple($uri , FOAF.'isPrimaryTopicOf', $pageUri);
-            $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
-            if($datasetUri = $this->ConfigGraph->getDatasetUri()){
-                #            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);
-                $voidRequest = $this->HttpRequestFactory->make('GET', $datasetUri);
-                $voidRequest->set_accept(PUELIA_RDF_ACCEPT_MIMES);
-                $voidResponse = $voidRequest->execute();
-                if($voidResponse->is_success()){
-                    $voidGraph = new SimpleGraph();
-                    $base = array_shift(explode('#',$datasetUri));
-                    $voidGraph->add_rdf($voidResponse->body, $base) ;
-                    if($licenseUri = $voidGraph->get_first_resource($datasetUri, DCT.'license')){
-                        $this->DataGraph->add_resource_triple($this->Request->getUri(), DCT.'license', $licenseUri);
-                    } else {
-                        logDebug($datasetUri.' has no dct:license');
-                    }
-                } else {
-                    logDebug("VoID document could not be fetched from {$datasetUri}");
-                }
-            }
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-        }
-        $this->pageUri = $pageUri;
-    }
-
-    function loadDataFromList(){
-        $list = $this->getListOfUris();
-	if (!empty($list)) {
-        	$viewerUri = $this->getViewer();
-        	logDebug("Viewer URI is $viewerUri");
-        	$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $viewerUri);
-        	if (LOG_VIEW_QUERIES) {
-        	  logViewQuery( $this->Request, $this->viewQuery);
-        	}
-        	$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-        	if($response->is_success()){
-        	    $rdf = $response->body;
-        	    if(isset($response->headers['content-type'])){
-        	      if(strpos($response->headers['content-type'], 'turtle')){
-        	          $this->DataGraph->add_turtle($rdf);
-        	      } else {
-        	          $this->DataGraph->add_rdf($rdf);
-        	      }
-        	    } else {
-        	      $this->DataGraph->add_rdf($rdf);
-        	    }
-        	    
-        	    if ($this->DataGraph->is_empty()){
-        	        $this->setStatusCode(HTTP_Not_Found);
-        	        logError("Data not found in the triple store");
-        	        $this->serve();
-        	        return;
-        	    }
-        	    
-           	 $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-           	 $this->listUri = $listUri;
-           	 $pageUri = $this->Request->getUriWithPageParam();
-            	 $currentPage = $this->Request->getPage();
-	         $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
-        	 $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
-        	 $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
-            	 if($label = $this->ConfigGraph->getPageTitle()){
-			$this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
-	         }
-            $this->DataGraph->add_resource_triple($listUri, DCT.'hasPart', $pageUri);
-            $this->DataGraph->add_resource_triple($pageUri, DCT.'isPartOf', $listUri);
-            $this->DataGraph->add_resource_triple($pageUri, XHV.'first', $this->Request->getUriWithPageParam(1));
-            if(count($list) >= $this->SparqlWriter->getLimit()){
-                $this->DataGraph->add_resource_triple($pageUri, XHV.'next', $this->Request->getUriWithPageParam($currentPage+1));
-            }
-            if($currentPage > 1){
-                $this->DataGraph->add_resource_triple($pageUri, XHV.'prev', $this->Request->getUriWithPageParam($currentPage-1));
-            }
-            $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'itemsPerPage', $this->SparqlWriter->getLimit(), null, XSD.'integer');
-            $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'startIndex', $this->SparqlWriter->getOffset(), null, XSD.'integer');
-            $this->DataGraph->add_literal_triple($pageUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
-            $rdfListUri = '_:itemsList';
-
-#			if($datasetUri = $this->ConfigGraph->getDatasetUri()){
-#            	$this->DataGraph->add_resource_triple($pageUri, VOID.'inDataset', $datasetUri);				
-#			}
-
-
-            $this->DataGraph->add_resource_triple($pageUri, API.'items', $rdfListUri);
-            $this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);
-            foreach($list as $no => $resourceUri){
-                $nextNo = ($no+1);
-                $nextList = (($no+1) == count($list))? RDF_NIL : '_:itemsList'.$nextNo;
-                $this->DataGraph->add_resource_triple($rdfListUri, RDF_FIRST, $resourceUri);
-                $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
-                $rdfListUri = $nextList;
-            }
-            
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-            
-        } }
-        else{//empty list returned from selector
-            $this->serve();
-            return;
-        }
-        
-    }
-    
-    function loadDataFromExternalService(){
-        
-        $uriWithoutExtension = $this->Request->getOrderedUriWithoutExtensionAndReservedParams();
-	    logDebug("Generating graph name from: {$uriWithoutExtension}");
-        $graphName = OPS_API.'/'.hash("crc32", $uriWithoutExtension);
-        
-        $checkDatastore = $this->decideToCheckTripleStore($uriWithoutExtension);
-        if ($checkDatastore==true){
-            //build query 
-            $this->pageUri = $this->Request->getUriWithoutPageParam();
-            
-            $viewer = $this->getViewer();
-            $this->viewQuery = $this->SparqlWriter->getViewQueryForExternalService($graphName, $this->pageUri, $viewer);
-            if (LOG_VIEW_QUERIES) {
-                logViewQuery($this->Request, $this->viewQuery);
-            }
-            
-            //query the data store
-            $response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-            if ($response->is_success()){
-                $this->DataGraph->add_rdf($response->body);
-                
-                if (!$this->DataGraph->is_empty()){//no data returned       
-                    $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
-                    //we have data in the datastore, so serve it directly
-                    return;
-                }
-                else{
-                    logDebug("Data not found at: {$this->SparqlEndpoint->uri}, going to external service");
-                }
-            }
-            else{
-                logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            }          
-        }    
-        
-        //match api:uriTemplate, extract parameters and fill in api:externalRequestTemplate 
-        $externalServiceRequest = $this->ConfigGraph->getExternalServiceRequest();
-        logDebug("External service request: ".$externalServiceRequest);
-        try{
-            $rdfData = $this->retrieveRDFDataFromExternalService($externalServiceRequest, '');
-        }
-        catch (EmptyResponseException $e){
-            logError("EmptyResponseException: ".$e->getMessage());
-            $this->setStatusCode(HTTP_Not_Found);
-            $this->errorMessages[]=$e->getMessage();
-            $this->serve();
-            exit;
-        }
-        catch (TimeoutException $e){
-            logError("TimeoutException: ".$e->getMessage());
-            $this->setStatusCode(HTTP_Gateway_Timeout);
-            $this->errorMessages[]=$e->getMessage();
-            $this->serve();
-            exit;
-        }
-        catch(Exception $e){
-            logError("Error while loading data from external service: ".$e->getMessage());
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]=$e->getMessage();
-            $this->serve();
-            exit;
-        }
-        
-        if ($this->useDatastore){
-            $this->insertRDFDataIntoTripleStore($graphName, $rdfData);
-        }   
-    }
-    
-    private function decideToCheckTripleStore($pathWithoutExtension){    
-        $this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
-        $this->useDatastore = $this->useDatastore==='true' ? true:false;
-        
-        return $this->useDatastore;
-    }
-    
-    private function retrieveRDFDataFromExternalService($externalServiceRequest, $rdfData){
-        //make request to external service
-        $ch = curl_init($externalServiceRequest);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, array ("Accept: application/xml, application/json"));
-        
-        $fullResponse = curl_exec($ch);
-        
-        if ($fullResponse==false){      
-            throw new ErrorException("Request: ".$externalServiceRequest." failed");
-        }
-        
-        if (curl_getinfo($ch, CURLINFO_HTTP_CODE)===HTTP_No_Content){
-            throw new EmptyResponseException("Request: ".$externalServiceRequest." returned an empty response");
-        }
-        
-        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $response = substr($fullResponse, $headerSize);
-        
-        //call the appropriate converter by checking api:externalResponseHandler
-        $this->pageUri = $this->Request->getUriWithoutPageParam();
-        $externalResponseHandler = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'externalResponseHandler');
-        
-        require $externalResponseHandler;
-        
-        curl_close($ch);
-        return $rdfData;
-    }
-    
-    private function insertRDFDataIntoTripleStore($graphName, $rdfData){
-        //insert new RDF data in the triple store
-        $insertQuery = $this->SparqlWriter->getInsertQueryForExternalServiceData($rdfData, $graphName);
-        
-        $response = $this->SparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
-        if(!$response->is_success()){
-            logError("Endpoint returned {$response->status_code} {$response->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            //even if insert fails we go ahead an give the data to the client
-        }
-        else{
-            logDebug("Created new graph: ".$graphName." for the request ".$this->Request->getUri());
-        }
-    }
-    
+       
     function getViewer(){
         if($this->viewer)
             return $this->viewer;
 
         if($name = $this->Request->getView()){
             logDebug("Viewer Name from Request is $name");
-            if($this->viewerUri = $this->ConfigGraph->getViewerByName($name)){
-                return $this->viewerUri;
+            if($this->viewer = $this->ConfigGraph->getViewerByName($name)){
+                return $this->viewer;
             } else {
                 logError("Bad Request when picking viewer for {$name}");
                 $this->errorMessages[]="There is no viewer called \"{$name}\" configured for this endpoint";
@@ -452,138 +218,17 @@ class LinkedDataApiResponse {
                 $this->serve();
             }
         } else {
-            if($this->viewerUri = $this->ConfigGraph->getEndpointDefaultViewer()){
-                logDebug("Endpoint Default Viewer is $this->viewerUri");
-                return $this->viewerUri;
-            } else if($this->viewerUri = $this->ConfigGraph->getApiDefaultViewer()){
-                logDebug("API Default Viewer is $this->viewerUri");
-                return $this->viewerUri;
+            if($this->viewer = $this->ConfigGraph->getEndpointDefaultViewer()){
+                logDebug("Endpoint Default Viewer is $this->viewer");
+                return $this->viewer;
+            } else if($this->viewer = $this->ConfigGraph->getApiDefaultViewer()){
+                logDebug("API Default Viewer is $this->viewer");
+                return $this->viewer;
             } else {//TODO shouldn't this also check endpoint:viewer /
                 logDebug("returning default viewer");
                 return  API.'describeViewer';
             }
         }
-    }
-    
-    function getListOfUrisFromSearchEndpoint(){
-        // get searchindexendpoint
-        $rssTextSearchIndex = $this->ConfigGraph->getRssTextSearchIndex();
-        // construct url with search parameter
-        $searchQuery = $this->Request->getParam('_search');
-        $filterstring = implode('&', $this->ConfigGraph->getAllFilters());
-        foreach($this->Request->getUnreservedParams() as $k => $v){
-            list($k, $v) = array(urlencode($k), urlencode($v));
-            $filterstring.="&{$k}={$v}";
-        }
-
-        $params = queryStringToParams($filterstring);
-        $query_filter='';
-        foreach($params as $k => $v){
-            if($uri = $this->ConfigGraph->getUriForVocabPropertyLabel($v)){
-                $v = $uri;
-            }
-            $query_filter.=' '.$k.':'.addcslashes($v, ':');
-        }
-        $queryUri = $rssTextSearchIndex.'?query='.urlencode($searchQuery.$query_filter);
-        logDebug($queryUri);
-        $request = $this->HttpRequestFactory->make('GET', $queryUri);
-        $request->set_accept(PUELIA_RDF_ACCEPT_MIMES);
-        // do request
-        $response = $request->execute();
-        if($response->is_success()){
-            $ListGraph =  new PueliaGraph();
-            $ListGraph->add_rdf($response->body);
-            //get Sequence
-            $SequenceUri = $ListGraph->get_first_resource($queryUri, RSS_ITEMS);
-            $this->list_of_item_uris = $ListGraph->get_sequence_values($SequenceUri);
-            return $this->list_of_item_uris;
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} Search Query URI: {$queryUri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The endpoint used for this search did not return a successful response.";
-        }
-        return array();
-    }
-
-#Antonis botch
-    function getDummyListOfUris(){
-	$list=array();
-	$list[]='http://www.openphacts.org/api#Pharmacology';
-    }
-
-    function getListOfUrisFromSparqlEndpoint(){
-        $list = array();
-        try {
-            $this->selectQuery = $this->SparqlWriter->getSelectQueryForUriList();
-            if(LOG_SELECT_QUERIES){
-                logSelectQuery($this->Request, $this->selectQuery);
-            }
-        } catch (Exception $e){
-            logError($e->getMessage());
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="There was a problem generating the SPARQL query for this request. There may be a configuration error.";
-            $this->serve();
-        }
-        #Antonis botch
-        logDebug($this->selectQuery);
-        $response = $this->SparqlEndpoint->query($this->selectQuery, PUELIA_SPARQL_ACCEPT_MIMES);
-
-        if($response->is_success()){
-            $body = trim($response->body);
-            if($body[0]=='{')//is JSON
-            {
-                $sparqlResults = json_decode($response->body, true);
-                $results = $sparqlResults['results']['bindings'];
-            }
-            else // is XML
-            {
-                $xml = $response->body;
-                $results = $this->SparqlEndpoint->parse_select_results($xml);
-            }
-            
-            if (empty($results)){
-                $this->setStatusCode(HTTP_Not_Found);
-                logError("The selector did not find data in the triple store");
-            }
-            else {
-                foreach($results as $row){
-                    if(isset($row['item'])) $list[]=$row['item']['value'];
-                }
-            }
-
-        } else {
-            logError("Endpoint returned {$response->status_code} {$response->body} Select Query <<<{$this->selectQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-            $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]="The SPARQL endpoint used by this URI configuration did not return a successful response.";
-
-        }
-        $this->list_of_item_uris = $list;
-        return $list;
-
-    }
-    
-    function getListOfUris(){
-
-        if($this->list_of_item_uris) 
-            return $this->list_of_item_uris;
-
-        switch($this->ConfigGraph->getEndpointType()){
-            #Antonis botch
-            case API.'OPSListEndpoint' :
-                $this->list_of_item_uris = $this->getDummyListOfUris();
-                break;
-            case API.'ListEndpoint' :
-                $this->list_of_item_uris = $this->getListOfUrisFromSparqlEndpoint();
-                break;
-            case PUELIA.'SearchEndpoint' :
-                $this->list_of_item_uris = $this->getListOfUrisFromSearchEndpoint();
-                break;
-            default:
-                return false;
-                break;
-        }
-
-        return $this->list_of_item_uris;
     }
 
     function setStatusCode($code){
@@ -633,7 +278,7 @@ class LinkedDataApiResponse {
   
 	function addMetadataToPage(){
     
-    $this->addRelatedPages();
+        $this->addRelatedPages();
 
 		$metadataRequested = $this->Request->getMetadataParam();
 		if(!empty($metadataRequested[0])){
@@ -644,7 +289,7 @@ class LinkedDataApiResponse {
 						$this->addFormattersMetadata();
 						$this->addExecutionMetadata();
 						$this->addTermBindingsMetadata();
-            $this->addSiteMetadata();
+                        $this->addSiteMetadata();
 					case 'views':
 						$this->addViewsMetadata();
 						break;
@@ -681,7 +326,7 @@ class LinkedDataApiResponse {
 	
 	function addRelatedPages(){
 	    $viewerUri = $this->getViewer();
-	    if($list = $this->getListOfUris() and is_array($list)){
+	    if($this->dataHandler!=null and $list = $this->dataHandler->getItemURIList() and is_array($list)){
 	        foreach($list as $itemUri){
 	            if($relatedPages = $this->ConfigGraph->getViewerRelatedPagesForItemUri($viewerUri, $itemUri)){
 	                foreach($relatedPages as $pageUri => $label){
@@ -795,16 +440,17 @@ class LinkedDataApiResponse {
 		 $this->DataGraph->add_resource_triple('_:execution', API.'viewingResult', '_:viewingResult');
 		 $this->DataGraph->add_resource_triple('_:viewingResult', RDF.'type', SPARQL.'QueryResult');
 		 $this->DataGraph->add_resource_triple('_:viewingResult', SPARQL.'query', '_:viewingQuery');
-		 $this->DataGraph->add_literal_triple('_:viewingQuery', RDF.'value', $this->viewQuery);
+		 $this->DataGraph->add_literal_triple('_:viewingQuery', RDF.'value', $this->dataHandler->getViewQuery());
 		 $this->DataGraph->add_resource_triple('_:viewingResult', SPARQL.'endpoint', '_:sparqlEndpoint');
 		 $this->DataGraph->add_resource_triple('_:sparqlEndpoint', RDF.'type', SD.'Service');
 		 $this->DataGraph->add_resource_triple('_:sparqlEndpoint', SD.'url', $this->SparqlEndpoint->uri);
 
-		 if(!empty($this->selectQuery)){
+		 $selectQuery = $this->dataHandler->getSelectQuery();
+		 if(!empty($selectQuery)){
 			 $this->DataGraph->add_resource_triple('_:execution', API.'selectionResult', '_:selectionResult');
 			 $this->DataGraph->add_resource_triple('_:selectionResult', RDF.'type', SPARQL.'QueryResult');
 			 $this->DataGraph->add_resource_triple('_:selectionResult', SPARQL.'query', '_:selectionQuery');
-			 $this->DataGraph->add_literal_triple('_:selectionQuery', RDF.'value', $this->selectQuery);
+			 $this->DataGraph->add_literal_triple('_:selectionQuery', RDF.'value', $selectQuery);
 			 $this->DataGraph->add_resource_triple('_:selectionResult', SPARQL.'endpoint', '_:sparqlEndpoint');
 		 } 
 	}
@@ -872,7 +518,6 @@ class LinkedDataApiResponse {
 	    }
 	}
 
-  
 	function getFormatter(){
 	    if($format = $this->Request->getParam('_format')){
 	        if($this->ConfigGraph->getApiContentNegotiation()==API.'parameterBased'){
@@ -973,7 +618,8 @@ class LinkedDataApiResponse {
 	        switch($endpointType){
 	            case API.'ListEndpoint' :
 	                #Antonis botch
-	            case API.'OPSListEndpoint':
+	            case API.'BatchEndpoint':
+	            case API.'IntermediateExpansionEndpoint' :
 	            case PUELIA.'SearchEndpoint':
 	                $pageUri = $this->Request->getUriWithPageParam();
 	                break;

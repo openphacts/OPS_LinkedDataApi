@@ -36,18 +36,6 @@
 		a api:ListEndpoint ;
 		api:name "Pathways by Target" ;
 		api:description "Returns a list of pathways which have as part the Gene Product that corresponds to  {uri}." ;
-		api:resultsDescription "<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?item dc:title ?title </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span>;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span>;
-        <span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span>.
-?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span>.
-?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:GeneProduct </span>;
-        <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?cw_uri </span>.
-?cw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?prefLabel </span>." ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;

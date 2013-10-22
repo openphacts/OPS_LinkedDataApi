@@ -60,7 +60,6 @@
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
 		api:name "Count activity types" ;
 		api:description "The number of activity types which have been normalised" ;
-		api:resultsDescription "&lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_type_count ?count </span>." ;
 		api:uriTemplate "/pharmacology/filters/activities/count" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/activities/count";

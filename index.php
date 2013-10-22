@@ -11,6 +11,7 @@ require_once 'graphs/configgraph.class.php';
 require_once 'responses/Response304.class.php';
 Logger::configure("puelia.logging.properties");
 
+LinkedDataApiRequest::eliminateVersioningFromRequest();
 LinkedDataApiRequest::eliminateDebugParams();
 
 $HttpRequestFactory = new HttpRequestFactory();

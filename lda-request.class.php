@@ -44,6 +44,11 @@ class LinkedDataApiRequest {
         $this->uri = $this->getUri();
     }
     
+    public static function eliminateVersioningFromRequest(){
+        $regex = '/^\/[0-9]+\.[0-9]+/';
+        $_SERVER['REQUEST_URI'] = preg_replace($regex, '\1', $_SERVER['REQUEST_URI']);
+    }
+    
     public static function eliminateDebugParams(){
         $params = array('XDEBUG_SESSION_START', 'KEY');
         foreach($params as $param){
@@ -55,12 +60,17 @@ class LinkedDataApiRequest {
     }
     
     function getParams(){
+	$post = file_get_contents('php://input');
         if ($this->params!=null){
             return $this->params;
         }
         if(!empty($_SERVER['QUERY_STRING'])){
             $this->params = queryStringToParams($_SERVER['QUERY_STRING']);            
-        } else {
+        } 
+	elseif(!empty($post)){
+            $this->params = queryStringToParams($post);
+        }
+	else {
             $this->params = array();
         }
         return $this->params;

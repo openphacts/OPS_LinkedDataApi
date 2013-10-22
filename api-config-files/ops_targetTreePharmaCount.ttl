@@ -133,7 +133,7 @@ chembl:standardRelation api:name "activity_relation" ;
 chembl:pChembl api:name "pChembl" ;
 	api:label "pChembl" ;
 	api:filterVariable "?item";
-        api:value "The pChembl value of an activity" ;
+        api:value "Return activities with a pChembl value equal to this number." ;
 	a rdf:Property .
 
 _:type api:name "target_type" ;
