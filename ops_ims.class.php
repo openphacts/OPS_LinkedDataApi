@@ -38,14 +38,14 @@ class OpsIms {
        //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
        
        $multiHandle = curl_multi_init();
-       $variableInfo = array();
+       $variableInfoMap = array();
            
        //build curl multi handle setup      
        foreach ($this->IMS_variables AS $variableName => $pattern ){
            if (strpos($query, $variableName)!==false) {
-               $variableInfo[$variableName] = array();
+               $variableInfoMap[$variableName] = array();
                if (strpos($input_uri, $pattern)!==false){
-                   $variableInfo[$variableName]['filter'] = " FILTER ({$variableName} = <{$input_uri}>) ";
+                   $variableInfoMap[$variableName]['filter'] = " FILTER ({$variableName} = <{$input_uri}>) ";
                    //echo $filter;
                }
                else {
@@ -62,60 +62,82 @@ class OpsIms {
        
                    $url .= '&Uri='.urlencode($input_uri);
                    
-                   $variableInfo[$variableName]['url']=$url;
+                   $variableInfoMap[$variableName]['url']=$url;
                    
                    $ch = curl_init();
                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                    curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: text/plain"));
                    curl_setopt($ch, CURLOPT_URL, $url);
-                   $variableInfo[$variableName]['handle'] = $ch;
+                   $variableInfoMap[$variableName]['handle'] = $ch;
                    curl_multi_add_handle($multiHandle, $ch);
                }
            }
        }
        
-       $errorReceiving=false;
-       do{
-           do {
-               $mrc = curl_multi_exec($multiHandle, $active);
-           } while ($mrc==CURLM_CALL_MULTI_PERFORM);
-            
-           if ($active==0 || $mrc!=CURLM_OK) break;
-           
-           if (curl_multi_select($multiHandle) != -1){
-               $info = curl_multi_info_read($multiHandle);
-               if ( $info['result'] != 0 ) {
-                   $errorReceiving=true;
-                   break;
-               }                  
-           }
-       }
-       while (true);
-       
-       //wait for requests and process responses asynchronously
-       foreach ($variableInfo AS $variableName => $info){
-           if (isset($info['url'])){
-               $response = curl_multi_getcontent($info['handle']);
-               curl_close($info['handle']);
-               curl_multi_remove_handle($multiHandle, $info['handle']);
-               //echo $url;
-               $graph = new SimpleGraph() ;
-               $graph->add_rdf($response);
-               $variableInfo[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
-           }
-       }
-       
+       $this->doSelectAndHandleResponses($multiHandle, $input_uri, $variableInfoMap);       
        curl_multi_close($multiHandle);
         
-       foreach ($variableInfo AS $variableName => $info){
+       foreach ($variableInfoMap AS $variableName => $info){
            if (isset($info['filter']) AND $info['filter'] != " FILTER ( ") {
-               $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s","$1
-               {$info['filter']} $2",$output);                          
+               $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s",
+               		"$1 {$info['filter']} $2",$output);                          
            }
        }
       
        
        return $output;
+   }
+   
+   private function doSelectAndHandleResponses($multiHandle, $input_uri, &$variableInfoMap){
+       do{
+           do {
+               $mrc = curl_multi_exec($multiHandle, $activeHandles);
+           } while ($mrc==CURLM_CALL_MULTI_PERFORM);
+       
+           if ($activeHandles==0 || $mrc!=CURLM_OK) break;
+            
+           if (curl_multi_select($multiHandle) != -1){//wait for requests
+               $this->handleAvailableResponses($multiHandle, $input_uri, $variableInfoMap);
+           }
+       }
+       while (true);
+        
+       foreach ($variableInfoMap AS $variableName => $varInfo){
+           if (isset($varInfo['url'])&&!isset($varInfo['filter'])){
+               $this->handleResponse($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
+           }
+       }
+   }
+   
+   private function handleAvailableResponses($multiHandle, $input_uri, $variableInfoMap){
+       do{
+           $info = curl_multi_info_read($multiHandle);
+           if ($info===FALSE) break;
+       
+           if ( $info['result'] != CURLE_OK ) {
+               logError("Error receiving info from the IMS");
+               break;
+           }
+           else{//process handle
+               foreach ($variableInfoMap AS $variableName => $varInfo){
+                   if ($varInfo['handle']==$info['handle']){
+                       $this->handleResponse($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
+                       break;
+                   }
+               }
+           }
+       }
+       while(true);
+   }
+   
+   private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
+       $response = curl_multi_getcontent($varInfo['handle']);
+       curl_close($varInfo['handle']);
+       curl_multi_remove_handle($multiHandle, $varInfo['handle']);
+       //echo $url;
+       $graph = new SimpleGraph() ;
+       $graph->add_rdf($response);
+       $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
    }
    
    private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
