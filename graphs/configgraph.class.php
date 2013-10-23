@@ -418,12 +418,12 @@ class ConfigGraph extends PueliaGraph {
         $paramBindings = $this->getRequestVariableBindings();
         
         //fill in api:externalRequestTemplate
-        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
+        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), API.'externalRequestTemplate');
         $externalRequest = $this->bindVariablesInValue($externalRequestTemplate, $paramBindings, RDFS.'Resource');
         
         //add params not appearing in the uri template
         $unreservedParams = $this->_request->getUnreservedParams();
-        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), API.'uriTemplate');
         foreach ($unreservedParams as $name => $value){
             if (strpos($uriTemplate, $name)===FALSE){
                 $valTokens = explode('|', $value);
@@ -440,7 +440,7 @@ class ConfigGraph extends PueliaGraph {
         $bindings = array_merge($this->getPathVariableBindings(),
                                 $this->getParamVariableBindings());
         
-        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), API.'uriTemplate');
         $filledInUriTemplate = $this->bindURLEncodedVariablesInValue($uriTemplate, $bindings);
         return $filledInUriTemplate;
     }
