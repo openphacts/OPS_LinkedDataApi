@@ -35,10 +35,17 @@ class OpsIms {
    
    private function expandQueryThroughIMS($query, $input_uri, $lens){
        $output = $query ;
+       //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
+       
+       $multiHandle = curl_multi_init();
+       $variableInfo = array();
+           
+       //build curl multi handle setup      
        foreach ($this->IMS_variables AS $variableName => $pattern ){
            if (strpos($query, $variableName)!==false) {
+               $variableInfo[$variableName] = array();
                if (strpos($input_uri, $pattern)!==false){
-                   $filter = " FILTER ({$variableName} = <{$input_uri}>) ";
+                   $variableInfo[$variableName]['filter'] = " FILTER ({$variableName} = <{$input_uri}>) ";
                    //echo $filter;
                }
                else {
@@ -54,20 +61,60 @@ class OpsIms {
                    }
        
                    $url .= '&Uri='.urlencode($input_uri);
-                   $response = $this->getResponse($url, "text/plain");
-                   //echo $url;
-                   $graph = new SimpleGraph() ;
-                   $graph->add_rdf($response);
-                   $filter = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
-                   //echo $filter;
-               }
-               if (isset($filter) AND $filter != " FILTER ( ") {
-                   $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s","$1
-                   {$filter} $2",$output);
-                   //echo $output;
+                   
+                   $variableInfo[$variableName]['url']=$url;
+                   
+                   $ch = curl_init();
+                   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                   curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: text/plain"));
+                   curl_setopt($ch, CURLOPT_URL, $url);
+                   $variableInfo[$variableName]['handle'] = $ch;
+                   curl_multi_add_handle($multiHandle, $ch);
                }
            }
        }
+       
+       $errorReceiving=false;
+       do{
+           do {
+               $mrc = curl_multi_exec($multiHandle, $active);
+           } while ($mrc==CURLM_CALL_MULTI_PERFORM);
+            
+           if ($active==0 || $mrc!=CURLM_OK) break;
+           
+           if (curl_multi_select($multiHandle) != -1){
+               $info = curl_multi_info_read($multiHandle);
+               if ( $info['result'] != 0 ) {
+                   $errorReceiving=true;
+                   break;
+               }                  
+           }
+       }
+       while (true);
+       
+       //wait for requests and process responses asynchronously
+       foreach ($variableInfo AS $variableName => $info){
+           if (isset($info['url'])){
+               $response = curl_multi_getcontent($info['handle']);
+               curl_close($info['handle']);
+               curl_multi_remove_handle($multiHandle, $info['handle']);
+               //echo $url;
+               $graph = new SimpleGraph() ;
+               $graph->add_rdf($response);
+               $variableInfo[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
+           }
+       }
+       
+       curl_multi_close($multiHandle);
+        
+       foreach ($variableInfo AS $variableName => $info){
+           if (isset($info['filter']) AND $info['filter'] != " FILTER ( ") {
+               $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s","$1
+               {$info['filter']} $2",$output);                          
+           }
+       }
+      
+       
        return $output;
    }
    
