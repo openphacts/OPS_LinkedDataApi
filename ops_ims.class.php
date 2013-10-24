@@ -80,7 +80,7 @@ class OpsIms {
        foreach ($variableInfoMap AS $variableName => $info){
            if (isset($info['filter']) AND $info['filter'] != " FILTER ( ") {
                $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s",
-               		"$1 {$info['filter']} $2",$output);                          
+               		"$1 {$info['filter']} $2",$output, 1);                          
            }
        }
       
