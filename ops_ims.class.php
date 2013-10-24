@@ -1,6 +1,13 @@
 <?php
 
+require_once 'lib/moriarty/moriarty.inc.php';
+require_once 'lib/moriarty/sparqlservice.class.php';
+
 class OpsIms {
+    
+    //var $sparqlWriter;
+    var $sparqlEndpoint;
+    
     var $IMS_variables = array(
             '?chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
             '?chembl_compound_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/molecule/' ,
@@ -14,6 +21,13 @@ class OpsIms {
     );
     
     var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
+    
+    function __construct(){
+        //$this->sparqlWriter = $sparqlWriter;
+        $noCacheRequestFactory = new HttpRequestFactory();
+        $noCacheRequestFactory->read_from_cache(FALSE);
+        $this->SparqlEndpoint = new SparqlService('http://ops2.few.vu.nl/sparql', false, $noCacheRequestFactory);
+    }
     
     function expandQuery ( $query , $input_uri, $lens ) {
         
@@ -104,12 +118,12 @@ class OpsIms {
         
        foreach ($variableInfoMap AS $variableName => $varInfo){
            if (isset($varInfo['url'])&&!isset($varInfo['filter'])){
-               $this->handleResponse($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
+               $this->handleResponseUsingTripleStore($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
            }
        }
    }
    
-   private function handleAvailableResponses($multiHandle, $input_uri, $variableInfoMap){
+   private function handleAvailableResponses($multiHandle, $input_uri, &$variableInfoMap){
        do{
            $info = curl_multi_info_read($multiHandle);
            if ($info===FALSE) break;
@@ -121,7 +135,7 @@ class OpsIms {
            else{//process handle
                foreach ($variableInfoMap AS $variableName => $varInfo){
                    if ($varInfo['handle']==$info['handle']){
-                       $this->handleResponse($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
+                       $this->handleResponseUsingTripleStore($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
                        break;
                    }
                }
@@ -137,6 +151,28 @@ class OpsIms {
        //echo $url;
        $graph = new SimpleGraph() ;
        $graph->add_rdf($response);
+       $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
+   }
+   
+   private function handleResponseUsingTripleStore($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
+       $response = curl_multi_getcontent($varInfo['handle']);
+       curl_close($varInfo['handle']);
+       curl_multi_remove_handle($multiHandle, $varInfo['handle']);
+       //echo $url;
+       $graphName = OPS_API.'/'.hash("crc32", $input_uri.$variableName);
+       
+       $insertQuery = preg_replace('/((\s*@prefix[^\.]\.\s*)*)(([^\.]\.)*)/', '$1 INSERT IN GRAPH <'.$graphName.'> { $2 }' , $response);
+       
+       //$insertQuery = $this->sparqlWriter->getInsertQueryForExternalServiceData($response, $graphName);
+       $code = $this->SparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
+       if(!$code->is_success()){
+           logError("Endpoint returned {$code->status_code} {$code->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+           //even if insert fails we go ahead an give the data to the client
+       }
+       else{
+           logDebug("Created new graph: ".$graphName." for the request ".$insertQuery);
+       }
+       
        $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
    }
    
