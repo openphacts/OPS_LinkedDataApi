@@ -50,7 +50,7 @@ class OpsIms {
                }
                else {
                    $url = IMS_MAP_ENDPOINT;
-                   $url .= '?rdfFormat=Turtle';
+                   $url .= '?rdfFormat=RDF/XML';
                    $url .= "&targetUriPattern={$pattern}";
                    $url .= '&lensUri=';
                    if ($lens==''){
