@@ -26,7 +26,7 @@ class OpsIms {
         //$this->sparqlWriter = $sparqlWriter;
         $noCacheRequestFactory = new HttpRequestFactory();
         $noCacheRequestFactory->read_from_cache(FALSE);
-        $this->SparqlEndpoint = new SparqlService('http://ops2.few.vu.nl/sparql', false, $noCacheRequestFactory);
+        $this->sparqlEndpoint = new SparqlService('http://ops2.few.vu.nl:8890/sparql', false, $noCacheRequestFactory);
     }
     
     function expandQuery ( $query , $input_uri, $lens ) {
@@ -151,7 +151,15 @@ class OpsIms {
        //echo $url;
        $graph = new SimpleGraph() ;
        $graph->add_rdf($response);
-       $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
+              
+       $expanded=array();
+       foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
+           foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
+               $expanded[] = $mapping["value"];
+           }
+       }
+        
+       $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($variableName, $expanded);
    }
    
    private function handleResponseUsingTripleStore($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
@@ -159,21 +167,45 @@ class OpsIms {
        curl_close($varInfo['handle']);
        curl_multi_remove_handle($multiHandle, $varInfo['handle']);
        //echo $url;
-       $graphName = OPS_API.'/'.hash("crc32", $input_uri.$variableName);
+       $graphName = OPS_API.'/ims/'.hash("crc32", $input_uri.$variableName);
        
-       $insertQuery = preg_replace('/((\s*@prefix[^\.]\.\s*)*)(([^\.]\.)*)/', '$1 INSERT IN GRAPH <'.$graphName.'> { $2 }' , $response);
+       $lastPrefixPos = strrpos($response, "@prefix");
+       $afterPrefixesPos = strpos($response, "\n", $lastPrefixPos)+1;
+       $prefixes = substr($response, 0, $afterPrefixesPos-1);
+       $prefixes = str_replace("@prefix", "prefix" , $prefixes);
+       $finalPrefixes = preg_replace("/\.\s*$/m", " " , $prefixes);
+       
+       $insertQuery = $finalPrefixes."INSERT IN GRAPH <".$graphName."> {".substr($response, $afterPrefixesPos)." }";
+       logDebug($insertQuery);
        
        //$insertQuery = $this->sparqlWriter->getInsertQueryForExternalServiceData($response, $graphName);
-       $code = $this->SparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
-       if(!$code->is_success()){
-           logError("Endpoint returned {$code->status_code} {$code->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+       $ret = $this->sparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
+       if(!$ret->is_success()){
+           logError("Endpoint returned {$ret->status_code} {$ret->body} Insert Query <<<{$insertQuery}>>> failed against {$this->sparqlEndpoint->uri}");
            //even if insert fails we go ahead an give the data to the client
        }
        else{
            logDebug("Created new graph: ".$graphName." for the request ".$insertQuery);
        }
        
-       $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
+       $expanded=array();
+       $sparqlQuery="SELECT ?mapping WHERE {GRAPH<".$graphName."> {".
+            "<".$input_uri."> ?p ?mapping}}";
+       $response = $this->sparqlEndpoint->graph($sparqlQuery, 'text/tab-separated-values');
+       if(!$response->is_success()){
+           logError("Endpoint returned {$response->status_code} {$response->body} Query <<<{$sparqlQuery}>>> failed against {$this->sparqlEndpoint->uri}");
+           //even if insert fails we go ahead an give the data to the client
+       }
+       else{
+           $firstEndline=strpos($response->body, "\n");
+           $relevantBody=trim(substr($response->body, $firstEndline+1));
+           $expanded = explode("\n", $relevantBody);   
+           foreach ($expanded as &$value){
+               $value = substr($value, 1, strlen($value)-2);
+           }      
+       }
+       
+       $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($variableName, $expanded);
    }
    
    private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
@@ -235,7 +267,14 @@ class OpsIms {
 		$graph->add_rdf($response);
 		$rdf.=$response;
 		
-		$filter = $this->buildFilterFromMappings($graph, $uriList, $name, $expanded);		
+		foreach ($uriList AS $input_uri){
+		  		foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
+		  		    foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
+		  		        $expanded[] = $mapping["value"];
+		  		    }
+		  		}
+		}
+		$filter = $this->buildFilterFromMappings($name, $expanded);		
 		if (isset($filter) AND $filter != " FILTER ( ") {
 		    $output['expandedQuery'] = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$name.")/s",
 		    								"$1{$filter} $2",
@@ -248,14 +287,7 @@ class OpsIms {
 	return $output;
   }
   
-  private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
-  	foreach ($uriList AS $input_uri){
-  		foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
-  			foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
-  				$expanded[] = $mapping["value"];
-  			}
-  		}
-  	}
+  private function buildFilterFromMappings($variableName, &$expanded=array()){  	
   	if (count($expanded)>0){
   		$filter = " FILTER ( ";
   		foreach ($expanded AS $mapping) {
