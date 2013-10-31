@@ -32,7 +32,7 @@
 	api:description "An API configuration to return information about targets." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Classification of Compounds specific for a Target" ;
+		api:name "Classification of Compounds for Target" ;
 		api:description "The hierarchy classes for the different Compounds that interact with a given Target. Currently only the ChEBI Ontology is supported. " ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;

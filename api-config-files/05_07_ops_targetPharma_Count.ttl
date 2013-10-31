@@ -43,7 +43,7 @@
 	api:description "An API configuration to return information about targets" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Target Pharmacology Count" ;
+		api:name "Target Pharmacology: Count" ;
 		api:description "The total number of acitivity values in the LDC for a given target" ;
 		api:uriTemplate "/target/pharmacology/count?uri={uri}" ;
         	api:itemTemplate "{uri}" ;
