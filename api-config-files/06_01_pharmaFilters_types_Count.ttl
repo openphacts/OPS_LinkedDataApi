@@ -32,7 +32,7 @@
 	api:variable chembl:hasQUDT ;
 	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
 	api:endpoint [ 
-		a api:ListEndpoint ;
+		a api:ItemEndpoint ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 		api:variable <http://www.openphacts.org/units/Millimolar> ;
 		api:variable <http://www.openphacts.org/units/Nanomolar> ;
@@ -58,26 +58,13 @@
 		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
 		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
 		api:variable <http://qudt.org/vocab/unit#Liter> ;
-		api:name "Activity types" ;
-		api:description "A list of activity types which have been normalised" ;
-		api:uriTemplate "/pharmacology/filters/activities" ;
+		api:name "Activity Types: Count" ;
+		api:description "The number of activity types which have been normalised" ;
+		api:uriTemplate "/pharmacology/filters/activities/count" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
-		api:exampleRequestPath "/pharmacology/filters/activities";
-		api:selector [
-			api:where 
-"{
-SELECT DISTINCT ?item ?standard_type COUNT(?activity) AS ?count WHERE {
-GRAPH <http://www.ebi.ac.uk/chembl>  {
-	?activity chembl:standardType ?standard_type  .
-}
-GRAPH <http://www.openphacts.org/units> {
-        ?item rdfs:label ?standard_type    
-}  
-} GROUP BY ?standard_type ?item ORDER BY DESC(?count)
-}" ;
-api:orderBy ""] ;
-		api:viewer <#pharmacologyFiltersTypesViewer> ; 
-		api:defaultViewer <#pharmacologyFiltersTypesViewer> . ] .
+		api:exampleRequestPath "/pharmacology/filters/activities/count";
+		api:viewer <#pharmacologyFiltersTypesCountViewer> ; 
+		api:defaultViewer <#pharmacologyFiltersTypesCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
@@ -111,24 +98,18 @@ api:orderBy ""] ;
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
-        api:filterVariable "?activity";
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:filterVariable "?type";
         a rdf:Property .
 
-<#pharmacologyFiltersTypesViewer> a api:Viewer ;
-	api:name "pharmacologyFiltersTypesViewer" ;
+<#pharmacologyFiltersTypesCountViewer> a api:Viewer ;
+	api:name "pharmacologyFiltersTypesCountViewer" ;
 	api:template 
-"<http://www.ebi.ac.uk/chembl> ops:normalised_activity_type ?item .
-?item rdfs:label ?type_label ;
-ops:activity_count ?count ." ; 
+"<http://www.ebi.ac.uk/chembl> ops:activity_type_count ?count " ; 
 	api:where
 "{
-SELECT DISTINCT ?type_label COUNT(?activity) AS ?count WHERE {
-  GRAPH <http://www.ebi.ac.uk/chembl>  {
-   ?activity chembl:standardType ?type_label  .
-  } } GROUP BY ?type_label  
-}
+SELECT DISTINCT ?type_label COUNT(?type) AS ?count WHERE {
 GRAPH <http://www.openphacts.org/units> {
-	?item rdfs:label ?type_label 
-}  
-" .
+        ?type rdfs:subClassOf chembl:Activity . 
+}
+} }" .
