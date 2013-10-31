@@ -2,10 +2,10 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix api: <http://purl.org/linked-data/api/vocab#> .
-@prefix ops_api:  <http://www.openphacts.org/api/#> .
-@prefix ops_api_search:  <http://www.openphacts.org/api/searchOptions#> .
-@prefix ops_api_result:  <http://www.openphacts.org/api/searchResultOptions#> .
-@prefix ops_api_common:  <http://www.openphacts.org/api/commonOptions#> .
+@prefix ops_api:  <http://www.chemspider.com/api/#> .
+@prefix ops_api_search:  <http://www.chemspider.com/api/searchOptions#> .
+@prefix ops_api_result:  <http://www.chemspider.com/api/searchResultOptions#> .
+@prefix ops_api_common:  <http://www.chemspider.com/api/commonOptions#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 <#chemspider> a api:API ;
@@ -16,41 +16,51 @@
 	api:variable ops_api:commonOptions ;
 	api:variable ops_api:searchResultOptions ;
 	api:dataset <http://www.chemspider.com> ;
-	api:description "An API configuration to return the result of a chemical substructure search." ;
+	api:description "An API configuration to return the result of a chemical similarity search." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:description "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider." ;
+		api:name "Chemical Structure Search: Similarity" ;
+		api:description "Returns a set of ChemSpider compound URLs, similar to the input molecule according to the specified algorithm and threshold. Driven by ChemSpider." ;
 
-		api:name "Chemical Structure Substructure Search" ;
 		api:enableCache false ;
-		api:uriTemplate "/structure/substructure?searchOptions.Molecule={searchOptions.Molecule}" ;
-		api:externalRequestTemplate "http://crs.beta.rsc-us.org/JSON.ashx?op=SubStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "http://crs.beta.rsc-us.org/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
-		api:exampleRequestPath "/structure/substructure?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O" ;
+		api:exampleRequestPath "/structure/similarity?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O&searchOptions.Threshold=0.99&searchOptions.SimilarityType=Tanimoto" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
 <http://www.chemspider.com> api:label "ChemSpider" .
 
-
 ops_api:searchOptions api:name "searchOptions" ;
 	api:label "searchOptions" ;
 	api:value "Possible search option values" ;
 	api:subType ops_api_search:Molecule ;
-	api:subType ops_api_search:MatchTautomers ;
-	api:subType ops_api_search:MolType .
+	api:subType ops_api_search:SimilarityType ;
+	api:subType ops_api_search:Threshold ;
+	api:subType ops_api_search:Alpha ;
+	api:subType ops_api_search:Beta .
 
-ops_api_search:MatchTautomers api:name "MatchTautomers" ;
-	api:label "MatchTautomers" ;
-	api:value "(Not supported at the moment) Search exactly for the given tautomeric form and ignore others. Not supported at the moment . Boolean" .
+ops_api_search:SimilarityType api:name "SimilarityType" ;
+	api:label "SimilarityType" ;
+	api:value "0: Tanimoto ; 1: Tversky ; 2: Euclidian" .
+
+ops_api_search:Alpha api:name "Alpha" ;
+	api:label "Alpha" ;
+	api:value "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " .
+
+ops_api_search:Beta api:name "Beta" ;
+	api:label "Beta" ;
+	api:value "Value in [0,1] ; Default=0.5 ; available only for Tversky metric (for the other types it will be ignored) " .
 
 ops_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
 	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
 
-ops_api_search:MolType api:name "MolType" ;
-	api:label "MolType" ;
-	api:value "0: SMILES ; 1: SMARTS" .
+ops_api_search:Threshold api:name "Threshold" ;
+	api:label "Threshold" ;
+	api:value "Double <= 1.0" .
+
 
 ops_api:commonOptions api:name "commonOptions" ;
 	api:label "commonOptions";
@@ -84,7 +94,7 @@ ops_api:searchResultOptions api:name "resultOptions" ;
 
 ops_api_result:Start api:name "Start" ;
 	api:label "Start" ;
-	api:value "Integer. Return results starting from this index value. Default value: 0" .
+	api:value "Integer. Return results starting the index. Default value: 0" .
 
 ops_api_result:Count api:name "Count" ;
 	api:label "Count" ;
@@ -97,9 +107,11 @@ ops_api_result:Count api:name "Count" ;
 	?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
 	?primaryTopic rdf:type ?searchType ;
 		ops_api_search:Molecule ?moleculeSmiles ;
-		ops_api_search:MolType ?searchMolType ;
 		ops_api:result ?result ;
-		ops_api_search:MatchTautomers ?searchMatchTautomers ; 		
+		ops_api_search:Threshold ?searchThreshold ;
+		ops_api_search:Alpha ?searchAlpha ; 
+		ops_api_search:Beta ?searchBeta ;
+		ops_api_search:SimilarityType ?searchSimilarityType ;
 		ops_api_common:Complexity ?complexity ;
 		ops_api_common:Isotopic ?isotopic ;
 		ops_api_common:HasSpectra ?hasSpectra ;
@@ -115,8 +127,10 @@ GRAPH <{result_hash}> {
 	?primaryTopic ops_api_search:Molecule ?moleculeSmiles .
 	?primaryTopic ops_api:result ?result .
 	?result ops_api:relevance ?relevance .
-	OPTIONAL { ?primaryTopic ops_api_search:MatchTautomers ?searchMatchTautomers }
-	OPTIONAL { ?primaryTopic ops_api_search:MolType ?searchMolType }
+	OPTIONAL { ?primaryTopic ops_api_search:Threshold ?searchThreshold }
+	OPTIONAL { ?primaryTopic ops_api_search:SimilarityType ?searchSimilarityType }
+	OPTIONAL { ?primaryTopic ops_api_search:Alpha ?searchAlpha }
+	OPTIONAL { ?primaryTopic ops_api_search:Beta ?searchBeta }
 	OPTIONAL { ?primaryTopic ops_api_common:Complexity ?complexity }
 	OPTIONAL { ?primaryTopic ops_api_common:Isotopic ?isotopic }
 	OPTIONAL { ?primaryTopic ops_api_common:HasSpectra ?hasSpectra }

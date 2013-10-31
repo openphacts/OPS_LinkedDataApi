@@ -9,30 +9,26 @@
 	rdfs:label "Concept Wiki services"@en;
 	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-	api:variable <#q> ;
-	api:variable <#limit> ;
+	api:variable <#uuid> ;
 	api:variable <#branch> ;
-	api:description "An API configuration to map free text to a set of concept URLs." ;
+	api:description "An API configuration to map free text to a concept URL." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:name "Map free text to a concept URL" ;
+		api:name "Concept Description" ;
 		api:enableCache false ;
-		api:description "Returns a set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
+		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
+
 		
-		api:uriTemplate "/search/freetext?q={q}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search?q={q}" ;
-		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;
-		api:exampleRequestPath "/search/freetext?q=water&limit=15" ;
+		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
+		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
+		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;
+		api:exampleRequestPath "/getConceptDescription?uuid=8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<#q> api:name "q" ;
-	api:label "q";
-	api:value "Query; required. Mininum length is 3 characters. E.g. water" .
-
-<#limit> api:name "limit" ;
-	api:label "limit";
-	api:value "Limits the number of results; optional. Minimum value is 1, maximum value is common sense. Default value is 10." .
+<#uuid> api:name "uuid" ;
+	api:label "uuid";
+	api:value "UUID of the concept; required. E.g. 8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" .
 	
 <#branch> api:name "branch" ;
 	api:label "branch" ;

@@ -20,7 +20,7 @@
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
 
-		api:name "Chemical Structure Exact Search" ;
+		api:name "Chemical Structure Search: Exact" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure/exact?searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalRequestTemplate "http://crs.beta.rsc-us.org/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
