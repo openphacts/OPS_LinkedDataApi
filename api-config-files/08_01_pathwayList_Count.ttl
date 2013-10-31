@@ -24,8 +24,7 @@
         rdfs:label "Pathway"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
-	api:variable wp:organism ;
+        api:variable wp:organism ; 
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
@@ -34,8 +33,8 @@
 	api:description "An API configuration to return information about pathways" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Count Pathways by Compound" ;
-		api:description "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.";
+		api:name "Pathways: Count" ;
+		api:description "Returns the number of pathways in the cache.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
@@ -55,11 +54,12 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
-		api:uriTemplate "/pathways/byCompound/count?uri={uri}" ;
+		api:uriTemplate "/pathways/count" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways/byCompound/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
-		api:viewer <#pathwayByCompoundCountViewer> ;
-		api:defaultViewer <#pathwayByCompoundCountViewer> . ] .
+		api:exampleRequestPath "/pathways/count" ;
+                api:exampleRequestPath "/pathways/count?pathway_organism=Homo%20sapiens" ;
+		api:viewer <#pathwayCountViewer> ;
+		api:defaultViewer <#pathwayCountViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -94,13 +94,8 @@ wp:organism api:name "pathway_organism" ;
 	api:filterVariable "?pathway";
 	a rdf:Property .
 
-<#input> api:name "uri" ;
-        api:label "uri";
-        api:value "A compound URI. e.g.: http://www.conceptwiki.org/concept/83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
-        rdfs:range rdfs:Resource .
-
-<#pathwayByCompoundCountViewer> a api:Viewer ;
-	api:name "pathwayByCompoundCountViewer" ;
+<#pathwayCountViewer> a api:Viewer ;
+	api:name "pathwayCountViewer" ;
 	api:template 
 "<http://www.wikipathways.org> ops:pathway_count ?count .";
 	api:where
@@ -112,11 +107,7 @@ GRAPH <http://www.wikipathways.org> {
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
-        ?gene_product dcterms:isPartOf ?pathway ;
-                a wp:Metabolite ;
-                dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
-}
-GRAPH <http://www.conceptwiki.org> {
-	?cw_uri skos:prefLabel ?prefLabel .
-} } }" .
+  }
+ }
+}" .

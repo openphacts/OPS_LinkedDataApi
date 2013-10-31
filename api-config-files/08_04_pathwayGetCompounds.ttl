@@ -33,13 +33,13 @@
 	api:description "An API configuration to return information about pathways." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get References for Pathway" ;
-		api:description "Returns references that are part of the pathway that corresponds to {uri}.";
-		api:uriTemplate "/pathway/getReferences?uri={uri}" ;
+		api:name "Pathway Information: Get Compounds" ;
+		api:description "Returns the compounds that are part of the pathway that corresponds to {uri}.";
+		api:uriTemplate "/pathway/getCompounds?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/pathway/getReferences?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1015" ;
-		api:viewer <#pathwayReferenceViewer> ;
-		api:defaultViewer <#pathwayReferenceViewer> . ] .
+		api:exampleRequestPath "/pathway/getCompounds?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1002" ;
+		api:viewer <#pathwayCompoundViewer> ;
+		api:defaultViewer <#pathwayCompoundViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -50,22 +50,22 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A Pathway URI. e.g.: http://identifiers.org/wikipathways/WP1015" ;
+	api:value "A Pathway URI. e.g.: http://identifiers.org/wikipathways/WP1002" ;
 	rdfs:range rdfs:Resource .
 
-<#pathwayReferenceViewer> a api:Viewer ;
-	api:name "pathwayReferenceViewer" ;
+<#pathwayCompoundViewer> a api:Viewer ;
+	api:name "pathwayCompoundViewer" ;
 	api:template 
 "?ops_item skos:exactMatch ?pw_uri .
-?pw_uri sioc:latest_version ?rev . 
-?rev dc:title ?title ; 
-	dcterms:hasPart ?reference ;
+?pw_uri sioc:latest_version ?rev .
+?rev dc:title ?title ;
+	dcterms:hasPart ?metabolite ;
 	void:inDataset <http://www.wikipathways.org> .";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:identifier ?pw_uri ;
+	?rev dc:identifier ?pw_uri ; 
 		dc:title ?title .
-	?reference dcterms:isPartOf ?rev ;
-		a wp:PublicationReference
-	FILTER(!isBlank(?reference)) 
+	?metabolite_internal dcterms:isPartOf ?rev ;
+		a wp:Metabolite ;
+		dc:identifier ?metabolite . 
 }" .

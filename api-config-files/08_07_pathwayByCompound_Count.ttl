@@ -24,8 +24,8 @@
         rdfs:label "Pathway"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ;
-        api:variable wp:organism ; 
+        api:variable <#input> ; 
+	api:variable wp:organism ;
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
@@ -34,8 +34,8 @@
 	api:description "An API configuration to return information about pathways" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Count Pathways by Target" ;
-		api:description "Returns the number of pathways which have as part the Gene Product that corresponds to  {uri}.";
+		api:name "Pathways for Compound: Count" ;
+		api:description "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
@@ -55,11 +55,11 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
-		api:uriTemplate "/pathways/byTarget/count?uri={uri}" ;
+		api:uriTemplate "/pathways/byCompound/count?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways/byTarget/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2Fac1191aa-d28f-4102-94ec-0b67b40aeade" ;
-		api:viewer <#pathwayByTargetCountViewer> ;
-		api:defaultViewer <#pathwayByTargetCountViewer> . ] .
+		api:exampleRequestPath "/pathways/byCompound/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
+		api:viewer <#pathwayByCompoundCountViewer> ;
+		api:defaultViewer <#pathwayByCompoundCountViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -96,16 +96,15 @@ wp:organism api:name "pathway_organism" ;
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A target URI. e.g.: http://identifiers.org/ncbigene/282478" ;
+        api:value "A compound URI. e.g.: http://www.conceptwiki.org/concept/83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
         rdfs:range rdfs:Resource .
 
-<#pathwayByTargetCountViewer> a api:Viewer ;
-	api:name "pathwayByTargetCountViewer" ;
+<#pathwayByCompoundCountViewer> a api:Viewer ;
+	api:name "pathwayByCompoundCountViewer" ;
 	api:template 
 "<http://www.wikipathways.org> ops:pathway_count ?count .";
 	api:where
-"
-{
+"{
 SELECT ( COUNT ( DISTINCT ?pathway ) AS ?count ) WHERE {
 GRAPH <http://www.wikipathways.org> {
 	?pathway a wp:Pathway ;
@@ -114,7 +113,7 @@ GRAPH <http://www.wikipathways.org> {
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
         ?gene_product dcterms:isPartOf ?pathway ;
-                a wp:GeneProduct ;
+                a wp:Metabolite ;
                 dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
 }

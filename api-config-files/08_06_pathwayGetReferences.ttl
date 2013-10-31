@@ -33,13 +33,13 @@
 	api:description "An API configuration to return information about pathways." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get Targets for Pathway" ;
-		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
-		api:uriTemplate "/pathway/getTargets?uri={uri}" ;
+		api:name "Pathway Information: Get Publications" ;
+		api:description "Returns references that are part of the pathway that corresponds to {uri}.";
+		api:uriTemplate "/pathway/getReferences?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/pathway/getTargets?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1008" ;
-		api:viewer <#pathwayTargetViewer> ;
-		api:defaultViewer <#pathwayTargetViewer> . ] .
+		api:exampleRequestPath "/pathway/getReferences?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1015" ;
+		api:viewer <#pathwayReferenceViewer> ;
+		api:defaultViewer <#pathwayReferenceViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -50,23 +50,22 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A Pathway URI. e.g.: http://identifiers.org/wikipathways/WP1008" ;
+	api:value "A Pathway URI. e.g.: http://identifiers.org/wikipathways/WP1015" ;
 	rdfs:range rdfs:Resource .
 
-<#pathwayTargetViewer> a api:Viewer ;
-	api:name "pathwayTargetViewer" ;
+<#pathwayReferenceViewer> a api:Viewer ;
+	api:name "pathwayReferenceViewer" ;
 	api:template 
 "?ops_item skos:exactMatch ?pw_uri .
-?pw_uri sioc:latest_version ?rev .
+?pw_uri sioc:latest_version ?rev . 
 ?rev dc:title ?title ; 
-	dcterms:hasPart ?gene_product;
+	dcterms:hasPart ?reference ;
 	void:inDataset <http://www.wikipathways.org> .";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:identifier ?pw_uri .
-	?rev dc:title ?title . 
-	?gene_product_internal dcterms:isPartOf ?rev ;
-		a ?type ;
-		dc:identifier ?gene_product .
-	FILTER ( ?type = wp:GeneProduct || ?type = wp:Protein )
+	?rev dc:identifier ?pw_uri ;
+		dc:title ?title .
+	?reference dcterms:isPartOf ?rev ;
+		a wp:PublicationReference
+	FILTER(!isBlank(?reference)) 
 }" .
