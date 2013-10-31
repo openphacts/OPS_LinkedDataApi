@@ -19,7 +19,7 @@
 	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology and the Gene Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Parent nodes" ;
+		api:name "Hierarchies: Parent Nodes" ;
 		api:description "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
