@@ -43,7 +43,7 @@
 	api:description "An API configuration to return information about compounds" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Compound Class Pharmacology Count" ;
+		api:name "Compound Class Pharmacology: Count" ;
 		api:description "The total number of activity values in the LDC for a given Compound class. Currently only the ChEBI Ontology is supported. " ;
 		api:uriTemplate "/compound/tree/pharmacology/count?uri={uri}" ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;

@@ -22,7 +22,7 @@
 	api:description "An API configuration to return information about compounds." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Count members of Compound Class" ;
+		api:name "Compound Class Members: Count" ;
 		api:description "The number of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
