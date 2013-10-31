@@ -24,7 +24,8 @@
         rdfs:label "Pathway"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable wp:organism ; 
+        api:variable <#input> ; 
+	api:variable wp:organism ;
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
@@ -32,9 +33,9 @@
 	api:vocabulary <http://purl.org/dc/terms/> ;
 	api:description "An API configuration to return information about pathways" ;
 	api:endpoint [ 
-		a api:ItemEndpoint ;
-		api:name "Count Pathways" ;
-		api:description "Returns the number of pathways in the cache.";
+		a api:ListEndpoint ;
+		api:name "Pathways for Publication: List" ;
+		api:description "Returns a list of pathways which have as part the Reference that corresponds to  {uri}.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
@@ -54,12 +55,26 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
-		api:uriTemplate "/pathways/count" ;
+		api:uriTemplate "/pathways/byReference?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways/count" ;
-                api:exampleRequestPath "/pathways/count?pathway_organism=Homo%20sapiens" ;
-		api:viewer <#pathwayCountViewer> ;
-		api:defaultViewer <#pathwayCountViewer> . ] .
+		api:exampleRequestPath "/pathways/byReference?uri=http%3A%2F%2Fidentifiers.org%2Fpubmed%2F9789062" ;
+	        api:selector [
+        	        api:where
+"GRAPH <http://www.wikipathways.org> {
+        ?item a wp:Pathway ;
+                dc:title ?title ;
+                wp:organism ?organism_uri ;
+                foaf:page ?page ;
+                dc:identifier ?identifier .
+	?pw_uri dcterms:isPartOf ?item ;
+                a wp:PublicationReference . 
+        ?organism_uri rdfs:label ?organism .
+        OPTIONAL { ?item dcterms:description ?description }
+        OPTIONAL { ?item wp:pathwayOntology ?ontology }
+}" ;
+	        ] ;
+		api:viewer <#pathwayByReferenceViewer> ;
+		api:defaultViewer <#pathwayByReferenceViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -91,23 +106,38 @@
 wp:organism api:name "pathway_organism" ;
 	api:label "pathway_organism" ;
 	api:value "The rdfs:label for the pathway organism (URL encode)." ;
-	api:filterVariable "?pathway";
+	api:filterVariable "?item";
 	a rdf:Property .
 
-<#pathwayCountViewer> a api:Viewer ;
-	api:name "pathwayCountViewer" ;
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A reference URI. e.g.: http://identifiers.org/pubmed/9789062" ;
+        rdfs:range rdfs:Resource .
+
+<#pathwayByReferenceViewer> a api:Viewer ;
+	api:name "pathwayByReferenceViewer" ;
 	api:template 
-"<http://www.wikipathways.org> ops:pathway_count ?count .";
+"?item dc:title ?title ; 
+	wp:organism ?organism_uri ; 
+	foaf:page ?page ;
+	dc:identifier ?identifier ;
+	dcterms:description ?description ;
+	wp:pathwayOntology ?ontology ;
+	dcterms:hasPart ?pw_uri ;
+	void:inDataset <http://www.wikipathways.org> .
+?organism_uri rdfs:label ?organism . 
+?pw_uri a wp:PublicationReference . 
+";
 	api:where
-"{
-SELECT ( COUNT ( DISTINCT ?pathway ) AS ?count ) WHERE {
-GRAPH <http://www.wikipathways.org> {
-	?pathway a wp:Pathway ;
+"GRAPH <http://www.wikipathways.org> {
+	?item a wp:Pathway ;
 		dc:title ?title ; 
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
+        ?pw_uri dcterms:isPartOf ?item ;
+                a wp:PublicationReference .
 	?organism_uri rdfs:label ?organism . 
-  }
- }
+	OPTIONAL { ?item dcterms:description ?description }
+	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }" .

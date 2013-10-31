@@ -34,8 +34,8 @@
 	api:description "An API configuration to return information about pathways" ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "Pathways by Reference" ;
-		api:description "Returns a list of pathways which have as part the Reference that corresponds to  {uri}.";
+		api:name "Pathways for Compound: List" ;
+                api:description "Returns a list of pathways which have as part the Metabolite that corresponds to  {uri}.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
@@ -55,9 +55,9 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
-		api:uriTemplate "/pathways/byReference?uri={uri}" ;
+		api:uriTemplate "/pathways/byCompound?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
-		api:exampleRequestPath "/pathways/byReference?uri=http%3A%2F%2Fidentifiers.org%2Fpubmed%2F9789062" ;
+		api:exampleRequestPath "/pathways/byCompound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
 	        api:selector [
         	        api:where
 "GRAPH <http://www.wikipathways.org> {
@@ -66,15 +66,19 @@
                 wp:organism ?organism_uri ;
                 foaf:page ?page ;
                 dc:identifier ?identifier .
-	?pw_uri dcterms:isPartOf ?item ;
-                a wp:PublicationReference . 
+	?metabolite dcterms:isPartOf ?item ;
+                a wp:Metabolite ;
+                dc:identifier ?pw_uri .
         ?organism_uri rdfs:label ?organism .
         OPTIONAL { ?item dcterms:description ?description }
         OPTIONAL { ?item wp:pathwayOntology ?ontology }
-}" ;
+}
+GRAPH <http://www.conceptwiki.org> {
+	?cw_uri skos:prefLabel ?prefLabel .
+}" .
 	        ] ;
-		api:viewer <#pathwayByReferenceViewer> ;
-		api:defaultViewer <#pathwayByReferenceViewer> . ] .
+		api:viewer <#pathwayByCompoundViewer> ;
+		api:defaultViewer <#pathwayByCompoundViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -111,11 +115,11 @@ wp:organism api:name "pathway_organism" ;
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A reference URI. e.g.: http://identifiers.org/pubmed/9789062" ;
+        api:value "A compound URI. e.g.: http://www.conceptwiki.org/concept/83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
         rdfs:range rdfs:Resource .
 
-<#pathwayByReferenceViewer> a api:Viewer ;
-	api:name "pathwayByReferenceViewer" ;
+<#pathwayByCompoundViewer> a api:Viewer ;
+	api:name "pathwayByCompoundViewer" ;
 	api:template 
 "?item dc:title ?title ; 
 	wp:organism ?organism_uri ; 
@@ -126,7 +130,10 @@ wp:organism api:name "pathway_organism" ;
 	dcterms:hasPart ?pw_uri ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
-?pw_uri a wp:PublicationReference . 
+?pw_uri a wp:Metabolite ; 
+	skos:exactMatch ?cw_uri .
+?cw_uri skos:prefLabel ?prefLabel ;
+	void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
@@ -135,9 +142,13 @@ wp:organism api:name "pathway_organism" ;
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
-        ?pw_uri dcterms:isPartOf ?item ;
-                a wp:PublicationReference .
+        ?metabolite dcterms:isPartOf ?item ;
+                a wp:Metabolite ;
+                dc:identifier ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
+}
+GRAPH <http://www.conceptwiki.org> {
+	?cw_uri skos:prefLabel ?prefLabel .
 }" .

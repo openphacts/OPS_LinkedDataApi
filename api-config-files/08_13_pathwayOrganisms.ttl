@@ -33,7 +33,7 @@
 	api:description "An API configuration to return information about Pathways." ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "Organisms used in Pathways" ;
+		api:name "Pathway Organisms" ;
 		api:description "A list of organism URIs and labels for which pathway data is available." ;
 		api:uriTemplate "/pathways/organisms" ;
         	api:itemTemplate "http://www.wikipathways.org" ;

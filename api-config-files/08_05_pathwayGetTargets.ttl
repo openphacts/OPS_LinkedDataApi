@@ -33,13 +33,13 @@
 	api:description "An API configuration to return information about pathways." ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Get Compounds for Pathway" ;
-		api:description "Returns the compounds that are part of the pathway that corresponds to {uri}.";
-		api:uriTemplate "/pathway/getCompounds?uri={uri}" ;
+		api:name "Pathway Information: Get Targets" ;
+		api:description "Returns information targets that are part of the pathway that corresponds to {uri}.";
+		api:uriTemplate "/pathway/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/pathway/getCompounds?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1002" ;
-		api:viewer <#pathwayCompoundViewer> ;
-		api:defaultViewer <#pathwayCompoundViewer> . ] .
+		api:exampleRequestPath "/pathway/getTargets?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1008" ;
+		api:viewer <#pathwayTargetViewer> ;
+		api:defaultViewer <#pathwayTargetViewer> . ] .
 
 <http://www.wikipathways.org> api:label "WikiPathways" .
 
@@ -50,22 +50,23 @@
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A Pathway URI. e.g.: http://identifiers.org/wikipathways/WP1002" ;
+	api:value "A Pathway URI. e.g.: http://identifiers.org/wikipathways/WP1008" ;
 	rdfs:range rdfs:Resource .
 
-<#pathwayCompoundViewer> a api:Viewer ;
-	api:name "pathwayCompoundViewer" ;
+<#pathwayTargetViewer> a api:Viewer ;
+	api:name "pathwayTargetViewer" ;
 	api:template 
 "?ops_item skos:exactMatch ?pw_uri .
 ?pw_uri sioc:latest_version ?rev .
-?rev dc:title ?title ;
-	dcterms:hasPart ?metabolite ;
+?rev dc:title ?title ; 
+	dcterms:hasPart ?gene_product;
 	void:inDataset <http://www.wikipathways.org> .";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
-	?rev dc:identifier ?pw_uri ; 
-		dc:title ?title .
-	?metabolite_internal dcterms:isPartOf ?rev ;
-		a wp:Metabolite ;
-		dc:identifier ?metabolite . 
+	?rev dc:identifier ?pw_uri .
+	?rev dc:title ?title . 
+	?gene_product_internal dcterms:isPartOf ?rev ;
+		a ?type ;
+		dc:identifier ?gene_product .
+	FILTER ( ?type = wp:GeneProduct || ?type = wp:Protein )
 }" .
