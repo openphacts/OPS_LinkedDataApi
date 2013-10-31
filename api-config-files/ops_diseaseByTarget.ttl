@@ -9,7 +9,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix sio: <http://semanticscience.org/resource/>
+@prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix cito: <http://purl.org/spar/cito/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
