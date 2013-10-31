@@ -28,11 +28,11 @@
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
 		a api:IntermediateExpansionEndpoint ;
-		api:name "Target by Disease" ;
+		api:name "Disease Targets: List" ;
 		api:description "Returns a list of targets which correspond to the disease {uri}.";
-		api:uriTemplate "/target/byDisease?uri={uri}" ;
+		api:uriTemplate "/disease/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/target/byDisease?uri=http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0004238" ;
+		api:exampleRequestPath "/disease/getTargets?uri=http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0004238" ;
 	        api:selector [
         	api:where
 "GRAPH <http://rdf.imim.es> {

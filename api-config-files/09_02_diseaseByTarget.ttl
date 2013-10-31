@@ -27,7 +27,7 @@
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "Disease by Target" ;
+		api:name "Diseases for Target: List" ;
 		api:description "Returns a list of diseases which correspond to {uri}.";
 		api:uriTemplate "/disease/byTarget?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
