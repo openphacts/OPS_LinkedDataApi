@@ -109,7 +109,7 @@ GRAPH <http://www.conceptwiki.org> {
 
 wp:organism api:name "pathway_organism" ;
 	api:label "pathway_organism" ;
-	api:value "The rdfs:label for the pathway organism (URL encode)." ;
+	api:value "The rdfs:label for the pathway organism (URL encode). e.g.: Homo sapiens." ;
 	api:filterVariable "?item";
 	a rdf:Property .
 
