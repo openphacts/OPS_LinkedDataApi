@@ -32,7 +32,7 @@
 	
 <#branch> api:name "branch" ;
 	api:label "branch" ;
-	api:value "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = ConceptWiki" .
+	api:value "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = ConceptWiki, 6 = Pathway Ontology, 7 = WikiPathways" .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" .
