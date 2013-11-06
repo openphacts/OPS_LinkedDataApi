@@ -5890,7 +5890,7 @@
             },
             {
               "name":  "branch" ,
-              "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = ConceptWiki, 6 = Pathway Ontology, 7 = WikiPathways" ,
+              "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -5985,7 +5985,7 @@
             },
             {
               "name":  "branch" ,
-              "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = ConceptWiki, 6 = Pathway Ontology, 7 = WikiPathways" ,
+              "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways" ,
               "paramType": "query",
               "dataType": "string"
             },
@@ -6067,7 +6067,7 @@
             },
             {
               "name":  "branch" ,
-              "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = ConceptWiki, 6 = Pathway Ontology, 7 = WikiPathways" ,
+              "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways" ,
               "paramType": "query",
               "dataType": "string"
             },
