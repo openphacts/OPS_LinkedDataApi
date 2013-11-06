@@ -131,7 +131,6 @@ GRAPH <http://linkedlifedata.com/resource/drugbank> {
 	UNION { ?db_compound_uri drugbank:proteinBinding ?proteinBinding. }
 	UNION { ?db_compound_uri drugbank:toxicity ?toxicity. }
 	UNION { ?db_compound_uri drugbank:meltingPoint ?meltingPoint. }
-	UNION { ?db_compound_uri drugbank:genericName ?drug_name ;
-			drugbank:drugType ?drugType_uri .
-		?drugType_uri rdfs:label ?drugType . }
+	UNION { ?db_compound_uri drugbank:genericName ?drug_name }
+	UNION { ?db_compound_uri drugbank:drugType/rdfs:label ?drugType . }
 }}}" .
