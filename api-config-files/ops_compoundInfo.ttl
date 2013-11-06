@@ -82,6 +82,8 @@
 	drugbank:proteinBinding ?proteinBinding ;
 	drugbank:toxicity ?toxicity ;
 	drugbank:meltingPoint ?meltingPoint ;
+        drugbank:genericName ?drug_name ;
+        drugbank:drugType ?drugType ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
 	api:where
 "GRAPH <http://www.conceptwiki.org> {
@@ -130,4 +132,6 @@ GRAPH <http://linkedlifedata.com/resource/drugbank> {
 	UNION { ?db_compound_uri drugbank:proteinBinding ?proteinBinding. }
 	UNION { ?db_compound_uri drugbank:toxicity ?toxicity. }
 	UNION { ?db_compound_uri drugbank:meltingPoint ?meltingPoint. }
+	UNION { ?db_compound_uri drugbank:genericName ?drug_name }
+	UNION { ?db_compound_uri drugbank:drugType/rdfs:label ?drugType . }
 }}}" .
