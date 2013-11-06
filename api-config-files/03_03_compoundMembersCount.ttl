@@ -23,7 +23,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Compound Class Members: Count" ;
-		api:description "The number of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
+		api:description "The number of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:uriTemplate "/compound/members/count?uri={uri}" ;

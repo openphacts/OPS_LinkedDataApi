@@ -183,7 +183,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Class Members: Count" ,
-          "description":  "The number of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:memberCount ?count </span> .<br> ",
+          "description":  "The number of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:memberCount ?count </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
