@@ -23,7 +23,7 @@
 	api:endpoint [ 
 		a api:ListEndpoint ;
 		api:name "Compound Class Members: List" ;
-		api:description "A list of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
+		api:description "A list of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:uriTemplate "/compound/members/pages?uri={uri}" ;

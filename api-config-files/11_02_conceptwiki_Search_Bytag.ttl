@@ -34,7 +34,7 @@
 
 <#uuid> api:name "uuid" ;
 	api:label "uuid";
-	api:value "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197i for 'Chemical Viewed Structurally', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'" .
+	api:value "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197 for 'Chemical Viewed Structurally', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'" .
 
 <#limit> api:name "limit" ;
 	api:label "limit";

@@ -265,7 +265,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Class Members: List" ,
-          "description":  "A list of targets classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_nam </span> e<br> ",
+          "description":  "A list of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_nam </span> e<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -5978,7 +5978,7 @@
             },
             {
               "name":  "uuid" ,
-              "description":  "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197i for 'Chemical Viewed Structurally', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'" ,
+              "description":  "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197 for 'Chemical Viewed Structurally', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'" ,
               "paramType": "query",
               "required": true,
               "dataType": "string"
