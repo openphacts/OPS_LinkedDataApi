@@ -24,5 +24,6 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:proteinBinding ?proteinBinding </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:toxicity ?toxicity </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:drugType ?drugType </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span> .

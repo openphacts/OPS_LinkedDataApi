@@ -82,6 +82,7 @@
 	drugbank:proteinBinding ?proteinBinding ;
 	drugbank:toxicity ?toxicity ;
 	drugbank:meltingPoint ?meltingPoint ;
+	drugbank:genericName ?drug_name ;
 	drugbank:drugType ?drugType ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
 	api:where
