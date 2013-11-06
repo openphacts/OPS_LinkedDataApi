@@ -5,7 +5,13 @@ echo '{
 for file in ./*.ttl
 do
 	echo '    {'
-	sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/' 
+	path=`sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/'`
+	if [[ "$path"="/pharmacology/filters/units/" ]]
+	then
+		echo $path"{act_type}
+	else
+		echo $path
+	fi
 	echo '      "operations": [
         {
           "httpMethod": "GET",'
