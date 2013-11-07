@@ -3,99 +3,6 @@
   "apiVersion": "v1.3",
   "apis": [
     {
-"path": "/mapUri" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Map URL" ,
-          "description":  "Returns a set of URLs associated to the input URL.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?url </span> .<br> ",
-          "group": "Mapping service betweem URLs" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "Uri" ,
-              "description":  "An input Uri to be mapped." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "targetUriPattern" ,
-              "description":  "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "graph" ,
-              "description":  "Limits the results to ones required for this OpenRdf context/graph." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name":  "lensUri" ,
-              "description":  "Lens URI." ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
 "path": "/compound" ,
       "operations": [
         {
@@ -3764,717 +3671,6 @@
       ]
     },
     {
-"path": "/pharmacology/filters/activities/count" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Activity Types: Count" ,
-          "description":  "The number of activity types which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_type_count ?coun </span> t<br> ",
-          "group": "Pharmacology Filters" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "activity_unit" ,
-              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/pharmacology/filters/activities" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Activity Types: List" ,
-          "description":  "A list of activity types which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?type_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
-          "group": "Pharmacology Filters" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "activity_unit" ,
-              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name": "_page",
-              "description": "A number; the page that should be viewed",
-              "dataType": "integer",
-              "paramType": "query"
-            },
-            {
-              "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
-              "dataType": "integer",
-              "paramType": "query"
-            },
-            {
-              "name": "_orderBy",
-              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
-              "allowableValues": {
-                "values": [
-                  "?activity",
-                  "DESC(?activity)",
-                  "?count",
-                  "DESC(?count)",
-                  "?item",
-                  "DESC(?item)",
-                  "?standard_type",
-                  "DESC(?standard_type)",
-                  "?type_label",
-                  "DESC(?type_label)"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/pharmacology/filters/count_units" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Activity Units: Count" ,
-          "description":  "A list of activity units which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:normalised_activity_unit_count ?count </span> .<br> ",
-          "group": "Pharmacology Filters" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "activity_type" ,
-              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/pharmacology/filters/units" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Activity Units: List" ,
-          "description":  "A list of activity units which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_unit ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?qudt_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
-          "group": "Pharmacology Filters" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name": "_page",
-              "description": "A number; the page that should be viewed",
-              "dataType": "integer",
-              "paramType": "query"
-            },
-            {
-              "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
-              "dataType": "integer",
-              "paramType": "query"
-            },
-            {
-              "name": "_orderBy",
-              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
-              "allowableValues": {
-                "values": [
-                  "?activity",
-                  "DESC(?activity)",
-                  "?count",
-                  "DESC(?count)",
-                  "?item",
-                  "DESC(?item)",
-                  "?qudt_label",
-                  "DESC(?qudt_label)"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/pharmacology/filters/units/{act_type}" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Activity Units for Type" ,
-          "description":  "A list of units that activities of the specified type have been normalised to.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> qudt:unit ?unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span> .<br> ?unit <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?unit_labe </span> l<br> ",
-          "group": "Pharmacology Filters" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "act_type" ,
-              "description":  "http://www.openphacts.org/terms/chembl#{act_name}" ,
-              "required": true,
-              "paramType": "path",
-              "dataType": "string"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/tree" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Hierarchies: Root Nodes" ,
-          "description":  "A representation of the root classes in each hierachy. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ops:conceptHierarchy <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?g_short </span> .<br> ?g_short <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:rootNode ?root_node </span> .<br> ?root_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
-          "group": "Concept Class Hierarchies" ,
-          "parameters": [
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name":  "root" ,
-              "description":  "Restrict results by hierarchy. Currently one of 'chembl', 'chebi', 'enzyme', 'go'" ,
-              "paramType": "query",
-              "dataType": "string"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/tree/children" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Hierarchies: Child Nodes" ,
-          "description":  "A representation of all child nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:childNode ?child_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?child_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?child_label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
-          "group": "Concept Class Hierarchies" ,
-          "parameters": [
-            {
-              "name":  "uri" ,
-              "description":  "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
-"path": "/tree/parents" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Hierarchies: Parent Nodes" ,
-          "description":  "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:parentNode ?parent_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?parent_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_name </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
-          "group": "Concept Class Hierarchies" ,
-          "parameters": [
-            {
-              "name":  "uri" ,
-              "description":  "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
 "path": "/pathways/count" ,
       "operations": [
         {
@@ -5778,14 +4974,650 @@
       ]
     },
     {
-"path": "/sources" ,
+"path": "/pharmacology/filters/activities/count" ,
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Data Sources" ,
-          "description":  "(UNDER DEVELOPMENT) Returns information about currently loaded data sources.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.openphacts.org/linked_data_cache&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> a void:Dataset </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:subset ?top_dataset </span> .<br> ?top_dataset <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:isPrimaryTopicOf ?description </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?title </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFCC99\"> void:subset ?subset </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> prov:wasDerivedFrom ?derivedFrom </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:triples ?tripleNo </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:dataDump ?dataDump </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcat:landingPage ?landingPage </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:homepage ?homepage </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #66FFCC\"> a void:Dataset </span> .<br> ",
-          "group": "Data Sources" ,
+          "summary":  "Activity Types: Count" ,
+          "description":  "The number of activity types which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_type_count ?coun </span> t<br> ",
+          "group": "Pharmacology Filters" ,
           "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "activity_unit" ,
+              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/pharmacology/filters/activities" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Activity Types: List" ,
+          "description":  "A list of activity types which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?type_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "activity_unit" ,
+              "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?activity",
+                  "DESC(?activity)",
+                  "?count",
+                  "DESC(?count)",
+                  "?item",
+                  "DESC(?item)",
+                  "?standard_type",
+                  "DESC(?standard_type)",
+                  "?type_label",
+                  "DESC(?type_label)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/pharmacology/filters/count_units" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Activity Units: Count" ,
+          "description":  "A list of activity units which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:normalised_activity_unit_count ?count </span> .<br> ",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "activity_type" ,
+              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/pharmacology/filters/units" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Activity Units: List" ,
+          "description":  "A list of activity units which have been normalised<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_unit ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?qudt_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?activity",
+                  "DESC(?activity)",
+                  "?count",
+                  "DESC(?count)",
+                  "?item",
+                  "DESC(?item)",
+                  "?qudt_label",
+                  "DESC(?qudt_label)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/pharmacology/filters/units/{act_type}" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Activity Units for Type" ,
+          "description":  "A list of units that activities of the specified type have been normalised to.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> qudt:unit ?unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span> .<br> ?unit <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?unit_labe </span> l<br> ",
+          "group": "Pharmacology Filters" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "act_type" ,
+              "description":  "http://www.openphacts.org/terms/chembl#{act_name}" ,
+              "required": true,
+              "paramType": "path",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tree" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Hierarchies: Root Nodes" ,
+          "description":  "A representation of the root classes in each hierachy. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ops:conceptHierarchy <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?g_short </span> .<br> ?g_short <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:rootNode ?root_node </span> .<br> ?root_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
+          "group": "Concept Class Hierarchies" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "root" ,
+              "description":  "Restrict results by hierarchy. Currently one of 'chembl', 'chebi', 'enzyme', 'go'" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tree/children" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Hierarchies: Child Nodes" ,
+          "description":  "A representation of all child nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:childNode ?child_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?child_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?child_label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
+          "group": "Concept Class Hierarchies" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tree/parents" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Hierarchies: Parent Nodes" ,
+          "description":  "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:parentNode ?parent_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?parent_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_name </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
+          "group": "Concept Class Hierarchies" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
             {
               "name": "app_id",
               "description": "Your access application id",
@@ -6068,6 +5900,174 @@
             {
               "name":  "branch" ,
               "description":  "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/sources" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Data Sources" ,
+          "description":  "(UNDER DEVELOPMENT) Returns information about currently loaded data sources.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.openphacts.org/linked_data_cache&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> a void:Dataset </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:subset ?top_dataset </span> .<br> ?top_dataset <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:isPrimaryTopicOf ?description </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?title </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFCC99\"> void:subset ?subset </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> prov:wasDerivedFrom ?derivedFrom </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:triples ?tripleNo </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:dataDump ?dataDump </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcat:landingPage ?landingPage </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:homepage ?homepage </span> .<br> ?dataset <span style=\"BACKGROUND-COLOR: #66FFCC\"> a void:Dataset </span> .<br> ",
+          "group": "Data Sources" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/mapUri" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Map URL" ,
+          "description":  "Returns a set of URLs associated to the input URL.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?url </span> .<br> ",
+          "group": "Mapping service betweem URLs" ,
+          "parameters": [
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "Uri" ,
+              "description":  "An input Uri to be mapped." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "targetUriPattern" ,
+              "description":  "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "graph" ,
+              "description":  "Limits the results to ones required for this OpenRdf context/graph." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "lensUri" ,
+              "description":  "Lens URI." ,
               "paramType": "query",
               "dataType": "string"
             },
