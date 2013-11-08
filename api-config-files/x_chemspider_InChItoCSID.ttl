@@ -16,7 +16,7 @@
 		a api:ExternalHTTPService ;
 		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
 
-		api:name "Inchi to URL" ;
+		api:name "InChI to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?inchi={inchi}" ;
 		api:externalRequestTemplate "http://crs.beta.rsc-us.org/JSON.ashx?op=ConvertTo&convertOptions.Direction=InChi2CSID&convertOptions.Text={inchi}" ;
