@@ -46,7 +46,7 @@ ops_api_search:MatchTautomers api:name "MatchTautomers" ;
 
 ops_api_search:Molecule api:name "Molecule" ;
 	api:label "Molecule" ;
-	api:value "A SMILES string. E.g. CC(=O)Oc1ccccc1C(=O)O" .
+	api:value "A SMILES string, e.g. CC(=O)Oc1ccccc1C(=O)O, or a SMARTS string, e.g. [$(*O);$(*CC)]. See also MolType." .
 
 ops_api_search:MolType api:name "MolType" ;
 	api:label "MolType" ;
