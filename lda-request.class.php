@@ -44,11 +44,6 @@ class LinkedDataApiRequest {
         $this->uri = $this->getUri();
     }
     
-    public static function eliminateVersioningFromRequest(){
-        $regex = '/^\/[0-9]+\.[0-9]+/';
-        $_SERVER['REQUEST_URI'] = preg_replace($regex, '\1', $_SERVER['REQUEST_URI']);
-    }
-    
     public static function eliminateDebugParams(){
         $params = array('XDEBUG_SESSION_START', 'KEY');
         foreach($params as $param){
@@ -218,6 +213,13 @@ class LinkedDataApiRequest {
     
     function getPath(){
         return str_replace( '?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
+    }
+    
+    function getPathWithoutVersionAndExtension(){
+        $pathWithoutExtension =  $this->getPathWithoutExtension();
+        $regex = '/^\/[0-9]+\.[0-9]+/';
+        $ret = preg_replace($regex, '\1', $pathWithoutExtension);
+        return $ret;
     }
     
 	function getMetadataParam(){

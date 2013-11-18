@@ -222,7 +222,7 @@ class ConfigGraph extends PueliaGraph {
     
     function getRequestMatchesFromUriTemplate($uriTemplate){
 
-        $path = $this->_request->getPathWithoutExtension();
+        $path = $this->_request->getPathWithoutVersionAndExtension();
 
 
         /* if an api:base is set, strip it from the request URI */
