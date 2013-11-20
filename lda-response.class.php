@@ -944,8 +944,9 @@ class LinkedDataApiResponse {
   
 	function getFormatter(){
 	    if($format = $this->Request->getParam('_format')){
+	       
 	        if($this->ConfigGraph->getApiContentNegotiation()==API.'parameterBased'){
-	            if($this->ConfigGraph->apiSupportsFormat($format)){
+	            if($this->extensionIsSupported($format)){
 	                return $format;
 	            } else {
 	                logError("Bad Request when selecting formatter: {$format}");
@@ -969,7 +970,6 @@ class LinkedDataApiResponse {
 	            $this->setStatusCode(HTTP_Unsupported_Media_Type);
 	            return false;
 	        }
-
 	    } else if($this->Request->hasAcceptTypes()){
 	        logDebug("Doing content-negotiation");
 	        $configFormatters = $this->ConfigGraph->getFormatters();
