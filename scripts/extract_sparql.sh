@@ -9,7 +9,7 @@ if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --
     echo "Changes detected, dumping SPARQL queries to: $output_dir/$today"
     rm $tmp_dir/*.ttl
     cp $config_dir/*.ttl $tmp_dir/
-    for file in $tmp_dir/ops*.ttl
+    for file in $tmp_dir/*.ttl
     do
 	echo "Processing: $file"
 	urls=`grep "api:exampleRequestPath" $file  | sed -e 's,^.*api:exampleRequestPath *",http://ops2.few.vu.nl,' -e 's,".*$,\&_format=ttl\&_metadata=execution,'`
