@@ -19,7 +19,7 @@
 	api:description "An API configuration to return the result of a chemical substructure search." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:description "Returns a set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider." ;
+		api:description "A set of ChemSpider compound URLs that contain the specified structure. Driven by ChemSpider." ;
 
 		api:name "Chemical Structure Search: Substructure" ;
 		api:enableCache false ;

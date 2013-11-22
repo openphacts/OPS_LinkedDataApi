@@ -35,7 +35,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Pathways for Compound: Count" ;
-		api:description "Returns the number of pathways which have as part the Metabolite that corresponds to  {uri}.";
+		api:description "The total number of pathways which have as part the Metabolite specified.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;

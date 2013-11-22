@@ -34,7 +34,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Pathway Information: Get Publications" ;
-		api:description "Returns references that are part of the pathway that corresponds to {uri}.";
+		api:description "A list of publications that are part of the pathway specified.";
 		api:uriTemplate "/pathway/getReferences?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/pathway/getReferences?uri=http%3A%2F%2Fidentifiers.org%2Fwikipathways%2FWP1015" ;

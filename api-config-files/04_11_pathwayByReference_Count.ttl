@@ -35,7 +35,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Pathways for Publication: Count" ;
-		api:description "Returns the number of pathways which have as part the Reference that corresponds to  {uri}.";
+		api:description "The total number of pathways which have as part the Reference specified.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;

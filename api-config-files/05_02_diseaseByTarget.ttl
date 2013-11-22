@@ -28,7 +28,7 @@
 	api:endpoint [ 
 		a api:ListEndpoint ;
 		api:name "Diseases for Target: List" ;
-		api:description "Returns a list of diseases which correspond to {uri}.";
+		api:description "A list of diseases which correspond to {uri}.";
 		api:uriTemplate "/disease/byTarget?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/disease/byTarget?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FQ9Y5Y9" ;
