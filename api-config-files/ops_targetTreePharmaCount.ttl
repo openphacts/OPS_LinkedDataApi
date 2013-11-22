@@ -20,7 +20,6 @@
 	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
-	api:variable chembl:organism ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
