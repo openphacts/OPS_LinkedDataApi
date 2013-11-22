@@ -34,7 +34,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Pathways: Count" ;
-		api:description "The total number of pathways in the cache.";
+		api:description "The total number of pathways in the LDC.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;

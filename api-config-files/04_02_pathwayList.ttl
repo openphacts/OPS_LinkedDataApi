@@ -34,7 +34,7 @@
 	api:endpoint [ 
 		a api:ListEndpoint ;
 		api:name "Pathways: List" ;
-		api:description "The list of pathways in the cache.";
+		api:description "The list of pathways in the LDC.";
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
