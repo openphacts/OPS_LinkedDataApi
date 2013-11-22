@@ -155,15 +155,15 @@ do
             },'
 	fi
 
-	if [[ ! `sed -n '/api:ExternalHTTPService/p' $file` ]]
-	then
-		echo '            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },'
-	fi
+#	if [[ ! `sed -n '/api:ExternalHTTPService/p' $file` ]]
+#	then
+#		echo '            {
+#              "name": "_lens",
+#              "description": "The Lens name",
+#              "dataType": "string",
+#              "paramType": "query"
+#            },'
+#	fi
 
 	echo '            {
               "name": "_format",
