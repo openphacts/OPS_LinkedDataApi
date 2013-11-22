@@ -3640,7 +3640,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Pathways: Count" ,
-          "description":  "The total number of pathways in the cache.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span> .<br> ",
+          "description":  "The total number of pathways in the LDC.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?count </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
@@ -3721,7 +3721,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Pathways: List" ,
-          "description":  "The list of pathways in the cache.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ",
+          "description":  "The list of pathways in the LDC.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ",
           "group": "Pathway" ,
           "parameters": [
             {
