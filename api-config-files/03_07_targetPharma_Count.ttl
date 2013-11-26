@@ -187,7 +187,7 @@ chembl:pChembl api:name "pChembl" ;
 
 _:type api:name "target_type" ;
         api:label "target_type" ;
-        api:filterVariable "?chembl_uri";
+        api:filterVariable "?chembl_target_uri";
         api:value "One of the types listed at /target/types. e.g. single_protein" ;
 	rdfs:subPropertyOf rdf:type ;
         a rdf:Property .
@@ -208,7 +208,7 @@ GRAPH <http://www.conceptwiki.org> {
                 skos:prefLabel ?compound_name .
 } 
 GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?assay_uri chembl:hasTarget ?chembl_uri .
+        ?assay_uri chembl:hasTarget ?chembl_target_uri .
 	?assay_uri chembl:hasActivity ?item .
 	?item chembl:hasMolecule ?compound_chembl .
 }
