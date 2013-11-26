@@ -15,7 +15,7 @@
 	api:description "An API configuration to return a ChemSpider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:description "Returns a ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
+		api:description "A ChemSpider URL corresponding to an input SMILES string. Driven by ChemSpider." ;
 
 		api:name "Chemical Structure Conversion: SMILES to URL" ;
 		api:enableCache true ;

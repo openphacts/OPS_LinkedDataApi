@@ -17,7 +17,7 @@
 		a api:ExternalHTTPService ;
 		api:name "Map URL" ;
 		api:enableCache true ;
-		api:description "Returns a set of URLs associated to the input URL." ;
+		api:description "A set of URLs associated to the input URL." ;
 		api:uriTemplate "/mapUri?Uri={Uri}" ;
 		api:externalRequestTemplate "http://openphacts.cs.man.ac.uk:9092/QueryExpander/mapUri?Uri={Uri}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;

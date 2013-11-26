@@ -14,7 +14,7 @@
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
-		api:description "Returns a ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
+		api:description "A ChemSpider URL corresponding to an input InChI string. Driven by ChemSpider." ;
 
 		api:name "Chemical Structure Conversion: Inchi to URL" ;
 		api:enableCache true ;

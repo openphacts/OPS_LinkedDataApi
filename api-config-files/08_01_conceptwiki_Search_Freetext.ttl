@@ -17,7 +17,7 @@
 		a api:ExternalHTTPService ;
 		api:name "Free Text to Concept" ;
 		api:enableCache false ;
-		api:description "Returns a set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
+		api:description "A set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
 		
 		api:uriTemplate "/search/freetext?q={q}" ;
 		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search?q={q}" ;

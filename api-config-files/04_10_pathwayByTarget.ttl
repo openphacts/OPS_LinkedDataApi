@@ -35,7 +35,7 @@
 	api:endpoint [ 
 		a api:ListEndpoint ;
 		api:name "Pathways for Target: List" ;
-		api:description "Returns a list of pathways which have as part the Gene Product that corresponds to  {uri}." ;
+		api:description "A list of pathways which have as part the Gene Product specified." ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;

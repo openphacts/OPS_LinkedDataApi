@@ -30,7 +30,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Target Information" ;
-		api:description "Returns information about a single target that corresponds to {uri}.";
+		api:description "Information about a single target.";
 
 		api:uriTemplate "/target?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;

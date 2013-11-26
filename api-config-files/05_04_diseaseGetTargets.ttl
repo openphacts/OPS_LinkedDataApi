@@ -29,7 +29,7 @@
 	api:endpoint [ 
 		a api:IntermediateExpansionEndpoint ;
 		api:name "Disease Targets: List" ;
-		api:description "Returns a list of targets which correspond to the disease {uri}.";
+		api:description "A list of targets which correspond to the disease {uri}.";
 		api:uriTemplate "/disease/getTargets?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/disease/getTargets?uri=http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0004238" ;
