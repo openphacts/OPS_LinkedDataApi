@@ -150,7 +150,7 @@ chembl:organismName api:name "assay_organism" ;
 _:targetOrganism api:name "target_organism" ;
  	api:label "target_organism" ;
  	api:value "A literal target organism in ChEMBL." ;
- 	api:filterVariable "?chembl_uri";
+ 	api:filterVariable "?chembl_target_uri";
  	rdfs:subPropertyOf chembl:organismName ;
  	a rdf:Property .
 
