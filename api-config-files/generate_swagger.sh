@@ -67,7 +67,7 @@ do
                                 echo '              "dataType": "string"'
 				echo '            },'
                         done    
-		elif [[ "$var" != "<#input>" ]]
+		elif [[ "$var" != "<#input>" ]] && [[ "$var" != "app_key" ]]
 		then
 			echo '            {'
 			sed -n "/^[[:space:]]*$var/s/[[:space:]]*[[:print:]]*api:name/              *name*: /p" $file | sed 's,*,",g' | sed 's/.$/,/'

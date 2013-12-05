@@ -15,7 +15,7 @@
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
-@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
+@prefix chembl-ops: <http://www.openphacts.org/chembl/onto/#> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
 @prefix cheminf: <http://semanticscience.org/resource/> .
 
@@ -32,6 +32,7 @@
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
         api:variable _:type ;
+	api:variable ops:is_accessible_by ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
@@ -192,6 +193,11 @@ _:type api:name "target_type" ;
 	rdfs:subPropertyOf rdf:type ;
         a rdf:Property .
 
+ops:is_accessible_by api:name "app_key" ;
+        api:label "app_key" ;
+        api:filterVariable "?commercial_graph";
+        a rdf:Property .
+
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ;
@@ -203,6 +209,7 @@ _:type api:name "target_type" ;
 "?ops_item ops:targetPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
+{
 GRAPH <http://www.conceptwiki.org> {
         ?compound_cw skos:exactMatch ?compound_ocrs ;
                 skos:prefLabel ?compound_name .
@@ -217,5 +224,15 @@ GRAPH <http://ops.rsc.org> {
 		cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
                 cheminf:CHEMINF_000018 ?smiles .
+}
+} UNION {
+GRAPH <http://www.commercial-linksets.com/uniprot> {
+	?commercial_target owl:sameAs|skos:exactMatch ?uniprot_target_uri
+}
+GRAPH ?commercial_graph {
+	?commercial_assay chembl-ops:forTarget|chembl-ops:hasTarget ?commercial_target .
+	?item chembl-ops:onAssay ?commercial_assay ;
+		chembl-ops:forMolecule ?commercial_molecule . 
+}
 }
 } }" .
