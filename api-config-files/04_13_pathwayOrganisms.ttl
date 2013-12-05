@@ -48,7 +48,7 @@ GRAPH <http://www.wikipathways.org>  {
 }
 } GROUP BY ?item ?label ORDER BY DESC(?count)
 }" ;
-api:orderBy ""] ;
+			api:orderBy ""] ;
 		api:viewer <#pathwayOrganismViewer> ; 
 		api:defaultViewer <#pathwayOrganismViewer> . ] .
 

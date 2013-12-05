@@ -58,21 +58,7 @@
 		api:uriTemplate "/pathways/byReference?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways/byReference?uri=http%3A%2F%2Fidentifiers.org%2Fpubmed%2F9789062" ;
-	        api:selector [
-        	        api:where
-"GRAPH <http://www.wikipathways.org> {
-        ?item a wp:Pathway ;
-                dc:title ?title ;
-                wp:organism ?organism_uri ;
-                foaf:page ?page ;
-                dc:identifier ?identifier .
-	?pw_uri dcterms:isPartOf ?item ;
-                a wp:PublicationReference . 
-        ?organism_uri rdfs:label ?organism .
-        OPTIONAL { ?item dcterms:description ?description }
-        OPTIONAL { ?item wp:pathwayOntology ?ontology }
-}" ;
-	        ] ;
+	        api:selector <#pathwayByReferenceViewer> ;
 		api:viewer <#pathwayByReferenceViewer> ;
 		api:defaultViewer <#pathwayByReferenceViewer> . ] .
 

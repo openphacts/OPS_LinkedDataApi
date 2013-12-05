@@ -35,24 +35,7 @@
 		api:uriTemplate "/target/members/pages?uri={uri}" ;
 		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
 		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-&target_organism=Homo%20sapiens";
-		api:selector [
-			api:where 
-"GRAPH ?g {
-	?child_node rdfs:subClassOf ?ops_item . 
-	FILTER ( isURI(?child_node) )
-	BIND (IF(?g = <http://purl.uniprot.org/enzyme/inference>, <http://purl.uniprot.org/enzyme> ,
-		IF(?g = <http://www.ebi.ac.uk/chembl/target/inference>, <http://www.ebi.ac.uk/chembl/target> ,
-			IF(?g = <http://www.geneontology.org/inference>, <http://www.geneontology.org> , 'Error'))) AS ?g_short )
-}
-{ ?item obo:C ?child_node .
-?item uniprot:reviewed true }
-UNION { ?item obo:F ?child_node .
-?item uniprot:reviewed true } 
-UNION { ?item obo:P ?child_node .
-?item uniprot:reviewed true }
-UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
-	[] chembl:hasTarget ?item } " 
-		];
+		api:selector <#targetMemberViewer> ;
 		api:viewer <#targetMemberViewer> ;
 		api:defaultViewer <#targetMemberViewer> ] .
 

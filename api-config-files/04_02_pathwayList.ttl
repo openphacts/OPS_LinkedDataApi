@@ -58,19 +58,7 @@
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways" ;
                 api:exampleRequestPath "/pathways?pathway_organism=Homo%20sapiens" ;
-	        api:selector [
-        	        api:where
-"GRAPH <http://www.wikipathways.org> {
-        ?item a wp:Pathway ;
-                dc:title ?title ;
-                wp:organism ?organism_uri ;
-                foaf:page ?page ;
-                dc:identifier ?identifier .
-        ?organism_uri rdfs:label ?organism .
-        OPTIONAL { ?item dcterms:description ?description }
-        OPTIONAL { ?item wp:pathwayOntology ?ontology }
-}" ;
-	        ] ;
+	        api:selector <#pathwayListViewer> ;
 		api:viewer <#pathwayListViewer> ;
 		api:defaultViewer <#pathwayListViewer> . ] .
 

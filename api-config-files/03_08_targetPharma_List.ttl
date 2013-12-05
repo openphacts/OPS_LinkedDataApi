@@ -194,32 +194,7 @@ _:type api:name "target_type" ;
 
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c";
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c&activity_type=Potency&activity_unit=nanomolar&maxEx-activity_value=10&minEx-activity_value=1&assay_organism=Mus%20musculus";
-	api:selector [
-		api:where 
-"GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?assay_uri chembl:hasTarget ?chembl_target_uri .
-	?assay_uri chembl:hasActivity ?item .
-	?item chembl:hasMolecule ?compound_chembl .
-        OPTIONAL { ?chembl_target_uri chembl:organismName ?target_organism }	
-        OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-        OPTIONAL { ?item chembl:standardType ?activity_type }
-        OPTIONAL { ?item chembl:standardRelation ?activity_relation }
-        OPTIONAL { ?item chembl:standardValue ?standard_value .
-        BIND (xsd:decimal(?standard_value) as ?activity_value)}
-        OPTIONAL { ?item chembl:standardUnits ?activity_unit }
-        OPTIONAL { ?item chembl:pChembl ?pChembl }
-}
-GRAPH <http://ops.rsc.org> {
-        ?compound_ocrs skos:exactMatch ?compound_chembl .
-        ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
-                cheminf:CHEMINF_000399 ?inchi_key;
-                cheminf:CHEMINF_000018 ?smiles .	
-}
-GRAPH <http://www.conceptwiki.org> {
-		?compound_cw skos:exactMatch ?compound_ocrs ;
-			skos:prefLabel ?compound_name
-}" ;
-	] ;
+	api:selector <#targetPharmacologyListViewer> ;
 	api:defaultViewer <#targetPharmacologyListViewer> .
 
 <#targetPharmacologyListViewer> a api:Viewer ;

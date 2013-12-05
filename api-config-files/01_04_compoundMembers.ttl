@@ -28,25 +28,7 @@
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:uriTemplate "/compound/members/pages?uri={uri}" ;
 		api:exampleRequestPath "/compound/members/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
-		api:selector [
-			api:where 
-"GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-	?child_node rdfs:subClassOf ?ops_item . 
-}
-GRAPH <http://www.ebi.ac.uk/chembl> { 
-	?item owl:sameAs ?chebi_compound . 
-}
-GRAPH <http://www.ebi.ac.uk/chebi> {
-	?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
-}
-GRAPH <http://ops.rsc.org> {
-        ?compound_ocrs skos:exactMatch ?item
-}
-GRAPH <http://www.conceptwiki.org> {
-        ?compound_cw skos:exactMatch ?compound_ocrs ;
-                skos:prefLabel ?compound_name .
-}" 
-		];
+		api:selector <#compoundMemberViewer> ;
 		api:viewer <#compoundMemberViewer> ;
 		api:defaultViewer <#compoundMemberViewer> ] .
 

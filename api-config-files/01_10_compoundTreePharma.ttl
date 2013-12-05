@@ -195,42 +195,7 @@ _:type api:name "target_type" ;
 	api:description "A page of items corresponding to acitivity values for a given Compound class. Currently only the ChEBI Ontology is supported." ;
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
-	api:selector [
-		api:where 
-"GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
-	?class rdfs:subClassOf ?ops_item
-}
-GRAPH <http://www.ebi.ac.uk/chebi> {
-	?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?class .
-}
-GRAPH <http://ops.rsc.org> {
-	?compound_ocrs skos:exactMatch ?compound_chembl .
-	?compound_ocrs cheminf:CHEMINF_000018 ?smiles ;
-		cheminf:CHEMINF_000396 ?inchi ;
-		cheminf:CHEMINF_000399 ?inchiKey .
-}
-GRAPH <http://www.conceptwiki.org> {
-	?compound_cw skos:exactMatch ?compound_ocrs ;
-		skos:prefLabel ?compound_name .
-}
-GRAPH <http://www.ebi.ac.uk/chembl> {
-	?item a chembl:Activity ;
-		chembl:hasMolecule ?compound_chembl ;
-		chembl:hasAssay ?assay_uri .
-	?compound_chembl owl:sameAs ?chebi_compound .
-	?assay_uri chembl:hasTarget ?target_uri .
-	?target_uri a ?target_type .
-	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-	OPTIONAL { ?target_uri dcterms:title ?target_name }
-	OPTIONAL { ?target_uri chembl:organismName ?target_organism }
-	OPTIONAL { ?item chembl:standardType ?activity_type }
-	OPTIONAL { ?item chembl:standardRelation ?activity_relation }
-	OPTIONAL { ?item chembl:standardValue ?std_value .
-	BIND(xsd:decimal(?std_value) as ?activity_value) }
-	OPTIONAL { ?item chembl:standardUnits ?activity_unit }
-	OPTIONAL { ?item chembl:pChembl ?pChembl }
-}" ;
-	] ;
+	api:selector <#compoundTreePharmaViewer> ;
 	api:defaultViewer <#compoundTreePharmaViewer> .
 
 <#compoundTreePharmaViewer> a api:Viewer ;

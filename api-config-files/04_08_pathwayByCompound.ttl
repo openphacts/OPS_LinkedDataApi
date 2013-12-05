@@ -58,25 +58,7 @@
 		api:uriTemplate "/pathways/byCompound?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways/byCompound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F83931753-9e3f-4e90-b104-e3bcd0b4d833" ;
-	        api:selector [
-        	        api:where
-"GRAPH <http://www.wikipathways.org> {
-        ?item a wp:Pathway ;
-                dc:title ?title ;
-                wp:organism ?organism_uri ;
-                foaf:page ?page ;
-                dc:identifier ?identifier .
-	?metabolite dcterms:isPartOf ?item ;
-                a wp:Metabolite ;
-                dc:identifier ?pw_uri .
-        ?organism_uri rdfs:label ?organism .
-        OPTIONAL { ?item dcterms:description ?description }
-        OPTIONAL { ?item wp:pathwayOntology ?ontology }
-}
-GRAPH <http://www.conceptwiki.org> {
-	?cw_uri skos:prefLabel ?prefLabel .
-}" .
-	        ] ;
+	        api:selector <#pathwayByCompoundViewer> ;
 		api:viewer <#pathwayByCompoundViewer> ;
 		api:defaultViewer <#pathwayByCompoundViewer> . ] .
 

@@ -58,25 +58,7 @@
 		api:uriTemplate "/pathways/byTarget?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways/byTarget?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2Fac1191aa-d28f-4102-94ec-0b67b40aeade" ;
-	        api:selector [
-        	        api:where
-"GRAPH <http://www.wikipathways.org> {
-        ?item a wp:Pathway ;
-                dc:title ?title ;
-                wp:organism ?organism_uri ;
-                foaf:page ?page ;
-                dc:identifier ?identifier .
-	?gene_product dcterms:isPartOf ?item ;
-                a wp:GeneProduct ;
-                dc:identifier ?pw_uri .
-        ?organism_uri rdfs:label ?organism .
-        OPTIONAL { ?item dcterms:description ?description }
-        OPTIONAL { ?item wp:pathwayOntology ?ontology }
-}
-GRAPH <http://www.conceptwiki.org> {
-	?cw_uri skos:prefLabel ?prefLabel .
-}" .
-	        ] ;
+	        api:selector <#pathwayByTargetViewer> ;
 		api:viewer <#pathwayByTargetViewer> ;
 		api:defaultViewer <#pathwayByTargetViewer> . ] .
 
