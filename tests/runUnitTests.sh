@@ -13,5 +13,5 @@ do
 		url=$1$line	
 	fi
 	#echo $url
-	curl -v -X GET "$url" >/dev/null
+	time curl -H 'Cache-Control: no-cache' -v -X GET "$url" >/dev/null
 done <unitTestRequests
