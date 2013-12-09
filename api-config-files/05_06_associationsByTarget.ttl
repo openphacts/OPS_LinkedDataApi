@@ -27,14 +27,14 @@
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
 		a api:ListEndpoint ;
-		api:name "Diseases for Target: List" ;
-		api:description "A list of diseases which correspond to {uri}.";
-		api:uriTemplate "/disease/byTarget?uri={uri}" ;
+		api:name "Associations for Target: List" ;
+		api:description "A list of disease-target associations which correspond to a target {uri}.";
+		api:uriTemplate "/disease/assoc/byTarget?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/disease/byTarget?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FQ9Y5Y9" ;
-	        api:selector <#diseaseByTargetViewer> ;
-		api:viewer <#diseaseByTargetViewer> ;
-		api:defaultViewer <#diseaseByTargetViewer> . ] .
+		api:exampleRequestPath "/disease/assoc/byTarget?uri=http%3A%2F%2Fpurl.uniprot.org%2Funiprot%2FQ9Y5Y9" ;
+	        api:selector <#assocByTargetViewer> ;
+		api:viewer <#assocByTargetViewer> ;
+		api:defaultViewer <#assocByTargetViewer> . ] .
 
 <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> api:label "ncit" .
 <http://semanticscience.org/resource/> api:label "sio" .
@@ -44,18 +44,18 @@
         api:value "A target URI. e.g.: http://purl.uniprot.org/uniprot/Q9Y5Y9" ;
         rdfs:range rdfs:Resource .
 
-<#diseaseByTargetViewer> a api:Viewer ;
-	api:name "diseaseByTargetViewer" ;
+<#assocByTargetViewer> a api:Viewer ;
+	api:name "assocByTargetViewer" ;
 	api:template 
-"?item foaf:name ?diseaseName ;
-	ops:diseaseClass ?diseaseClass ;
-	ops:forGene ?dg_gene_uri ;
-	rdfs:seeAlso ?bio2rdf_uri ;
-	void:inDataset ?diseaseDataset .
-?diseaseClass foaf:name ?diseaseClassName ;
-	void:inDataset ?diseaseClassDataset .
-?dg_gene_uri ops:encodes ?uniprot_target_uri ;
-	void:inDataset ?geneDataset .
+"?item ops:disease ?disease ;
+	ops:gene ?dg_gene_uri ;
+	rdf:type ?type ;
+	dcterms:description ?description ;
+	ops:associationPmid ?pubmed_id ;
+	ops:associationPrimarySource ?primarySource ;
+	void:inDataset ?assocDataset .
+?disease foaf:name ?diseaseName .
+?dg_gene_uri ops:encodes ?uniprot_target_uri .
 ?uniprot_target_uri skos:exactMatch ?cw_target_uri ;
 	void:inDataset <http://purl.uniprot.org> .
 ?cw_target_uri skos:prefLabel ?cw_prefLabel ;
@@ -69,17 +69,18 @@ GRAPH <http://purl.uniprot.org> {
 	?uniprot_target_uri uniprot:existence ?existence .
 }
 GRAPH <http://rdf.imim.es> {
-	?gene_disease_assoc sio:SIO_000628 ?dg_gene_uri .
+	?item sio:SIO_000628 ?dg_gene_uri .
 	?dg_gene_uri rdf:type ncit:C16612 ;
-		rdfs:label ?geneLabel ;
-		void:inDataset ?geneDataset .
+		rdfs:label ?geneLabel .
 
-	?item sio:SIO_000095 ?diseaseClass ;
-		foaf:name ?diseaseName ;
-		rdfs:seeAlso ?bio2rdf_uri ;
-		void:inDataset ?diseaseDataset .
+	?item rdf:type ?type .
+	?item sio:SIO_000253 ?primarySource .
+	
+	?item sio:SIO_000628 ?disease .
+	?disease foaf:name ?diseaseName .
 
-	?diseaseClass foaf:name ?diseaseClassName ;
-		void:inDataset ?diseaseClassDataset .
+	?item void:inDataset ?assocDataset .
 
+	OPTIONAL { ?item dcterms:description ?description .}
+	OPTIONAL { ?item sio:SIO_000772 ?pubmed_id . }	
 }" .
