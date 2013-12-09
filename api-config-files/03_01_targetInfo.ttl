@@ -1,0 +1,135 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+
+<#target> a api:API ;
+        rdfs:label "Target"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable <#input> ; 
+	api:dataset <http://www.conceptwiki.org> ;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
+	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:description "An API configuration to return information about targets" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Target Information" ;
+		api:description "Information about a single target.";
+
+		api:uriTemplate "/target?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/target?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F00059958-a045-4581-9dc5-e5a08bb0c291";
+		api:viewer <#targetViewer> ;
+		api:defaultViewer <#targetViewer> ] .
+
+<http://www.conceptwiki.org> api:label "ConceptWiki" .
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
+<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+
+<http://semanticscience.org/resource/> api:label "sio" .
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> api:label "drugbank" .
+<http://www.w3.org/2004/02/skos/core#> api:label "skos" .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ;
+	rdfs:range rdfs:Resource .
+
+<#targetViewer> a api:Viewer ;
+	api:name "targetViewer" ;
+	api:template 
+"?ops_item skos:exactMatch ?cw_target_uri ;
+	skos:exactMatch ?uniprot_target_uri ;
+	skos:exactMatch ?chembl_target_uri ;
+	skos:exactMatch ?db_target_uri .
+?cw_target_uri skos:prefLabel ?target_name ;
+	void:inDataset <http://www.conceptwiki.org> .
+?uniprot_target_uri uniprot:existence ?existence ;
+	uniprot:organism ?organism ;
+	uniprot:sequence ?sequence ;
+	uniprot:Function_Annotation ?function ;
+	ops:interactsWith ?inter_prot ;
+	uniprot:classifiedWith ?class ;
+	uniprot:alternativeName ?alt_name ;
+	uniprot:mass ?mass ;
+        ops:molecularWeight ?mass ; 
+	rdfs:seeAlso ?target_pdb ;
+	rdfs:seeAlso ?ppi ;
+        void:inDataset <http://purl.uniprot.org> .
+?inter_prot rdfs:label ?inter_label .
+?chembl_target_uri chembl:hasTargetComponent ?target_component ;
+	a ?target_type ;
+	rdfs:label ?synonym ;	
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?target_component dcterms:description ?description ;
+	skos:exactMatch ?cw_target ;
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
+?cw_target skos:prefLabel ?protein_name ;
+        void:inDataset <http://www.conceptwiki.org> .
+?db_target_uri drugbank:cellularLocation ?cellularLocation ;
+	drugbank:molecularWeight ?molecularWeight ;
+	drugbank:numberOfResidues ?numberOfResidues ;
+	drugbank:theoreticalPi ?theoreticalPi ; 
+        void:inDataset <http://linkedlifedata.com/resource/drugbank>.
+" ;
+	api:where "
+{
+	GRAPH <http://www.conceptwiki.org> {
+		?cw_target_uri skos:prefLabel ?target_name 
+	} 
+	GRAPH <http://purl.uniprot.org> {
+		{?uniprot_target_uri uniprot:existence ?existence .
+		?uniprot_target_uri uniprot:organism ?organism . 
+		?uniprot_target_uri uniprot:alternativeName/uniprot:fullName ?alt_name .}
+		UNION { ?uniprot_target_uri uniprot:annotation ?fun_uri .
+                        ?fun_uri a uniprot:Function_Annotation ;
+                        rdfs:comment ?function . }
+		UNION { ?uniprot_target_uri uniprot:sequence ?seq_uri .
+			?seq_uri rdf:value ?sequence ;
+				uniprot:mass ?mass . 
+			[] uniprot:sequenceFor ?uniprot_target_uri, 
+					?seq_uri}
+		UNION { ?intact1 owl:sameAs ?uniprot_target_uri .
+			[] uniprot:participant ?intact1, ?intact2 .
+			FILTER(?intact1!=?intact2)
+			?intact2 owl:sameAs ?inter_prot .
+			?inter_prot rdfs:label ?inter_label . }
+                UNION { ?uniprot_target_uri uniprot:classifiedWith ?class . }
+                UNION { ?uniprot_target_uri rdfs:seeAlso ?target_pdb .
+                        ?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
+                UNION { ?uniprot_target_uri rdfs:seeAlso ?ppi .
+                        ?ppi uniprot:database <http://purl.uniprot.org/database/IntAct> . }
+	} }
+UNION {
+         GRAPH <http://linkedlifedata.com/resource/drugbank> {
+                { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
+		UNION { ?db_target_uri drugbank:cellularLocation ?cellularLocation }
+		UNION { ?db_target_uri drugbank:theoreticalPi ?theoreticalPi }
+        }
+} 
+UNION {
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+		?chembl_target_uri a ?target_type .
+                ?chembl_target_uri rdfs:label ?synonym . 
+		?chembl_target_uri chembl:hasTargetComponent ?target_component . 
+		?target_component dcterms:description ?description .
+	}
+}
+".
+

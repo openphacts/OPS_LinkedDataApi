@@ -1,0 +1,110 @@
+@base <http://www.openphacts.org/api#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix goa: <http://www.semantic-systems-biology.org/ontology/rdf/GOA#> .
+
+<#target> a api:API ;
+	rdfs:label "Target"@en ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#input> ;
+        api:variable chembl:organismName ;
+	api:variable uniprot:organism ;
+	api:dataset <http://www.ebi.ac.uk/chembl> ;
+	api:dataset <http://purl.uniprot.org/enzyme/> ;
+        api:dataset <http://www.geneontology.org> ;
+	api:vocabulary rdfs: ;
+	api:vocabulary skos: ;
+	api:vocabulary uniprot: ;
+	api:vocabulary dcterms: ;
+	api:description "An API configuration to return information about targets." ;
+	api:endpoint [ 
+		a api:ListEndpoint ;
+		api:name "Target Class Members: List" ;
+		api:description "A list of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
+		api:itemTemplate "{uri}" ;
+		api:variable <http://purl.uniprot.org/enzyme> ;
+		api:variable <http://www.ebi.ac.uk/chembl/target> ;
+		api:variable <http://www.geneontology.org> ;
+		api:uriTemplate "/target/members/pages?uri={uri}" ;
+		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
+		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-&target_organism=Homo%20sapiens";
+		api:selector <#targetMemberViewer> ;
+		api:viewer <#targetMemberViewer> ;
+		api:defaultViewer <#targetMemberViewer> ] .
+
+<http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
+<http://purl.uniprot.org/enzyme/> api:label "Enzyme Classification" .
+<http://www.geneontology.org> api:name "Gene Ontology" .
+
+<http://www.ebi.ac.uk/chembl/target> api:name "chembl" .
+<http://purl.uniprot.org/enzyme> api:name "enzyme" .
+<http://www.geneontology.org> api:name "go" .
+
+chembl:organismName api:name "target_organism" ;
+	api:label "target_organism" ;
+	api:value "A literal organism in ChEMBL." ;
+	api:filterVariable "?item";
+	a rdf:Property .
+
+uniprot:organism api:name "target_organism_uri" ;
+        api:label "target_organism_uri" ;
+        api:value "An organism URI from Uniprot. e.g. http://purl.uniprot.org/taxonomy/386043" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ;
+        rdfs:range rdfs:Resource .
+
+<#targetMemberViewer> a api:Viewer ;
+	api:name "targetMemberViewer";
+	api:template 
+"?item skos:prefLabel ?chembl_name ;
+	chembl:targetOrganismName ?chembl_organism ;
+        skos:prefLabel ?uniprot_name ;
+	skos:prefLabel ?goa_name ;
+	rdf:type ?target_type ;
+	uniprot:organism ?uniprot_organism ;
+	void:inDataset ?dataset .";
+	api:where 
+"GRAPH ?g {
+        ?child_node rdfs:subClassOf ?ops_item .
+        FILTER ( isURI(?child_node) )
+        BIND (IF(?g = <http://purl.uniprot.org/enzyme/inference>, <http://purl.uniprot.org/enzyme> ,
+                IF(?g = <http://www.ebi.ac.uk/chembl/target/inference>, <http://www.ebi.ac.uk/chembl/target> ,
+                        IF(?g = <http://www.geneontology.org/inference>, <http://www.geneontology.org> , 'Error'))) AS ?g_short )
+}
+{ ?item obo:C ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:F ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:P ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
+        [] chembl:hasTarget ?item } 
+{ GRAPH <http://purl.uniprot.org> {
+	?item rdfs:label ?uniprot_name
+	OPTIONAL { ?item uniprot:organism ?uniprot_organism }
+} }
+UNION {
+GRAPH <http://www.ebi.ac.uk/chembl> {
+	?item dcterms:title ?chembl_name ;
+		a ?target_type .
+	OPTIONAL { ?item chembl:organismName ?chembl_organism }
+} }
+UNION {
+GRAPH <http://www.openphacts.org/goa> {
+	?item goa:description ?goa_name
+}
+}
+BIND ( IF (BOUND(?uniprot_name), <http://purl.uniprot.org>, 
+	IF (BOUND(?chembl_name),  <http://www.ebi.ac.uk/chembl>, <http://www.openphacts.org/goa> ) ) AS ?dataset )
+" .

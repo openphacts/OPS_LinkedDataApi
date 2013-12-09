@@ -1,0 +1,115 @@
+@base <http://www.openphacts.org/api> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix gc: <http://puelia-php.googlecode.com/svn/trunk/documents/config.ttl#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix chembl-ops: <http://www.openphacts.org/terms/chembl#> .
+@prefix qudt: <http://qudt.org/schema/qudt#> .
+
+<#filters> a api:API ;
+        rdfs:label "Pharmacology Filters"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+	api:dataset <http://www.ebi.ac.uk/chembl>;
+	api:vocabulary <http://semanticscience.org/resource/> ;
+	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
+	api:vocabulary <http://www.openphacts.org/api#> ;
+	api:vocabulary <http://qudt.org/schema/qudt#> ;
+	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
+	api:variable chembl:hasQUDT ;
+	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Millimolar> ;
+		api:variable <http://www.openphacts.org/units/Nanomolar> ;
+		api:variable <http://qudt.org/vocab/unit#Percent> ;
+		api:variable <http://www.openphacts.org/units/MilligramPerMilliliter> ;
+		api:variable <http://qudt.org/vocab/unit#MinuteTime> ;
+		api:variable <http://qudt.org/vocab/unit#Gram> ;
+		api:variable <http://www.openphacts.org/units/NanogramPerMilliliter> ;
+		api:variable <http://qudt.org/vocab/unit#Hour> ;
+		api:variable <http://www.openphacts.org/units/PicogramPerMilliliter> ;
+		api:variable <http://www.openphacts.org/units/Micromolar> ;
+		api:variable <http://www.openphacts.org/units/Molar> ;
+		api:variable <http://www.openphacts.org/units/MilligramPerDeciliter> ;
+		api:variable <http://qudt.org/vocab/unit#Day> ;
+		api:variable <http://qudt.org/vocab/unit#SecondTime> ;
+		api:variable <http://www.openphacts.org/units/Picomolar> ;
+		api:variable <http://qudt.org/vocab/unit#Centimeter> ;
+		api:variable <http://www.openphacts.org/units/GramPerLiter> ;
+		api:variable <http://qudt.org/vocab/unit#InternationalUnitPerLiter> ;
+		api:variable <http://qudt.org/vocab/unit#Kilogram> ;
+		api:variable <http://qudt.org/vocab/unit#DegreeCelsius> ;
+		api:variable <http://qudt.org/vocab/unit#MilliSecond> ;
+		api:variable <http://qudt.org/vocab/unit#Millimeter> ;
+		api:variable <http://qudt.org/vocab/unit#Micrometer> ;
+		api:variable <http://qudt.org/vocab/unit#Liter> ;
+		api:name "Activity Types: Count" ;
+		api:description "The number of activity types which have been normalised" ;
+		api:uriTemplate "/pharmacology/filters/activities/count" ;
+        	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
+		api:exampleRequestPath "/pharmacology/filters/activities/count";
+		api:viewer <#pharmacologyFiltersTypesCountViewer> ; 
+		api:defaultViewer <#pharmacologyFiltersTypesCountViewer> . ] .
+
+<http://www.openphacts.org/api#> api:label "ops" .
+<http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
+<http://qudt.org/schema/qudt#> api:label "qudt" .
+<http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
+<http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
+<http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
+<http://qudt.org/vocab/unit#Percent> api:name "percent" .
+<http://www.openphacts.org/units/MilligramPerMilliliter> api:name "milligram_per_milliliter" .
+<http://qudt.org/vocab/unit#MinuteTime> api:name "minute_time" .
+<http://qudt.org/vocab/unit#Gram> api:name "gram" .
+<http://www.openphacts.org/units/NanogramPerMilliliter> api:name "nanogram_per_milliliter" .
+<http://qudt.org/vocab/unit#Hour> api:name "hour" .
+<http://www.openphacts.org/units/PicogramPerMilliliter> api:name "picogram_per_milliliter" .
+<http://www.openphacts.org/units/Micromolar> api:name "micromolar" .
+<http://www.openphacts.org/units/Molar> api:name "molar" .
+<http://www.openphacts.org/units/MilligramPerDeciliter> api:name "milligram_per_deciliter" .
+<http://qudt.org/vocab/unit#Day> api:name "day" .
+<http://qudt.org/vocab/unit#SecondTime> api:name "second_time" .
+<http://www.openphacts.org/units/Picomolar> api:name "picomolar" .
+<http://qudt.org/vocab/unit#Centimeter> api:name "centimeter" .
+<http://www.openphacts.org/units/GramPerLiter> api:name "gram_per_liter" .
+<http://qudt.org/vocab/unit#InternationalUnitPerLiter> api:name "international_unit_per_liter" .
+<http://qudt.org/vocab/unit#Kilogram> api:name "kilogram" .
+<http://qudt.org/vocab/unit#DegreeCelsius> api:name "degree_celsius" .
+<http://qudt.org/vocab/unit#MilliSecond> api:name "milli_second" .
+<http://qudt.org/vocab/unit#Millimeter> api:name "millimeter" .
+<http://qudt.org/vocab/unit#Micrometer> api:name "micrometer" .
+<http://qudt.org/vocab/unit#Liter> api:name "liter" .
+
+
+chembl:hasQUDT api:name "activity_unit" ;
+        api:label "activity_unit" ;
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:filterVariable "?type";
+        a rdf:Property .
+
+<#pharmacologyFiltersTypesCountViewer> a api:Viewer ;
+	api:name "pharmacologyFiltersTypesCountViewer" ;
+	api:template 
+"<http://www.ebi.ac.uk/chembl> ops:activity_type_count ?count " ; 
+	api:where
+"{
+SELECT DISTINCT ?type_label COUNT(?type) AS ?count WHERE {
+GRAPH <http://www.openphacts.org/units> {
+        ?type rdfs:subClassOf chembl:Activity . 
+}
+} }" .

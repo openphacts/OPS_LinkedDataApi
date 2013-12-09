@@ -1,11 +1,18 @@
 echo '{
-  "basePath": "https://beta.openphacts.org/1.3/",
+  "basePath": "https://beta.openphacts.org/1.3",
   "apiVersion": "v1.3",
   "apis": [' 
+lastfile=`ls *.ttl | tail -1`
 for file in ./*.ttl
 do
 	echo '    {'
-	sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/' 
+	path=`sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/'`
+	if [[ "$path" == */units/* ]]
+	then
+		echo '"path": "/pharmacology/filters/units/{act_type}" ,'
+	else
+		echo $path
+	fi
 	echo '      "operations": [
         {
           "httpMethod": "GET",'
@@ -202,8 +209,13 @@ do
             }
           ]
         }
-      ]
-    },'
+      ]'
+	if [[ $file == *$lastfile* ]]
+	then
+		echo '    }'
+	else
+		echo '    },'
+	fi
 done
 echo '  ]
 }'
