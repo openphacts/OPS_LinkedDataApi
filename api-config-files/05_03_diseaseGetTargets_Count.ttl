@@ -18,7 +18,7 @@
 
 
 <#targetsByDisease> a api:API ;
-        rdfs:label "Target"@en ;
+        rdfs:label "Disease"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
@@ -28,7 +28,7 @@
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Targets for Disease: List" ;
+		api:name "Targets for Disease: Count" ;
 		api:description "A list of targets which correspond to the disease {uri}.";
 		api:uriTemplate "/disease/getTargets/count?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;

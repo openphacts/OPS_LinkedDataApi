@@ -59,8 +59,7 @@
 	void:inDataset ?diseaseDataset .
 ?diseaseClass foaf:name ?diseaseClassName ;	
 	void:inDataset ?diseaseClassDataset .
-?gene_uri rdfs:label ?geneLabel ;
-	ops:encodes ?dg_uniprot_uri ;
+?gene_uri ops:encodes ?dg_uniprot_uri ;
 	void:inDataset ?geneDataset .
 ";
 	api:where
