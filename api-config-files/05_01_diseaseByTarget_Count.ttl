@@ -59,19 +59,12 @@ GRAPH <http://purl.uniprot.org> {
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?dg_gene_uri .
 	?dg_gene_uri rdf:type ncit:C16612 ;
-		rdfs:label ?geneLabel ;
 		void:inDataset ?geneDataset .
 
-	?item sio:SIO_000095 ?diseaseClass ;
+	?gene_disease_assoc sio:SIO_000628 ?item .
+	?item 	rdf:type ncit:C7057 ;
 		foaf:name ?diseaseName ;
-		rdfs:seeAlso ?bio2rdf_uri ;
 		void:inDataset ?diseaseDataset .
 
-	?diseaseClass foaf:name ?diseaseClassName ;
-		void:inDataset ?diseaseClassDataset .
-
-	?gene_disease_assoc sio:SIO_000628 ?item ;
-		sio:SIO_000253 ?primarySource .
-	OPTIONAL { ?gene_disease_assoc sio:SIO_000772 ?pubmed_id . }	
 }
 }}" .

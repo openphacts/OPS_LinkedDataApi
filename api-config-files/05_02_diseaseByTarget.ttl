@@ -48,12 +48,8 @@
 	api:name "diseaseByTargetViewer" ;
 	api:template 
 "?item foaf:name ?diseaseName ;
-	ops:diseaseClass ?diseaseClass ;
 	ops:forGene ?dg_gene_uri ;
-	rdfs:seeAlso ?bio2rdf_uri ;
 	void:inDataset ?diseaseDataset .
-?diseaseClass foaf:name ?diseaseClassName ;
-	void:inDataset ?diseaseClassDataset .
 ?dg_gene_uri ops:encodes ?uniprot_target_uri ;
 	void:inDataset ?geneDataset .
 ?uniprot_target_uri skos:exactMatch ?cw_target_uri ;
@@ -71,15 +67,11 @@ GRAPH <http://purl.uniprot.org> {
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?dg_gene_uri .
 	?dg_gene_uri rdf:type ncit:C16612 ;
-		rdfs:label ?geneLabel ;
 		void:inDataset ?geneDataset .
 
-	?item sio:SIO_000095 ?diseaseClass ;
+	?gene_disease_assoc sio:SIO_000628 ?item .
+	?item 	rdf:type ncit:C7057 ;
 		foaf:name ?diseaseName ;
-		rdfs:seeAlso ?bio2rdf_uri ;
 		void:inDataset ?diseaseDataset .
-
-	?diseaseClass foaf:name ?diseaseClassName ;
-		void:inDataset ?diseaseClassDataset .
 
 }" .
