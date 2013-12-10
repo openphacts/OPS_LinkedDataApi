@@ -18,7 +18,7 @@
 
 <#diseaseByTarget> a api:API ;
         rdfs:label "Disease"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops2.few.vu.nl:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:dataset <http://rdf.imim.es> ;
@@ -49,13 +49,18 @@
 	api:template 
 "?item ops:disease ?disease ;
 	ops:gene ?dg_gene_uri ;
-	rdf:type ?type ;
+	ops:type ?type_label ;
 	dcterms:description ?description ;
-	ops:associationPmid ?pubmed_id ;
-	ops:associationPrimarySource ?primarySource ;
+	ops:pmid ?pubmed_id ;
+	ops:primarySource ?primarySource ;
 	void:inDataset ?assocDataset .
-?disease foaf:name ?diseaseName .
-?dg_gene_uri ops:encodes ?uniprot_target_uri .
+?disease foaf:name ?diseaseName ;
+	ops:diseaseClass ?diseaseClass ;
+	void:inDataset ?diseaseDataset .
+?diseaseClass foaf:name ?diseaseClassName ;	
+	void:inDataset ?diseaseClassDataset .
+?dg_gene_uri ops:encodes ?uniprot_target_uri ;
+	void:inDataset ?geneDataset .
 ?uniprot_target_uri skos:exactMatch ?cw_target_uri ;
 	void:inDataset <http://purl.uniprot.org> .
 ?cw_target_uri skos:prefLabel ?cw_prefLabel ;
@@ -71,13 +76,20 @@ GRAPH <http://purl.uniprot.org> {
 GRAPH <http://rdf.imim.es> {
 	?item sio:SIO_000628 ?dg_gene_uri .
 	?dg_gene_uri rdf:type ncit:C16612 ;
-		rdfs:label ?geneLabel .
+		void:inDataset ?geneDataset .
 
 	?item rdf:type ?type .
+	?type rdfs:label ?type_label .
+
 	?item sio:SIO_000253 ?primarySource .
 	
 	?item sio:SIO_000628 ?disease .
-	?disease foaf:name ?diseaseName .
+	?disease rdf:type ncit:C7057 ;
+		foaf:name ?diseaseName ;
+		sio:SIO_000095 ?diseaseClass ;
+		void:inDataset ?diseaseDataset .
+	?diseaseClass foaf:name ?diseaseClassName ;
+		void:inDataset ?diseaseClassDataset .
 
 	?item void:inDataset ?assocDataset .
 
