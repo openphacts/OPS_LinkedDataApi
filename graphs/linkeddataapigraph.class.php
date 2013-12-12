@@ -90,7 +90,7 @@ class LinkedDataApiGraph extends PueliaGraph {
         if(count($objects) > 1 OR $this->propertyIsMultiValued($propertyUri)){
             $returnArray = array();
             foreach($objects as $object){      
-                $val = $this->check_language_tag_and_map_RDF_value_to_JSON_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, &$resource);
+                $val = $this->check_language_tag_and_map_RDF_value_to_JSON_value($object, $propertyUri, $subjectUri, $parentUris, $jsonPropertyName, $resource);
                 if($val!==null) $returnArray[]=$val;
             }
             return $returnArray;
