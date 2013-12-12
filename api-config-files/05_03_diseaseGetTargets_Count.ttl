@@ -27,26 +27,14 @@
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
-		a api:IntermediateExpansionEndpoint ;
-		api:name "Targets for Disease: List" ;
+		a api:ItemEndpoint ;
+		api:name "Targets for Disease: Count" ;
 		api:description "A list of targets which correspond to the disease {uri}.";
-		api:uriTemplate "/disease/getTargets?uri={uri}" ;
+		api:uriTemplate "/disease/getTargets/count?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/disease/getTargets?uri=http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0004238" ;
-	        api:selector [
-        	api:where
-"GRAPH <http://rdf.imim.es> {
-	?gene_disease_assoc sio:SIO_000628 ?item .
-	?item a ncit:C16612 ;
-		void:inDataset ?geneDataset .
- 	
-	?ops_item foaf:name ?diseaseName ;
-		void:inDataset ?diseaseDataset .
-	?gene_disease_assoc sio:SIO_000628 ?ops_item .
-}" ;
-	        ] ;
-		api:viewer <#diseaseByTargetViewer> ;
-		api:defaultViewer <#diseaseByTargetViewer> . ] .
+		api:exampleRequestPath "/disease/getTargets/count?uri=http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0004238" ;
+		api:viewer <#diseaseGetTargetsCountViewer> ;
+		api:defaultViewer <#diseaseGetTargetsCountViewer> . ] .
 
 <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> api:label "ncit" .
 <http://semanticscience.org/resource/> api:label "sio" .
@@ -56,31 +44,18 @@
         api:value "A disease URI. e.g.: http://linkedlifedata.com/resource/umls/id/C0004238" ;
         rdfs:range rdfs:Resource .
 
-<#diseaseByTargetViewer> a api:Viewer ;
-	api:name "diseaseByTargetViewer" ;
+<#diseaseGetTargetsCountViewer> a api:Viewer ;
+	api:name "diseaseGetTargetsCountViewer" ;
 	api:template 
-"?ops_item foaf:name ?diseaseName ;
-	void:inDataset ?diseaseDataset .
-?item ops:forDisease ?ops_item ;
-	void:inDataset ?geneDataset .
-?uniprot_target_uri void:inDataset <http://purl.uniprot.org> .
-?cw_target_uri skos:prefLabel ?prefLabel ;
-	void:inDataset <http://www.conceptwiki.org> .
-";
+"?ops_item ops:targetCount ?count .";
 	api:where
-"GRAPH <http://purl.uniprot.org> {
-	?uniprot_target_uri uniprot:existence ?existence .
-} 
+"{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?item .
-	?item a ncit:C16612 .
-	?item void:inDataset ?geneDataset .
+	?item a ncit:C16612 ;
+		void:inDataset ?geneDataset .
  	
 	?ops_item foaf:name ?diseaseName ;
 		void:inDataset ?diseaseDataset .
 	?gene_disease_assoc sio:SIO_000628 ?ops_item .
-}
-OPTIONAL{
-GRAPH <http://www.conceptwiki.org> {
-	?cw_target_uri skos:prefLabel ?prefLabel .
-}}" .
+} } }" .

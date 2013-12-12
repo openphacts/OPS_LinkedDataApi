@@ -169,10 +169,7 @@ chembl:pChembl api:name "pChembl" ;
 ?cw_compound_uri skos:prefLabel ?cw_label ;
         void:inDataset <http://www.conceptwiki.org> . 
 ?class skos:prefLabel ?class_label ;
-	void:inDataset ?g .
-<http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
-<http://www.ebi.ac.uk/chembl> skos:prefLabel 'ChEMBL Target Hierarchy' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' . ";
+	void:inDataset ?g . ";
 	api:where 
 "	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?activity chembl:hasMolecule ?chembl_compound_uri ;
