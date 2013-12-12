@@ -45,7 +45,7 @@ class OpsIms {
            if (strpos($query, $variableName)!==false) {
                $variableInfoMap[$variableName] = array();
                if (strpos($input_uri, $pattern)!==false){
-                   $variableInfoMap[$variableName]['filter'] = " FILTER ({$variableName} = <{$input_uri}>) ";
+                   $variableInfoMap[$variableName]['filter'] = " VALUES {$variableName} {<{$input_uri}>} ";
                    //echo $filter;
                }
                else {
@@ -78,8 +78,8 @@ class OpsIms {
        curl_multi_close($multiHandle);
         
        foreach ($variableInfoMap AS $variableName => $info){
-           if (isset($info['filter']) AND $info['filter'] != " FILTER ( ") {
-               $output = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$variableName.")/s",
+           if (isset($info['filter']) ) {
+               $output = preg_replace("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$variableName.")/s",
                		"$1 {$info['filter']} $2",$output, 1);                          
            }
        }
@@ -120,7 +120,7 @@ class OpsIms {
            }
            else{//process handle
                foreach ($variableInfoMap AS $variableName => $varInfo){
-                   if ($varInfo['handle']==$info['handle']){
+                   if (isset($varInfo['handle']) && isset($info['handle']) && $varInfo['handle']==$info['handle']){
                        $this->handleResponse($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
                        break;
                    }
@@ -200,8 +200,8 @@ class OpsIms {
 		$rdf.=$response;
 		
 		$filter = $this->buildFilterFromMappings($graph, $uriList, $name, $expanded);		
-		if (isset($filter) AND $filter != " FILTER ( ") {
-		    $output['expandedQuery'] = preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$name.")/s",
+		if (isset($filter) ) {
+		    $output['expandedQuery'] = preg_replace("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$name.")/s",
 		    								"$1{$filter} $2",
 		    								$output['expandedQuery']);
 		}
@@ -221,16 +221,14 @@ class OpsIms {
   		}
   	}
   	if (count($expanded)>0){
-  		$filter = " FILTER ( ";
+  		$filter = " VALUES {$variableName} { ";
   		foreach ($expanded AS $mapping) {
-  			$filter.= "{$variableName} = <{$mapping}> ||";
+  			$filter.= "<{$mapping}> ";
   		}
-  		 
-  		$filter = substr($filter,0,strlen($filter)-3);
-  		$filter.= " )";
+  		$filter.= " }";
   	}
   	else{
-  		$filter = " FILTER ( {$variableName} = 'No mappings found' )" ;
+  		$filter = " VALUES {$variableName} {'No mappings found'}" ;
   	}
 
   	return $filter;
