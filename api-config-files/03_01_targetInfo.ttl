@@ -20,6 +20,7 @@
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
+	api:variable drugbank:drugType ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
@@ -31,7 +32,14 @@
 		a api:ItemEndpoint ;
 		api:name "Target Information" ;
 		api:description "Information about a single target.";
-
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/approved> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/biotech> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/experimental> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/illicit> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/investigational> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/nutraceutical> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/smallMolecule> ;
+		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/withdrawn> ;
 		api:uriTemplate "/target?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/target?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F00059958-a045-4581-9dc5-e5a08bb0c291";
@@ -46,10 +54,26 @@
 <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> api:label "drugbank" .
 <http://www.w3.org/2004/02/skos/core#> api:label "skos" .
 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/approved> api:name "approved" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/biotech> api:name "biotech" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/experimental> api:name "experimental" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/illicit> api:name "illicit" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/investigational> api:name "investigational" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/nutraceutical> api:name "nutraceutical" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/smallMolecule> api:name "smallMolecule" . 
+<http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/withdrawn> api:name "withdrawn" . 
+
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ;
 	rdfs:range rdfs:Resource .
+
+drugbank:drugType api:name "drug_type" ;
+	api:label "drug_type" ;
+	api:value "One of: 'approved', 'biotech', 'experimental', 'illicit', 'investigational', 'nutraceutical', 'smallMolecule', 'withdrawn'";
+	api:filterVariable "?drugType_uri" ;
+	rdfs:subPropertyOf api:graphFilter ; 
+	a rdf:Property .
 
 <#targetViewer> a api:Viewer ;
 	api:name "targetViewer" ;
@@ -86,7 +110,11 @@
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
 	drugbank:theoreticalPi ?theoreticalPi ; 
-        void:inDataset <http://linkedlifedata.com/resource/drugbank>.
+	ops:targetForDrug ?db_compound ;
+        void:inDataset <http://linkedlifedata.com/resource/drugbank> .
+?db_compound drugbank:genericName ?drug_name ;
+	drugbank:drugType ?drugType ;
+	void:inDataset <http://linkedlifedata.com/resource/drugbank> .
 " ;
 	api:where "
 {
@@ -121,6 +149,10 @@ UNION {
                 { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
 		UNION { ?db_target_uri drugbank:cellularLocation ?cellularLocation }
 		UNION { ?db_target_uri drugbank:theoreticalPi ?theoreticalPi }
+		UNION { ?db_compound drugbank:target ?db_target_uri ;
+				drugbank:genericName ?drug_name ;
+				drugbank:drugType ?drugType_uri .
+			?drugType_uri rdfs:label ?drugType }
         }
 } 
 UNION {

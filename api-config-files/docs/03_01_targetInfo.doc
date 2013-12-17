@@ -30,4 +30,8 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:targetForDrug ?db_compound </span> ; 
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span> .
+?db_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span> .

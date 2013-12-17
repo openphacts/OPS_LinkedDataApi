@@ -85,88 +85,6 @@
       ]
     },
     {
-"path": "/compound/batch" ,
-      "operations": [
-        {
-          "httpMethod": "GET",
-          "summary":  "Compound Information: Batch" ,
-          "description":  "Information about compound provided in a list sperated by '|'.<br><hr><br>Response template: <br><br><hr><br>  dummy<br> ",
-          "group": "Compound" ,
-          "parameters": [
-            {
-              "name":  "uri_list" ,
-              "description":  "A list of compound URIs. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ,
-              "dataType": "string",
-              "required": true,
-              "paramType": "query"
-            },
-            {
-              "name": "app_id",
-              "description": "Your access application id",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_ids"
-            },
-            {
-              "name": "app_key",
-              "description": "Your access application key",
-              "dataType": "string",
-              "paramType": "query",
-              "threescale_name": "app_keys"
-            },
-            {
-              "name": "_lens",
-              "description": "The Lens name",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_format",
-              "description": "The desired result format.",
-              "allowableValues": {
-                "values": [
-                  "json",
-                  "tsv",
-                  "ttl",
-                  "xml",
-                  "rdf",
-                  "rdfjson",
-                  "html"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            },
-            {
-              "name": "_callback",
-              "description": "For JSONP",
-              "dataType": "string",
-              "paramType": "query"
-            },
-            {
-              "name": "_metadata",
-              "description": "Additional metadata to be included with response.",
-              "allowableValues": {
-                "values": [
-                  "execution",
-                  "site",
-                  "formats",
-                  "views",
-                  "all"
-                ],
-                "valueType": "LIST"
-              },
-              "dataType": "string",
-              "required": false,
-              "paramType": "query"
-            }
-          ]
-        }
-      ]
-    },
-    {
 "path": "/compound/members/count" ,
       "operations": [
         {
@@ -2149,7 +2067,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Information" ,
-          "description":  "Information about a single target.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?uniprot_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_target_uri </span> .<br> ?cw_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:existence ?existence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:interactsWith ?inter_prot </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:alternativeName ?alt_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?ppi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?inter_prot <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?inter_label </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?target_component </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?synonym </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_component <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?db_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:cellularLocation ?cellularLocation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
+          "description":  "Information about a single target.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?uniprot_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?db_target_uri </span> .<br> ?cw_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:existence ?existence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:interactsWith ?inter_prot </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:alternativeName ?alt_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?ppi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?inter_prot <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?inter_label </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?target_component </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?synonym </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_component <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?db_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:cellularLocation ?cellularLocation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:targetForDrug ?db_compound </span> ; <br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ?db_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -2172,6 +2090,12 @@
               "dataType": "string",
               "paramType": "query",
               "threescale_name": "app_keys"
+            },
+            {
+              "name":  "drug_type" ,
+              "description":  "One of: 'approved', 'biotech', 'experimental', 'illicit', 'investigational', 'nutraceutical', 'smallMolecule', 'withdrawn'" ,
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name": "_lens",
