@@ -222,6 +222,8 @@ SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
                         {?uniprot obo:F ?class} UNION
                         {?uniprot obo:P ?class}
                 }}
+	}
+	GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?assay_uri chembl:hasTarget ?target_chembl ;
                         chembl:hasActivity ?item .
                 ?item chembl:hasMolecule ?compound_chembl .
