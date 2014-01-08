@@ -102,7 +102,7 @@ function queryStringToParams($query){
     $params = array();
     foreach($pairs as $pair){
         if($tuple = explode('=', $pair) AND isset($tuple[1])){
-            $params[urldecode($tuple[0])]=urldecode($tuple[1]);
+            $params[urldecode($tuple[0])]=trim(urldecode($tuple[1]));
         }
     }
     return $params;
