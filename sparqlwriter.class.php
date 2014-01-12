@@ -253,8 +253,8 @@ class SparqlWriter {
 	    $lens_uri = $this->_request->getParam('_lens');
             $ops_uri = $this->_request->getParam('uri');
             $sparql = str_replace('?ops_item', '<'.$ops_uri.'>', $sparql);
-            $ims = new OpsIms();
-	    $sparql = $ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri, $lens_uri);
+            //$ims = new OpsIms();
+	    //$sparql = $ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri, $lens_uri);
 	    $filterGraph = $this->getFilterGraph();
 	    if (!empty($filterGraph)) {
 	    	foreach ($filterGraph as $sparqlVar => $filterClause) {
@@ -266,7 +266,9 @@ class SparqlWriter {
 			}
 		}
 	    }
-	    $sparql = preg_replace("/\*#\*/","}",$sparql);
+	    $ims = new OpsIms();
+            $sparql = $ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri, $lens_uri);
+	    //$sparql = preg_replace("/\*#\*/","}",$sparql);
             $formatter = new VirtuosoFormatter();
             #	    echo $formatter->formatQuery($ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri));
             return $formatter->formatQuery($sparql);
@@ -591,7 +593,7 @@ _SPARQL_;
                		}
             	}
 	    }
-            $query = preg_replace("/\*#\*/","}",$query);
+            //$query = preg_replace("/\*#\*/","}",$query);
 
             $ims = new OpsIms();
             return $ims->expandBatchQuery($query, $uriList, $this->_request->getParam('_lens'));
@@ -628,7 +630,7 @@ _SPARQL_;
                 	}
             	    }
 		}
-            	$query = preg_replace("/\*#\*/","}",$query);
+            	//$query = preg_replace("/\*#\*/","}",$query);
             }
             else {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
@@ -643,7 +645,7 @@ _SPARQL_;
                         }
                     }
 		}
-                $query = preg_replace("/\*#\*/","}",$query);
+                //$query = preg_replace("/\*#\*/","}",$query);
             }
 
             $ims = new OpsIms();
@@ -673,7 +675,7 @@ _SPARQL_;
                 	}
             	}
 	    }
-            $query = preg_replace("/\*#\*/","}",$query);
+            //$query = preg_replace("/\*#\*/","}",$query);
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if (strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
@@ -697,7 +699,7 @@ _SPARQL_;
                     	}
                     }
 		}
-                $query = preg_replace("/\*#\*/","}",$query);
+                //$query = preg_replace("/\*#\*/","}",$query);
 		$ims = new OpsIms();
                 $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             }

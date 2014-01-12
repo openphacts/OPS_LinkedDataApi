@@ -83,8 +83,7 @@ class OpsIms {
                		"$1 {$info['filter']} $2",$output, 1);                          
            }
        }
-      
-       
+       $output = preg_replace("/\*#\*/","}",$output);
        return $output;
    }
    
@@ -142,7 +141,7 @@ class OpsIms {
    
    private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
        $output = $query ;
-       
+       $output = preg_replace("/\*#\*/","}",$output);
        $url = IMS_EXPAND_ENDPOINT;
        $url .= urlencode($query) ;
        $params=substr($params, 2);
