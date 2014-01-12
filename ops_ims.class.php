@@ -44,11 +44,11 @@ class OpsIms {
        foreach ($this->IMS_variables AS $variableName => $pattern ){
            if (strpos($query, $variableName)!==false) {
                $variableInfoMap[$variableName] = array();
-               /*if (strpos($input_uri, $pattern)!==false){
+               if (strpos($input_uri, $pattern)!==false AND strpos(substr($input_uri, strpos($input_uri, $pattern) + strlen($pattern)),'/') === false ){
                    $variableInfoMap[$variableName]['filter'] = " VALUES {$variableName} {<{$input_uri}>} ";
                    //echo $filter;
                }
-               else {*/
+               else {
                    $url = IMS_MAP_ENDPOINT;
                    $url .= '?rdfFormat=RDF/XML';
                    $url .= "&targetUriPattern={$pattern}";
@@ -61,7 +61,7 @@ class OpsIms {
                    }
        
                    $url .= '&Uri='.urlencode($input_uri);
-                   
+		   //echo $url."\n";                   
                    $variableInfoMap[$variableName]['url']=$url;
                    
                    $ch = curl_init();
@@ -70,7 +70,7 @@ class OpsIms {
                    curl_setopt($ch, CURLOPT_URL, $url);
                    $variableInfoMap[$variableName]['handle'] = $ch;
                    curl_multi_add_handle($multiHandle, $ch);
-               //}
+               }
            }
        }
        
