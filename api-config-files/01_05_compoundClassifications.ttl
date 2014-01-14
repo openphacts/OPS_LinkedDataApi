@@ -51,7 +51,7 @@ _:hierarchy api:name "tree" ;
 
 <#input> api:name "uri" ;
         api:label "uri";
-        api:value "A compound URI.  e.g.: http://ops.rsc.org/OPS6958" ;
+        api:value "A compound URI.  e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ;
         rdfs:range rdfs:Resource .
 
 <#compoundClassificationsViewer> a api:Viewer ;
