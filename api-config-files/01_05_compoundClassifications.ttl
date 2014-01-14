@@ -31,7 +31,7 @@
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:variable <http://www.geneontology.org> ;
 		api:uriTemplate "/compound/classifications?uri={uri}" ;
-		api:exampleRequestPath "/compound/classifications?uri=http%3A%2F%2Fops.rsc-us.org%2FOPS6958" ;
+		api:exampleRequestPath "/compound/classifications?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ;
                 api:exampleRequestPath "/compound/classifications?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_15904&tree=go" ;
 		api:viewer <#compoundClassificationsViewer> ;
 		api:defaultViewer <#compoundClassificationsViewer> ] .
