@@ -1,6 +1,0 @@
-?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;
-	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:diseaseClass ?diseaseClass </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?bio2rdf_uri </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .
-?diseaseClass <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseClassName </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseClassDataset </span> .
