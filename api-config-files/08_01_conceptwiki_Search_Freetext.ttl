@@ -20,7 +20,7 @@
 		api:description "A set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
 		
 		api:uriTemplate "/search/freetext?q={q}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search?q={q}" ;
+		api:externalRequestTemplate "http://ops-ims-13:8081/web-ws/concept/search?q={q}" ;
 		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;
 		api:exampleRequestPath "/search/freetext?q=water&limit=15" ;
 		api:viewer <#externalResponseViewer> ;
