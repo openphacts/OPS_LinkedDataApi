@@ -79,6 +79,6 @@ OPTIONAL {
 	?root_node rdfs:label ?label 
 }
 OPTIONAL { 
-	?root_node uniprot:name ?name 
+	?root_node skos:prefLabel ?name 
 }
 " .

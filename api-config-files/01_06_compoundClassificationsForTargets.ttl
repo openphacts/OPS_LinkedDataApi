@@ -182,7 +182,7 @@ chembl:pChembl api:name "pChembl" ;
 	?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo:C|chembl:hasTargetComponent/skos:exactMatch/obo:F|chembl:hasTargetComponent/skos:exactMatch/obo:P ?class
 	{ GRAPH ?g {
 		{ ?class rdfs:label ?class_label } UNION
-		{ ?class uniprot:name ?class_label }
+		{ ?class skos:prefLabel ?class_label }
 	}
 	FILTER (?g = <http://purl.uniprot.org/enzyme> || ?g = <http://www.ebi.ac.uk/chembl> || ?g = <http://www.geneontology.org>)
 	}" 

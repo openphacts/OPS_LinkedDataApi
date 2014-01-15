@@ -76,8 +76,8 @@ SELECT DISTINCT ?parent_node ?g_short WHERE {
 }
 }
 OPTIONAL { { ?ops_item rdfs:label ?label }
-UNION { ?ops_item uniprot:name ?label }
+UNION { ?ops_item skos:prefLabel ?label }
 }
 OPTIONAL { ?parent_node rdfs:label ?parent_label }
-OPTIONAL { ?parent_node uniprot:name ?parent_name }
+OPTIONAL { ?parent_node skos:prefLabel ?parent_name }
 " .
