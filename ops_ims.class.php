@@ -13,6 +13,18 @@ class OpsIms {
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
     );
     
+    var $IMS_batch_variables = array(
+            '?batch_chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
+            '?batch_chembl_compound_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/molecule/' ,
+            '?batch_uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
+            '?batch_cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
+            '?batch_cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
+            '?batch_ocrs_compound_uri'=>'http://ops.rsc.org/' ,
+            '?batch_db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
+            '?batch_db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
+            '?batch_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
+    );
+    
     var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
@@ -169,7 +181,7 @@ class OpsIms {
 	$rdf = "";
 	$output['expandedQuery']=$query;
 	$output['imsRDF']=$rdf;
-	foreach ($this->IMS_variables AS $name => $pattern) {
+	foreach ($this->IMS_batch_variables AS $name => $pattern) {
 	    if (strpos($query, $name)!==false){
 		$expanded = array();
 		$url = IMS_MAP_ENDPOINT;

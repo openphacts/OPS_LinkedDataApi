@@ -63,13 +63,13 @@
 	void:inDataset ?diseaseDataset .
 ?item ops:forDisease ?ops_item ;
 	void:inDataset ?geneDataset .
-?uniprot_target_uri void:inDataset <http://purl.uniprot.org> .
-?cw_target_uri skos:prefLabel ?prefLabel ;
+?batch_uniprot_target_uri void:inDataset <http://purl.uniprot.org> .
+?batch_cw_target_uri skos:prefLabel ?prefLabel ;
 	void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where
 "GRAPH <http://purl.uniprot.org> {
-	?uniprot_target_uri uniprot:existence ?existence .
+	?batch_uniprot_target_uri uniprot:existence ?existence .
 } 
 GRAPH <http://rdf.imim.es> {
 	?gene_disease_assoc sio:SIO_000628 ?item .
@@ -82,5 +82,5 @@ GRAPH <http://rdf.imim.es> {
 }
 OPTIONAL{
 GRAPH <http://www.conceptwiki.org> {
-	?cw_target_uri skos:prefLabel ?prefLabel .
+	?batch_cw_target_uri skos:prefLabel ?prefLabel .
 }}" .

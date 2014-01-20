@@ -243,10 +243,10 @@ class SparqlWriter {
             $limit = $this->getLimit();
             $expansionVariable = $this->getConfigGraph()->getExpansionVariable();
             if (!isset($expansionVariable) OR !strcmp($expansionVariable, "item")){
-                $expansionVariable='';
+                $projectionVariable='';
             }
             else{
-                $expansionVariable='?'.$expansionVariable;
+                $projectionVariable='?'.$expansionVariable;
             }
             
             $offset = $this->getOffset();
@@ -254,7 +254,7 @@ class SparqlWriter {
             if (empty($orderBy['orderBy']) AND stristr($template,'ORDER BY')===FALSE) {
                 $orderBy['orderBy']='ORDER BY ?item';
             }
-            $sparql= "SELECT DISTINCT ?item {$expansionVariable} WHERE {" .  "{$template} } {$orderBy['orderBy']}";
+            $sparql= "SELECT DISTINCT ?item {$projectionVariable} WHERE {" .  "{$template} } {$orderBy['orderBy']}";
             if (strcasecmp($limit,"all")!==0) {
                 $sparql.="  LIMIT {$limit} OFFSET {$offset}";
             }
@@ -588,12 +588,15 @@ _SPARQL_;
     }
 
     function getViewQueryForBatchUriList($uriList, $viewerUri) {
+        $ims = new OpsIms();
+        
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
                 AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }");
 
             if ($ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $query);
+                $query = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             }
             $filterGraph = $this->getFilterGraph();
             if (!empty($filterGraph)) {
@@ -611,7 +614,7 @@ _SPARQL_;
             }
             //$query = preg_replace("/\*#\*/","}",$query);
 
-            $ims = new OpsIms();
+            
             return $ims->expandBatchQuery($query, $uriList, $this->_request->getParam('_lens'));
         }
 

@@ -80,7 +80,7 @@ class MultipleExpansionViewer implements Viewer {
 	    if (count($itemMap)> 1){//
 	        $expansionVariable = '';
 	        foreach (array_keys($itemMap) as $key){
-	            if (strcmp(key, 'item')){
+	            if (strcmp($key, 'item')){
 	                $expansionVariable = $key;
 	            }
 	        }
