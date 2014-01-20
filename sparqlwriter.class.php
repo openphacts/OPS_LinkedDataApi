@@ -242,7 +242,7 @@ class SparqlWriter {
         if($template = $this->getConfigGraph()->getSelectWhere()){
             $limit = $this->getLimit();
             $expansionVariable = $this->getConfigGraph()->getExpansionVariable();
-            if (!strcmp($expansionVariable, "item")){
+            if (!isset($expansionVariable) OR !strcmp($expansionVariable, "item")){
                 $expansionVariable='';
             }
             else{
