@@ -18,10 +18,12 @@ class SparqlSelector implements Selector{
 		$this->SparqlEndpoint = $SparqlEndpoint;
 	}
 	
-	function getItemList(){
-		$list = array();
+	function getItemMap(){
+		$itemMap = array();
+		$itemMap['item'] = array();
 		try {
-			$this->selectQuery = $this->SparqlWriter->getSelectQueryForUriList();
+		    $responsePair = $this->SparqlWriter->getSelectQueryForUriList();
+			$this->selectQuery = $responsePair['query'];
 			if(LOG_SELECT_QUERIES){
 				logSelectQuery($this->Request, $this->selectQuery);
 			}
@@ -46,9 +48,17 @@ class SparqlSelector implements Selector{
 			if (empty($results)){//throw exception
 				throw new EmptyResponseException("The selector did not find data in the triple store");
 			}
-			else {
+			else {		    
+			    $expansionVariable = $responsePair['expansionVariable'];
+			    if (!empty($expansionVariable)){
+			        $itemMap[$expansionVariable] = array();
+			    }
+			    
 				foreach($results as $row){
-					if(isset($row['item'])) $list[]=$row['item']['value'];
+					if(isset($row['item'])) $itemMap['item'][]=$row['item']['value'];
+					if (!empty($expansionVariable) && isset($row[$expansionVariable])){
+					    $itemMap[$expansionVariable][] = $row[$expansionVariable]['value'];
+					}
 				}
 			}
 
@@ -57,7 +67,7 @@ class SparqlSelector implements Selector{
 			throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
 		}
 
-		return $list;
+		return $itemMap;
 	}
 	
 	public function getSelectQuery(){

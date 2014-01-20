@@ -11,18 +11,19 @@ class RequestSelector implements Selector{
 		$this->Request = $Request;
 	}
 	
-	public function getItemList(){
-		$list=array();
+	public function getItemMap(){
+		$itemMap=array();
+		$itemMap['item'] = array();
 		foreach($this->Request->getUnreservedParams() as $k => $v){
 			if ($k = 'uri_list') {
 				$uri = strtok($v, '|');
 				while ($uri !== false) {
-					$list[]=$uri;
+					$itemMap['item'][]=$uri;
 					$uri = strtok('|');
 				}
 			}
 		}
-		return $list;
+		return $itemMap;
 	}
 	
 	public function getSelectQuery(){

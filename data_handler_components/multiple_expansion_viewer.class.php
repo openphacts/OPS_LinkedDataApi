@@ -30,18 +30,20 @@ class MultipleExpansionViewer implements Viewer {
 		}
 	}
 	
-	public function applyViewerAndBuildDataGraph($itemList){
+	public function applyViewerAndBuildDataGraph($itemMap){
 		logDebug("Viewer URI is $this->viewerUri");
-		$array  = $this->SparqlWriter->getViewQueryForBatchUriList($itemList, $this->viewerUri);
-		//TODO should do a check on array
-		$this->viewQuery  = $array['expandedQuery'];
+		$itemList = $this->getInputListForExpansion($itemMap);
+		
+		$expansionData  = $this->SparqlWriter->getViewQueryForBatchUriList($itemList, $this->viewerUri);
+
+		$this->viewQuery  = $expansionData['expandedQuery'];
 		if (LOG_VIEW_QUERIES) {
 			logViewQuery( $this->Request, $this->viewQuery);
 		}
 		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
 		
 		if($response->is_success()){
-			$this->buildDataGraphFromIMSAndTripleStore($response, $array['imsRDF'], $itemList);
+			$this->buildDataGraphFromIMSAndTripleStore($response, $expansionData['imsRDF'], $itemMap['item']);
 		}
 		else {
 			logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
@@ -72,6 +74,28 @@ class MultipleExpansionViewer implements Viewer {
 		else{
 		    $this->pageUri = $this->addListMetadataToDataGraph($list);
 		}
+	}
+	
+	private function getInputListForExpansion($itemMap){
+	    if (count($itemMap)> 1){//
+	        $expansionVariable = '';
+	        foreach (array_keys($itemMap) as $key){
+	            if (strcmp(key, 'item')){
+	                $expansionVariable = $key;
+	            }
+	        }
+	    
+	        if (empty($expansionVariable)){
+	            throw new ErrorException("Expansion Variable not found although > 1 items in the itemMap");
+	        }
+	    
+	        $inputList = $itemMap[$expansionVariable];
+	    }
+	    else{
+	        $inputList = $itemMap['item'];
+	    }
+	    
+	    return $inputList;
 	}
 	
 	protected function addListMetadataToDataGraph($list){

@@ -212,25 +212,25 @@ class OpsIms {
   }
   
   private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
-  	foreach ($uriList AS $input_uri){
-  		foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
-  			foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
-  				$expanded[] = $mapping["value"];
-  			}
-  		}
-  	}
-  	if (count($expanded)>0){
-  		$filter = " VALUES {$variableName} { ";
-  		foreach ($expanded AS $mapping) {
-  			$filter.= "<{$mapping}> ";
-  		}
-  		$filter.= " }";
-  	}
-  	else{
-  		$filter = " VALUES {$variableName} {'No mappings found'}" ;
-  	}
+      foreach ($uriList AS $input_uri){
+          foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
+              foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
+                  $expanded[] = $mapping["value"];
+              }
+          }
+      }
+      if (count($expanded)>0){
+          $filter = " VALUES {$variableName} { ";
+          foreach ($expanded AS $mapping) {
+              $filter.= "<{$mapping}> ";
+          }
+          $filter.= " }";
+      }
+      else{
+          $filter = " VALUES {$variableName} {'No mappings found'}" ;
+      }
 
-  	return $filter;
+      return $filter;
   }
   
   private function getResponse($url, $mimetype){

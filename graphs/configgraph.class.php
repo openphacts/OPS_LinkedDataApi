@@ -172,7 +172,7 @@ class ConfigGraph extends PueliaGraph {
         foreach($api_subjects as $s){
             $configBase = $this->get_first_literal($s, API.'base');
             if(!empty($configBase)){
-                $requestUri = rtrim($requestUri, '/');
+                $requestUri = rtrim($requestUri, '/');                                                                                                                                                        
                 $configBase = rtrim($configBase, '/');
                 if(strpos($requestUri, $configBase)===0){
                     $this->apiUri = $s;
@@ -180,7 +180,13 @@ class ConfigGraph extends PueliaGraph {
                 }
             }
         }
-        return false;
+        return false;                                                                            
+    }
+    
+    function getExpansionVariable(){
+        $selector = $this->getSelectorUri();
+        $expansionVariable = $this->get_first_literal($selector, API.'expansionVariable');
+        return $expansionVariable;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     }
     
     function getApisWithoutBase(){
@@ -769,19 +775,6 @@ class ConfigGraph extends PueliaGraph {
 
         $endpointType = $this->get_first_resource($this->getEndpointUri(), RDF_TYPE);
         
-        /*TODO check with Antonis
-        if($types = $this->get_resource_triple_values($this->getEndpointUri(), RDF_TYPE)){
-            if(in_array(API.'ItemEndpoint', $types)){
-                return API.'ItemEndpoint';
-            } else if(in_array(API.'ListEndpoint', $types)){
-                return API.'ListEndpoint';
-            } else if(in_array(PUELIA.'SearchEndpoint', $types)){
-                return PUELIA.'SearchEndpoint';
-                #Antonis botch
-            } else if(in_array(API.'OPSListEndpoint', $types)){
-                return API.'OPSListEndpoint';
-            }
-        }*/
         if ($endpointType==null){
             $itemTemplate = $this->getEndpointItemTemplate();
             if(!empty($itemTemplate)){
