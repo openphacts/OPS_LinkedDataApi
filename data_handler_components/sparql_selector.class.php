@@ -50,13 +50,13 @@ class SparqlSelector implements Selector{
 			}
 			else {		    
 			    $expansionVariable = $responsePair['expansionVariable'];
-			    if (!empty($expansionVariable)){
+			    if (!empty($expansionVariable) && strcmp($expansionVariable, 'item')){
 			        $itemMap[$expansionVariable] = array();
 			    }
 			    
 				foreach($results as $row){
 					if(isset($row['item'])) $itemMap['item'][]=$row['item']['value'];
-					if (!empty($expansionVariable) && isset($row[$expansionVariable])){
+					if (!empty($expansionVariable) && isset($row[$expansionVariable]) && strcmp($expansionVariable, 'item')){
 					    $itemMap[$expansionVariable][] = $row[$expansionVariable]['value'];
 					}
 				}

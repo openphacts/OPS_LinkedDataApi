@@ -506,52 +506,52 @@ _SPARQL_;
     }
 
     private function getFilterGraphForGraphValue($param_value, $var_props, $ep_vars, &$filterGraph){
-	if (isset($filterGraph[$var_props['sparqlVar']])) {
-		$filterGraph[$var_props['sparqlVar']] .= "VALUES {$var_props['sparqlVar']} { <{$ep_vars[$param_value]['uri']}> }";
-	}
-	else {
-                $filterGraph[$var_props['sparqlVar']] = "VALUES {$var_props['sparqlVar']} { <{$ep_vars[$param_value]['uri']}> }";
-	}
+        if (isset($filterGraph[$var_props['sparqlVar']])) {
+            $filterGraph[$var_props['sparqlVar']] .= "VALUES {$var_props['sparqlVar']} { <{$ep_vars[$param_value]['uri']}> }";
+        }
+        else {
+            $filterGraph[$var_props['sparqlVar']] = "VALUES {$var_props['sparqlVar']} { <{$ep_vars[$param_value]['uri']}> }";
+        }
     }
     
     private function getFilterForBoundaryValue($var_props, $var_name, $param_value, $relation, &$filterGraph){
-    	$filterPredicate = $this->findSuperProperty($var_props['uri']);
-	if (isset($filterGraph[$var_props['sparqlVar']])) {
-    		$filterGraph[$var_props['sparqlVar']] .= "{ " . $var_props['sparqlVar'] . " <" . $filterPredicate . '> ?' . $var_name . " FILTER( ?" . $var_name . ' '.$relation.' ' . $param_value . ' ) *#*';
-	}
-	else {
-		$filterGraph[$var_props['sparqlVar']] = "{ " . $var_props['sparqlVar'] . " <" . $filterPredicate . '> ?' . $var_name . " FILTER( ?" . $var_name . ' '.$relation.' ' . $param_value . ' ) *#*';
-	}
+        $filterPredicate = $this->findSuperProperty($var_props['uri']);
+        if (isset($filterGraph[$var_props['sparqlVar']])) {
+            $filterGraph[$var_props['sparqlVar']] .= "{ " . $var_props['sparqlVar'] . " <" . $filterPredicate . '> ?' . $var_name . " FILTER( ?" . $var_name . ' '.$relation.' ' . $param_value . ' ) *#*';
+        }
+        else {
+            $filterGraph[$var_props['sparqlVar']] = "{ " . $var_props['sparqlVar'] . " <" . $filterPredicate . '> ?' . $var_name . " FILTER( ?" . $var_name . ' '.$relation.' ' . $param_value . ' ) *#*';
+        }
     }
     
     private function getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, &$filterGraph){
-    	$token = strtok($param_value,'|');
-    	$filter="{ " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> "' . $token  . '"' . "*#*";
-    	$token=strtok('|');
-    	while ($token != false){
-    		if (isset($ep_vars[$param_value]['uri'])) {
-    			$token = '<' . $ep_vars[$token]['uri'] . '>';
-    		}
-		elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
-                	$param_value = '<' . $param_value . '>';
-        	}
-    		else {
-    			if (is_numeric($token)) {
-    				$token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
-    			}
-    			else {
-    				$token = '"' . $token  . '"';
-    			}
-    		}
-    		$filter.="UNION { " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token  . "*#*";
-    		$token=strtok('|');
-    	}
-	if (isset($filterGraph[$var_props['sparqlVar']])) {
-		$filterGraph[$var_props['sparqlVar']].=$filter;
-	}
-	else {
-		$filterGraph[$var_props['sparqlVar']]=$filter;
-	}
+        $token = strtok($param_value,'|');
+        $filter="{ " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> "' . $token  . '"' . "*#*";
+        $token=strtok('|');
+        while ($token != false){
+            if (isset($ep_vars[$param_value]['uri'])) {
+                $token = '<' . $ep_vars[$token]['uri'] . '>';
+            }
+            elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
+                $param_value = '<' . $param_value . '>';
+            }
+            else {
+                if (is_numeric($token)) {
+                    $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+                }
+                else {
+                    $token = '"' . $token  . '"';
+                }
+            }
+            $filter.="UNION { " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token  . "*#*";
+            $token=strtok('|');
+        }
+        if (isset($filterGraph[$var_props['sparqlVar']])) {
+            $filterGraph[$var_props['sparqlVar']].=$filter;
+        }
+        else {
+            $filterGraph[$var_props['sparqlVar']]=$filter;
+        }
     }
 
     private function getFilterGraphForParamValue($param_value, $filterPredicate, $var_props, $ep_vars, &$filterGraph){
@@ -569,12 +569,12 @@ _SPARQL_;
                 $param_value = '"' . $param_value  . '"';
             }
         }
-	if (isset($filterGraph[$var_props['sparqlVar']])) {
-	        $filterGraph[$var_props['sparqlVar']] .= '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". *#*";
-	}
-	else {
-		$filterGraph[$var_props['sparqlVar']] = '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". *#*";
-	}
+        if (isset($filterGraph[$var_props['sparqlVar']])) {
+            $filterGraph[$var_props['sparqlVar']] .= '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". *#*";
+        }
+        else {
+            $filterGraph[$var_props['sparqlVar']] = '{ ' . $var_props['sparqlVar']  . '<' . $filterPredicate . '> ' . $param_value  . ". *#*";
+        }
     }
 
     private function findSuperProperty($variableURI){
@@ -587,7 +587,7 @@ _SPARQL_;
         return $current;
     }
 
-    function getViewQueryForBatchUriList($uriList, $viewerUri) {
+    function getViewQueryForBatchUriList($itemList, $viewerUri, $uriList=null) {
         $ims = new OpsIms();
         
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
@@ -599,23 +599,18 @@ _SPARQL_;
                 $query = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             }
             $filterGraph = $this->getFilterGraph();
-            if (!empty($filterGraph)) {
-                foreach ($filterGraph as $sparqlVar => $filterClause) {
-                    if (preg_match("/VALUES/", $filterClause)===1) {
-                        $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
-                    }
-                    else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
-                        $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                    }
-                    else {
-                        $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                    }
-                }
-            }
+            $query = $this->addFilterClause($filterGraph, $query);
             //$query = preg_replace("/\*#\*/","}",$query);
 
-            
-            return $ims->expandBatchQuery($query, $uriList, $this->_request->getParam('_lens'));
+            if (!empty($uriList)){//expand another variable besides ?item
+                if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
+                    $expandedQuery = $this->addItemsToExpandedQuery($query, $itemList);
+                }
+                return $ims->expandBatchQuery($expandedQuery, $uriList, $this->_request->getParam('_lens'));
+            }
+            else{
+                return $ims->expandBatchQuery($query, $itemList, $this->_request->getParam('_lens'));
+            }
         }
 
     }
@@ -639,50 +634,20 @@ _SPARQL_;
             elseif ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")== 0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
                 $filterGraph = $this->getFilterGraph();
-                if (!empty($filterGraph)) {
-                    foreach ($filterGraph as $sparqlVar => $filterClause) {
-                        if (preg_match("/VALUES/", $filterClause)===1) {
-                            $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
-                        }
-                        else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
-                            $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                        }
-                        else {
-                            $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                        }
-                    }
-                }
+                $query = $this->addFilterClause($filterGraph, $query);
                 //$query = preg_replace("/\*#\*/","}",$query);
             }
             else {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
                 $filterGraph = $this->getFilterGraph();
-                if (!empty($filterGraph)) {
-                    foreach ($filterGraph as $sparqlVar => $filterClause) {
-                        if (preg_match("/VALUES/", $filterClause)===1) {
-                            $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
-                        }
-                        else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
-                            $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                        }
-                        else {
-                            $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                        }
-                    }
-                }
+                $query = $this->addFilterClause($filterGraph, $query);
                 //$query = preg_replace("/\*#\*/","}",$query);
             }
 
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
-                $filterGraph = "VALUES ?item { ";
-                foreach($uriList as $uri) {
-                    $filterGraph .= " <{$uri}> ";
-                }
-                $filterGraph .= "}";
-                $expandedQuery = preg_replace("/(WHERE.*?\{)/s","$1
-                {$filterGraph}",$expandedQuery);
+                $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery);
             }
 
             $formatter = new VirtuosoFormatter();
@@ -690,46 +655,18 @@ _SPARQL_;
         } else if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)){
             $query = $this->addPrefixesToQuery("CONSTRUCT { {$template} } {$fromClause} WHERE { {$this->_config->getViewerWhere($viewerUri)}  }");
             $filterGraph = $this->getFilterGraph();
-            if (!empty($filterGraph)) {
-                foreach ($filterGraph as $sparqlVar => $filterClause) {
-                    if (preg_match("/VALUES/", $filterClause)===1) {
-                        $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
-                    }
-                    else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
-                        $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                    }
-                    else {
-                        $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                    }
-                }
-            }
+            $query = $this->addFilterClause($filterGraph, $query);
             //$query = preg_replace("/\*#\*/","}",$query);
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if (strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
-                $filterGraph = "VALUES ?item { ";
-                foreach($uriList as $uri) {
-                    $filterGraph .= " <{$uri}> ";
-                }
-                $filterGraph .= "}";
-                $expandedQuery = preg_replace("/(WHERE.*?\{)/s","$1
-                {$filterGraph}",$expandedQuery);
+                $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery);
             }
             elseif ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")== 0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
-                if (!empty($filterGraph)) {
-                    foreach ($filterGraph as $sparqlVar => $filterClause) {
-                        if (preg_match("/VALUES/", $filterClause)===1) {
-                            $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
-                        }
-                        else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
-                            $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                        }
-                        else {
-                            $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
-                        }
-                    }
-                }
+                
+                $query = $this->addFilterClause($filterGraph, $query);
+                
                 //$query = preg_replace("/\*#\*/","}",$query);
                 $ims = new OpsIms();
                 $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
@@ -800,6 +737,35 @@ _SPARQL_;
 
         }
 
+    }
+    
+    private function addFilterClause($filterGraph, $query){
+        if (!empty($filterGraph)) {
+            foreach ($filterGraph as $sparqlVar => $filterClause) {
+                if (preg_match("/VALUES/", $filterClause)===1) {
+                    $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
+                }
+                else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
+                    $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
+                }
+                else {
+                    $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
+                }
+            }
+        }
+        
+        return $query;
+    }
+    
+    private function addItemsToExpandedQuery($expandedQuery, $uriList){
+        $filterGraph = "VALUES ?item { ";
+        foreach($uriList as $uri) {
+            $filterGraph .= " <{$uri}> ";
+        }
+        $filterGraph .= "}";
+        $expandedQuery = preg_replace("/(WHERE.*?\{)/s", "$1 {$filterGraph}",$expandedQuery);
+    
+        return $expandedQuery;
     }
     
     private function getFromClause(){

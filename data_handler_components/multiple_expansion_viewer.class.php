@@ -34,7 +34,7 @@ class MultipleExpansionViewer implements Viewer {
 		logDebug("Viewer URI is $this->viewerUri");
 		$itemList = $this->getInputListForExpansion($itemMap);
 		
-		$expansionData  = $this->SparqlWriter->getViewQueryForBatchUriList($itemList, $this->viewerUri);
+		$expansionData  = $this->SparqlWriter->getViewQueryForBatchUriList($itemMap['item'], $this->viewerUri, $itemList);
 
 		$this->viewQuery  = $expansionData['expandedQuery'];
 		if (LOG_VIEW_QUERIES) {
@@ -77,22 +77,16 @@ class MultipleExpansionViewer implements Viewer {
 	}
 	
 	private function getInputListForExpansion($itemMap){
-	    if (count($itemMap)> 1){//
-	        $expansionVariable = '';
-	        foreach (array_keys($itemMap) as $key){
+	    if (count($itemMap)> 1){
+	        foreach ($itemMap as $key => $value){
 	            if (strcmp($key, 'item')){
-	                $expansionVariable = $key;
+	                $inputList = $value;
 	            }
 	        }
 	    
-	        if (empty($expansionVariable)){
+	        if (empty($inputList)){
 	            throw new ErrorException("Expansion Variable not found although > 1 items in the itemMap");
 	        }
-	    
-	        $inputList = $itemMap[$expansionVariable];
-	    }
-	    else{
-	        $inputList = $itemMap['item'];
 	    }
 	    
 	    return $inputList;
