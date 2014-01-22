@@ -592,15 +592,27 @@ _SPARQL_;
         
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
                 AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
-            $query = $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }");
+            
+            $ops_uri = $this->_request->getParam('uri');
+            
+            $limit = $this->getLimit();
+            if (strcasecmp($limit,"all")!==0 ) {
+                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " .  $whereGraph  . " }"));
+            }
+            else {
+                $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
+                $filterGraph = $this->getFilterGraph();
+                $query = $this->addFilterClause($filterGraph, $query);
+                $query = preg_replace("/\*#\*/","}",$query);
+            }           
 
-            if ($ops_uri = $this->_request->getParam('uri') AND !empty($ops_uri)){
+            if (!empty($ops_uri)){
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $query);
                 $query = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
-            }
-            $filterGraph = $this->getFilterGraph();
-            $query = $this->addFilterClause($filterGraph, $query);
-            //$query = preg_replace("/\*#\*/","}",$query);
+                logDebug("View query before filter: ".$query);
+            }     
+            
+            logDebug("View query after filter: ".$query);
 
             if (!empty($uriList)){//expand another variable besides ?item
                 if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
