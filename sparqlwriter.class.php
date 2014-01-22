@@ -659,7 +659,7 @@ _SPARQL_;
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
-                $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery);
+                $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery, $uriList);
             }
 
             $formatter = new VirtuosoFormatter();
@@ -672,7 +672,7 @@ _SPARQL_;
             $ims = new OpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if (strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
-                $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery);
+                $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery, $uriList);
             }
             elseif ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")== 0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
