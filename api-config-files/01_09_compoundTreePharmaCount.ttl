@@ -88,8 +88,8 @@
                 api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
                 api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
         	api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
-		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100";
+		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#compoundClassPharmaCountViewer> ; 
 		api:defaultViewer <#compoundClassPharmaCountViewer> . ] .
 
@@ -195,7 +195,7 @@ _:type api:name "target_type" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_100" ;
 	rdfs:range rdfs:Resource .
 
 <#compoundClassPharmaCountViewer> a api:Viewer ;
