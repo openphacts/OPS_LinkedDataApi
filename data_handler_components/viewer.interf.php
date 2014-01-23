@@ -3,7 +3,7 @@
 
 interface Viewer {
 	
-	public function applyViewerAndBuildDataGraph($itemList);
+	public function applyViewerAndBuildDataGraph($itemMap);
 	
 	public function getViewQuery() ;
 	

@@ -146,7 +146,7 @@ _:type api:name "target_type" ;
 	api:value "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ;
 	rdfs:range rdfs:Resource .
 
-<#targetPharmacologyListEndpoint> a api:ListEndpoint ;
+<#targetPharmacologyListEndpoint> a api:IntermediateExpansionEndpoint ;
 	api:uriTemplate "/target/pharmacology/pages?uri={uri}" ;
 	api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 	api:variable <http://www.openphacts.org/units/Millimolar> ;
@@ -194,7 +194,59 @@ _:type api:name "target_type" ;
 
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c";
 	api:exampleRequestPath "/target/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c&activity_type=Potency&activity_unit=nanomolar&maxEx-activity_value=10&minEx-activity_value=1&assay_organism=Mus%20musculus";
-	api:selector <#targetPharmacologyListViewer> ;
+	api:selector [
+		api:where "GRAPH <http://www.ebi.ac.uk/chembl> {
+        ?assay_uri chembl:hasTarget ?chembl_target_uri .
+        ?assay_uri chembl:hasActivity ?item .
+        ?item chembl:hasMolecule ?compound_chembl .
+        ?chembl_target_uri a ?target_type .
+	OPTIONAL { ?chembl_target_uri dcterms:title ?target_name_chembl }
+        OPTIONAL { ?chembl_target_uri chembl:organismName ?target_organism }
+	OPTIONAL { ?chembl_target_uri chembl:hasTargetComponent ?protein .
+                GRAPH <http://www.conceptwiki.org> {
+                        ?cw_target skos:exactMatch ?protein ;
+                                skos:prefLabel ?protein_name
+                }
+        }
+        OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+        OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+        OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
+	OPTIONAL { ?item chembl:publishedType ?published_type }
+        OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+        OPTIONAL { ?item chembl:publishedValue ?published_value }
+        OPTIONAL { ?item chembl:publishedUnits ?published_unit }
+        OPTIONAL { ?item chembl:standardType ?activity_type }
+	OPTIONAL { ?item chembl:standardRelation ?activity_relation }
+	OPTIONAL { ?item chembl:standardValue ?standard_value .
+	BIND (xsd:decimal(?standard_value) as ?activity_value)}
+	OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+	OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+	OPTIONAL { ?item chembl:pChembl ?pChembl }
+	OPTIONAL { ?item chembl:activityComment ?act_comment }
+        OPTIONAL { ?item chembl:hasDocument ?doc_uri .
+		OPTIONAL { ?doc_uri owl:sameAs ?doi }
+		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
+	}	
+}
+GRAPH <http://ops.rsc.org> {
+	?compound_ocrs skos:exactMatch ?compound_chembl .
+        ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                cheminf:CHEMINF_000399 ?inchi_key;
+                cheminf:CHEMINF_000018 ?smiles .
+	OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+		a cheminf:CHEMINF_000484 ;
+		qudt:numericValue ?molweight . }
+        OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+                a cheminf:CHEMINF_000367;
+                qudt:numericValue ?num_ro5_violations . }
+	
+}
+GRAPH <http://www.conceptwiki.org> {
+	?compound_cw skos:exactMatch ?compound_ocrs ;
+		skos:prefLabel ?compound_name .
+}" ;
+		api:expansionVariable "compound_chembl" ;
+] ;
 	api:defaultViewer <#targetPharmacologyListViewer> .
 
 <#targetPharmacologyListViewer> a api:Viewer ;
@@ -229,15 +281,13 @@ _:type api:name "target_type" ;
 ?protein skos:exactMatch ?cw_target .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
-?compound_chembl skos:exactMatch ?compound_ocrs ; 
-	skos:exactMatch ?compound_cw . 
-?compound_ocrs ops:smiles ?smiles ;
+?ims_ocrs_compound_uri ops:smiles ?smiles ;
 	ops:inchi ?inchi ;
 	ops:inchikey ?inchi_key;
 	ops:molweight ?molweight ;
         ops:ro5_violations ?num_ro5_violations ;
 	void:inDataset <http://ops.rsc.org> .
-?compound_cw skos:prefLabel ?compound_name ;
+?ims_cw_compound_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
 " ; 
 	api:where 
@@ -275,18 +325,17 @@ _:type api:name "target_type" ;
 	}	
 }
 GRAPH <http://ops.rsc.org> {
-        ?compound_ocrs skos:exactMatch ?compound_chembl .
-        ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+        ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
                 cheminf:CHEMINF_000018 ?smiles .
-	OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+	OPTIONAL { [] obo:IAO_0000136 ?ims_ocrs_compound_uri ;
 		a cheminf:CHEMINF_000484 ;
 		qudt:numericValue ?molweight . }
-        OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
+        OPTIONAL { [] obo:IAO_0000136 ?ims_ocrs_compound_uri ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
 	
 }
-		?compound_cw skos:exactMatch ?compound_ocrs ;
-			skos:prefLabel ?compound_name
-	" .
+GRAPH <http://www.conceptwiki.org> {
+	?ims_cw_compound_uri skos:prefLabel ?compound_name .
+}" .

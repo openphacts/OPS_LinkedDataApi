@@ -29,9 +29,9 @@ class SingleExpansionViewer implements Viewer {
 		$this->paginationBehavior = new PaginationBehavior($dataHandlerParams);
 	}
 	
-	public function applyViewerAndBuildDataGraph($list){
+	public function applyViewerAndBuildDataGraph($itemMap){
 		logDebug("Viewer URI is $this->viewerUri");
-		$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($list, $this->viewerUri);
+		$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($itemMap['item'], $this->viewerUri);
 		if (LOG_VIEW_QUERIES) {
 			logViewQuery( $this->Request, $this->viewQuery);
 		}
@@ -53,7 +53,7 @@ class SingleExpansionViewer implements Viewer {
 				throw new EmptyResponseException("Data not found in the triple store");
 			}
 
-			$this->pageUri = $this->paginationBehavior->addListMetadataToDataGraph($list);
+			$this->pageUri = $this->paginationBehavior->addListMetadataToDataGraph($itemMap['item']);
 
 		} else {
 			logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");

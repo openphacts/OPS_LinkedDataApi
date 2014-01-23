@@ -13,6 +13,18 @@ class OpsIms {
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
     );
     
+    var $IMS_interm_variables = array(
+            '?ims_chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
+            '?ims_chembl_compound_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/molecule/' ,
+            '?ims_uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
+            '?ims_cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
+            '?ims_cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
+            '?ims_ocrs_compound_uri'=>'http://ops.rsc.org/' ,
+            '?ims_db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
+            '?ims_db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
+            '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
+    );
+    
     var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
@@ -169,7 +181,7 @@ class OpsIms {
 	$rdf = "";
 	$output['expandedQuery']=$query;
 	$output['imsRDF']=$rdf;
-	foreach ($this->IMS_variables AS $name => $pattern) {
+	foreach ($this->IMS_interm_variables AS $name => $pattern) {
 	    if (strpos($query, $name)!==false){
 		$expanded = array();
 		$url = IMS_MAP_ENDPOINT;
@@ -212,25 +224,25 @@ class OpsIms {
   }
   
   private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
-  	foreach ($uriList AS $input_uri){
-  		foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
-  			foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
-  				$expanded[] = $mapping["value"];
-  			}
-  		}
-  	}
-  	if (count($expanded)>0){
-  		$filter = " VALUES {$variableName} { ";
-  		foreach ($expanded AS $mapping) {
-  			$filter.= "<{$mapping}> ";
-  		}
-  		$filter.= " }";
-  	}
-  	else{
-  		$filter = " VALUES {$variableName} {'No mappings found'}" ;
-  	}
+      foreach ($uriList AS $input_uri){
+          foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
+              foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
+                  $expanded[] = $mapping["value"];
+              }
+          }
+      }
+      if (count($expanded)>0){
+          $filter = " VALUES {$variableName} { ";
+          foreach ($expanded AS $mapping) {
+              $filter.= "<{$mapping}> ";
+          }
+          $filter.= " }";
+      }
+      else{
+          $filter = " VALUES {$variableName} {'No mappings found'}" ;
+      }
 
-  	return $filter;
+      return $filter;
   }
   
   private function getResponse($url, $mimetype){
