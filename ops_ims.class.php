@@ -1,5 +1,7 @@
 <?php
 
+define('REQUEST_URI_NO', 40);
+
 class OpsIms {
     var $IMS_variables = array(
             '?chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
@@ -24,6 +26,8 @@ class OpsIms {
             '?ims_db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
     );
+    
+    
     
     var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
     
@@ -184,29 +188,44 @@ class OpsIms {
 	foreach ($this->IMS_interm_variables AS $name => $pattern) {
 	    if (strpos($query, $name)!==false){
 		$expanded = array();
-		$url = IMS_MAP_ENDPOINT;
-		$url .= '?rdfFormat=N-Triples';
-		$url .= "&targetUriPattern={$pattern}";
-		$url .= '&lensUri=';
+		$urlStart = IMS_MAP_ENDPOINT;
+		$urlStart .= '?rdfFormat=N-Triples';
+		$urlStart .= "&targetUriPattern={$pattern}";
+		$urlStart .= '&lensUri=';
 		if ($lens==''){
-		    $url .= 'Default';
+		    $urlStart .= 'Default';
 		}
 		else{
-		    $url .= $lens;
+		    $urlStart .= $lens;
 		}
+		
+		$graph = new SimpleGraph() ;
+		$iter = 1;
+		$url=$urlStart;
 
 		foreach ($uriList AS $uri){
+		    if ($iter % REQUEST_URI_NO == 0){
+		        $response = $this->getResponse($url, "text/plain");
+		        //echo $url . "\n";
+		        
+		        $graph->add_rdf($response);
+		        $rdf.=$response;
+		        
+		        $url=$urlStart;
+		    }
+		    
 		    if (strpos($uri, $pattern)!==false){
 		        $expanded[] = $uri;
 		    }
 		    elseif (filter_var($uri, FILTER_VALIDATE_URL)) {
 		        $url .= '&Uri='.urlencode($uri);
 		    }
+		    
+		    $iter++;
 		}
 		
 		$response = $this->getResponse($url, "text/plain");
 		//echo $url . "\n";
-		$graph = new SimpleGraph() ;
 		$graph->add_rdf($response);
 		$rdf.=$response;
 		

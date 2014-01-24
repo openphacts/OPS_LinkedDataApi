@@ -599,11 +599,16 @@ _SPARQL_;
             if (strcasecmp($limit,"all")!==0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " .  $whereGraph  . " }"));
             }
-            else {
+            else {//_pageSize=all
+                $whereGraph = $this->_config->getSelectWhere();
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
                 $filterGraph = $this->getFilterGraph();
                 $query = $this->addFilterClause($filterGraph, $query);
                 $query = preg_replace("/\*#\*/","}",$query);
+                
+                $output['expandedQuery'] = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));               
+                $output['imsRDF']='';
+                return $output;
             }           
 
             if (!empty($ops_uri)){
@@ -618,11 +623,15 @@ _SPARQL_;
                 if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
                     $expandedQuery = $this->addItemsToExpandedQuery($query, $itemList);
                 }
+                else{
+                    $expandedQuery = $query;
+                }
                 return $ims->expandBatchQuery($expandedQuery, $uriList, $this->_request->getParam('_lens'));
             }
             else{
                 return $ims->expandBatchQuery($query, $itemList, $this->_request->getParam('_lens'));
             }
+            
         }
 
     }
