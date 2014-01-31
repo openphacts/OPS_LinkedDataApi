@@ -182,12 +182,17 @@ class LinkedDataApiRequest {
     }
     
     function getBase(){
-	if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-                return $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$_SERVER['SERVER_NAME'];
-	}
-	else {
-       		return 'http://'.$_SERVER['SERVER_NAME'];
-	}
+        $serverName = $_SERVER['SERVER_NAME'];
+        if ($_SERVER['SERVER_PORT']!=80){
+            $serverName .= ':'.$_SERVER['SERVER_PORT'];
+        }
+
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            return $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$serverName;
+        }
+        else {
+            return 'http://'.$serverName;
+        }
     }
 
     function getServerName(){
