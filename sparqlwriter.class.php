@@ -604,7 +604,7 @@ _SPARQL_;
                 
                 $pattern = '@(\?ims_)(.*?)(_uri)@';
                 $replacement = '?${2}';
-                $replaced = preg_replace($pattern, $replacement, $template);
+                $template = preg_replace($pattern, $replacement, $template);
                 
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
                 $filterGraph = $this->getFilterGraph();
