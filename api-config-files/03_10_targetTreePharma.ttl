@@ -284,7 +284,9 @@ _:type api:name "target_type" ;
 	chembl:hasTargetComponent ?protein ;
         a ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?chembl_compound void:inDataset <http://www.ebi.ac.uk/chembl> .
+?chembl_compound skos:exactMatch ?ocrs_compound ;
+	skos:exactMatch ?cw_compound ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?ims_ocrs_compound_uri ops:smiles ?smiles ;
         ops:inchi ?inchi ;
         ops:inchikey ?inchi_key;
