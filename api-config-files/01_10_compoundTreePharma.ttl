@@ -307,7 +307,9 @@ _:type api:name "target_type" ;
         ops:ro5_violations ?num_ro5_violations ;
 	ops:molweight ?molweight ;
 	void:inDataset <http://ops.rsc.org> .
-?chembl_compound void:inDataset <http://www.ebi.ac.uk/chembl> ." ;
+?chembl_compound void:inDataset <http://www.ebi.ac.uk/chembl> ;
+	skos:exactMatch ?ocrs_compound ;
+	skos:exactMatch ?cw_compound ." ;
 	api:where
 "GRAPH <http://www.ebi.ac.uk/chembl> {
  ?item chembl:hasMolecule ?chembl_compound ;

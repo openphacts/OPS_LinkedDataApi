@@ -279,6 +279,8 @@ GRAPH <http://www.conceptwiki.org> {
         a ?target_type ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?protein skos:exactMatch ?cw_target .
+?chembl_compound skos:exactMatch ?ocrs_compound ;
+	skos:exactMatch ?cw_compound .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
 ?ims_ocrs_compound_uri ops:smiles ?smiles ;
