@@ -39,7 +39,7 @@ if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --
 			done
 			
 			selectQuery=`echo "$response" | sed -n '/^_:selectionQuery/,/""" ./p' | sed -e 's,_:selectionQuery rdf:value ,,' -e 's,"""[ \.]*,,'`
-			echo $selectQuery > $output_dir/$today/$filename.txt
+			echo "$selectQuery" > $output_dir/$today/$filename.txt
 			outputFileName="$filename"_out
 			./executeSparqlSelector.sh "$selectQuery" > $output_dir/$today/$outputFileName
 			blankNodeCount=$(grep "_:" $output_dir/$today/$outputFileName | wc -l)
@@ -59,7 +59,7 @@ if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --
 			((count++))
 		done
 		viewQuery=`echo "$response" | sed -n '/^_:viewingQuery/,/""" ./p' | sed -e 's,_:viewingQuery rdf:value ,,' -e 's,"""[ \.]*,,'`
-		echo $viewQuery > $output_dir/$today/$filename.txt
+		echo "$viewQuery" > $output_dir/$today/$filename.txt
 		outputFileName="$filename"_out
 		./executeSparqlViewer.sh "$viewQuery" > $output_dir/$today/$outputFileName
 
