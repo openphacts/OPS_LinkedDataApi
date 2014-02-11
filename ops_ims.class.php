@@ -252,7 +252,7 @@ class OpsIms {
       }
       if (count($expanded)>0){
           $filter = " VALUES {$variableName} { ";
-          foreach ($expanded AS $mapping) {
+          foreach (array_unique($expanded, SORT_STRING) AS $mapping) {
               $filter.= "<{$mapping}> ";
           }
           $filter.= " }";
