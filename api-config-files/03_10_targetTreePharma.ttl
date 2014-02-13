@@ -299,10 +299,48 @@ _:type api:name "target_type" ;
 ?ims_cw_compound_uri skos:prefLabel ?compound_name ;
         void:inDataset <http://www.conceptwiki.org> .
 ";
-	api:where "?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
+	api:where "
+{ SELECT * WHERE {
+?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
 	}
+	GRAPH <http://www.ebi.ac.uk/chembl> { 
+                ?item a chembl:Activity ;
+                        chembl:hasAssay ?assay_uri ;
+                        chembl:hasMolecule ?chembl_compound .
+                ?assay_uri chembl:hasTarget ?chembl_target .
+                ?chembl_target a ?target_type .
+                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+                OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+                OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
+                OPTIONAL { ?chembl_target dcterms:title ?target_name }
+                OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
+                OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
+                        OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+                                ?cw_target skos:exactMatch ?protein ;
+                                        skos:prefLabel ?protein_name
+                        } }
+                }
+                OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
+                OPTIONAL { ?item chembl:standardType ?activity_type }
+                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
+                OPTIONAL { ?item chembl:standardValue ?std_value .
+                BIND (xsd:decimal(?std_value) as ?activity_value) }
+                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+                OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+                OPTIONAL { ?item chembl:pChembl ?pChembl }
+                OPTIONAL { ?item chembl:activityComment ?act_comment }
+                OPTIONAL { ?item chembl:hasDocument ?document .
+                        OPTIONAL { ?document owl:sameAs ?doi }
+                        OPTIONAL { ?document bibo:pmid ?pmid }
+                }
+        }
+} }
+{ SELECT * WHERE {
         GRAPH <http://ops.rsc.org> {
                 ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                         cheminf:CHEMINF_000399 ?inchi_key;
@@ -314,40 +352,9 @@ _:type api:name "target_type" ;
 			a cheminf:CHEMINF_000484 ;
 			qudt:numericValue ?molweight . }
         }
+} }
+{ SELECT * WHERE {
         GRAPH <http://www.conceptwiki.org> {
                 ?ims_cw_compound_uri skos:prefLabel ?compound_name .
         } 
-	GRAPH <http://www.ebi.ac.uk/chembl> {
-                ?item a chembl:Activity ;
-                        chembl:hasAssay ?assay_uri ;
-                        chembl:hasMolecule ?chembl_compound .
-                ?assay_uri chembl:hasTarget ?chembl_target .
-	        ?chembl_target a ?target_type .
-                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
-                OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-        	OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
-                OPTIONAL { ?chembl_target dcterms:title ?target_name }
-                OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
-        	OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
-	                OPTIONAL { GRAPH <http://www.conceptwiki.org> {
-                        	?cw_target skos:exactMatch ?protein ;
-                	                skos:prefLabel ?protein_name
-        	        } }
-	        }
-                OPTIONAL { ?item chembl:publishedType ?published_type }
-                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
-                OPTIONAL { ?item chembl:publishedValue ?published_value }
-                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
-                OPTIONAL { ?item chembl:standardType ?activity_type }
-                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
-                OPTIONAL { ?item chembl:standardValue ?std_value .
-		BIND (xsd:decimal(?std_value) as ?activity_value) }
-                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
-                OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
-                OPTIONAL { ?item chembl:pChembl ?pChembl }
-        	OPTIONAL { ?item chembl:activityComment ?act_comment }
-                OPTIONAL { ?item chembl:hasDocument ?document .
-                        OPTIONAL { ?document owl:sameAs ?doi }
-                        OPTIONAL { ?document bibo:pmid ?pmid }
-                }
-        }" .
+} }" .

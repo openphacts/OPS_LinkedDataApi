@@ -789,7 +789,7 @@ _SPARQL_;
             $filterGraph .= " <{$uri}> ";
         }
         $filterGraph .= "}";
-        $expandedQuery = preg_replace("/(WHERE.*?\{)/s", "$1 {$filterGraph}",$expandedQuery);
+        $expandedQuery = preg_replace("/(WHERE.*?\{)/s", "$1 {$filterGraph}",$expandedQuery,1);
     
         return $expandedQuery;
     }
