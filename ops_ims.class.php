@@ -32,8 +32,7 @@ class OpsIms {
     var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
-        
-        $params='';       
+	$params='';       
         foreach ($this->expander_variables as &$var) {
             if (strpos($query , $var) !== false) {
                 $params.= ", {$var}";
@@ -52,7 +51,6 @@ class OpsIms {
    private function expandQueryThroughIMS($query, $input_uri, $lens){
        $output = $query ;
        //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
-       
        $multiHandle = curl_multi_init();
        $variableInfoMap = array();
            
@@ -92,11 +90,10 @@ class OpsIms {
        
        $this->doSelectAndHandleResponses($multiHandle, $input_uri, $variableInfoMap);       
        curl_multi_close($multiHandle);
-        
        foreach ($variableInfoMap AS $variableName => $info){
            if (isset($info['filter']) ) {
                $output = preg_replace("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$variableName.")/s",
-               		"$1 {$info['filter']} $2",$output, 1);                          
+               		"$1 {$info['filter']} $2",$output, 1);
            }
        }
        $output = preg_replace("/\*#\*/","}",$output);

@@ -300,7 +300,7 @@ _:type api:name "target_type" ;
         void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where "
-{ SELECT * WHERE {
+{ 
 ?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
@@ -339,8 +339,8 @@ _:type api:name "target_type" ;
                         OPTIONAL { ?document bibo:pmid ?pmid }
                 }
         }
-} }
-{ SELECT * WHERE {
+} UNION 
+{ 
         GRAPH <http://ops.rsc.org> {
                 ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                         cheminf:CHEMINF_000399 ?inchi_key;
@@ -352,9 +352,9 @@ _:type api:name "target_type" ;
 			a cheminf:CHEMINF_000484 ;
 			qudt:numericValue ?molweight . }
         }
-} }
-{ SELECT * WHERE {
+} UNION 
+{ 
         GRAPH <http://www.conceptwiki.org> {
                 ?ims_cw_compound_uri skos:prefLabel ?compound_name .
         } 
-} }" .
+} " .
