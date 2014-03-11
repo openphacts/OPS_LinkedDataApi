@@ -25,6 +25,7 @@ class OpsIms {
             '?ims_db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
             '?ims_db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
+	    '?ims_umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
     );
     
     
