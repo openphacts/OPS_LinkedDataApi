@@ -48,7 +48,7 @@ class MultipleExpansionViewer implements Viewer {
 			$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
 		
 			if($response->is_success()){
-				$this->buildDataGraphFromIMSAndTripleStore($response, $expansionData['imsRDF'], $itemMap['item']);
+				$this->buildDataGraphFromIMSAndTripleStore($response, $individualExpansionData['imsRDF'], $itemMap['item']);
 			}
 			else {
 				logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
