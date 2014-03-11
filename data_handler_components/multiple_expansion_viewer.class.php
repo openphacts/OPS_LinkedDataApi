@@ -35,19 +35,25 @@ class MultipleExpansionViewer implements Viewer {
 		$itemList = $this->getInputListForExpansion($itemMap);
 		
 		$expansionData  = $this->SparqlWriter->getViewQueryForBatchUriList($itemMap['item'], $this->viewerUri, $itemList);
-
-		$this->viewQuery  = $expansionData['expandedQuery'];
-		if (LOG_VIEW_QUERIES) {
-			logViewQuery( $this->Request, $this->viewQuery);
+		if (isset($expansionData['expandedQuery'])){
+			$expansionDataArray[]=$expansionData;
+		} else {
+			$expansionDataArray=$expansionData;
 		}
-		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
+		foreach ($expansionDataArray AS $key => $individualExpansionData) {
+			$this->viewQuery  = $individualExpansionData['expandedQuery'];
+			if (LOG_VIEW_QUERIES) {
+				logViewQuery( $this->Request, $this->viewQuery);
+			}
+			$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
 		
-		if($response->is_success()){
-			$this->buildDataGraphFromIMSAndTripleStore($response, $expansionData['imsRDF'], $itemMap['item']);
-		}
-		else {
-			logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-			throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
+			if($response->is_success()){
+				$this->buildDataGraphFromIMSAndTripleStore($response, $expansionData['imsRDF'], $itemMap['item']);
+			}
+			else {
+				logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+				throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
+			}
 		}
 	}
 	

@@ -589,10 +589,8 @@ _SPARQL_;
 
     function getViewQueryForBatchUriList($itemList, $viewerUri, $uriList=null) {
         $ims = new OpsIms();
-        
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
                 AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
-            
             $ops_uri = $this->_request->getParam('uri');
             
             $limit = $this->getLimit();
@@ -609,13 +607,11 @@ _SPARQL_;
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
                 $filterGraph = $this->getFilterGraph();
                 $query = $this->addFilterClause($filterGraph, $query);
-                $query = preg_replace("/\*#\*/","}",$query);
-                
+                //$query = preg_replace("/\*#\*/","}",$query);
                 $output['expandedQuery'] = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));               
                 $output['imsRDF']='';
                 return $output;
             }           
-
             if (!empty($ops_uri)){
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $query);
                 $query = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
@@ -623,7 +619,6 @@ _SPARQL_;
             }     
             
             logDebug("View query after filter: ".$query);
-
             if (!empty($uriList)){//expand another variable besides ?item
                 if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
                     $expandedQuery = $this->addItemsToExpandedQuery($query, $itemList);
@@ -634,7 +629,14 @@ _SPARQL_;
                 return $ims->expandBatchQuery($expandedQuery, $uriList, $this->_request->getParam('_lens'));
             }
             else{
-                return $ims->expandBatchQuery($query, $itemList, $this->_request->getParam('_lens'));
+		if (count($itemList) > 25) {
+                    foreach (array_chunk($itemList,25) AS $key => $chunk) {
+                        $queries[]=$ims->expandBatchQuery($query, $chunk, $this->_request->getParam('_lens'));
+                    }
+                    return $queries;    
+                } else {
+                    return $ims->expandBatchQuery($query, $itemList, $this->_request->getParam('_lens'));
+		}
             }
             
         }
@@ -646,7 +648,6 @@ _SPARQL_;
     }
 
     function getViewQueryForUriList($uriList, $viewerUri){
-
         $fromClause = $this->getFromClause();
         #Antonis botch
         $limit = $this->getLimit();
@@ -784,13 +785,14 @@ _SPARQL_;
     }
     
     private function addItemsToExpandedQuery($expandedQuery, $uriList){
+	$sparqlVar="?item";
         $filterGraph = "VALUES ?item { ";
         foreach($uriList as $uri) {
             $filterGraph .= " <{$uri}> ";
         }
         $filterGraph .= "}";
-        $expandedQuery = preg_replace("/(WHERE.*?\{)/s", "$1 {$filterGraph}",$expandedQuery);
-    
+        #$expandedQuery = preg_replace("/(WHERE.*?\{)/s", "$1 {$filterGraph}",$expandedQuery,1);
+        $expandedQuery=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterGraph} $2", $expandedQuery, 1);
         return $expandedQuery;
     }
     

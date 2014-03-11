@@ -312,8 +312,7 @@ _:type api:name "target_type" ;
 	skos:exactMatch ?ocrs_compound ;
 	skos:exactMatch ?cw_compound ." ;
 	api:where
-"
-{
+"{ 
  GRAPH <http://www.ebi.ac.uk/chembl> {
  ?item chembl:hasMolecule ?chembl_compound ;
  	a chembl:Activity ;
@@ -348,8 +347,8 @@ _:type api:name "target_type" ;
  OPTIONAL { ?document bibo:pmid ?pmid }
  }
  }
-FILTER (bound(?chembl_compound))
-} UNION { 
+} UNION
+{ 
  GRAPH <http://ops.rsc.org> {
  ?ims_ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
  	cheminf:CHEMINF_000396 ?inchi ;
@@ -361,10 +360,9 @@ FILTER (bound(?chembl_compound))
  	a cheminf:CHEMINF_000484 ;
  	qudt:numericValue ?molweight . }
  }
-FILTER (bound(?smiles))
-} UNION {
+} 
+UNION {
  GRAPH <http://www.conceptwiki.org> {
  	?ims_cw_compound_uri skos:prefLabel ?compound_name .
-	FILTER (bound(?compound_name))
  } 
 }" . 
