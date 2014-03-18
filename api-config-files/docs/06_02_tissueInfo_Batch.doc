@@ -1,0 +1,4 @@
+?ims_caloha_tissue_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?tissue_label </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> oboowl:hasDbXref ?tissue_xref </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.nexprot.org/caloha> </span> .

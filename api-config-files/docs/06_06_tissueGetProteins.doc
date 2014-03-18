@@ -1,0 +1,15 @@
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:tissue ?ops_item </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?evidence_type </span> ;
+prv:usedDat <span style=\"BACKGROUND-COLOR: #A9A9F5\"> a ?data_used </span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.nextprot.org> </span> .
+?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target </span> .
+?uniprot_target <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://purl.uniprot.org> </span> .
+?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.nextprot.org/caloha> </span> .
+?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.nextprot.org> </span> .

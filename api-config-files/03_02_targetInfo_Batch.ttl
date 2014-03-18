@@ -30,7 +30,7 @@
 	api:description "An API configuration to return information about targets" ;
 	api:endpoint [ 
 		a api:BatchEndpoint ;
-		api:name "Target Information" ;
+		api:name "Target Information: Batch" ;
 		api:description "Information about a list of targets, separated by '|'.";
 		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/approved> ;
 		api:variable <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugtype/biotech> ;
