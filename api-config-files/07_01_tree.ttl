@@ -8,7 +8,7 @@
 
 <#tree> a api:API ;
 	rdfs:label "Concept Class Hierarchies"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
