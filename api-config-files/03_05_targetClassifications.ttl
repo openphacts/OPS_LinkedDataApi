@@ -138,7 +138,7 @@ _:type api:name "target_type" ;
         { ?chembl_target_uri chembl:hasTargetComponent/chembl:targetCmptXref ?enzyme_class .
         ?enzyme_class a chembl:EnzymeClassRef
         GRAPH ?g {
-                ?enzyme_class uniprot:name ?enzyme_label
+                ?enzyme_class skos:prefLabel ?enzyme_label
         }}
         ?chembl_target_uri dcterms:title ?target_name ;
 		a ?target_type .

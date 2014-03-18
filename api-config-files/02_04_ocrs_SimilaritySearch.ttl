@@ -24,7 +24,7 @@
 
 		api:enableCache false ;
 		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
-		api:externalRequestTemplate "http://crs.beta.rsc-us.org/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "http://ops.rsc.org/api/v1/JSON.ashx?op=SimilaritySearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/structure/similarity?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O&searchOptions.Threshold=0.99&searchOptions.SimilarityType=Tanimoto" ;
 		api:viewer <#externalResponseViewer> ;

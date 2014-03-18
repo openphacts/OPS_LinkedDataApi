@@ -18,6 +18,7 @@ if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --
 		if [[ ! "$url" == *\?* ]] ; then
 			url=`echo "$url" | sed 's,&,?,'`
 		fi
+		echo $url
 		response=`curl -s -S $url`
 		while [[ $response == "" ]]
 		do
@@ -36,7 +37,18 @@ if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --
 				filename="$oldname"_"$count"
 				((count++))
 			done
-			echo "$response" | sed -n '/^_:selectionQuery/,/""" ./p' | sed -e 's,_:selectionQuery rdf:value ,,' -e 's,"""[ \.]*,,' > $output_dir/$today/$filename.txt
+			
+			selectQuery=`echo "$response" | sed -n '/^_:selectionQuery/,/""" ./p' | sed -e 's,_:selectionQuery rdf:value ,,' -e 's,"""[ \.]*,,'`
+			echo "$selectQuery" > $output_dir/$today/$filename.txt
+			outputFileName="$filename"_out
+			./executeSparqlSelector.sh "$selectQuery" > $output_dir/$today/$outputFileName
+			blankNodeCount=$(grep "_:" $output_dir/$today/$outputFileName | wc -l)
+			grep -v "_:" $output_dir/$today/$outputFileName | sort >$output_dir/$today/temp
+			echo $blankNodeCount >>$output_dir/$today/temp
+
+			#sleep 30
+			cat $output_dir/$today/temp | md5sum | cut -d " " -f 1 >$output_dir/$today/$outputFileName.md5
+			rm $output_dir/$today/$outputFileName
 		fi
 		filename="$method_name"_view
 		oldname=$filename
@@ -46,7 +58,18 @@ if [[ `diff -N --exclude=*.sh --exclude=*.bak --exclude=*.json --exclude=".*" --
 			filename="$oldname"_"$count"
 			((count++))
 		done
-		echo "$response" | sed -n '/^_:viewingQuery/,/""" ./p' | sed -e 's,_:viewingQuery rdf:value ,,' -e 's,"""[ \.]*,,' > $output_dir/$today/$filename.txt
+		viewQuery=`echo "$response" | sed -n '/^_:viewingQuery/,/""" ./p' | sed -e 's,_:viewingQuery rdf:value ,,' -e 's,"""[ \.]*,,'`
+		echo "$viewQuery" > $output_dir/$today/$filename.txt
+		outputFileName="$filename"_out
+		./executeSparqlViewer.sh "$viewQuery" > $output_dir/$today/$outputFileName
+
+		blankNodeCount=$(grep "_:" $output_dir/$today/$outputFileName | wc -l)
+                grep -v "_:" $output_dir/$today/$outputFileName | sort >$output_dir/$today/temp
+                echo $blankNodeCount >>$output_dir/$today/temp
+                #sleep 30
+
+		cat $output_dir/$today/temp | md5sum | cut -d " " -f 1 >$output_dir/$today/$outputFileName.md5
+		rm $output_dir/$today/$outputFileName
 	done
     done
 else

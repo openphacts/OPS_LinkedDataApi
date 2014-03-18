@@ -49,11 +49,12 @@
 	api:template 
 "?item ops:disease ?disease ;
 	ops:gene ?dg_gene_uri ;
-	ops:type ?type_label ;
+	rdf:type ?type ;
 	dcterms:description ?description ;
 	ops:pmid ?pubmed_id ;
 	ops:primarySource ?primarySource ;
 	void:inDataset ?assocDataset .
+?type	rdfs:label ?type_label .
 ?disease foaf:name ?diseaseName ;
 	ops:diseaseClass ?diseaseClass ;
 	void:inDataset ?diseaseDataset .

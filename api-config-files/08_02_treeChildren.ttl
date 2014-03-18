@@ -12,24 +12,24 @@
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
-	api:dataset <http://purl.uniprot.org/enzyme/> ;
+	api:dataset <http://purl.uniprot.org/enzyme> ;
 	api:vocabulary rdfs: ;
 	api:vocabulary skos: ;
 	api:vocabulary uniprot: ;
 	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology and the Gene Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Hierarchies: Parent Nodes" ;
-		api:description "A representation of all parent nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
+		api:name "Hierarchies: Child Nodes" ;
+		api:description "A representation of all child nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl/target> ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:variable <http://www.geneontology.org> ;
-		api:uriTemplate "/tree/parents?uri={uri}" ;
-		api:exampleRequestPath "/tree/parents?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
-		api:viewer <#treeParentViewer> ;
-		api:defaultViewer <#treeParentViewer> ] .
+		api:uriTemplate "/tree/children?uri={uri}" ;
+		api:exampleRequestPath "/tree/children?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
+		api:viewer <#treeChildrenViewer> ;
+		api:defaultViewer <#treeChildrenViewer> ] .
 
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://purl.uniprot.org/enzyme/> api:label "Enzyme Classification" .
@@ -46,19 +46,18 @@
         api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.uniprot.org/enzyme/6.2.-.-" ;
         rdfs:range rdfs:Resource .
 
-<#treeParentViewer> a api:Viewer ;
-	api:name "treeParentViewer";
-	api:template "?ops_item ops:parentNode ?parent_node ;
+<#treeChildrenViewer> a api:Viewer ;
+	api:name "treeChildrenViewer";
+	api:template "?ops_item ops:childNode ?child_node ;
 	skos:prefLabel ?label ;
 	void:inDataset ?g_short . 
-?parent_node skos:prefLabel ?parent_label ;
-	skos:prefLabel ?parent_name .
+?child_node skos:prefLabel ?child_label .
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
 	api:where "{
-SELECT DISTINCT ?parent_node ?g_short WHERE {
+SELECT DISTINCT ?child_node ?g_short WHERE {
 	VALUES ?g {
 		<http://purl.uniprot.org/enzyme/direct> 
 		<http://www.ebi.ac.uk/chembl/target/direct>
@@ -66,8 +65,8 @@ SELECT DISTINCT ?parent_node ?g_short WHERE {
 		<http://www.geneontology.org> 
 	}
 	GRAPH ?g {
-		?ops_item rdfs:subClassOf ?parent_node . 
-		FILTER ( isURI(?parent_node) )
+		?child_node rdfs:subClassOf ?ops_item . 
+		FILTER ( isURI(?child_node) )
 		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, <http://purl.uniprot.org/enzyme> , 
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, <http://www.ebi.ac.uk/chembl/target> ,
 				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, <http://www.ebi.ac.uk/chebi> , 
@@ -76,8 +75,9 @@ SELECT DISTINCT ?parent_node ?g_short WHERE {
 }
 }
 OPTIONAL { { ?ops_item rdfs:label ?label }
-UNION { ?ops_item uniprot:name ?label }
+UNION { ?ops_item skos:prefLabel ?label }
 }
-OPTIONAL { ?parent_node rdfs:label ?parent_label }
-OPTIONAL { ?parent_node uniprot:name ?parent_name }
+OPTIONAL { { ?child_node rdfs:label ?child_label }
+UNION { ?child_node skos:prefLabel ?child_label }
+}
 " .

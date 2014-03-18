@@ -101,7 +101,7 @@ chembl:organismName api:name "assay_organism" ;
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
-	api:filterVariable "?target_chembl";
+	api:filterVariable "?chembl_target";
 	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
@@ -137,7 +137,7 @@ chembl:pChembl api:name "pChembl" ;
 
 _:type api:name "target_type" ;
         api:label "target_type" ;
-        api:filterVariable "?target_chembl";
+        api:filterVariable "?chembl_target";
         api:value "One of the types listed at /target/types. e.g. single_protein" ;
 	rdfs:subPropertyOf rdf:type ;
         a rdf:Property .
@@ -204,27 +204,29 @@ SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 		?class rdfs:subClassOf ?ops_item
 	}
         GRAPH <http://ops.rsc.org> {
-                ?compound_ocrs skos:exactMatch ?compound_chembl .
-                ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
+                ?ocrs_compound skos:exactMatch ?chembl_compound .
+                ?ocrs_compound cheminf:CHEMINF_000396 ?inchi;
                         cheminf:CHEMINF_000399 ?inchi_key;
                         cheminf:CHEMINF_000018 ?smiles .
         }
         GRAPH <http://www.conceptwiki.org> {
-                ?compound_cw skos:exactMatch ?compound_ocrs ;
+                ?cw_compound skos:exactMatch ?ocrs_compound ;
                         skos:prefLabel ?compound_name .
         }
         GRAPH <http://www.ebi.ac.uk/chembl> {
-                { ?target_chembl chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
-                { ?target_chembl chembl:hasProteinClassification ?class} UNION
-                { ?target_chembl chembl:hasTargetComponent/skos:exactMatch ?uniprot
+                { ?chembl_target chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
+                { ?chembl_target chembl:hasProteinClassification ?class} UNION
+                { ?chembl_target chembl:hasTargetComponent/skos:exactMatch ?uniprot
                 GRAPH <http://www.openphacts.org/goa>{
                         {?uniprot obo:C ?class} UNION
                         {?uniprot obo:F ?class} UNION
                         {?uniprot obo:P ?class}
                 }}
-                ?assay_uri chembl:hasTarget ?target_chembl ;
+	}
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+                ?assay_uri chembl:hasTarget ?chembl_target ;
                         chembl:hasActivity ?item .
-                ?item chembl:hasMolecule ?compound_chembl .
-                ?target_chembl chembl:hasTargetComponent ?target_component .
+                ?item chembl:hasMolecule ?chembl_compound .
+                ?chembl_target chembl:hasTargetComponent ?target_component .
         }
 } }" .

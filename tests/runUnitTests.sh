@@ -8,10 +8,11 @@ do
 	hasQ=$(echo $line | grep -o '?')
 	if [ -n "$hasQ" ]
 	then
-		url=$1$line'&app_id=81aaf1fe&app_key=17db324ee4f3552169ebcdfd3df8e7d8'
+		#url=$1$line'&app_id=81aaf1fe&app_key=17db324ee4f3552169ebcdfd3df8e7d8'
+		url=$1$line'&app_id=d18e1167&app_key=400d6e50b44511904cbd5c3e73a1f2d3'
 	else 
 		url=$1$line	
 	fi
 	#echo $url
-	time curl -H 'Cache-Control: no-cache' -v -X GET "$url" >/dev/null
+	time curl -k -H 'Cache-Control: no-cache' -v -X GET "$url" >/dev/null
 done <unitTestRequests

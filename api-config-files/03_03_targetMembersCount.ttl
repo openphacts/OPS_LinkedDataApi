@@ -83,6 +83,9 @@ UNION { ?item obo:F ?child_node ;
         uniprot:reviewed true }
 UNION { ?item obo:P ?child_node ;
         uniprot:reviewed true }
-UNION { ?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
-	[] chembl:hasTarget ?item } 
+UNION { 
+GRAPH <http://www.ebi.ac.uk/chembl> { 
+	?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
+	[] chembl:hasTarget ?item 
+} }
 } }" .

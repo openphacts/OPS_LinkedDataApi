@@ -30,22 +30,30 @@ class MultipleExpansionViewer implements Viewer {
 		}
 	}
 	
-	public function applyViewerAndBuildDataGraph($itemList){
+	public function applyViewerAndBuildDataGraph($itemMap){
 		logDebug("Viewer URI is $this->viewerUri");
-		$array  = $this->SparqlWriter->getViewQueryForBatchUriList($itemList, $this->viewerUri);
-		//TODO should do a check on array
-		$this->viewQuery  = $array['expandedQuery'];
-		if (LOG_VIEW_QUERIES) {
-			logViewQuery( $this->Request, $this->viewQuery);
-		}
-		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
+		$itemList = $this->getInputListForExpansion($itemMap);
 		
-		if($response->is_success()){
-			$this->buildDataGraphFromIMSAndTripleStore($response, $array['imsRDF'], $itemList);
+		$expansionData  = $this->SparqlWriter->getViewQueryForBatchUriList($itemMap['item'], $this->viewerUri, $itemList);
+		if (isset($expansionData['expandedQuery'])){
+			$expansionDataArray[]=$expansionData;
+		} else {
+			$expansionDataArray=$expansionData;
 		}
-		else {
-			logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
-			throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
+		foreach ($expansionDataArray AS $key => $individualExpansionData) {
+			$this->viewQuery  = $individualExpansionData['expandedQuery'];
+			if (LOG_VIEW_QUERIES) {
+				logViewQuery( $this->Request, $this->viewQuery);
+			}
+			$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
+		
+			if($response->is_success()){
+				$this->buildDataGraphFromIMSAndTripleStore($response, $individualExpansionData['imsRDF'], $itemMap['item']);
+			}
+			else {
+				logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+				throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
+			}
 		}
 	}
 	
@@ -72,6 +80,22 @@ class MultipleExpansionViewer implements Viewer {
 		else{
 		    $this->pageUri = $this->addListMetadataToDataGraph($list);
 		}
+	}
+	
+	private function getInputListForExpansion($itemMap){
+	    if (count($itemMap)> 1){
+	        foreach ($itemMap as $key => $value){
+	            if (strcmp($key, 'item')){
+	                $inputList = $value;
+	            }
+	        }
+	    
+	        if (empty($inputList)){
+	            throw new ErrorException("Expansion Variable not found although > 1 items in the itemMap");
+	        }
+	    }
+	    
+	    return $inputList;
 	}
 	
 	protected function addListMetadataToDataGraph($list){

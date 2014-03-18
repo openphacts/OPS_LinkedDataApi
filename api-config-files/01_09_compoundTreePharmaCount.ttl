@@ -88,8 +88,8 @@
                 api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
                 api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
         	api:itemTemplate "{uri}" ;
-		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
-		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
+		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100";
+		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 		api:viewer <#compoundClassPharmaCountViewer> ; 
 		api:defaultViewer <#compoundClassPharmaCountViewer> . ] .
 
@@ -195,7 +195,7 @@ _:type api:name "target_type" ;
 
 <#input> api:name "uri" ;
 	api:label "uri";
-	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
+	api:value "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_100" ;
 	rdfs:range rdfs:Resource .
 
 <#compoundClassPharmaCountViewer> a api:Viewer ;
@@ -208,22 +208,22 @@ _:type api:name "target_type" ;
         	?subclass rdfs:subClassOf ?ops_item .
 	}
 	GRAPH <http://ops.rsc.org> {
-		?compound_ocrs skos:exactMatch ?compound_chembl ;
+		?ocrs_compound skos:exactMatch ?chembl_compound ;
 			cheminf:CHEMINF_000018 ?smiles ;
 			cheminf:CHEMINF_000396 ?inchi ;
         		cheminf:CHEMINF_000399 ?inchiKey . 
 	}
 	GRAPH <http://www.conceptwiki.org> {
-        	?compound_cw skos:exactMatch ?compound_ocrs ;
+        	?cw_compound skos:exactMatch ?ocrs_compound ;
                 	skos:prefLabel ?compound_name .
 	}
 	GRAPH <http://www.ebi.ac.uk/chebi> {
         	?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?subclass .
 	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
-                ?compound_chembl owl:sameAs ?chebi_compound .
+                ?chembl_compound owl:sameAs ?chebi_compound .
                 ?activity_uri a chembl:Activity ;
-                        chembl:hasMolecule ?compound_chembl ;
+                        chembl:hasMolecule ?chembl_compound ;
                         chembl:hasAssay ?assay_uri .
                 ?assay_uri chembl:hasTarget ?target_uri .
         }

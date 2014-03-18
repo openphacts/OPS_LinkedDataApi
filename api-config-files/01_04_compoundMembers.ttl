@@ -43,23 +43,19 @@
 <#compoundMemberViewer> a api:Viewer ;
 	api:name "compoundMemberViewer";
 	api:template 
-"?item skos:exactMatch ?compound_ocrs ;
-	skos:exactMatch ?compound_cw .
-?compound_cw skos:prefLabel ?compound_name .";
+"?item skos:exactMatch ?cw_compound .
+?cw_compound skos:prefLabel ?compound_name .";
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         ?child_node rdfs:subClassOf ?ops_item .
-}
-GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?item owl:sameAs ?chebi_compound
 }
 GRAPH <http://www.ebi.ac.uk/chebi> {
         ?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
 }
 GRAPH <http://ops.rsc.org> {
-        ?compound_ocrs skos:exactMatch ?item
+        ?item skos:exactMatch ?chebi_compound
 }
 GRAPH <http://www.conceptwiki.org> {
-        ?compound_cw skos:exactMatch ?compound_ocrs ;
+        ?cw_compound skos:exactMatch ?item ;
                 skos:prefLabel ?compound_name .
 }" .

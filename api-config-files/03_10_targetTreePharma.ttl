@@ -79,7 +79,7 @@
 	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#ADMET> ;
         	api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
 	        api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
-		a api:ListEndpoint ;
+		a api:IntermediateExpansionEndpoint ;
 		api:name "Target Class Pharmacology: List " ;
 		api:description "A page of items corresponding to acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
 
@@ -88,7 +88,64 @@
 		api:uriTemplate "/target/tree/pharmacology/pages?uri={uri}" ;
 		api:exampleRequestPath "/target/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
 		api:exampleRequestPath "/target/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=IC50&activity_unit=nanomolar&assay_organism=Rattus%20norvegicus&target_organism=Rattus%20norvegicus&minEx-activity_value=50000&maxEx-activity_value=200000";
-		api:selector <#targetTreePharmaViewer> ;
+		api:selector [
+		api:where "?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
+	GRAPH ?g {
+		?class rdfs:subClassOf ?ops_item .
+	}
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+                ?item a chembl:Activity ;
+                        chembl:hasAssay ?assay_uri ;
+                        chembl:hasMolecule ?chembl_compound .
+                ?assay_uri chembl:hasTarget ?chembl_target .
+	        ?chembl_target a ?target_type .
+                OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
+                OPTIONAL { ?assay_uri dcterms:description ?assay_description }
+        	OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
+                OPTIONAL { ?chembl_target dcterms:title ?target_name }
+                OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
+        	OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
+	                OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+                        	?cw_target skos:exactMatch ?protein ;
+                	                skos:prefLabel ?protein_name
+        	        } }
+	        }
+                OPTIONAL { ?item chembl:publishedType ?published_type }
+                OPTIONAL { ?item chembl:publishedRelation ?published_relation }
+                OPTIONAL { ?item chembl:publishedValue ?published_value }
+                OPTIONAL { ?item chembl:publishedUnits ?published_unit }
+                OPTIONAL { ?item chembl:standardType ?activity_type }
+                OPTIONAL { ?item chembl:standardRelation ?activity_relation }
+                OPTIONAL { ?item chembl:standardValue ?std_value .
+		BIND (xsd:decimal(?std_value) as ?activity_value) }
+                OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+                OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
+                OPTIONAL { ?item chembl:pChembl ?pChembl }
+        	OPTIONAL { ?item chembl:activityComment ?act_comment }
+                OPTIONAL { ?item chembl:hasDocument ?document .
+                        OPTIONAL { ?document owl:sameAs ?doi }
+                        OPTIONAL { ?document bibo:pmid ?pmid }
+                }
+        }
+   	GRAPH <http://ops.rsc.org> {
+		?ocrs_compound skos:exactMatch ?chembl_compound .
+        	?ocrs_compound cheminf:CHEMINF_000396 ?inchi;
+                	cheminf:CHEMINF_000399 ?inchi_key;
+                	cheminf:CHEMINF_000018 ?smiles .
+		OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound ;
+			a cheminf:CHEMINF_000484 ;
+			qudt:numericValue ?molweight . }
+        	OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound ;
+                	a cheminf:CHEMINF_000367;
+                	qudt:numericValue ?num_ro5_violations . }
+	
+	}
+	GRAPH <http://www.conceptwiki.org> {
+		?cw_compound skos:exactMatch ?ocrs_compound ;
+			skos:prefLabel ?compound_name .
+	}" ;
+		api:expansionVariable "chembl_compound" ;
+] ;
 		api:viewer <#targetTreePharmaViewer> ;
 		api:defaultViewer <#targetTreePharmaViewer> ] .
 
@@ -105,7 +162,7 @@ chembl:organismName api:name "assay_organism" ;
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
-	api:filterVariable "?target_chembl";
+	api:filterVariable "?chembl_target";
 	rdfs:subPropertyOf chembl:organismName ;
 	a rdf:Property .
 
@@ -141,7 +198,7 @@ chembl:pChembl api:name "pChembl" ;
 
 _:type api:name "target_type" ;
         api:label "target_type" ;
-        api:filterVariable "?target_chembl";
+        api:filterVariable "?chembl_target";
         api:value "One of the types listed at /target/types. e.g. single_protein" ;
         rdfs:subPropertyOf rdf:type ;
         a rdf:Property .
@@ -200,7 +257,7 @@ _:type api:name "target_type" ;
 <#targetTreePharmaViewer> a api:Viewer ;
 	api:name "targetTreePharmaViewer";
 	api:template 
-"?item chembl:hasMolecule ?compound_chembl;
+"?item chembl:hasMolecule ?chembl_compound;
         chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
         chembl:publishedValue ?published_value ;
@@ -216,21 +273,21 @@ _:type api:name "target_type" ;
         bibo:pmid ?pmid ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?qudt_uri skos:prefLabel ?activity_unit .
-?assay_uri chembl:hasTarget ?target_chembl ;
+?assay_uri chembl:hasTarget ?chembl_target ;
         chembl:assayTestType ?assay_type ;
         dcterms:description ?assay_description ;
         chembl:assayOrganismName ?assay_organism ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?target_chembl dcterms:title ?target_name;
+?chembl_target dcterms:title ?target_name;
         chembl:targetOrganismName ?target_organism ;
 	ops:classifiedUnder ?class ;
 	chembl:hasTargetComponent ?protein ;
         a ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?compound_chembl skos:exactMatch ?compound_ocrs ;
-        skos:exactMatch ?compound_cw ;
-        void:inDataset <http://www.ebi.ac.uk/chembl> .
-?compound_ocrs ops:smiles ?smiles ;
+?chembl_compound skos:exactMatch ?ocrs_compound ;
+	skos:exactMatch ?cw_compound ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?ims_ocrs_compound_uri ops:smiles ?smiles ;
         ops:inchi ?inchi ;
         ops:inchikey ?inchi_key;
 	ops:molweight ?molweight ;
@@ -239,46 +296,32 @@ _:type api:name "target_type" ;
 ?protein skos:exactMatch ?cw_target .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
-?compound_cw skos:prefLabel ?compound_name ;
+?ims_cw_compound_uri skos:prefLabel ?compound_name ;
         void:inDataset <http://www.conceptwiki.org> .
 ";
-	api:where "?target_chembl chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
+	api:where "
+{ 
+?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?ops_item
 	}
-        GRAPH <http://ops.rsc.org> {
-                ?compound_ocrs skos:exactMatch ?compound_chembl .
-                ?compound_ocrs cheminf:CHEMINF_000396 ?inchi;
-                        cheminf:CHEMINF_000399 ?inchi_key;
-                        cheminf:CHEMINF_000018 ?smiles .
-                OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
-                        a cheminf:CHEMINF_000367;
-                        qudt:numericValue ?num_ro5_violations . }
-		OPTIONAL { [] obo:IAO_0000136 ?compound_ocrs ;
-			a cheminf:CHEMINF_000484 ;
-			qudt:numericValue ?molweight . }
-        }
-        GRAPH <http://www.conceptwiki.org> {
-                ?compound_cw skos:exactMatch ?compound_ocrs ;
-                        skos:prefLabel ?compound_name .
-        } 
-	GRAPH <http://www.ebi.ac.uk/chembl> {
+	GRAPH <http://www.ebi.ac.uk/chembl> { 
                 ?item a chembl:Activity ;
                         chembl:hasAssay ?assay_uri ;
-                        chembl:hasMolecule ?compound_chembl .
-                ?assay_uri chembl:hasTarget ?target_chembl .
-	        ?target_chembl a ?target_type .
+                        chembl:hasMolecule ?chembl_compound .
+                ?assay_uri chembl:hasTarget ?chembl_target .
+                ?chembl_target a ?target_type .
                 OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
                 OPTIONAL { ?assay_uri dcterms:description ?assay_description }
-        	OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
-                OPTIONAL { ?target_chembl dcterms:title ?target_name }
-                OPTIONAL { ?target_chembl chembl:organismName ?target_organism }
-        	OPTIONAL { ?target_chembl chembl:hasTargetComponent ?protein .
-	                OPTIONAL { GRAPH <http://www.conceptwiki.org> {
-                        	?cw_target skos:exactMatch ?protein ;
-                	                skos:prefLabel ?protein_name
-        	        } }
-	        }
+                OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
+                OPTIONAL { ?chembl_target dcterms:title ?target_name }
+                OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
+                OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
+                        OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+                                ?cw_target skos:exactMatch ?protein ;
+                                        skos:prefLabel ?protein_name
+                        } }
+                }
                 OPTIONAL { ?item chembl:publishedType ?published_type }
                 OPTIONAL { ?item chembl:publishedRelation ?published_relation }
                 OPTIONAL { ?item chembl:publishedValue ?published_value }
@@ -286,13 +329,32 @@ _:type api:name "target_type" ;
                 OPTIONAL { ?item chembl:standardType ?activity_type }
                 OPTIONAL { ?item chembl:standardRelation ?activity_relation }
                 OPTIONAL { ?item chembl:standardValue ?std_value .
-		BIND (xsd:decimal(?std_value) as ?activity_value) }
+                BIND (xsd:decimal(?std_value) as ?activity_value) }
                 OPTIONAL { ?item chembl:standardUnits ?activity_unit }
                 OPTIONAL { ?item chembl:hasQUDT ?qudt_uri }
                 OPTIONAL { ?item chembl:pChembl ?pChembl }
-        	OPTIONAL { ?item chembl:activityComment ?act_comment }
+                OPTIONAL { ?item chembl:activityComment ?act_comment }
                 OPTIONAL { ?item chembl:hasDocument ?document .
                         OPTIONAL { ?document owl:sameAs ?doi }
                         OPTIONAL { ?document bibo:pmid ?pmid }
                 }
-        }" .
+        }
+} UNION 
+{ 
+        GRAPH <http://ops.rsc.org> {
+                ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
+                        cheminf:CHEMINF_000399 ?inchi_key;
+                        cheminf:CHEMINF_000018 ?smiles .
+                OPTIONAL { [] obo:IAO_0000136 ?ims_ocrs_compound_uri ;
+                        a cheminf:CHEMINF_000367;
+                        qudt:numericValue ?num_ro5_violations . }
+		OPTIONAL { [] obo:IAO_0000136 ?ims_ocrs_compound_uri ;
+			a cheminf:CHEMINF_000484 ;
+			qudt:numericValue ?molweight . }
+        }
+} UNION 
+{ 
+        GRAPH <http://www.conceptwiki.org> {
+                ?ims_cw_compound_uri skos:prefLabel ?compound_name .
+        } 
+} " .
