@@ -1,0 +1,4 @@
+?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?tissue_label </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> oboowl:hasDbXref ?tissue_xref </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.nexprot.org/caloha> </span> .

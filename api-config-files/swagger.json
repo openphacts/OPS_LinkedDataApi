@@ -2,7 +2,7 @@
   "basePath": "https://beta.openphacts.org/1.3",
   "apiVersion": "v1.3",
   "apis": [
-    { 
+    {
 "path": "/compound" ,
       "operations": [
         {
@@ -14,6 +14,88 @@
             {
               "name":  "uri" ,
               "description":  "A compound URI. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/compound/batch" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Compound Information: Batch" ,
+          "description":  "Information about compounds provided in a list sperated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:logp ?alogp </span> ;<br> ops:hb <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hba </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:hbd ?hbd </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> ops:ps <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?psa </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:rtb ?rtb </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> ops:molformul <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?molformula </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?ims_chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ?bNode1 ?mw_freebase </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?mol_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?ims_db_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:biotransformation ?biotransformation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:proteinBinding ?proteinBinding </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:toxicity ?toxicity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
+          "group": "Compound" ,
+          "parameters": [
+            {
+              "name":  "uri_list" ,
+              "description":  "A list of compound URIs. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5|http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2Fdd758846-1dac-4f0d-a329-06af9a7fa413" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -217,12 +299,10 @@
                   "DESC(?chebi_compound)",
                   "?child_node",
                   "DESC(?child_node)",
-                  "?compound_cw",
-                  "DESC(?compound_cw)",
                   "?compound_name",
                   "DESC(?compound_name)",
-                  "?compound_ocrs",
-                  "DESC(?compound_ocrs)",
+                  "?cw_compound",
+                  "DESC(?cw_compound)",
                   "?item",
                   "DESC(?item)",
                   "?ops_item",
@@ -297,7 +377,7 @@
           "parameters": [
             {
               "name":  "uri" ,
-              "description":  "A compound URI.  e.g.: http://ops.rsc.org/OPS6958" ,
+              "description":  "A compound URI.  e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -1023,7 +1103,7 @@
           "parameters": [
             {
               "name":  "uri" ,
-              "description":  "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ,
+              "description":  "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_100" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -1201,7 +1281,7 @@
           "parameters": [
             {
               "name":  "uri" ,
-              "description":  "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ,
+              "description":  "A ChEBI Class URI. e.g.: http://purl.obolibrary.org/obo/CHEBI_100" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -1353,24 +1433,28 @@
                   "DESC(?assay_uri)",
                   "?chebi_compound",
                   "DESC(?chebi_compound)",
+                  "?chembl_compound",
+                  "DESC(?chembl_compound)",
                   "?class",
                   "DESC(?class)",
-                  "?compound_chembl",
-                  "DESC(?compound_chembl)",
-                  "?compound_cw",
-                  "DESC(?compound_cw)",
                   "?compound_name",
                   "DESC(?compound_name)",
-                  "?compound_ocrs",
-                  "DESC(?compound_ocrs)",
+                  "?cw_compound",
+                  "DESC(?cw_compound)",
                   "?cw_target",
                   "DESC(?cw_target)",
                   "?document",
                   "DESC(?document)",
                   "?doi",
                   "DESC(?doi)",
+                  "?ims_cw_compound_uri",
+                  "DESC(?ims_cw_compound_uri)",
+                  "?ims_ocrs_compound_uri",
+                  "DESC(?ims_ocrs_compound_uri)",
                   "?inchi",
                   "DESC(?inchi)",
+                  "?inchi_key",
+                  "DESC(?inchi_key)",
                   "?inchiKey",
                   "DESC(?inchiKey)",
                   "?item",
@@ -1379,6 +1463,8 @@
                   "DESC(?molweight)",
                   "?num_ro5_violations",
                   "DESC(?num_ro5_violations)",
+                  "?ocrs_compound",
+                  "DESC(?ocrs_compound)",
                   "?ops_item",
                   "DESC(?ops_item)",
                   "?pChembl",
@@ -2073,6 +2159,94 @@
             {
               "name":  "uri" ,
               "description":  "A target URI. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "drug_type" ,
+              "description":  "One of: 'approved', 'biotech', 'experimental', 'illicit', 'investigational', 'nutraceutical', 'smallMolecule', 'withdrawn'" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/target/batch" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Target Information: Batch" ,
+          "description":  "Information about a list of targets, separated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_cw_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_uniprot_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:existence ?existence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:sequence ?sequence </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:Function_Annotation ?function </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:interactsWith ?inter_prot </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> uniprot:classifiedWith ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:alternativeName ?alt_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:mass ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molecularWeight ?mass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?target_pdb </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:seeAlso ?ppi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?inter_prot <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?inter_label </span> .<br> ?ims_chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?target_component </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?synonym </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_component <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?ims_db_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:cellularLocation ?cellularLocation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:molecularWeight ?molecularWeight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:numberOfResidues ?numberOfResidues </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:theoreticalPi ?theoreticalPi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:targetForDrug ?db_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ?db_compound <span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://linkedlifedata.com/resource/drugbank&gt; </span> .<br> ",
+          "group": "Target" ,
+          "parameters": [
+            {
+              "name":  "uri_list" ,
+              "description":  "A list of target URIs. e.g.: http://www.conceptwiki.org/concept/00059958-a045-4581-9dc5-e5a08bb0c291|http://www.conceptwiki.org/concept/7b21c06f-0343-4fcc-ab0f-a74ffe871ade" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
@@ -2990,22 +3164,24 @@
                   "DESC(?assay_type)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
+                  "?chembl_compound",
+                  "DESC(?chembl_compound)",
                   "?chembl_target_uri",
                   "DESC(?chembl_target_uri)",
-                  "?compound_chembl",
-                  "DESC(?compound_chembl)",
-                  "?compound_cw",
-                  "DESC(?compound_cw)",
                   "?compound_name",
                   "DESC(?compound_name)",
-                  "?compound_ocrs",
-                  "DESC(?compound_ocrs)",
+                  "?cw_compound",
+                  "DESC(?cw_compound)",
                   "?cw_target",
                   "DESC(?cw_target)",
                   "?doc_uri",
                   "DESC(?doc_uri)",
                   "?doi",
                   "DESC(?doi)",
+                  "?ims_cw_compound_uri",
+                  "DESC(?ims_cw_compound_uri)",
+                  "?ims_ocrs_compound_uri",
+                  "DESC(?ims_ocrs_compound_uri)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchi_key",
@@ -3016,6 +3192,8 @@
                   "DESC(?molweight)",
                   "?num_ro5_violations",
                   "DESC(?num_ro5_violations)",
+                  "?ocrs_compound",
+                  "DESC(?ocrs_compound)",
                   "?pChembl",
                   "DESC(?pChembl)",
                   "?pmid",
@@ -3442,16 +3620,16 @@
                   "DESC(?assay_type)",
                   "?assay_uri",
                   "DESC(?assay_uri)",
+                  "?chembl_compound",
+                  "DESC(?chembl_compound)",
+                  "?chembl_target",
+                  "DESC(?chembl_target)",
                   "?class",
                   "DESC(?class)",
-                  "?compound_chembl",
-                  "DESC(?compound_chembl)",
-                  "?compound_cw",
-                  "DESC(?compound_cw)",
                   "?compound_name",
                   "DESC(?compound_name)",
-                  "?compound_ocrs",
-                  "DESC(?compound_ocrs)",
+                  "?cw_compound",
+                  "DESC(?cw_compound)",
                   "?cw_target",
                   "DESC(?cw_target)",
                   "?document",
@@ -3460,6 +3638,10 @@
                   "DESC(?doi)",
                   "?g",
                   "DESC(?g)",
+                  "?ims_cw_compound_uri",
+                  "DESC(?ims_cw_compound_uri)",
+                  "?ims_ocrs_compound_uri",
+                  "DESC(?ims_ocrs_compound_uri)",
                   "?inchi",
                   "DESC(?inchi)",
                   "?inchi_key",
@@ -3470,6 +3652,8 @@
                   "DESC(?molweight)",
                   "?num_ro5_violations",
                   "DESC(?num_ro5_violations)",
+                  "?ocrs_compound",
+                  "DESC(?ocrs_compound)",
                   "?ops_item",
                   "DESC(?ops_item)",
                   "?pChembl",
@@ -3494,8 +3678,6 @@
                   "DESC(?smiles)",
                   "?std_value",
                   "DESC(?std_value)",
-                  "?target_chembl",
-                  "DESC(?target_chembl)",
                   "?target_name",
                   "DESC(?target_name)",
                   "?target_organism",
@@ -5276,8 +5458,6 @@
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": [
-                  "?cw_target_uri",
-                  "DESC(?cw_target_uri)",
                   "?diseaseDataset",
                   "DESC(?diseaseDataset)",
                   "?diseaseName",
@@ -5288,14 +5468,16 @@
                   "DESC(?geneDataset)",
                   "?gene_disease_assoc",
                   "DESC(?gene_disease_assoc)",
+                  "?ims_cw_target_uri",
+                  "DESC(?ims_cw_target_uri)",
+                  "?ims_uniprot_target_uri",
+                  "DESC(?ims_uniprot_target_uri)",
                   "?item",
                   "DESC(?item)",
                   "?ops_item",
                   "DESC(?ops_item)",
                   "?prefLabel",
-                  "DESC(?prefLabel)",
-                  "?uniprot_target_uri",
-                  "DESC(?uniprot_target_uri)"
+                  "DESC(?prefLabel)"
                 ],
                 "valueType": "LIST"
               },
@@ -5726,14 +5908,22 @@
                   "DESC(?diseaseDataset)",
                   "?diseaseName",
                   "DESC(?diseaseName)",
+                  "?existence",
+                  "DESC(?existence)",
                   "?geneDataset",
                   "DESC(?geneDataset)",
                   "?gene_uri",
                   "DESC(?gene_uri)",
+                  "?ims_cw_target_uri",
+                  "DESC(?ims_cw_target_uri)",
+                  "?ims_uniprot_target_uri",
+                  "DESC(?ims_uniprot_target_uri)",
                   "?item",
                   "DESC(?item)",
                   "?ops_item",
                   "DESC(?ops_item)",
+                  "?prefLabel",
+                  "DESC(?prefLabel)",
                   "?primarySource",
                   "DESC(?primarySource)",
                   "?pubmed_id",
@@ -5830,6 +6020,712 @@
               "dataType": "string",
               "paramType": "query",
               "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/disease/batch" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Disease Information: Batch" ,
+          "description":  "Information about a list of diseases, separated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_umls_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?bio2rdf_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
+          "group": "Disease" ,
+          "parameters": [
+            {
+              "name":  "uri_list" ,
+              "description":  "A list of disease URIs. e.g.: http://linkedlifedata.com/resource/umls/id/C0004238|http://linkedlifedata.com/resource/umls/id/C0018794" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tissue" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Tissue Information" ,
+          "description":  "Information about a single tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nexprot.org/caloha&gt; </span> .<br> ",
+          "group": "Tissue" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A tissue URI. e.g.: ftp://ftp.nextprot.org/pub/current_release/controlled_vocabularies/caloha.obo#TS-0171" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tissue/batch" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Tissue Information: Batch" ,
+          "description":  "Information about a list of tissues.<br><hr><br>Response template: <br><br><hr><br>  ?ims_caloha_tissue_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nexprot.org/caloha&gt; </span> .<br> ",
+          "group": "Tissue" ,
+          "parameters": [
+            {
+              "name":  "uri_list" ,
+              "description":  "A list of tissue URI.s, separated by '|'.  e.g.: ftp://ftp.nextprot.org/pub/current_release/controlled_vocabularies/caloha.obo#TS-0171|ftp://ftp.nextprot.org/pub/current_release/controlled_vocabularies/caloha.obo#TS-0173" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tissue/byProtein/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Tissues for Protein: Count" ,
+          "description":  "The total number of assertions in the LDC that a given protein is expressed in a tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:tissueExpressionTotalResults ?count </span> .<br> ",
+          "group": "Tissue" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A protein URI. e.g.: http://purl.uniprot.org/uniprot/P55795" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "evidence" ,
+              "description":  "'gold' or 'silver'" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tissue/byProtein" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Tissues for Protein: List" ,
+          "description":  "A page of items corresponding to assertions that a given protein is expressed in a tissue.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:tissue ?tissue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?evidence_type </span> ;<br> prv:usedDat <span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?data_used </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target_uri </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?tissue <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&gt; </span> .<br> ?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ",
+          "group": "Tissue" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A protein URI. e.g.: http://purl.uniprot.org/uniprot/P55795" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "evidence" ,
+              "description":  "A protein URI. e.g.: http://purl.uniprot.org/uniprot/P55795" ,
+              "description":  "'gold' or 'silver'" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?data_used",
+                  "DESC(?data_used)",
+                  "?derived_from",
+                  "DESC(?derived_from)",
+                  "?evidence_qual_label",
+                  "DESC(?evidence_qual_label)",
+                  "?evidence_qual_uri",
+                  "DESC(?evidence_qual_uri)",
+                  "?evidence_type",
+                  "DESC(?evidence_type)",
+                  "?generated_by",
+                  "DESC(?generated_by)",
+                  "?item",
+                  "DESC(?item)",
+                  "?nanopub",
+                  "DESC(?nanopub)",
+                  "?nextprot_uri",
+                  "DESC(?nextprot_uri)",
+                  "?prov",
+                  "DESC(?prov)",
+                  "?quality",
+                  "DESC(?quality)",
+                  "?tissue",
+                  "DESC(?tissue)",
+                  "?tissue_label",
+                  "DESC(?tissue_label)",
+                  "?uniprot_target_uri",
+                  "DESC(?uniprot_target_uri)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tissue/getProteins/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Proteins for Tissue: Count" ,
+          "description":  "The total number of assertions in the LDC that a protein is expressed in a given tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:tissueExpressionTotalResults ?count </span> .<br> ",
+          "group": "Tissue" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A tissue URI. e.g.: ftp://ftp.nextprot.org/pub/current_release/controlled_vocabularies/caloha.obo#TS-0016" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "evidence" ,
+              "description":  "'gold' or 'silver'" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/tissue/getProteins" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "Proteins for Tissue: List" ,
+          "description":  "A page of items corresponding to assertions that a protein is expressed in a given tissue.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:tissue ?ops_item </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?evidence_type </span> ;<br> prv:usedDat <span style=\"BACKGROUND-COLOR: #A9A9F5\"> a ?data_used </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target </span> .<br> ?uniprot_target <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&gt; </span> .<br> ?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ",
+          "group": "Tissue" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A tissue URI. e.g.: ftp://ftp.nextprot.org/pub/current_release/controlled_vocabularies/caloha.obo#TS-0016" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "evidence" ,
+              "description":  "A tissue URI. e.g.: ftp://ftp.nextprot.org/pub/current_release/controlled_vocabularies/caloha.obo#TS-0016" ,
+              "description":  "'gold' or 'silver'" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?data_used",
+                  "DESC(?data_used)",
+                  "?derived_from",
+                  "DESC(?derived_from)",
+                  "?evidence_qual_label",
+                  "DESC(?evidence_qual_label)",
+                  "?evidence_qual_uri",
+                  "DESC(?evidence_qual_uri)",
+                  "?evidence_type",
+                  "DESC(?evidence_type)",
+                  "?generated_by",
+                  "DESC(?generated_by)",
+                  "?item",
+                  "DESC(?item)",
+                  "?nanopub",
+                  "DESC(?nanopub)",
+                  "?nextprot_uri",
+                  "DESC(?nextprot_uri)",
+                  "?ops_item",
+                  "DESC(?ops_item)",
+                  "?prov",
+                  "DESC(?prov)",
+                  "?quality",
+                  "DESC(?quality)",
+                  "?tissue_label",
+                  "DESC(?tissue_label)",
+                  "?uniprot_target",
+                  "DESC(?uniprot_target)",
+                  "?uniprot_target",
+                  "DESC(?uniprot_target)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
             },
             {
               "name": "_lens",
@@ -6720,7 +7616,7 @@
             },
             {
               "name":  "uuid" ,
-              "description":  "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197 for 'Chemical Viewed Structurally', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'" ,
+              "description":  "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197 for 'Chemical Viewed Structurally', eda73945-b112-407e-811a-88448966834f for 'Disease or Syndrome', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'" ,
               "paramType": "query",
               "required": true,
               "dataType": "string"

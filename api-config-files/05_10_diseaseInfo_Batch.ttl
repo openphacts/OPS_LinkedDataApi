@@ -27,7 +27,7 @@
 	api:description "An API configuration to return information about diseases" ;
 	api:endpoint [ 
 		a api:BatchEndpoint ;
-		api:name "Disease Information" ;
+		api:name "Disease Information: Batch" ;
 		api:description "Information about a list of diseases, separated by '|'.";
 		api:uriTemplate "/disease/batch?uri_list={uri_list}" ;
 		api:exampleRequestPath "/disease/batch?uri_list=http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0004238|http%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0018794" ;
