@@ -24,7 +24,7 @@
 	api:description "An API configuration to return information about tissues" ;
 	api:endpoint [ 
 		a api:BatchEndpoint ;
-		api:name "Tissue Information: Batch" ;
+		api:name "[PREVIEW] Tissue Information: Batch" ;
 		api:description "Information about a list of tissues.";
 		api:uriTemplate "/tissue/batch?uri_list={uri_list}" ;
 		api:exampleRequestPath "/tissue/batch?uri_list=ftp%3A%2F%2Fftp.nextprot.org%2Fpub%2Fcurrent_release%2Fcontrolled_vocabularies%2Fcaloha.obo%23TS-0171|ftp%3A%2F%2Fftp.nextprot.org%2Fpub%2Fcurrent_release%2Fcontrolled_vocabularies%2Fcaloha.obo%23TS-0173" ;

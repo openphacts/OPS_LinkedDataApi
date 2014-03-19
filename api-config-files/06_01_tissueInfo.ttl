@@ -24,7 +24,7 @@
 	api:description "An API configuration to return information about tissues" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
-		api:name "Tissue Information" ;
+		api:name "[PREVIEW] Tissue Information" ;
 		api:description "Information about a single tissue.";
 		api:uriTemplate "/tissue?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;

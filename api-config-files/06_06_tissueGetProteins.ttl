@@ -37,7 +37,7 @@
 	api:endpoint <#tissueGetProteinsListEndpoint>.
 
 <#tissueGetProteinsListEndpoint> a api:ListEndpoint ;
-	api:name "Proteins for Tissue: List" ;
+	api:name "[PREVIEW] Proteins for Tissue: List" ;
 	api:description "A page of items corresponding to assertions that a protein is expressed in a given tissue.";
 	api:variable <http://www.conceptwiki.org/concept/UUID-neXtProtGold> ;
         api:variable <http://www.conceptwiki.org/concept/UUID-neXtProtSilver> ;
