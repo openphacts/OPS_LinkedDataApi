@@ -54,11 +54,12 @@
 	void:inDataset ?diseaseClassDataset .";
 	api:where
 "GRAPH <http://rdf.imim.es> {
-	?ops_item sio:SIO_000095 ?diseaseClass ;
+	?ops_item rdfs:seeAlso ?bio2rdf_uri ;
 		foaf:name ?diseaseName ;
-		rdfs:seeAlso ?bio2rdf_uri ;
 		void:inDataset ?diseaseDataset .
-
-	?diseaseClass foaf:name ?diseaseClassName ;
-		void:inDataset ?diseaseClassDataset .
+	OPTIONAL {
+		?ops_item sio:SIO_000095 ?diseaseClass .
+		?diseaseClass foaf:name ?diseaseClassName ;
+			void:inDataset ?diseaseClassDataset .
+	}
 }" .

@@ -50,14 +50,31 @@
 	rdfs:seeAlso ?bio2rdf_uri ;
 	void:inDataset ?diseaseDataset .
 ?diseaseClass foaf:name ?diseaseClassName ;
-	void:inDataset ?diseaseClassDataset .";
+	void:inDataset ?diseaseClassDataset .
+?ims_omim_disease_uri foaf:name ?diseaseName ;
+        ops:diseaseClass ?diseaseClass ;
+        rdfs:seeAlso ?bio2rdf_uri ;
+        void:inDataset ?diseaseDataset .";
 	api:where
-"GRAPH <http://rdf.imim.es> {
-	?ims_umls_disease_uri sio:SIO_000095 ?diseaseClass ;
+"{ GRAPH <http://rdf.imim.es> {
+	?ims_umls_disease_uri rdfs:seeAlso ?bio2rdf_uri ;
 		foaf:name ?diseaseName ;
-		rdfs:seeAlso ?bio2rdf_uri ;
 		void:inDataset ?diseaseDataset .
-
-	?diseaseClass foaf:name ?diseaseClassName ;
-		void:inDataset ?diseaseClassDataset .
+	OPTIONAL {
+		?ims_umls_disease_uri sio:SIO_000095 ?diseaseClass .
+		?diseaseClass foaf:name ?diseaseClassName ;
+			void:inDataset ?diseaseClassDataset .
+	}
+} 
+} UNION {
+	GRAPH <http://rdf.imim.es> {
+        	?ims_omim_disease_uri rdfs:seeAlso ?bio2rdf_uri ;
+                	foaf:name ?diseaseName ;
+                	void:inDataset ?diseaseDataset .
+        	OPTIONAL {
+        	        ?ims_omim_disease_uri sio:SIO_000095 ?diseaseClass .
+        	        ?diseaseClass foaf:name ?diseaseClassName ;
+        	                void:inDataset ?diseaseClassDataset .
+       		}
+	}
 }" .
