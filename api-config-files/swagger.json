@@ -5997,7 +5997,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Disease Information" ,
-          "description":  "Information about a single disease.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?bio2rdf_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
+          "description":  "Information about a single disease.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rdfs:seeAlso ?bio2rdf_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
           "group": "Disease" ,
           "parameters": [
             {
@@ -6079,7 +6079,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Disease Information: Batch" ,
-          "description":  "Information about a list of diseases, separated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_umls_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?bio2rdf_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
+          "description":  "Information about a list of diseases, separated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rdfs:seeAlso ?bio2rdf_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
           "group": "Disease" ,
           "parameters": [
             {
@@ -6160,7 +6160,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Tissue Information" ,
+          "summary":  "[PREVIEW] Tissue Information" ,
           "description":  "Information about a single tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nexprot.org/caloha&gt; </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
@@ -6242,7 +6242,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Tissue Information: Batch" ,
+          "summary":  "[PREVIEW] Tissue Information: Batch" ,
           "description":  "Information about a list of tissues.<br><hr><br>Response template: <br><br><hr><br>  ?ims_caloha_tissue_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nexprot.org/caloha&gt; </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
@@ -6324,7 +6324,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Tissues for Protein: Count" ,
+          "summary":  "[PREVIEW] Tissues for Protein: Count" ,
           "description":  "The total number of assertions in the LDC that a given protein is expressed in a tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:tissueExpressionTotalResults ?count </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
@@ -6412,7 +6412,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Tissues for Protein: List" ,
+          "summary":  "[PREVIEW] Tissues for Protein: List" ,
           "description":  "A page of items corresponding to assertions that a given protein is expressed in a tissue.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:tissue ?tissue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?evidence_type </span> ;<br> prv:usedDat <span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?data_used </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target_uri </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?tissue <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&gt; </span> .<br> ?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
@@ -6553,7 +6553,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Proteins for Tissue: Count" ,
+          "summary":  "[PREVIEW] Proteins for Tissue: Count" ,
           "description":  "The total number of assertions in the LDC that a protein is expressed in a given tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:tissueExpressionTotalResults ?count </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
@@ -6641,7 +6641,7 @@
       "operations": [
         {
           "httpMethod": "GET",
-          "summary":  "Proteins for Tissue: List" ,
+          "summary":  "[PREVIEW] Proteins for Tissue: List" ,
           "description":  "A page of items corresponding to assertions that a protein is expressed in a given tissue.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:tissue ?ops_item </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?evidence_type </span> ;<br> prv:usedDat <span style=\"BACKGROUND-COLOR: #A9A9F5\"> a ?data_used </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target </span> .<br> ?uniprot_target <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&gt; </span> .<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&gt; </span> .<br> ?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&gt; </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
@@ -6719,7 +6719,7 @@
                   "?uniprot_target",
                   "DESC(?uniprot_target)",
                   "?uniprot_target",
-                  "DESC(?uniprot_target)"
+                  "DESC(?uniprot_target"
                 ],
                 "valueType": "LIST"
               },
