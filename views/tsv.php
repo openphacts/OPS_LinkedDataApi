@@ -5,6 +5,8 @@ $curr_line=array();
 
 switch($this->ConfigGraph->getEndpointType()){
     case API.'ListEndpoint' : 
+    case API.'IntermediateExpansionEndpoint':
+    case API.'BatchEndpoint':
         $pageUri = $this->Request->getUriWithPageParam();
 	$json = $DataGraph->to_simple_json($pageUri) ;
         $array = json_decode($json, true);
