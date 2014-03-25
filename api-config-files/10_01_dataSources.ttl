@@ -34,6 +34,7 @@
 ?top_dataset foaf:isPrimaryTopicOf ?description .
 ?dataset dcterms:title ?title .
 ?dataset dcterms:description ?dctDescription .
+?dataset dcterms:license ?license .
 ?dataset void:subset ?subset .
 ?dataset prov:wasDerivedFrom ?derivedFrom .
 ?dataset prov:hadPrimarySource ?primarySource .
@@ -51,6 +52,7 @@
 OPTIONAL { ?dataset dcterms:title ?title . }
 OPTIONAL { ?dataset void:subset ?subset . } 
 OPTIONAL { ?dataset dcterms:description ?dctDescription . }
+OPTIONAL { ?dataset dcterms:license ?license . }
 OPTIONAL { {?dataset prov:wasDerivedFrom ?derivedFrom . }
 UNION { ?dataset prov:hadPrimarySource ?primarySource . }
 UNION { ?dataset prov:wasQuotedFrom ?quotedFrom . }
