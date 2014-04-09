@@ -9,7 +9,7 @@ class OpsIms {
             '?uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
             '?cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
             '?cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
-            '?ocrs_compound_uri'=>'http://ops.rsc.org/' ,
+            '?ocrs_compound_uri'=>'http://ops.rsc.org/OPS' ,
             '?db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
             '?db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
@@ -21,7 +21,7 @@ class OpsIms {
             '?ims_uniprot_target_uri'=>'http://purl.uniprot.org/uniprot/' ,
             '?ims_cw_target_uri'=>'http://www.conceptwiki.org/concept/' ,
             '?ims_cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
-            '?ims_ocrs_compound_uri'=>'http://ops.rsc.org/' ,
+            '?ims_ocrs_compound_uri'=>'http://ops.rsc.org/OPS' ,
             '?ims_db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
             '?ims_db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
@@ -60,33 +60,26 @@ class OpsIms {
        foreach ($this->IMS_variables AS $variableName => $pattern ){
            if (strpos($query, $variableName)!==false) {
                $variableInfoMap[$variableName] = array();
-               if (strpos($input_uri, $pattern)!==false AND strpos(substr($input_uri, strpos($input_uri, $pattern) + strlen($pattern)),'/') === false ){
-                   $variableInfoMap[$variableName]['filter'] = " VALUES {$variableName} {<{$input_uri}>} ";
-                   //echo $filter;
+               $url = IMS_MAP_ENDPOINT;
+               $url .= '?rdfFormat=RDF/XML';
+               $url .= "&targetUriPattern={$pattern}";
+               $url .= '&lensUri=';
+               if ($lens==''){
+                  $url .= 'Default';
                }
-               else {
-                   $url = IMS_MAP_ENDPOINT;
-                   $url .= '?rdfFormat=RDF/XML';
-                   $url .= "&targetUriPattern={$pattern}";
-                   $url .= '&lensUri=';
-                   if ($lens==''){
-                       $url .= 'Default';
-                   }
-                   else{
-                       $url .= $lens;
-                   }
+               else{
+                  $url .= $lens;
+               }
        
-                   $url .= '&Uri='.urlencode($input_uri);
-		   //echo $url."\n";                   
-                   $variableInfoMap[$variableName]['url']=$url;
-                   
-                   $ch = curl_init();
-                   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                   curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: text/plain"));
-                   curl_setopt($ch, CURLOPT_URL, $url);
-                   $variableInfoMap[$variableName]['handle'] = $ch;
-                   curl_multi_add_handle($multiHandle, $ch);
-               }
+              $url .= '&Uri='.urlencode($input_uri);
+	      //logDebug("IMS Request: ".$url);                   
+              $variableInfoMap[$variableName]['url']=$url;
+              $ch = curl_init();
+              curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+              curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: text/plain"));
+              curl_setopt($ch, CURLOPT_URL, $url);
+              $variableInfoMap[$variableName]['handle'] = $ch;
+              curl_multi_add_handle($multiHandle, $ch);
            }
        }
        
@@ -176,6 +169,7 @@ class OpsIms {
        //echo $query;
        //echo '<br><br>';
        //echo $url;
+	//logDebug("IMS Request: ".$url);
        $output = simplexml_load_string($response)->expandedQuery ;
        return $output;
    }
