@@ -6,7 +6,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "Mapping service betweem URLs"@en;
-	api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8894/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#Uri> ;
 	api:variable <#targetUriPattern> ;

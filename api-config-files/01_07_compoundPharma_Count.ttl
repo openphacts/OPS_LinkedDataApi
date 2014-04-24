@@ -24,7 +24,7 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8894/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organismName ;
         api:variable <#input> ; 

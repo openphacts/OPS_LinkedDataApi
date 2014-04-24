@@ -18,7 +18,7 @@
 
 <#assocByDiseaseCount> a api:API ;
         rdfs:label "Disease"@en ;
-        api:sparqlEndpoint <http://ops-virt:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8894/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:dataset <http://rdf.imim.es> ;
