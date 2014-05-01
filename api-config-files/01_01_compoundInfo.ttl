@@ -86,10 +86,7 @@
 	drugbank:drugType ?drugType ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
 	api:where
-"GRAPH <http://www.conceptwiki.org> {
-	?cw_compound_uri skos:prefLabel ?compound_name.
-}
-GRAPH <http://ops.rsc.org> {
+"GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles.
 	?ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi.
 	?ocrs_compound_uri cheminf:CHEMINF_000399 ?inchiKey.
@@ -115,6 +112,11 @@ GRAPH <http://ops.rsc.org> {
 	UNION { [] obo:IAO_0000136 ?ocrs_compound_uri ;
 		a cheminf:CHEMINF_000349;
 		qudt:numericValue ?psa . }
+UNION {
+GRAPH <http://www.conceptwiki.org> {
+        ?cw_compound_uri skos:prefLabel ?compound_name.
+}
+}
 UNION {
 GRAPH <http://www.ebi.ac.uk/chembl> {
 	?chembl_compound_uri a ?mol_type .

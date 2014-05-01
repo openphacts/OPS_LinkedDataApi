@@ -79,10 +79,7 @@
 	drugbank:meltingPoint ?meltingPoint ;
 	void:inDataset <http://linkedlifedata.com/resource/drugbank>.";
 	api:where
-"GRAPH <http://www.conceptwiki.org> {
-	?ims_cw_compound_uri skos:prefLabel ?compound_name.
-}
-GRAPH <http://ops.rsc.org> {
+"GRAPH <http://ops.rsc.org> {
 	?ims_ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles.
 	?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi.
 	?ims_ocrs_compound_uri cheminf:CHEMINF_000399 ?inchiKey.
@@ -108,6 +105,11 @@ GRAPH <http://ops.rsc.org> {
 	UNION { [] obo:IAO_0000136 ?ims_ocrs_compound_uri ;
 		a cheminf:CHEMINF_000349;
 		qudt:numericValue ?psa . }
+UNION {
+GRAPH <http://www.conceptwiki.org> {
+        ?ims_cw_compound_uri skos:prefLabel ?compound_name.
+}
+}
 UNION {
 GRAPH <http://www.ebi.ac.uk/chembl> {
 	?ims_chembl_compound_uri a ?mol_type .
