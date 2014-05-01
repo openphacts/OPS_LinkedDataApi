@@ -270,7 +270,7 @@ class SparqlWriter {
                         $sparql=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $sparql);
                     }
                     else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $sparql)===1 ){
-                        $sparql=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $sparql, 1);
+                        $sparql=preg_replace("/(.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $sparql);
                     }
                     else {
                         $sparql=preg_replace("/GRAPH *\\".$sparqlVar."/s", "{$filterClause} GRAPH {$sparqlVar} ", $sparql, 1);
@@ -773,7 +773,7 @@ _SPARQL_;
                     $query=preg_replace("/(WHERE.*?\{)/s", "$1 {$filterClause}", $query);
                 }
                 else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
-                    $query=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
+                    $query=preg_replace("/(.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query);
                 }
                 else {
                     $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
