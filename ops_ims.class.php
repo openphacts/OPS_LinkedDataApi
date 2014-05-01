@@ -86,7 +86,7 @@ class OpsIms {
        $this->doSelectAndHandleResponses($multiHandle, $input_uri, $variableInfoMap);       
        curl_multi_close($multiHandle);
        foreach ($variableInfoMap AS $variableName => $info){
-           if (isset($info['filter']) ) {
+           if (isset($info['filter']) && preg_match("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$variableName.")/s",$output)) {
                $output = preg_replace("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$variableName.")/s",
                		"$1 {$info['filter']} $2",$output, 1);
            }
@@ -139,6 +139,7 @@ class OpsIms {
    
    private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
        $response = curl_multi_getcontent($varInfo['handle']);
+	//logDebug("IMS Response: {$response}");
        curl_close($varInfo['handle']);
        curl_multi_remove_handle($multiHandle, $varInfo['handle']);
        //echo $url;
