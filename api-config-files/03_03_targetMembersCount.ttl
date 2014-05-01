@@ -77,12 +77,15 @@ GRAPH ?g {
                 IF(?g = <http://www.ebi.ac.uk/chembl/target/inference>, <http://www.ebi.ac.uk/chembl/target> ,
                         IF(?g = <http://www.geneontology.org/inference>, <http://www.geneontology.org> , 'Error'))) AS ?g_short )
 }               
-{ ?item obo:C ?child_node ;
+{ { ?item obo:C ?child_node ;
 	uniprot:reviewed true }
 UNION { ?item obo:F ?child_node ;
         uniprot:reviewed true }
 UNION { ?item obo:P ?child_node ;
         uniprot:reviewed true }
+GRAPH <http://purl.uniprot.org> {
+        ?item [] []
+} }
 UNION { 
 GRAPH <http://www.ebi.ac.uk/chembl> { 
 	?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .

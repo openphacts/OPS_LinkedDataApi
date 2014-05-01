@@ -207,12 +207,7 @@ class OpsIms {
 		        $url=$urlStart;
 		    }
 		    
-		    if (strpos($uri, $pattern)!==false){
-		        $expanded[] = $uri;
-		    }
-		    elseif (filter_var($uri, FILTER_VALIDATE_URL)) {
-		        $url .= '&Uri='.urlencode($uri);
-		    }
+		    $url .= '&Uri='.urlencode($uri);
 		    
 		    $iter++;
 		}
