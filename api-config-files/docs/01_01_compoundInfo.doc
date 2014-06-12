@@ -26,4 +26,8 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:meltingPoint ?meltingPoint </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:drugType ?drugType </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span> .
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:drugInteraction ?interaction </span> ; 
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span> .
+?interaction <span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:interactingDrug ?interacting_drug </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:text ?interaction_text </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://linkedlifedata.com/resource/drugbank> </span> .
