@@ -6717,7 +6717,7 @@
                   "?tissue_label",
                   "DESC(?tissue_label)",
                   "?uniprot_target",
-                  "DESC(?uniprot_target)",
+                  "DESC(?uniprot_target)"
                 ],
                 "valueType": "LIST"
               },
