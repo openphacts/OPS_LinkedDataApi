@@ -131,7 +131,8 @@ GRAPH <http://linkedlifedata.com/resource/drugbank> {
 	UNION { ?ims_db_compound_uri drugbank:proteinBinding ?proteinBinding. }
 	UNION { ?ims_db_compound_uri drugbank:toxicity ?toxicity. }
 	UNION { ?ims_db_compound_uri drugbank:meltingPoint ?meltingPoint. }
-	UNION { ?interaction drugbank:interactionDrug1 ?ims_db_compound_uri ;
-			drugbank:interactionDrug2 ?interacting_drug ;
-			drugbank:text ?interaction_text . }
+	UNION { ?interaction drugbank:interactionDrug1|drugbank:interactionDrug2 ?ims_db_compound_uri ;
+			drugbank:interactionDrug1|drugbank:interactionDrug2 ?interacting_drug ;
+			drugbank:text ?interaction_text . 
+		FILTER (?ims_db_compound_uri != ?interacting_drug) }
 }}}" .
