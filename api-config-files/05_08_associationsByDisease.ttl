@@ -35,11 +35,11 @@
 	        api:selector [
         	api:where "GRAPH <http://rdf.imim.es> {
 	?item rdf:type ?type ;
-		sio:SIO_000628 ?ops_item ;
+		sio:SIO_000628 ?umls_disease_uri ;
 		sio:SIO_000253 ?primarySource ;
 		void:inDataset ?assocDataset .
 
-	?ops_item sio:SIO_000095 ?diseaseClass ;
+	?umls_disease_uri sio:SIO_000095 ?diseaseClass ;
 		foaf:name ?diseaseName ;
 		void:inDataset ?diseaseDataset .
 	?diseaseClass foaf:name ?diseaseClassName ;
@@ -70,7 +70,7 @@
 <#assocByDiseaseViewer> a api:Viewer ;
 	api:name "assocByDiseaseViewer" ;
 	api:template 
-"?item ops:disease ?ops_item ;
+"?item ops:disease ?umls_disease_uri ;
 	ops:gene ?gene_uri ;
 	rdf:type ?type ;
 	dcterms:description ?description ;
@@ -78,7 +78,7 @@
 	ops:primarySource ?primarySource ;
 	void:inDataset ?assocDataset .
 ?type rdfs:label ?type_label .
-?ops_item foaf:name ?diseaseName ;
+?umls_disease_uri foaf:name ?diseaseName ;
 	ops:diseaseClass ?diseaseClass ;
 	void:inDataset ?diseaseDataset .
 ?diseaseClass foaf:name ?diseaseClassName ;	
@@ -94,11 +94,11 @@
 } 
 GRAPH <http://rdf.imim.es> {
 	?item rdf:type ?type ;
-		sio:SIO_000628 ?ops_item ;
+		sio:SIO_000628 ?umls_disease_uri ;
 		sio:SIO_000253 ?primarySource ;
 		void:inDataset ?assocDataset .
 
-	?ops_item sio:SIO_000095 ?diseaseClass ;
+	?umls_disease_uri sio:SIO_000095 ?diseaseClass ;
 		foaf:name ?diseaseName ;
 		void:inDataset ?diseaseDataset .
 	?diseaseClass foaf:name ?diseaseClassName ;

@@ -13,6 +13,7 @@ class OpsIms {
             '?db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
             '?db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
+	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/'
     );
     
     var $IMS_interm_variables = array(

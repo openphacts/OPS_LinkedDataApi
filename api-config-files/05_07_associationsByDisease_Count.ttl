@@ -51,11 +51,11 @@
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
 GRAPH <http://rdf.imim.es> {
 	?item rdf:type ?type ;
-		sio:SIO_000628 ?ops_item ;
+		sio:SIO_000628 ?umls_disease_uri ;
 		sio:SIO_000253 ?primarySource ;
 		void:inDataset ?assocDataset .
 
-	?ops_item sio:SIO_000095 ?diseaseClass ;
+	?umls_disease_uri sio:SIO_000095 ?diseaseClass ;
 		foaf:name ?diseaseName ;
 		void:inDataset ?diseaseDataset .
 	?diseaseClass foaf:name ?diseaseClassName ;

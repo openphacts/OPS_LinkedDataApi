@@ -46,7 +46,8 @@
 <#diseaseInfoViewer> a api:Viewer ;
 	api:name "diseaseInfoViewer" ;
 	api:template 
-"?ops_item foaf:name ?diseaseName ;
+"?ops_item skos:exactMatch ?umls_disease_uri .
+?umls_disease_uri foaf:name ?diseaseName ;
 	ops:diseaseClass ?diseaseClass ;
 	rdfs:seeAlso ?bio2rdf_uri ;
 	void:inDataset ?diseaseDataset .
@@ -54,11 +55,11 @@
 	void:inDataset ?diseaseClassDataset .";
 	api:where
 "GRAPH <http://rdf.imim.es> {
-	?ops_item rdfs:seeAlso ?bio2rdf_uri ;
+	?umls_disease_uri rdfs:seeAlso ?bio2rdf_uri ;
 		foaf:name ?diseaseName ;
 		void:inDataset ?diseaseDataset .
 	OPTIONAL {
-		?ops_item sio:SIO_000095 ?diseaseClass .
+		?umls_disease_uri sio:SIO_000095 ?diseaseClass .
 		?diseaseClass foaf:name ?diseaseClassName ;
 			void:inDataset ?diseaseClassDataset .
 	}
