@@ -1,5 +1,5 @@
 {
-  "basePath": "https://ops2.few.vu.nl",
+  "basePath": "http://ops2.few.vu.nl",
   "apiVersion": "v1.4.1",
   "apis": [
     {
