@@ -95,7 +95,7 @@
           "parameters": [
             {
               "name":  "uri_list" ,
-              "description":  "A list of compound URIs. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5|http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2Fdd758846-1dac-4f0d-a329-06af9a7fa413" ,
+              "description":  "A list of compound URIs. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5|http://www.conceptwiki.org/concept/dd758846-1dac-4f0d-a329-06af9a7fa413" ,
               "dataType": "string",
               "required": true,
               "paramType": "query"
