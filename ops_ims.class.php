@@ -13,7 +13,8 @@ class OpsIms {
             '?db_compound_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugs/',
             '?db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
-	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/'
+	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
+	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.org/obo/owl/GO#GO_'
     );
     
     var $IMS_interm_variables = array(
