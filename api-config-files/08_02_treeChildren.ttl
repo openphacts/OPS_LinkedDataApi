@@ -48,7 +48,9 @@
 
 <#treeChildrenViewer> a api:Viewer ;
 	api:name "treeChildrenViewer";
-	api:template "?ops_item ops:childNode ?child_node ;
+	api:template "
+?ops_item skos:exactMatch ?node_uri .
+?node_uri ops:childNode ?child_node ;
 	skos:prefLabel ?label ;
 	void:inDataset ?g_short . 
 ?child_node skos:prefLabel ?child_label .
@@ -57,7 +59,7 @@
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
 	api:where "{
-SELECT DISTINCT ?child_node ?g_short WHERE {
+SELECT DISTINCT ?child_node ?node_uri ?g_short WHERE {
 	VALUES ?g {
 		<http://purl.uniprot.org/enzyme/direct> 
 		<http://www.ebi.ac.uk/chembl/target/direct>
@@ -65,7 +67,7 @@ SELECT DISTINCT ?child_node ?g_short WHERE {
 		<http://www.geneontology.org> 
 	}
 	GRAPH ?g {
-		?child_node rdfs:subClassOf ?ops_item . 
+		?child_node rdfs:subClassOf ?node_uri . 
 		FILTER ( isURI(?child_node) )
 		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, <http://purl.uniprot.org/enzyme> , 
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, <http://www.ebi.ac.uk/chembl/target> ,
@@ -74,8 +76,8 @@ SELECT DISTINCT ?child_node ?g_short WHERE {
 	} 
 }
 }
-OPTIONAL { { ?ops_item rdfs:label ?label }
-UNION { ?ops_item skos:prefLabel ?label }
+OPTIONAL { { ?node_uri rdfs:label ?label }
+UNION { ?node_uri skos:prefLabel ?label }
 }
 OPTIONAL { { ?child_node rdfs:label ?child_label }
 UNION { ?child_node skos:prefLabel ?child_label }
