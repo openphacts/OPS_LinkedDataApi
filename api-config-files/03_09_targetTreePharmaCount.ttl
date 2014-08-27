@@ -80,7 +80,7 @@
                 api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 		a api:ItemEndpoint ;
 		api:name "Target Class Pharmacology: Count" ;
-		api:description "The total number of  acitivity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
+		api:description "The total number of activity values in the LDC for targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
 		api:itemTemplate "{uri}" ;
 		api:uriTemplate "/target/tree/pharmacology/count?uri={uri}" ;
 		api:exampleRequestPath "/target/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
