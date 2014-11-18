@@ -23,7 +23,7 @@
 		api:name "Chemical Structure Search: Exact" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure/exact?searchOptions.Molecule={searchOptions.Molecule}" ;
-		api:externalRequestTemplate "http://ops.rsc.org/api/v1/JSON.ashx?op=ExactStructureSearch&scopeOptions.DataSources%5B0%5D=DrugBank&scopeOptions.DataSources%5B1%5D=ChEMBL&scopeOptions.DataSources%5B2%5D=PDB&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "http://ops.rsc.org/api/v1/JSON.ashx?op=ExactStructureSearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/structure/exact?searchOptions.Molecule=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
 		api:viewer <#externalResponseViewer> ;
