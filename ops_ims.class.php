@@ -151,10 +151,9 @@ class OpsIms {
    }
    
    private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
-       $output = $query ;
-       $output = preg_replace("/\*#\*/","}",$output);
+       $expanded = preg_replace("/\*#\*/","}",$query);
        $url = IMS_EXPAND_ENDPOINT;
-       $url .= urlencode($query) ;
+       $url .= urlencode($expanded) ;
        $params=substr($params, 2);
        $url .= '&parameter=' ;
        $url .= urlencode($params);
@@ -169,12 +168,16 @@ class OpsIms {
        $url .= '&inputURI=' . urlencode($input_uri) ;
        $response = $this->getResponse($url, "application/xml");
        
-       //echo $query;
-       //echo '<br><br>';
-       //echo $url;
-	//logDebug("IMS Request: ".$url);
-       $output = simplexml_load_string($response)->expandedQuery ;
-       return $output;
+//      echo "<pre>\n";
+//      echo $query;
+//      echo "\n</pre><pre>\n";
+//      echo $expanded;
+//      echo "\n</pre><pre>\n";
+//       echo $url;
+//       echo "\n</pre>\n";
+//logDebug("IMS Request: ".$url);
+       $expanded = simplexml_load_string($response)->expandedQuery ;
+       return $expanded;
    }
 
   function expandBatchQuery( $query , $uriList, $lens) {
@@ -259,7 +262,9 @@ class OpsIms {
       $ch = curl_init($url);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: ".$mimetype));
+      curl_setopt($ch,CURLOPT_FAILONERROR, true);
       $response = curl_exec($ch);
+      
       curl_close($ch);
       
       return $response;
