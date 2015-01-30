@@ -84,7 +84,7 @@ rdf:type skos:prefLabel 'Type' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' . ";
 	api:where 
 "	{ GRAPH <http://www.ebi.ac.uk/chembl> {
-		?chembl_compound_uri owl:sameAs ?chebi_compound
+		?chembl_compound_uri skos:exactMatch ?chebi_compound
         	GRAPH ?g { 
 			{ ?chebi_compound rdfs:subClassOf ?chebi_class .
 			?chebi_class rdfs:label ?chebi_label .

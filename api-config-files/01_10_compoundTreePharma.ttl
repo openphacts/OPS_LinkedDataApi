@@ -205,7 +205,7 @@ _:type api:name "target_type" ;
  		?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?class .
  	}
 	 GRAPH <http://www.ebi.ac.uk/chembl> {
- 		?chembl_compound owl:sameAs ?chebi_compound .
+ 		?chembl_compound skos:exactMatch ?chebi_compound .
  	}
  	GRAPH <http://ops.rsc.org> {
  		?ocrs_compound skos:exactMatch ?chembl_compound .

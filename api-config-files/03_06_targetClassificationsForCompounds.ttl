@@ -176,5 +176,5 @@ chembl:pChembl api:name "pChembl" ;
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?assay chembl:hasTarget ?chembl_target_uri .
 		?activity chembl:hasAssay ?assay ;
-			chembl:hasMolecule/owl:sameAs ?chebi_compound . 
+			chembl:hasMolecule/skos:exactMatch ?chebi_compound . 
 	}" 
