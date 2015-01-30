@@ -204,9 +204,6 @@ _:type api:name "target_type" ;
         ?drugType_uri rdfs:label ?drugType.
   } 
 }
-GRAPH <http://www.conceptwiki.org> {
-	?cw_compound_uri skos:prefLabel ?compound_name.
-}
 GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
@@ -229,7 +226,8 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
         OPTIONAL { ?target_uri chembl:hasTargetComponent ?protein .
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_target skos:exactMatch ?protein ;
-				skos:prefLabel ?protein_name
+				skos:prefLabel ?protein_name .
+			?cw_compound_uri skos:prefLabel ?compound_name.
                 } 
         }
 	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
@@ -310,9 +308,6 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
         ?drugType_uri rdfs:label ?drugType.
   } 
 }
-GRAPH <http://www.conceptwiki.org> {
-	?cw_compound_uri skos:prefLabel ?compound_name.
-}
 GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
@@ -335,7 +330,8 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
         OPTIONAL { ?target_uri chembl:hasTargetComponent ?protein .
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_target skos:exactMatch ?protein ;
-				skos:prefLabel ?protein_name
+				skos:prefLabel ?protein_name .
+			?cw_compound_uri skos:prefLabel ?compound_name.
                 } 
         }
 	OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
