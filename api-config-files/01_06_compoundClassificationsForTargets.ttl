@@ -171,18 +171,32 @@ chembl:pChembl api:name "pChembl" ;
 ?class skos:prefLabel ?class_label ;
 	void:inDataset ?g . ";
 	api:where 
-"	GRAPH <http://www.ebi.ac.uk/chembl> {
-		?activity chembl:hasMolecule ?chembl_compound_uri ;
-			chembl:hasAssay ?assay .
-		?assay chembl:hasTarget ?chembl_target
-	} 
-	GRAPH <http://www.conceptwiki.org> {
-                ?cw_compound_uri skos:prefLabel ?cw_label
-        }
-	?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo:C|chembl:hasTargetComponent/skos:exactMatch/obo:F|chembl:hasTargetComponent/skos:exactMatch/obo:P ?class
-	{ GRAPH ?g {
-		{ ?class rdfs:label ?class_label } UNION
-		{ ?class skos:prefLabel ?class_label }
+"GRAPH <http://www.ebi.ac.uk/chembl> {
+	?activity chembl:hasMolecule ?chembl_compound_uri ;
+		chembl:hasAssay ?assay .
+	?assay chembl:hasTarget ?chembl_target .
+	?chembl_target chembl:hasTargetComponent ?chembl_tc .
+	{
+		?chembl_target chembl:hasProteinClassification ?class .
+		?class rdfs:label ?class_label
 	}
-	FILTER (?g = <http://purl.uniprot.org/enzyme> || ?g = <http://www.ebi.ac.uk/chembl> || ?g = <http://www.geneontology.org>)
-	}" 
+	UNION {
+		?chembl_tc chembl:targetCmptXref ?class .
+		?class a chembl:EnzymeClassRef
+		GRAPH <http://purl.uniprot.org/enzyme> {
+			?class skos:prefLabel ?class_label 
+		}
+	}
+	UNION {
+		?chembl_tc skos:exactMatch ?tc_match .
+		GRAPH <http://www.openphacts.org/goa> {
+			?tc_match obo:C|obo:F|obo:P ?class
+		}
+		GRAPH <http://www.geneontology.org> {
+			?class rdfs:label ?class_label
+		}
+	}
+} 
+GRAPH <http://www.conceptwiki.org> {
+	?cw_compound_uri skos:prefLabel ?cw_label
+}" 
