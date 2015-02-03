@@ -120,7 +120,8 @@ drugbank:drugType api:name "drug_type" ;
 {
 	GRAPH <http://www.conceptwiki.org> {
 		?cw_target_uri skos:prefLabel ?target_name 
-	} 
+	} }
+UNION { 
 	GRAPH <http://purl.uniprot.org> {
 		{?uniprot_target_uri uniprot:existence ?existence .
 		?uniprot_target_uri uniprot:organism ?organism . 
