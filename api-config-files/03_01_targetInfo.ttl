@@ -121,7 +121,8 @@ drugbank:drugType api:name "drug_type" ;
 	GRAPH <http://www.conceptwiki.org> {
 		?cw_target_uri skos:prefLabel ?target_name 
 	} }
-UNION { 
+UNION {
+{ SELECT DISTINCT * WHERE { 
 	GRAPH <http://purl.uniprot.org> {
 		{?uniprot_target_uri uniprot:existence ?existence .
 		?uniprot_target_uri uniprot:organism ?organism . 
@@ -131,9 +132,14 @@ UNION {
                         rdfs:comment ?function . }
 		UNION { ?uniprot_target_uri uniprot:sequence ?seq_uri .
 			?seq_uri rdf:value ?sequence ;
-				uniprot:mass ?mass . 
-			[] uniprot:sequenceFor ?uniprot_target_uri, 
+				uniprot:mass ?mass .
+			{[] uniprot:sequenceFor ?uniprot_target_uri, 
 					?seq_uri}
+			UNION {
+				[] uniprot:sequenceFor ?uniprot_target_uri,
+                                       ?seq_dot_uri
+				FILTER(STRSTARTS(STR(?seq_dot_uri), STR(?uniprot_target_uri)))
+			} }
 		UNION { ?intact1 owl:sameAs ?uniprot_target_uri .
 			[] uniprot:participant ?intact1, ?intact2 .
 			FILTER(?intact1!=?intact2)
@@ -144,7 +150,7 @@ UNION {
                         ?target_pdb uniprot:database <http://purl.uniprot.org/database/PDB> . }
                 UNION { ?uniprot_target_uri rdfs:seeAlso ?ppi .
                         ?ppi uniprot:database <http://purl.uniprot.org/database/IntAct> . }
-	} }
+	} } } }
 UNION {
          GRAPH <http://linkedlifedata.com/resource/drugbank> {
                 { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
