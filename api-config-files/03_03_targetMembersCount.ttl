@@ -88,7 +88,11 @@ GRAPH <http://purl.uniprot.org> {
 } }
 UNION { 
 GRAPH <http://www.ebi.ac.uk/chembl> { 
-	?item chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref ?child_node .
+	?item chembl:hasProteinClassification ?child_node .
 	[] chembl:hasTarget ?item 
+} }
+UNION {
+GRAPH <http://purl.uniprot.org> {
+	?item uniprot:enzyme ?child_node
 } }
 } }" .
