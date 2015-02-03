@@ -31,11 +31,10 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
   /*  */
   
   function x($re, $v, $options = 'si') {
-      //ASSUMPTION: Turtle files do not have comments
-    /*$v = preg_replace('/^[\xA0\xC2]+/', ' ', $v);
-    while (preg_match('/^\s*(\#[^\xd\xa]*)(.*)$/si', $v, $m)) {/* comment removal 
+    $v = preg_replace('/^[\xA0\xC2]+/', ' ', $v);
+    while (preg_match('/^\s*(\#[^\xd\xa]*)(.*)$/si', $v, $m)) {/* comment removal */
       $v = $m[2];
-    }*/
+    }
     return ARC2::x($re, $v, $options);
     //$this->unparsed_code = ($sub_r && count($sub_r)) ? $sub_r[count($sub_r) - 1] : '';
   }
@@ -297,6 +296,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
         elseif ((list($sub_r, $sub_v) = $this->xCollection($sub_v)) && $sub_r) {
           $t['o'] = $sub_r['id'];
           $t['o_type'] = $sub_r['type'];
+          $t['o_datatype'] = '';
           $pre_r = array_merge($pre_r, array($t), $sub_r['triples']);
           $state = 4;
           $proceed = 1;
@@ -304,6 +304,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
         elseif ((list($sub_r, $sub_v) = $this->xBlankNodePropertyList($sub_v)) && $sub_r) {
           $t['o'] = $sub_r['id'];
           $t['o_type'] = $sub_r['type'];
+          $t['o_datatype'] = '';
           $pre_r = array_merge($pre_r, array($t), $sub_r['triples']);
           $state = 4;
           $proceed = 1;
@@ -382,6 +383,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
           elseif ((list($sub_r, $sub_v) = $this->xCollection($sub_v)) && $sub_r) {
             $t['o'] = $sub_r['id'];
             $t['o_type'] = $sub_r['type'];
+            $t['o_datatype'] = '';
             $r['triples'] = array_merge($r['triples'], array($t), $sub_r['triples']);
             $state = 4;
             $proceed = 1;
@@ -389,6 +391,7 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
           elseif((list($sub_r, $sub_v) = $this->xBlankNodePropertyList($sub_v)) && $sub_r) {
             $t['o'] = $sub_r['id'];
             $t['o_type'] = $sub_r['type'];
+            $t['o_datatype'] = '';
             $r['triples'] = array_merge($r['triples'], array($t), $sub_r['triples']);
             $state = 4;
             $proceed = 1;
@@ -634,18 +637,15 @@ class ARC2_TurtleParser extends ARC2_RDFParser {
   
   function xIRI_REF($v) {
     //if ($r = $this->x('\<([^\<\>\"\{\}\|\^\'[:space:]]*)\>', $v)) {
-    /* Removed the 2 if else branches below because they are not called
     if (($r = $this->x('\<(\$\{[^\>]*\})\>', $v)) && ($sub_r = $this->xPlaceholder($r[1]))) {
       return array($r[1], $r[2]);
     }
-    elseif ($r = $this->x('\<\>', $v)) {       
+    elseif ($r = $this->x('\<\>', $v)) {
       return array(true, $r[1]);
     }
-    else*/
-    if ($r = $this->x('\<([^\s][^\<\>]*)\>', $v)) {    
+    elseif ($r = $this->x('\<([^\s][^\<\>]*)\>', $v)) {
       return array($r[1] ? $r[1] : true, $r[2]);
     }
-    
     return array(0, $v);
   }
   
