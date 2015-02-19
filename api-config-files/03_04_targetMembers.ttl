@@ -90,7 +90,7 @@ UNION { ?item obo:F ?child_node .
 ?item uniprot:reviewed true }
 UNION { ?item obo:P ?child_node .
 ?item uniprot:reviewed true }
-UNION { ?item uniprot:enzyme|chembl:hasProteinClassification ?child_node } 
+UNION { ?item uniprot:enzyme|uniprot:domain/uniprot:enzyme|chembl:hasProteinClassification ?child_node } 
 { GRAPH <http://purl.uniprot.org> {
 	?item rdfs:label ?uniprot_name
 	OPTIONAL { ?item uniprot:organism ?uniprot_organism }

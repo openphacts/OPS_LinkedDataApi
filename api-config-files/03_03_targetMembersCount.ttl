@@ -93,6 +93,6 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 } }
 UNION {
 GRAPH <http://purl.uniprot.org> {
-	?item uniprot:enzyme ?child_node
+	?item uniprot:domain/uniprot:enzyme|uniprot:enzyme ?child_node
 } }
 } }" .

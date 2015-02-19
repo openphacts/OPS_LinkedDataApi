@@ -101,18 +101,17 @@ _:type api:name "target_type" ;
 <#targetClassificationsViewer> a api:Viewer ;
 	api:name "targetClassificationsViewer";
 	api:template "?ops_item skos:exactMatch ?chembl_target_uri ;
-	skos:exactMatch ?uniprot_target_uri ;
-	skos:exactMatch ?cw_target_uri .
+	skos:exactMatch ?uniprot_target_uri .
 ?chembl_target_uri chembl:hasProteinClassification ?chembl_class ;
 	dcterms:title ?target_name ;
 	a ?target_type ;
-	ops:hasEnzymeClassification ?enzyme_class ; 
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?uniprot_target_uri ops:hasGoComponent ?go_component ; 
 	ops:hasGoFunction ?go_function ;
 	ops:hasGoProcess ?go_process ; 
-	void:inDataset <http://www.openphacts.org/goa> .
-?cw_target_uri skos:prefLabel ?cw_label . 
+	ops:hasEnzymeClassification ?enzyme_class ;
+	skos:prefLabel ?uniprot_name ;
+	void:inDataset ?dataset .
 ?chembl_class skos:prefLabel ?chembl_label ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> . 
 ?enzyme_class skos:prefLabel ?enzyme_label ;
@@ -127,34 +126,39 @@ _:type api:name "target_type" ;
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
 	api:where 
-"GRAPH <http://www.conceptwiki.org> {
-	?cw_target_uri skos:prefLabel ?cw_label
-}
-{ GRAPH <http://www.ebi.ac.uk/chembl> {
-        { ?chembl_target_uri chembl:hasProteinClassification ?chembl_class
+"{ GRAPH <http://www.ebi.ac.uk/chembl> {
+        ?chembl_target_uri chembl:hasProteinClassification ?chembl_class ;
+		dcterms:title ?target_name ;
+                a ?target_type .
         GRAPH ?g {
                 ?chembl_class rdfs:label ?chembl_label
-        } } UNION
-        { ?chembl_target_uri chembl:hasTargetComponent/chembl:targetCmptXref ?enzyme_class .
-        ?enzyme_class a chembl:EnzymeClassRef
-        GRAPH ?g {
-                ?enzyme_class skos:prefLabel ?enzyme_label
-        }}
-        ?chembl_target_uri dcterms:title ?target_name ;
-		a ?target_type .
+        } 
 } } UNION {
 GRAPH <http://www.openphacts.org/goa> {
+	{ GRAPH <http://purl.uniprot.org> {
+		?uniprot_target_uri uniprot:enzyme|uniprot:domain/uniprot:enzyme ?enzyme_class .
+		BIND(<http://purl.uniprot.org> AS ?dataset)
+	}
+        GRAPH ?g {
+                ?enzyme_class skos:prefLabel ?enzyme_label
+        } } UNION
         { ?uniprot_target_uri obo:C ?go_component
+	BIND(<http://www.openphacts.org/goa> AS ?dataset)
         GRAPH ?g {
                 ?go_component rdfs:label ?go_c_label
         } } UNION
         { ?uniprot_target_uri obo:F ?go_function
+        BIND(<http://www.openphacts.org/goa> AS ?dataset)
         GRAPH ?g {
                 ?go_function rdfs:label ?go_f_label
         } } UNION
         { ?uniprot_target_uri obo:P ?go_process
+        BIND(<http://www.openphacts.org/goa> AS ?dataset)
         GRAPH ?g {
                 ?go_process rdfs:label ?go_p_label
-        } } 
-} . 
+        } }
+	GRAPH <http://purl.uniprot.org> {
+		?uniprot_target_uri rdfs:label ?uniprot_name
+	} 
+}
 }" 
