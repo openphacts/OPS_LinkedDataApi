@@ -206,17 +206,6 @@ _:type api:name "target_type" ;
 "?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
-	 GRAPH <http://www.conceptwiki.org> {
-                ?cw_compound_uri skos:prefLabel ?compound_name.
-         } 
-         GRAPH <http://ops.rsc.org> {
-                ?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
-                        cheminf:CHEMINF_000396 ?inchi ;
-                        cheminf:CHEMINF_000399 ?inchiKey .
-                OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound_uri ;
-                	        a cheminf:CHEMINF_000367;
-                                qudt:numericValue ?num_ro5_violations . }
-         }
          GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?item a chembl:Activity ;
                         chembl:hasMolecule ?chembl_compound_uri ;

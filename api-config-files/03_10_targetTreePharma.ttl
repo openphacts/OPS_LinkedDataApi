@@ -127,7 +127,7 @@
                         OPTIONAL { ?document bibo:pmid ?pmid }
                 }
         }
-   	GRAPH <http://ops.rsc.org> {
+   	OPTIONAL { GRAPH <http://ops.rsc.org> {
 		?ocrs_compound skos:exactMatch ?chembl_compound .
         	?ocrs_compound cheminf:CHEMINF_000396 ?inchi;
                 	cheminf:CHEMINF_000399 ?inchi_key;
@@ -139,11 +139,11 @@
                 	a cheminf:CHEMINF_000367;
                 	qudt:numericValue ?num_ro5_violations . }
 	
-	}
-	GRAPH <http://www.conceptwiki.org> {
+	} }
+	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
 		?cw_compound skos:exactMatch ?ocrs_compound ;
 			skos:prefLabel ?compound_name .
-	}" ;
+	} }" ;
 		api:expansionVariable "chembl_compound" ;
 ] ;
 		api:viewer <#targetTreePharmaViewer> ;

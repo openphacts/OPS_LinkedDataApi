@@ -55,8 +55,4 @@ GRAPH <http://www.ebi.ac.uk/chebi> {
 GRAPH <http://ops.rsc.org> {
         ?item skos:exactMatch ?chebi_compound
 }
-GRAPH <http://www.conceptwiki.org> {
-        ?cw_compound skos:exactMatch ?item ;
-                skos:prefLabel ?compound_name .
-}
 } }" .
