@@ -11,7 +11,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix drugbank: <http://bio2rdf.org/drugbank_vocabulary:> .
 @prefix sio: <http://semanticscience.org/resource/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
@@ -27,7 +27,7 @@
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
-	api:vocabulary <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> ;
+	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;

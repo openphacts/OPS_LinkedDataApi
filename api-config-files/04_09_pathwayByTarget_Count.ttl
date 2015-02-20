@@ -9,7 +9,7 @@
 @prefix rel: <http://vocab.org/relationship/> .
 @prefix void: <http://rdfs.org/ns/void#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix drugbank: <http://www4.wiwiss.fu-berlin.de/drugbank/resource/drugbank/> .
+@prefix drugbank: <http://bio2rdf.org/drugbank_vocabulary:> .
 @prefix sio: <http://semanticscience.org/resource/>
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix cheminf: <http://semanticscience.org/resource/> .

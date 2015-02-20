@@ -217,7 +217,7 @@ class LinkedDataApiGraph extends PueliaGraph {
             $this->_usedProperties[$mappings[$propertyUri]] = $propertyUri;
             return $mappings[$propertyUri];
         } else {
-            preg_match('@^(.+[#/])([^#/]+)$@', $propertyUri, $m);
+            preg_match('@^(.+[#/:])([^#/:]+)$@', $propertyUri, $m);
             $ns = $m[1];
             $localName = $m[2];
             if(!in_array($localName, array_values($mappings)) AND $this->is_legal_short_name($localName)){
