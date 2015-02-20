@@ -205,7 +205,7 @@ _:type api:name "target_type" ;
 	api:where
 "{ SELECT (COUNT(?activity_uri) AS ?count) {
 	GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-        	?subclass rdfs:subClassOf ?ops_item .
+        	?subclass rdfs:subClassOf ?node_uri .
 	}
 	GRAPH <http://ops.rsc.org> {
 		?ocrs_compound skos:exactMatch ?chembl_compound ;

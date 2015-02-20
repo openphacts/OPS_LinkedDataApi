@@ -199,7 +199,7 @@ _:type api:name "target_type" ;
 	api:selector [
 		api:where "{SELECT DISTINCT ?chembl_compound ?ocrs_compound ?cw_compound WHERE {
  	GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
-  		?class rdfs:subClassOf ?ops_item
+  		?class rdfs:subClassOf ?node_uri
  	}
  	GRAPH <http://www.ebi.ac.uk/chebi> {
  		?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?class .

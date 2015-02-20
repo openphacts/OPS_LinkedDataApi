@@ -201,7 +201,7 @@ _:type api:name "target_type" ;
 "{
 SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 	GRAPH ?g {
-		?class rdfs:subClassOf ?ops_item
+		?class rdfs:subClassOf ?node_uri
 	}
         GRAPH <http://www.ebi.ac.uk/chembl> {
                 { ?chembl_target chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION

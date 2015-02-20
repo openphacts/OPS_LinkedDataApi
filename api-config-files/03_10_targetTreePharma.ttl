@@ -91,7 +91,7 @@
 		api:selector [
 		api:where "?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
-		?class rdfs:subClassOf ?ops_item .
+		?class rdfs:subClassOf ?node_uri .
 	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?item a chembl:Activity ;
@@ -301,10 +301,6 @@ _:type api:name "target_type" ;
 ";
 	api:where "
 { 
-?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
-	GRAPH ?g {
-		?class rdfs:subClassOf ?ops_item
-	}
 	GRAPH <http://www.ebi.ac.uk/chembl> { 
                 ?item a chembl:Activity ;
                         chembl:hasAssay ?assay_uri ;

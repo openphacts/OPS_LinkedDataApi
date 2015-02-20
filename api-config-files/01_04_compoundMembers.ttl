@@ -47,7 +47,7 @@
 ?cw_compound skos:prefLabel ?compound_name .";
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-        ?child_node rdfs:subClassOf ?ops_item .
+        ?child_node rdfs:subClassOf ?node_uri .
 }
 GRAPH <http://www.ebi.ac.uk/chebi> {
         ?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .

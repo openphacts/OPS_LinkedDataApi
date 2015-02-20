@@ -47,7 +47,7 @@
 "{
 SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 GRAPH <http://www.ebi.ac.uk/chebi/inference> {
-        ?child_node rdfs:subClassOf ?ops_item .
+        ?child_node rdfs:subClassOf ?node_uri .
 }
 GRAPH <http://www.ebi.ac.uk/chebi> {
         ?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
