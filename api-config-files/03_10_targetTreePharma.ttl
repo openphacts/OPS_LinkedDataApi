@@ -210,7 +210,7 @@ _:type api:name "target_type" ;
 
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/bio2rdf/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .

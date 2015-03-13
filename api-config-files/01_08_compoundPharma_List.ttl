@@ -38,7 +38,7 @@
         api:variable _:type ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
-	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:dataset <http://www.openphacts.org/bio2rdf/drugbank> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -47,7 +47,7 @@
 
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/bio2rdf/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
@@ -206,7 +206,7 @@ _:type api:name "target_type" ;
 }
 
 {
-      GRAPH <http://linkedlifedata.com/resource/drugbank> {
+      GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
         ?db_compound_uri drugbank:genericName ?drug_name ;
           drugbank:drugType ?drugType_uri .
         ?drugType_uri rdfs:label ?drugType.
@@ -302,7 +302,7 @@ _:type api:name "target_type" ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?db_compound_uri drugbank:drugType ?drugType ;
 	drugbank:genericName ?drug_name ;
-	void:inDataset <http://linkedlifedata.com/resource/drugbank> ." ; 
+	void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> ." ; 
 	api:where 
 "GRAPH <http://www.ebi.ac.uk/chembl> {
         ?item a chembl:Activity ;
@@ -313,7 +313,7 @@ _:type api:name "target_type" ;
 }
 
 {
-      GRAPH <http://linkedlifedata.com/resource/drugbank> {
+      GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
         ?db_compound_uri drugbank:genericName ?drug_name ;
           drugbank:drugType ?drugType_uri .
         ?drugType_uri rdfs:label ?drugType.

@@ -23,7 +23,7 @@
 	api:variable drugbank:drugType ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
-	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:dataset <http://www.openphacts.org/bio2rdf/drugbank> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -48,7 +48,7 @@
 
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/bio2rdf/drugbank> api:label "DrugBank" .
 
 <http://semanticscience.org/resource/> api:label "sio" .
 <http://bio2rdf.org/drugbank_vocabulary:> api:label "drugbank" .
@@ -111,10 +111,10 @@ drugbank:drugType api:name "drug_type" ;
 	drugbank:numberOfResidues ?numberOfResidues ;
 	drugbank:theoreticalPi ?theoreticalPi ; 
 	ops:targetForDrug ?db_compound ;
-        void:inDataset <http://linkedlifedata.com/resource/drugbank> .
+        void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> .
 ?db_compound drugbank:genericName ?drug_name ;
 	drugbank:drugType ?drugType ;
-	void:inDataset <http://linkedlifedata.com/resource/drugbank> .
+	void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> .
 " ;
 	api:where "
 {
@@ -152,7 +152,7 @@ UNION {
                         ?ppi uniprot:database <http://purl.uniprot.org/database/IntAct> . }
 	} } } }
 UNION {
-         GRAPH <http://linkedlifedata.com/resource/drugbank> {
+         GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
                 { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
 		UNION { ?db_target_uri drugbank:cellularLocation ?cellularLocation }
 		UNION { ?db_target_uri drugbank:theoreticalPi ?theoreticalPi }

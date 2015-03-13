@@ -34,7 +34,7 @@
         api:variable _:type ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
-	api:dataset <http://linkedlifedata.com/resource/drugbank> ;
+	api:dataset <http://www.openphacts.org/bio2rdf/drugbank> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -97,7 +97,7 @@
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .
 <http://www.conceptwiki.org> api:label "ConceptWiki" .
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
-<http://linkedlifedata.com/resource/drugbank> api:label "DrugBank" .
+<http://www.openphacts.org/bio2rdf/drugbank> api:label "DrugBank" .
 <http://www.openphacts.org/units/MicrogramPerMilliliter> api:name "microgram_per_milliliter" .
 <http://www.openphacts.org/units/Millimolar> api:name "millimolar" .
 <http://www.openphacts.org/units/Nanomolar> api:name "nanomolar" .
