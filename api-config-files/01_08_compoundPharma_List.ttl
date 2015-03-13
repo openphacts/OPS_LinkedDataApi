@@ -204,13 +204,11 @@ _:type api:name "target_type" ;
         ?assay_uri chembl:hasTarget ?target_uri .
         ?target_uri a ?target_type .
 }
-
 {
       GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
-        ?db_compound_uri drugbank:genericName ?drug_name ;
-          drugbank:drugType ?drugType_uri .
-        ?drugType_uri rdfs:label ?drugType.
-  } 
+        { ?db_compound_uri dcterms:title ?drug_name }
+        UNION { ?db_compound_uri drugbank:drug-group/dcterms:title ?drugType . }
+      }
 } UNION {
       GRAPH <http://ops.rsc.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
@@ -311,13 +309,11 @@ _:type api:name "target_type" ;
         ?assay_uri chembl:hasTarget ?target_uri .
         ?target_uri a ?target_type .
 }
-
 {
       GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
-        ?db_compound_uri drugbank:genericName ?drug_name ;
-          drugbank:drugType ?drugType_uri .
-        ?drugType_uri rdfs:label ?drugType.
-  }
+        { ?db_compound_uri dcterms:title ?drug_name }
+	UNION { ?db_compound_uri drugbank:drug-group/dcterms:title ?drugType . }
+      }
 } UNION {
       GRAPH <http://ops.rsc.org> {
         ?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;

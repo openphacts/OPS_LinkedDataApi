@@ -125,15 +125,19 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 }
 UNION { 
 GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
-	{ ?ims_db_compound_uri drugbank:affectedOrganism ?affectedOrganism. }
-	UNION { ?ims_db_compound_uri drugbank:biotransformation ?biotransformation. }
-	UNION { ?ims_db_compound_uri drugbank:description ?description. }
-	UNION { ?ims_db_compound_uri drugbank:indication ?indication. }
-	UNION { ?ims_db_compound_uri drugbank:proteinBinding ?proteinBinding. }
-	UNION { ?ims_db_compound_uri drugbank:toxicity ?toxicity. }
-	UNION { ?ims_db_compound_uri drugbank:meltingPoint ?meltingPoint. }
-	UNION { ?interaction drugbank:interactionDrug1|drugbank:interactionDrug2 ?ims_db_compound_uri ;
-			drugbank:interactionDrug1|drugbank:interactionDrug2 ?interacting_drug ;
-			drugbank:text ?interaction_text . 
+	{ ?ims_db_compound_uri drugbank:affected-organism/dcterms:title ?affectedOrganism . }
+	UNION { ?ims_db_compound_uri drugbank:metabolism/dcterms:description ?metabolism . }
+	UNION { ?ims_db_compound_uri dcterms:description ?description . }
+	UNION { ?ims_db_compound_uri drugbank:indication/dcterms:description ?indication . }
+	UNION { ?ims_db_compound_uri drugbank:protein-binding/dcterms:description ?proteinBinding . }
+	UNION { ?ims_db_compound_uri drugbank:toxicity/dcterms:description ?toxicity . }
+	UNION { ?ims_db_compound_uri drugbank:experimental-properties ?mp_prop .
+		?mp_prop a drugbank:Melting-Point ;
+			drugbank:value ?meltingPoint }
+	UNION { ?ims_db_compound_uri dcterms:title ?drug_name }
+	UNION { ?ims_db_compound_uri drugbank:drug-group/dcterms:title ?drugType . }
+	UNION { ?ims_db_compound_uri drugbank:ddi-interactor-in ?interaction .
+		?interacting_drug drugbank:ddi-interactor-in ?interaction .
+		?interaction dcterms:title ?interaction_text . 
 		FILTER (?ims_db_compound_uri != ?interacting_drug) }
 }}" .
