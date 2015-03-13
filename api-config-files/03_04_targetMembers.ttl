@@ -35,7 +35,25 @@
 		api:uriTemplate "/target/members/pages?uri={uri}" ;
 		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
 		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-&target_organism=Homo%20sapiens";
-		api:selector <#targetMemberViewer> ;
+		api:selector [
+			api:where 
+"VALUES ?g { <http://purl.uniprot.org/enzyme/inference> <http://www.ebi.ac.uk/chembl/target/inference> <http://www.geneontology.org/inference> }
+GRAPH ?g {
+        ?child_node rdfs:subClassOf ?node_uri.
+        FILTER ( isURI(?child_node) )
+}
+{ ?item obo:C ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:F ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item obo:P ?child_node .
+?item uniprot:reviewed true }
+UNION { ?item uniprot:enzyme|uniprot:domain/uniprot:enzyme|chembl:hasProteinClassification ?child_node }
+?item dcterms:title|goa:description ?name
+OPTIONAL { ?item uniprot:organism ?uniprot_organism }
+OPTIONAL { ?item a ?target_type }
+OPTIONAL { ?item chembl:organismName ?chembl_organism }
+"] ;
 		api:viewer <#targetMemberViewer> ;
 		api:defaultViewer <#targetMemberViewer> ] .
 
@@ -67,47 +85,18 @@ uniprot:organism api:name "target_organism_uri" ;
 <#targetMemberViewer> a api:Viewer ;
 	api:name "targetMemberViewer";
 	api:template 
-"?item skos:prefLabel ?chembl_name ;
+"?item skos:prefLabel ?name ;
 	chembl:targetOrganismName ?chembl_organism ;
-        skos:prefLabel ?uniprot_name ;
-	skos:prefLabel ?goa_name ;
 	rdf:type ?target_type ;
 	uniprot:organism ?uniprot_organism ;
 	void:inDataset ?dataset .";
 	api:where 
 "
-VALUES ?g { <http://purl.uniprot.org/enzyme/inference> <http://www.ebi.ac.uk/chembl/target/inference> <http://www.geneontology.org/inference> }
 GRAPH ?g {
-        ?child_node rdfs:subClassOf ?node_uri.
-        FILTER ( isURI(?child_node) )
-        BIND (IF(?g = <http://purl.uniprot.org/enzyme/inference>, <http://purl.uniprot.org/enzyme> ,
-                IF(?g = <http://www.ebi.ac.uk/chembl/target/inference>, <http://www.ebi.ac.uk/chembl/target> ,
-                        IF(?g = <http://www.geneontology.org/inference>, <http://www.geneontology.org> , 'Error'))) AS ?g_short )
+	?item dcterms:title|goa:description ?name
 }
-{ ?item obo:C ?child_node .
-?item uniprot:reviewed true }
-UNION { ?item obo:F ?child_node .
-?item uniprot:reviewed true }
-UNION { ?item obo:P ?child_node .
-?item uniprot:reviewed true }
-UNION { ?item uniprot:enzyme|uniprot:domain/uniprot:enzyme|chembl:hasProteinClassification ?child_node } 
-{ GRAPH <http://purl.uniprot.org> {
-	?item rdfs:label ?uniprot_name
-	OPTIONAL { ?item uniprot:organism ?uniprot_organism }
-} }
-UNION {
-GRAPH <http://www.ebi.ac.uk/chembl> {
-	[] chembl:hasTarget ?item .
-	?item dcterms:title ?chembl_name ;
-		a ?target_type .
-	OPTIONAL { ?item chembl:organismName ?chembl_organism }
-} }
-UNION {
-GRAPH <http://www.openphacts.org/goa> {
-	?item goa:description ?goa_name
-}
-}
-BIND ( IF (?g_short=<http://purl.uniprot.org/enzyme>, <http://purl.uniprot.org>, 
-	IF (?g_short=<http://www.ebi.ac.uk/chembl/target>,  <http://www.ebi.ac.uk/chembl>, 
-	 IF (?g_short=<http://www.geneontology.org>,  <http://www.openphacts.org/goa> , ?g_short ) ) ) AS ?dataset )
+BIND (IF(?g = <http://www.openphacts.org/goa>, <http://purl.uniprot.org> , ?g) AS ?dataset )
+OPTIONAL { ?item uniprot:organism ?uniprot_organism }
+OPTIONAL { ?item a ?target_type }
+OPTIONAL { ?item chembl:organismName ?chembl_organism }
 " .
