@@ -70,6 +70,7 @@ uniprot:organism api:name "target_organism_uri" ;
 	api:where 
 "{
 SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE { 
+VALUES ?g { <http://purl.uniprot.org/enzyme/inference> <http://www.ebi.ac.uk/chembl/target/inference> <http://www.geneontology.org/inference> }
 GRAPH ?g {
         ?child_node rdfs:subClassOf ?node_uri .
         FILTER ( isURI(?child_node) )
