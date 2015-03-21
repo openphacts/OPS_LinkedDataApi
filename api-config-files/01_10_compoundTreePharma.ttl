@@ -293,7 +293,7 @@ _:type api:name "target_type" ;
 	chembl:assayTestType ?assay_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_uri dcterms:title ?target_name ;
-	chembl:targetOrganismName ?target_organism ;
+	chembl:organismName ?target_organism ;
         chembl:hasTargetComponent ?protein ;
         a ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> . 
