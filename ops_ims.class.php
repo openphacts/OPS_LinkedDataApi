@@ -65,6 +65,7 @@ class OpsIms {
                $url = IMS_MAP_ENDPOINT;
                $url .= '?rdfFormat=RDF/XML';
                $url .= "&targetUriPattern={$pattern}";
+               $url .= '&overridePredicateURI=http://www.w3.org/2004/02/skos/core#exactMatch';
                $url .= '&lensUri=';
                if ($lens==''){
                   $url .= 'Default';
@@ -190,6 +191,7 @@ class OpsIms {
 		$urlStart = IMS_MAP_ENDPOINT;
 		$urlStart .= '?rdfFormat=N-Triples';
 		$urlStart .= "&targetUriPattern={$pattern}";
+                $urlStart .= '&overridePredicateURI=http://www.w3.org/2004/02/skos/core#exactMatch';		
 		$urlStart .= '&lensUri=';
 		if ($lens==''){
 		    $urlStart .= 'Default';
