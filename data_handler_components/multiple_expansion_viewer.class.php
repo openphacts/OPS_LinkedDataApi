@@ -74,6 +74,11 @@ class MultipleExpansionViewer implements Viewer {
 		
 		$this->DataGraph->add_turtle($imsRDF);
 		
+		foreach ($this->DataGraph->get_subjects() as $subject) {
+			foreach ($this->DataGraph->get_subject_properties($subject) as $property) {
+				$this->DataGraph->remove_resource_triple($subject, $property, $subject);
+			}
+		}
 		if ($this->paginationBehavior){
 		    $this->pageUri = $this->paginationBehavior->addListMetadataToDataGraph($list);
 		}
