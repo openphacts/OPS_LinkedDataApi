@@ -86,10 +86,11 @@ uniprot:organism api:name "target_organism_uri" ;
 <#targetMemberViewer> a api:Viewer ;
 	api:name "targetMemberViewer";
 	api:template 
-"?ims_uniprot_target_uri skos:prefLabel ?name ;
+"?ims_uniprot_target_uri skos:prefLabel ?uniprot_name ;
 	uniprot:organism ?uniprot_organism ;
 	void:inDataset <http://purl.uniprot.org> .
-?ims_chembl_target_uri chembl:organismName ?chembl_organism ;
+?ims_chembl_target_uri skos:prefLabel ?chembl_name ;
+	chembl:organismName ?chembl_organism ;
         rdf:type ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ";
@@ -108,6 +109,5 @@ uniprot:organism api:name "target_organism_uri" ;
 	OPTIONAL { ?ims_chembl_target_uri chembl:organismName ?chembl_organism }
   }
 }
-BIND(IF(BOUND(?uniprot_name), ?uniprot_name, ?chembl_name) AS ?name)
 FILTER (?uniprot_name != '')
 " .
