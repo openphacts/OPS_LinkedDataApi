@@ -131,6 +131,6 @@ wp:organism api:name "pathway_organism" ;
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }
-GRAPH <http://www.conceptwiki.org> {
+OPTIONAL { GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?prefLabel .
-}" .
+} }" .

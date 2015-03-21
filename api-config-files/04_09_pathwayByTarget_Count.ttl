@@ -113,11 +113,12 @@ GRAPH <http://www.wikipathways.org> {
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
-        ?gene_product dcterms:isPartOf ?pathway ;
-                a wp:GeneProduct ;
-                dc:identifier ?pw_uri .
+        ?gene_product dcterms:isPartOf ?pathway .
+        { ?gene_product a wp:GeneProduct }
+	UNION { ?gene_product a wp:Protein }
+        ?gene_product dc:identifier|wp:bdbUniprot ?pw_uri .
 	?organism_uri rdfs:label ?organism . 
 }
-GRAPH <http://www.conceptwiki.org> {
+OPTIONAL { GRAPH <http://www.conceptwiki.org> {
 	?cw_uri skos:prefLabel ?prefLabel .
-} } }" .
+} } } }" .
