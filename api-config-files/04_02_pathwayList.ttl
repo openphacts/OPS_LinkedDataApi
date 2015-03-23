@@ -102,6 +102,8 @@ wp:organism api:name "pathway_organism" ;
 	wp:organism ?organism_uri ; 
 	foaf:page ?page ;
 	dc:identifier ?identifier ;
+	dcterms:description ?description ;
+	wp:pathwayOntology ?ontology ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
 ";
