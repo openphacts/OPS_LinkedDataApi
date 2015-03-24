@@ -39,6 +39,7 @@ class SingleExpansionViewer implements Viewer {
 		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
 		if($response->is_success()){
 			$rdf = $response->body;
+			$rdf = preg_replace("/&#/", " ", $rdf);
 			if(isset($response->headers['content-type'])){
 				if(strpos($response->headers['content-type'], 'turtle')){
 					$this->DataGraph->add_turtle($rdf);
@@ -48,7 +49,10 @@ class SingleExpansionViewer implements Viewer {
 			} else {
 				$this->DataGraph->add_rdf($rdf);
 			}
-
+			//logDebug("Virtuoso response");
+			//logDebug($rdf);
+			//logDebug("ARC2 contents");
+			//logDebug($this->DataGraph->to_turtle());
 			if ($this->DataGraph->is_empty()){
 				throw new EmptyResponseException("Data not found in the triple store");
 			}
