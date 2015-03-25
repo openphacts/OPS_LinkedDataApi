@@ -197,7 +197,7 @@ _:type api:name "target_type" ;
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
 	api:exampleRequestPath "/compound/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar" ;
 	api:selector [
-		api:where "{SELECT DISTINCT ?chembl_compound ?ocrs_compound ?cw_compound WHERE {
+		api:where "{SELECT DISTINCT ?chembl_compound WHERE {
  	GRAPH <http://www.ebi.ac.uk/chebi/inference>  {
   		?class rdfs:subClassOf ?node_uri
  	}
@@ -206,12 +206,6 @@ _:type api:name "target_type" ;
  	}
 	 GRAPH <http://www.ebi.ac.uk/chembl> {
  		?chembl_compound skos:exactMatch ?chebi_compound .
- 	}
- 	GRAPH <http://ops.rsc.org> {
- 		?ocrs_compound skos:exactMatch ?chembl_compound .
- 	}
- 	GRAPH <http://www.conceptwiki.org> {
- 		?cw_compound skos:exactMatch ?ocrs_compound .
  	}
  	} }
  	GRAPH <http://www.ebi.ac.uk/chembl> {
@@ -248,8 +242,9 @@ _:type api:name "target_type" ;
 	 OPTIONAL { ?document bibo:pmid ?pmid }
 	 }
  }
-	GRAPH <http://ops.rsc.org> {
-        	?ocrs_compound cheminf:CHEMINF_000396 ?inchi;
+	OPTIONAL { GRAPH <http://ops.rsc.org> {
+		?ocrs_compound skos:exactMatch ?chembl_compound ;
+        		cheminf:CHEMINF_000396 ?inchi;
                 	cheminf:CHEMINF_000399 ?inchi_key;
                 	cheminf:CHEMINF_000018 ?smiles .
 		OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound ;
@@ -258,11 +253,11 @@ _:type api:name "target_type" ;
         	OPTIONAL { [] obo:IAO_0000136 ?ocrs_compound ;
                 	a cheminf:CHEMINF_000367;
                 	qudt:numericValue ?num_ro5_violations . }
-	
-	}
-	GRAPH <http://www.conceptwiki.org> {
-		?cw_compound skos:prefLabel ?compound_name .
-	}
+		OPTIONAL { GRAPH <http://www.conceptwiki.org> {
+			?cw_compound skos:exactMatch ?ocrs_compound ;
+                		skos:prefLabel ?compound_name .
+        	} }
+	} }
 " ;
 		api:expansionVariable "chembl_compound" ;
 ] ;
