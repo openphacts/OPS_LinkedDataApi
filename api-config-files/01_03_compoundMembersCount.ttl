@@ -50,9 +50,6 @@ GRAPH <http://www.ebi.ac.uk/chebi/inference> {
         ?child_node rdfs:subClassOf ?node_uri .
 }
 GRAPH <http://www.ebi.ac.uk/chebi> {
-        ?chebi_compound rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
-}
-GRAPH <http://ops.rsc.org> {
-        ?item skos:exactMatch ?chebi_compound
+        ?item rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
 }
 } }" .
