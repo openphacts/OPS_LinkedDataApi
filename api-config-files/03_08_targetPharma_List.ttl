@@ -279,6 +279,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?protein skos:exactMatch ?cw_target .
 ?chembl_compound skos:exactMatch ?ocrs_compound ;
+        void:inDataset <http://www.ebi.ac.uk/chembl> ;
 	skos:exactMatch ?cw_compound .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
