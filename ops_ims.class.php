@@ -14,7 +14,8 @@ class OpsIms {
             '?db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
 	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
-	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_'
+	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_',
+	    '?aers_compound_uri' => 'http://aers.data2semantics.org/resource/drug/'
     );
     
     var $IMS_interm_variables = array(
