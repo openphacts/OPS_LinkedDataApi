@@ -15,6 +15,7 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> .
 @prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix dcterms: <http://purl.org/dc/terms/>
 
 <#diseaseByTarget> a api:API ;
         rdfs:label "Disease"@en ;
@@ -49,15 +50,16 @@
 "?ops_item skos:exactMatch ?umls_disease_uri .
 ?umls_disease_uri foaf:name ?diseaseName ;
 	ops:diseaseClass ?diseaseClass ;
-	rdfs:seeAlso ?bio2rdf_uri ;
+	rdfs:seeAlso ?mesh_uri ;
 	void:inDataset ?diseaseDataset .
 ?diseaseClass foaf:name ?diseaseClassName ;
 	void:inDataset ?diseaseClassDataset .";
 	api:where
 "GRAPH <http://rdf.imim.es> {
-	?umls_disease_uri rdfs:seeAlso ?bio2rdf_uri ;
+	?umls_disease_uri skos:exactMatch ?mesh_uri ;
 		foaf:name ?diseaseName ;
 		void:inDataset ?diseaseDataset .
+	?mesh_uri dcterms:title 'MeSH Disease ID' .
 	OPTIONAL {
 		?umls_disease_uri sio:SIO_000095 ?diseaseClass .
 		?diseaseClass foaf:name ?diseaseClassName ;
