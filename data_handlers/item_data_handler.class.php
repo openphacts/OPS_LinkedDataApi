@@ -25,7 +25,7 @@ class ItemDataHandler extends OneStepDataHandler{
         $this->pageUri = $this->Request->getUriWithoutPageParam();
         if($response->is_success()){
             $rdf = $response->body;
-	    $rdf = preg_replace("/&#/", " ", $rdf);
+	    $rdf = preg_replace("/&#[a-z0-9]*;/", " ", $rdf);
             $this->DataGraph->add_rdf($rdf);
 
             if ($this->DataGraph->is_empty()){
