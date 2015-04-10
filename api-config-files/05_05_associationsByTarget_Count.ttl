@@ -21,6 +21,7 @@
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
+	api:variable rdf:type ;
 	api:dataset <http://rdf.imim.es> ;
 	api:vocabulary <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -43,6 +44,12 @@
         api:label "uri";
         api:value "A target URI. e.g.: http://purl.uniprot.org/uniprot/Q9Y5Y9" ;
         rdfs:range rdfs:Resource .
+
+rdf:type api:name "assoc_type" ;
+        api:label "assoc_type" ;
+        api:filterVariable "?item";
+        api:value "One of the following association type URIs: http://semanticscience.org/resource/SIO_001119 (gene-disease association linked with causal mutation), http://semanticscience.org/resource/SIO_001120 (therapeutic gene-disease association), http://semanticscience.org/resource/SIO_001121 (gene-disease biomarker association), http://semanticscience.org/resource/SIO_001122 (gene-disease association linked with genetic variation), http://semanticscience.org/resource/SIO_001123 (gene-disease association linked with altered gene expression), http://semanticscience.org/resource/SIO_001124 (gene-disease association linked with post-translational modification)" ;
+        a rdf:Property .
 
 <#assocByTargetCountViewer> a api:Viewer ;
 	api:name "assocByTargetCountViewer" ;
@@ -69,13 +76,14 @@ GRAPH <http://rdf.imim.es> {
 	?item sio:SIO_000628 ?disease .
 	?disease rdf:type ncit:C7057 ;
 		foaf:name ?diseaseName ;
-		sio:SIO_000095 ?diseaseClass ;
 		void:inDataset ?diseaseDataset .
-	?diseaseClass foaf:name ?diseaseClassName ;
-		void:inDataset ?diseaseClassDataset .
 
 	?item void:inDataset ?assocDataset .
-
+	OPTIONAL { 
+		?disease sio:SIO_000095 ?diseaseClass . 
+		?diseaseClass foaf:name ?diseaseClassName ;
+                	void:inDataset ?diseaseClassDataset .
+	}
 	OPTIONAL { ?item dcterms:description ?description .}
 	OPTIONAL { ?item sio:SIO_000772 ?pubmed_id . }	
 }
