@@ -43,10 +43,10 @@
 "?ims_caloha_tissue_uri rdfs:label ?tissue_label ;
 	ops:definition ?tissue_def ;
 	oboowl:hasDbXref ?tissue_xref ;
-	void:inDataset <http://www.nexprot.org/caloha> .
+	void:inDataset <http://www.nextprot.org/caloha> .
 ";
 	api:where
-"GRAPH <http://www.nexprot.org/caloha> {
+"GRAPH <http://www.nextprot.org/caloha> {
 	{ ?ims_caloha_tissue_uri rdfs:label ?tissue_label }
 	UNION { ?ims_caloha_tissue_uri obo:IAO_0000115 ?tissue_def }
 	UNION { ?ims_caloha_tissue_uri oboowl:hasDbXref ?tissue_xref}

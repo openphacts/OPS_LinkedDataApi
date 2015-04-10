@@ -60,7 +60,7 @@ GRAPH ?prov {
 		prov:wasGeneratedBy ?generated_by .
 	?evidence_qual_uri rdfs:label ?evidence_qual_label .
 }
-GRAPH <http://www.nexprot.org/caloha> { 
+GRAPH <http://www.nextprot.org/caloha> { 
 	?ops_item rdfs:label ?tissue_label . 
 }" 
 		] ;
@@ -115,7 +115,7 @@ GRAPH ?prov {
                 prov:wasGeneratedBy ?generated_by .
         ?evidence_qual_uri rdfs:label ?evidence_qual_label .
 }
-GRAPH <http://www.nexprot.org/caloha> {
+GRAPH <http://www.nextprot.org/caloha> {
         ?ops_item rdfs:label ?tissue_label .
 }
 BIND(IRI(CONCAT('http://purl.uniprot.org/uniprot/',STRAFTER(STR(?nextprot_uri),'http://www.nextprot.org/db/search#NX_'))) AS ?uniprot_target)" .

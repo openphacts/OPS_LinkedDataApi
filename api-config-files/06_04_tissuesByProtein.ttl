@@ -64,7 +64,7 @@ GRAPH ?prov {
 		prov:wasGeneratedBy ?generated_by .
 	?evidence_qual_uri rdfs:label ?evidence_qual_label .
 }
-GRAPH <http://www.nexprot.org/caloha> { 
+GRAPH <http://www.nextprot.org/caloha> { 
 	?tissue rdfs:label ?tissue_label . 
 }" 
 		] ;
@@ -123,6 +123,6 @@ GRAPH ?prov {
                 prov:wasGeneratedBy ?generated_by .
         ?evidence_qual_uri rdfs:label ?evidence_qual_label .
 }
-GRAPH <http://www.nexprot.org/caloha> {
+GRAPH <http://www.nextprot.org/caloha> {
         ?tissue rdfs:label ?tissue_label .
 }" .
