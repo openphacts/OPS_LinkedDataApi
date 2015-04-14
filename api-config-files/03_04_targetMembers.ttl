@@ -49,10 +49,16 @@ UNION { ?item obo:F ?child_node .
 UNION { ?item obo:P ?child_node .
 ?item uniprot:reviewed true }
 UNION { ?item uniprot:enzyme|uniprot:domain/uniprot:enzyme|chembl:hasProteinClassification ?child_node }
+VALUES ?g2 {<http://purl.uniprot.org> <http://www.ebi.ac.uk/chembl> <http://www.openphacts.org/goa> }
+GRAPH ?g2 {
+	?item [] []
+}
 ?item dcterms:title|goa:description ?name
-OPTIONAL { ?item uniprot:organism ?uniprot_organism }
+OPTIONAL { ?item uniprot:organism ?uniprot_organism 
+	BIND (?item AS ?uniprot_target) }
 OPTIONAL { ?item a ?target_type }
-OPTIONAL { ?item chembl:organismName ?chembl_organism }
+OPTIONAL { ?item chembl:organismName ?chembl_organism 
+	BIND (?item AS ?chembl_target) }
 "] ;
 		api:expansionVariable "item" ;
 		api:viewer <#targetMemberViewer> ;
