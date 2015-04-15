@@ -58,7 +58,7 @@ rdfs:label api:name "activity_type" ;
 	api:where
 "{
 SELECT COUNT( DISTINCT ?unit) AS ?count WHERE {
-  GRAPH <http://www.openphacts.org/units>  {
+  GRAPH <http://www.ebi.ac.uk/chembl>  {
    ?type chembl:hasQUDT ?unit  .
   } 
 }}" .

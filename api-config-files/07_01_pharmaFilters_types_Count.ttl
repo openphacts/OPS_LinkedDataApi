@@ -109,7 +109,7 @@ chembl:hasQUDT api:name "activity_unit" ;
 	api:where
 "{
 SELECT DISTINCT ?type_label COUNT(?type) AS ?count WHERE {
-GRAPH <http://www.openphacts.org/units> {
+GRAPH <http://www.ebi.ac.uk/chembl> {
         ?type rdfs:subClassOf chembl:Activity . 
 }
 } }" .

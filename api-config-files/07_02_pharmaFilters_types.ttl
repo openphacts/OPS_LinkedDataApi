@@ -70,7 +70,7 @@ SELECT DISTINCT ?item ?standard_type COUNT(?activity) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl>  {
 	?activity chembl:standardType ?standard_type  .
 }
-GRAPH <http://www.openphacts.org/units> {
+GRAPH <http://www.ebi.ac.uk/chembl> {
         ?item rdfs:label ?standard_type    
 }  
 } GROUP BY ?standard_type ?item ORDER BY DESC(?count)
@@ -111,7 +111,7 @@ api:orderBy ""] ;
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
         api:filterVariable "?activity";
         a rdf:Property .
 
@@ -128,7 +128,7 @@ SELECT DISTINCT ?type_label COUNT(?activity) AS ?count WHERE {
    ?activity chembl:standardType ?type_label  .
   } } GROUP BY ?type_label  
 }
-GRAPH <http://www.openphacts.org/units> {
+GRAPH <http://www.ebi.ac.uk/chembl> {
 	?item rdfs:label ?type_label 
 }  
 " .

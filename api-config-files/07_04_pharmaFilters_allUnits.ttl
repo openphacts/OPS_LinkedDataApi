@@ -43,8 +43,6 @@
 SELECT DISTINCT ?item ?qudt_label COUNT(?activity) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl>  {
 	?activity chembl:hasQUDT ?item  .
-}
-GRAPH <http://www.openphacts.org/units> {
         ?item rdfs:label ?qudt_label    
 }  
 } GROUP BY ?item ?qudt_label ORDER BY DESC( ?count )
@@ -70,7 +68,7 @@ SELECT DISTINCT ?item COUNT(?activity) AS ?count WHERE {
    ?activity chembl:hasQUDT ?item  .
   } } GROUP BY ?item
 }
-GRAPH <http://www.openphacts.org/units> {
+GRAPH <http://www.ebi.ac.uk/chembl> {
 	?item rdfs:label ?qudt_label 
 }  
 " .
