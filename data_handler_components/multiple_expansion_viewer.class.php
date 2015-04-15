@@ -109,6 +109,10 @@ class MultipleExpansionViewer implements Viewer {
 	    $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
 	    $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
 	    $this->DataGraph->add_literal_triple($listUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
+	    $lens = $this->Request->getParam('_lens');
+     	    if ($lens == '') $lens='Default';
+            $this->DataGraph->add_literal_triple($listUri, OPS_API.'/activeLens', $lens);
+            $this->DataGraph->add_resource_triple($listUri, VOID.'linkPredicate', SKOS.'exactMatch');
 	    $rdfListUri = '_:itemsList';
 	    $this->DataGraph->add_resource_triple($listUri, API.'items', $rdfListUri);
 	    $this->DataGraph->add_resource_triple($rdfListUri, RDF_TYPE, RDF_LIST);

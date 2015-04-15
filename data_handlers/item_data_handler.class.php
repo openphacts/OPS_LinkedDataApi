@@ -38,6 +38,10 @@ class ItemDataHandler extends OneStepDataHandler{
        
             $this->DataGraph->add_resource_triple($uri , FOAF.'isPrimaryTopicOf', $this->pageUri);
             $this->DataGraph->add_resource_triple($this->Request->getUri(), API.'definition', $this->endpointUrl);
+            $lens = $this->Request->getParam('_lens');
+            if ($lens == '') $lens='Default';
+            $this->DataGraph->add_literal_triple($this->Request->getUri(), OPS_API.'/activeLens', $lens);
+            $this->DataGraph->add_resource_triple($this->Request->getUri(), VOID.'linkPredicate', SKOS.'exactMatch');
         } else {
             logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
             throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");

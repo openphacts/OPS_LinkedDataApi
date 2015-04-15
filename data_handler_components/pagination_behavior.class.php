@@ -27,6 +27,10 @@ class PaginationBehavior {
         $pageUri = $this->Request->getUriWithPageParam();
         $currentPage = $this->Request->getPage();
         $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
+	$lens = $this->Request->getParam('_lens');
+	if ($lens == '') $lens='Default';
+	$this->DataGraph->add_literal_triple($listUri, OPS_API.'/activeLens', $lens);
+	$this->DataGraph->add_resource_triple($listUri, VOID.'linkPredicate', SKOS.'exactMatch');
         $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
         $this->DataGraph->add_resource_triple($pageUri, RDF_TYPE, API.'Page');
         if($label = $this->ConfigGraph->getPageTitle()){
