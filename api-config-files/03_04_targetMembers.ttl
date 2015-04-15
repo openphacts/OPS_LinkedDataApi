@@ -53,10 +53,32 @@ VALUES ?g2 {<http://purl.uniprot.org> <http://www.ebi.ac.uk/chembl> <http://www.
 GRAPH ?g2 {
 	?item [] []
 }
-?item dcterms:title|goa:description ?name
+{ ?item dcterms:title ?chembl_name 
+FILTER (?chembl_name != '') } 
+UNION { ?item goa:description ?uniprot_name 
+FILTER (?uniprot_name != '') } 
+OPTIONAL { 
+	{?mapping skos:relatedMatch/skos:exactMatch ?item }
+	UNION { ?item skos:relatedMatch/skos:exactMatch ?mapping }
+	MINUS { ?mapping a chembl:ProteinComplexGroup }
+	?mapping dcterms:title|goa:description ?mapping_name
+	FILTER ( ?mapping_name != '' )
+	{ ?mapping uniprot:organism ?mapping_org_uri }
+	UNION { ?mapping chembl:organismName ?mapping_org 
+		GRAPH <http://www.ebi.ac.uk/chembl> { 
+			?mapping a ?mapping_type 
+			FILTER ( ?mapping_type != chembl:UniprotRef )
+		}
+	}
+	BIND(IF(BOUND(?mapping_org), <http://www.ebi.ac.uk/chembl>, <http://purl.uniprot.org>) AS ?mapping_dataset) 
+}
 OPTIONAL { ?item uniprot:organism ?uniprot_organism 
 	BIND (?item AS ?uniprot_target) }
-OPTIONAL { ?item a ?target_type }
+OPTIONAL { 
+	GRAPH <http://www.ebi.ac.uk/chembl> { 
+		?item a ?target_type 
+	} 
+}
 OPTIONAL { ?item chembl:organismName ?chembl_organism 
 	BIND (?item AS ?chembl_target) }
 "] ;
@@ -99,6 +121,12 @@ uniprot:organism api:name "target_organism_uri" ;
 	chembl:organismName ?chembl_organism ;
         rdf:type ?target_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
+?item skos:exactMatch ?mapping .
+?mapping skos:prefLabel ?mapping_name ;
+	uniprot:organism ?mapping_org_uri ;
+	chembl:organismName ?mapping_org ;
+	a ?mapping_type ;
+	void:inDataset ?mapping_dataset .
 ";
 	api:where 
 "
