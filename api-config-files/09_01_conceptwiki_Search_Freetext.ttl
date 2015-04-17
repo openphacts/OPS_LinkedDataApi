@@ -7,7 +7,7 @@
 
 <#conceptWiki> a api:API ;
 	rdfs:label "Concept Wiki services"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#q> ;
 	api:variable <#limit> ;
@@ -20,7 +20,7 @@
 		api:description "A set of concept URLs associated to the input free text. Driven by ConceptWiki." ;
 		
 		api:uriTemplate "/search/freetext?q={q}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search?q={q}" ;
+		api:externalRequestTemplate "http://ops-ims-14:8081/web-ws/concept/search?q={q}" ;
 		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;
 		api:exampleRequestPath "/search/freetext?q=water&limit=15" ;
 		api:viewer <#externalResponseViewer> ;

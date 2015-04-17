@@ -7,7 +7,7 @@
 
 <#conceptWiki> a api:API ;
 	rdfs:label "Concept Wiki services"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#uuid> ;
 	api:variable <#branch> ;
@@ -20,7 +20,7 @@
 
 		
 		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
+		api:externalRequestTemplate "http://ops-ims-14:8081/web-ws/concept/get?uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;
 		api:exampleRequestPath "/getConceptDescription?uuid=8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" ;
 		api:viewer <#externalResponseViewer> ;
