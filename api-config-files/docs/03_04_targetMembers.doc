@@ -1,7 +1,0 @@
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?chembl_name </span> ;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?chembl_organism </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?uniprot_name </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?goa_name </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?target_type </span> ;
-	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> uniprot:organism ?uniprot_organism </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?dataset </span> .

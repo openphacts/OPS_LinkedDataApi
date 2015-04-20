@@ -1,3 +1,0 @@
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_ocrs </span> ;
-	 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?compound_cw </span> .
-?compound_cw <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?compound_nam </span> e

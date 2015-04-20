@@ -1,3 +1,0 @@
-<http://www.wikipathways.org> <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:pathway_organism ?item </span> .
-?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?label </span> ;
-	 <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:pathway_count ?coun </span> t
