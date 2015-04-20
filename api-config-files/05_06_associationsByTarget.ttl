@@ -47,7 +47,8 @@
 
 rdf:type api:name "assoc_type" ;
         api:label "assoc_type" ;
-        api:filterVariable "?item";        api:value "One of the following association type URIs: http://semanticscience.org/resource/SIO_001119 (gene-disease association linked with causal mutation), http://semanticscience.org/resource/SIO_001120 (therapeutic gene-disease association), http://semanticscience.org/resource/SIO_001121 (gene-disease biomarker association), http://semanticscience.org/resource/SIO_001122 (gene-disease association linked with genetic variation), http://semanticscience.org/resource/SIO_001123 (gene-disease association linked with altered gene expression), http://semanticscience.org/resource/SIO_001124 (gene-disease association linked with post-translational modification)" ;
+        api:filterVariable "?item";        
+        api:value "One of the following association type URIs: http://semanticscience.org/resource/SIO_001119 (gene-disease association linked with causal mutation), http://semanticscience.org/resource/SIO_001120 (therapeutic gene-disease association), http://semanticscience.org/resource/SIO_001121 (gene-disease biomarker association), http://semanticscience.org/resource/SIO_001122 (gene-disease association linked with genetic variation), http://semanticscience.org/resource/SIO_001123 (gene-disease association linked with altered gene expression), http://semanticscience.org/resource/SIO_001124 (gene-disease association linked with post-translational modification)" ;
         a rdf:Property .
 
 <#assocByTargetViewer> a api:Viewer ;
