@@ -17,13 +17,13 @@ rm curl.tmp
 fi
 
 counter=1
-for path in `grep ^\"path swagger.json |grep -v \{ | sed -e 's,.* ",,' -e 's,".*,,' -e 's,^,/1.4,'`
+for path in `grep ^\"path swagger.json |grep -v \{ | sed -e 's,.* ",,' -e 's,".*,,' -e 's,^,/1.5,'`
 do
 name=`sed -n 's,^ *"summary,,p' swagger.json|sed -e 's,[^"]*",,' -e 's,[^"]*",,' -e 's,\[PREVIEW\] ,,' -e 's,".*,,' | grep -v 'Activity Units for Type' | sed -n "$counter"p | sed -e 's,Information,Info,' -e 's,:,,' -e "s,$, ($1),"`
 id=`echo $name | sed -e 's,.*,\L&,' -e 's,[()],,g' -e 's,[\. ],_,g' -e 's,_\([0-9]_[0-9]\),-\1,'`
 echo 'curl -v  -X POST "https://openphacts-admin.3scale.net/admin/api/services/1006371755042/metrics/2555417663272/methods.xml" -d "provider_key='$2'&friendly_name='$name'&system_name='$id'&unit=hits"' >> curl.tmp
 echo '
-     local m =  ngx.re.match(path,[=[^'`echo $path | sed 's,\.,\\\.,'`']=])
+     local m =  ngx.re.match(path,[=[^'`echo $path | sed 's,\.,\\\.,'`'\?]=])
      if (m and (method == "GET" or method=="POST")) then
      -- rule: '$path' --
          table.insert(matched_rules, "'$path'")
