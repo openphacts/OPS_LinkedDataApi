@@ -1,0 +1,3 @@
+?item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> qudt:unit ?unit </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span> .
+?unit <span style=\"BACKGROUND-COLOR: #A9A9F5\"> rdfs:label ?unit_label </span> .

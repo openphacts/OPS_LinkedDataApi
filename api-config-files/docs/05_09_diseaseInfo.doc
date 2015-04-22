@@ -1,0 +1,7 @@
+?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?umls_disease_uri </span> .
+?umls_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:diseaseClass ?diseaseClass </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?mesh_uri </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .
+?diseaseClass <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:name ?diseaseClassName </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?diseaseClassDataset </span> .
