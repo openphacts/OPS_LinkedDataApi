@@ -26,7 +26,7 @@ class OpsIms {
             '?ims_cw_compound_uri'=>'http://www.conceptwiki.org/concept/' ,
             '?ims_ocrs_compound_uri'=>'http://ops.rsc.org/OPS' ,
             '?ims_db_compound_uri'=>'http://bio2rdf.org/drugbank:',
-            '?ims_db_target_uri'=>'http://www4.wiwiss.fu-berlin.de/drugbank/resource/targets/',
+            '?ims_db_target_uri'=>'http://bio2rdf.org/drugbank',
             '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
 	    '?ims_umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
             '?ims_omim_disease_uri' => 'http://identifiers.org/omim/',
