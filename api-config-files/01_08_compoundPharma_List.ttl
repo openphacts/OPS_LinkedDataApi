@@ -347,8 +347,9 @@ _:type api:name "target_type" ;
         UNION { ?item chembl:standardRelation ?activity_relation }
         UNION { ?item chembl:standardValue ?standard_value .
                 BIND (xsd:decimal(?standard_value) as ?activity_value)}
-        UNION { ?item chembl:standardUnits ?activity_unit }
-        UNION { ?item chembl:hasQUDT ?qudt_uri }
+        UNION { ?item chembl:hasQUDT ?qudt_uri 
+		OPTIONAL { ?item chembl:standardUnits ?activity_unit }
+	}
         UNION { ?item chembl:pChembl ?pChembl }
         UNION { ?item chembl:activityComment ?act_comment }
         UNION { ?item chembl:hasDocument ?doc_uri .
