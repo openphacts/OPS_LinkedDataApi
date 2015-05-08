@@ -6673,7 +6673,7 @@
         {
           "httpMethod": "GET",
           "summary":  "[PREVIEW] Tissue Information: Batch" ,
-          "description":  "Information about a list of tissues.<br><hr><br>Response template: <br><br><hr><br>  ?ims_caloha_tissue_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&gt; </span> .<br> ",
+          "description":  "Information about a list of tissues.<br><hr><br>Response template: <br><br><hr><br>  ?ims_caloha_tissue_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&gt; </span> .<br> ",
           "group": "Tissue" ,
           "parameters": [
             {
