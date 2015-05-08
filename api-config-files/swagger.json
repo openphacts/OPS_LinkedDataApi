@@ -6515,7 +6515,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Disease Information: Batch" ,
-          "description":  "Information about a list of diseases, separated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_umls_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?mesh_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
+          "description":  "Information about a list of diseases, separated by '|'.<br><hr><br>Response template: <br><br><hr><br>  ?ims_umls_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:diseaseClass ?diseaseClass </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:seeAlso ?mesh_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .<br> ?diseaseClass <span style=\"BACKGROUND-COLOR: #FFFFCC\"> foaf:name ?diseaseClassName </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?diseaseClassDataset </span> .<br> ",
           "group": "Disease" ,
           "parameters": [
             {
