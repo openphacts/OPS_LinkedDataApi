@@ -273,7 +273,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	dcterms:description ?assay_description ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_target_uri dcterms:title ?target_name_chembl ;
-	chembl:organismName ?target_organism ;
+	chembl:targetOrganismName ?target_organism ;
         chembl:hasTargetComponent ?protein ;
         a ?target_type ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
