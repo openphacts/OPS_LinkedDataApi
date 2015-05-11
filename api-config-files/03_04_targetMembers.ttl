@@ -61,7 +61,8 @@ OPTIONAL {
 	{?mapping skos:relatedMatch/skos:exactMatch ?item }
 	UNION { ?item skos:relatedMatch/skos:exactMatch ?mapping }
 	MINUS { ?mapping a chembl:ProteinComplexGroup }
-	?mapping dcterms:title|goa:description ?mapping_name
+	{ ?mapping goa:description ?mapping_name }
+	UNION { ?mapping dcterms:title ?mapping_name }
 	FILTER ( ?mapping_name != '' )
 	{ ?mapping uniprot:organism ?mapping_org_uri }
 	UNION { ?mapping chembl:organismName ?mapping_org 
