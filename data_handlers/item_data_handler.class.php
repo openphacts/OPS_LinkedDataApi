@@ -25,15 +25,15 @@ class ItemDataHandler extends OneStepDataHandler{
         $this->pageUri = $this->Request->getUriWithoutPageParam();
         if($response->is_success()){
             $rdf = $response->body;
+	    $rdf = preg_replace("/&#39;/", "'", $rdf);
 	    $rdf = preg_replace("/&#[a-z0-9]*;/", " ", $rdf);
             $this->DataGraph->add_rdf($rdf);
 
             if ($this->DataGraph->is_empty()){
                 throw new EmptyResponseException("Data not found in the triple store");
             }
-	    //logDebug($rdf);
-            #	    echo $uri;
-	    //logDebug($this->DataGraph->to_turtle());
+	    //logDebug('Virtuoso response: '.$rdf);
+	    //logDebug('ARC2 contents: '.$this->DataGraph->to_turtle());
             $this->DataGraph->add_resource_triple($this->pageUri, FOAF.'primaryTopic', $uri);
        
             $this->DataGraph->add_resource_triple($uri , FOAF.'isPrimaryTopicOf', $this->pageUri);
