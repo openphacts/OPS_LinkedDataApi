@@ -36,16 +36,18 @@ class PaginationBehavior {
         if($label = $this->ConfigGraph->getPageTitle()){
             $this->DataGraph->add_literal_triple($pageUri, RDFS_LABEL, $label);
         }
-        $this->DataGraph->add_resource_triple($listUri, DCT.'hasPart', $pageUri);
-        $this->DataGraph->add_resource_triple($pageUri, DCT.'isPartOf', $listUri);
-        $this->DataGraph->add_resource_triple($pageUri, XHV.'first', $this->Request->getUriWithPageParam(1));
-        if(count($list) >= $this->SparqlWriter->getLimit()){
-            $this->DataGraph->add_resource_triple($pageUri, XHV.'next', $this->Request->getUriWithPageParam($currentPage+1));
-        }
-        if($currentPage > 1){
-            $this->DataGraph->add_resource_triple($pageUri, XHV.'prev', $this->Request->getUriWithPageParam($currentPage-1));
-        }
-        $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'itemsPerPage', $this->SparqlWriter->getLimit(), null, XSD.'integer');
+	if ( strcasecmp($this->SparqlWriter->getLimit(), 'all') != 0) {
+        	$this->DataGraph->add_resource_triple($listUri, DCT.'hasPart', $pageUri);
+        	$this->DataGraph->add_resource_triple($pageUri, DCT.'isPartOf', $listUri);
+        	$this->DataGraph->add_resource_triple($pageUri, XHV.'first', $this->Request->getUriWithPageParam(1));
+        	if(count($list) >= $this->SparqlWriter->getLimit()){
+        	    $this->DataGraph->add_resource_triple($pageUri, XHV.'next', $this->Request->getUriWithPageParam($currentPage+1));
+        	}
+        	if($currentPage > 1){
+        	    $this->DataGraph->add_resource_triple($pageUri, XHV.'prev', $this->Request->getUriWithPageParam($currentPage-1));
+	        }
+	}
+        //$this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'itemsPerPage', $this->SparqlWriter->getLimit(), null, XSD.'integer');
         $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'startIndex', $this->SparqlWriter->getOffset(), null, XSD.'integer');
         $this->DataGraph->add_literal_triple($pageUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
         $rdfListUri = '_:itemsList';
@@ -59,7 +61,7 @@ class PaginationBehavior {
             $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
             $rdfListUri = $nextList;
         }
-        
+        $this->DataGraph->add_literal_triple($pageUri, OPENSEARCH.'itemsPerPage', $nextNo, null, XSD.'integer');
         return $pageUri;
     }
     
