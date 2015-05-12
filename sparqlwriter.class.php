@@ -526,24 +526,34 @@ _SPARQL_;
     
     private function getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, &$filterGraph){
         $token = strtok($param_value,'|');
-        $filter="{ " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> "' . $token  . '"' . "*#*";
+	if (isset($ep_vars[$token]['uri'])) {
+            $token = '<' . $ep_vars[$token]['uri'] . '>';
+        }
+        elseif (filter_var($token, FILTER_VALIDATE_URL) !== false) {
+            $token = '<' . $token . '>';
+        }
+        elseif (is_numeric($token)) {
+            $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
+        }
+        else {
+            $token = '"' . $token  . '"';
+        }
+        $filter="{ " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token . " *#*";
         $token=strtok('|');
         while ($token != false){
-            if (isset($ep_vars[$param_value]['uri'])) {
+            if (isset($ep_vars[$token]['uri'])) {
                 $token = '<' . $ep_vars[$token]['uri'] . '>';
             }
-            elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
-                $param_value = '<' . $param_value . '>';
+            elseif (filter_var($token, FILTER_VALIDATE_URL) !== false) {
+                $token = '<' . $token . '>';
+            }
+	    elseif (is_numeric($token)) {
+            	$token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
             }
             else {
-                if (is_numeric($token)) {
-                    $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
-                }
-                else {
-                    $token = '"' . $token  . '"';
-                }
+            	$token = '"' . $token  . '"';
             }
-            $filter.="UNION { " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token  . "*#*";
+            $filter.=" UNION { " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token  . "*#*";
             $token=strtok('|');
         }
         if (isset($filterGraph[$var_props['sparqlVar']])) {
