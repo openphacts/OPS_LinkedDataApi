@@ -39,6 +39,7 @@ class SingleExpansionViewer implements Viewer {
 		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
 		if($response->is_success()){
 			$rdf = $response->body;
+			$rdf = preg_replace("/&#39;/", "'", $rdf);
 			$rdf = preg_replace("/&#[a-z0-9]*;/", " ", $rdf);
 			if(isset($response->headers['content-type'])){
 				if(strpos($response->headers['content-type'], 'turtle')){
