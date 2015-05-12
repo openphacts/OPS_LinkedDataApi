@@ -5,7 +5,8 @@ require 'converters/conceptwiki_util.inc.php';
 
 $paramNameToPredicate = array( 'q' => 'searchTerm',
                             'limit' => 'limit',
-                            'uuid' => 'tagUUID' );
+                            'uuid' => 'tagUUID',
+			    'branch' => 'branch' );
 
 $decodedResponse = json_decode($response);
 if ($decodedResponse===FALSE OR $decodedResponse===NULL){
