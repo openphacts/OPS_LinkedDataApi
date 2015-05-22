@@ -280,13 +280,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -552,6 +552,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -738,6 +769,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -939,6 +1001,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -1031,13 +1124,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -1267,6 +1360,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -1474,6 +1598,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -1560,13 +1715,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -2623,13 +2778,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -2936,6 +3091,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -3116,6 +3302,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -3323,6 +3540,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -3415,13 +3663,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -3643,6 +3891,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -3850,6 +4129,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -3942,13 +4252,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -4286,13 +4596,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -4825,13 +5135,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -5056,13 +5366,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -5287,13 +5597,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -5413,13 +5723,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -5616,13 +5926,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -5831,13 +6141,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -6082,13 +6392,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -6315,13 +6625,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -6936,13 +7246,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -7229,13 +7539,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -7359,6 +7669,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -7436,6 +7777,37 @@
             },
             {
               "name":  "activity_unit" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+            	  "centimeter",
+            	  "day",
+            	  "degree_celsius",
+            	  "gram",
+            	  "gram_per_liter",
+            	  "hour",
+            	  "international_unit_per_liter",
+            	  "kilogram",
+            	  "liter",
+            	  "microgram_per_milliliter",
+            	  "micrometer",
+            	  "micromolar",
+            	  "milligram_per_deciliter",
+            	  "milligram_per_milliliter",
+            	  "millimeter",
+            	  "millimolar",
+            	  "milli_second",
+            	  "minute_time",
+            	  "molar",
+            	  "nanogram_per_milliliter",
+            	  "nanomolar",
+            	  "percent",
+            	  "picogram_per_milliliter",
+            	  "picomolar",
+            	  "second_time"
+                ],
+                "valueType": "LIST"
+              },
               "description":  "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ,
               "paramType": "query",
               "dataType": "string"
@@ -7448,13 +7820,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
@@ -7643,13 +8015,13 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "allowableValues": {
                 "values": [
                 	"all"
