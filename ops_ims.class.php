@@ -14,7 +14,7 @@ class OpsIms {
             '?db_target_uri'=>'http://bio2rdf.org/drugbank',
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
 	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
-	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_',
+	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_&targetUriPattern=http://www.bioassayontology.org/bao#BAO_&targetUriPattern=http://purl.obolibrary.org/obo/DOID_',
 	    '?aers_compound_uri' => 'http://aers.data2semantics.org/resource/drug/'
     );
     

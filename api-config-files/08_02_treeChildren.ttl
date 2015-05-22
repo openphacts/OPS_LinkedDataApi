@@ -16,11 +16,11 @@
 	api:vocabulary rdfs: ;
 	api:vocabulary skos: ;
 	api:vocabulary uniprot: ;
-	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology and the Gene Ontology" ;
+	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the BioAssay Ontology, the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology, the Human Disease Ontology and the Gene Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Hierarchies: Child Nodes" ;
-		api:description "A representation of all child nodes of the given class in the supportted hierarchies. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
+		api:description "A representation of all child nodes of the given class in the supportted hierarchies. The BioAssay Ontology, the ChEBI Ontology, the Gene Ontology, the Enzyme Classification, the Human Disease Ontology and the ChEMBL Target Tree are currently supported." ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl/target> ;
@@ -57,14 +57,19 @@
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' .
+<http://www.bioassayontology.org> skos:prefLabel 'BioAssayOntology' .
+<http://purl.obolibrary.org/obo/doid> skos:prefLabel 'Human Disease Ontology' .
+";
 	api:where "{
 SELECT DISTINCT ?child_node ?node_uri ?g_short WHERE {
 	VALUES ?g {
 		<http://purl.uniprot.org/enzyme/direct> 
 		<http://www.ebi.ac.uk/chembl/target/direct>
 		<http://www.ebi.ac.uk/chebi/direct>
-		<http://www.geneontology.org> 
+		<http://www.geneontology.org>
+                <http://www.bioassayontology.org>
+                <http://purl.obolibrary.org/obo/doid>
 	}
 	GRAPH ?g {
 		?child_node rdfs:subClassOf ?node_uri . 
@@ -72,7 +77,9 @@ SELECT DISTINCT ?child_node ?node_uri ?g_short WHERE {
 		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, <http://purl.uniprot.org/enzyme> , 
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, <http://www.ebi.ac.uk/chembl/target> ,
 				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, <http://www.ebi.ac.uk/chebi> , 
-					IF(?g = <http://www.geneontology.org>, <http://www.geneontology.org> , 'Error')))) AS ?g_short )
+					IF(?g = <http://www.geneontology.org>, <http://www.geneontology.org> , 
+                                                IF(?g = <http://www.bioassayontology.org>, IRI(<http://www.bioassayontology.org>) ,
+                                                        IF(?g = <http://purl.obolibrary.org/obo/doid>, IRI(<http://purl.obolibrary.org/obo/doid>), 'Error')))))) AS ?g_short )
 	} 
 }
 }

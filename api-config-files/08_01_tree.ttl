@@ -16,16 +16,18 @@
 	api:vocabulary rdfs: ;
 	api:vocabulary skos: ;
 	api:vocabulary uniprot: ;
-	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology and the Gene Ontology" ;
+	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the BioAssay Ontology, the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology, the Disease Ontology and the Gene Ontology" ;
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Hierarchies: Root Nodes" ;
-		api:description "A representation of the root classes in each hierachy. The ChEBI Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
+		api:description "A representation of the root classes in each hierachy. The BioAssay Ontology, the ChEBI Ontology, the Disease Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
 		api:itemTemplate "http://www.openphacts.org/api#conceptHierarchy" ;
 		api:variable <http://purl.uniprot.org/enzyme> ;
 		api:variable <http://www.ebi.ac.uk/chembl/target> ;
 		api:variable <http://www.ebi.ac.uk/chebi> ;
 		api:variable <http://www.geneontology.org> ;
+		api:variable <http://www.bioassayontology.org> ;
+		api:variable <http://purl.obolibrary.org/obo/doid> ;
 		api:uriTemplate "/tree" ;
 		api:exampleRequestPath "/tree";
 		api:viewer <#treeRootViewer> ;
@@ -38,10 +40,12 @@
 <http://purl.uniprot.org/enzyme> api:name "enzyme" .
 <http://www.ebi.ac.uk/chebi> api:name "chebi" .
 <http://www.geneontology.org> api:name "go" .
+<http://www.bioassayontology.org> api:name 'bao' .
+<http://purl.obolibrary.org/obo/doid> api:name 'disease' .
 
 _:hierarchy api:name "root" ;
 	api:label "root" ;
-	api:value "Restrict results by hierarchy. Currently one of 'chembl', 'chebi', 'enzyme', 'go'" ;
+	api:value "Restrict results by hierarchy. Currently one of 'bao', 'chembl', 'chebi', 'disease', 'enzyme', 'go'" ;
 	api:filterVariable "?g_short" ;
 	rdfs:subPropertyOf api:graphFilter ;
 	a rdf:Property .
@@ -55,7 +59,10 @@ _:hierarchy api:name "root" ;
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
-<http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
+<http://www.geneontology.org> skos:prefLabel 'GeneOntology' .
+<http://www.bioassayontology.org> skos:prefLabel 'BioAssayOntology' .
+<http://purl.obolibrary.org/obo/doid> skos:prefLabel 'Human Disease Ontology' .
+";
 	api:where "{
 SELECT DISTINCT ?root_node ?g_short WHERE {
 	VALUES ?g {
@@ -63,6 +70,8 @@ SELECT DISTINCT ?root_node ?g_short WHERE {
 		<http://www.ebi.ac.uk/chembl/target/direct>
 		<http://www.ebi.ac.uk/chebi/direct>
 		<http://www.geneontology.org> 
+		<http://www.bioassayontology.org>
+		<http://purl.obolibrary.org/obo/doid>
 	}
 	GRAPH ?g {
 		[] rdfs:subClassOf ?root_node . 
@@ -71,7 +80,9 @@ SELECT DISTINCT ?root_node ?g_short WHERE {
 		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, IRI(<http://purl.uniprot.org/enzyme>) , 
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, IRI(<http://www.ebi.ac.uk/chembl/target>) ,
 				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, IRI(<http://www.ebi.ac.uk/chebi>) , 
-					IF(?g = <http://www.geneontology.org>, IRI(<http://www.geneontology.org>) , 'Error')))) AS ?g_short )
+					IF(?g = <http://www.geneontology.org>, IRI(<http://www.geneontology.org>) , 
+						IF(?g = <http://www.bioassayontology.org>, IRI(<http://www.bioassayontology.org>) ,
+							IF(?g = <http://purl.obolibrary.org/obo/doid>, IRI(<http://purl.obolibrary.org/obo/doid>), 'Error')))))) AS ?g_short )
 	} 
 }
 }
