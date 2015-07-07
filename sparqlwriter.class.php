@@ -506,11 +506,17 @@ _SPARQL_;
     }
 
     private function getFilterGraphForGraphValue($param_value, $var_props, $ep_vars, &$filterGraph){
+	if (isset($ep_vars[$param_value]['uri'])) {
+		$final_param_value="<{$ep_vars[$param_value]['uri']}>";
+	}
+	else {
+		$final_param_value=$param_value;
+	}
         if (isset($filterGraph[$var_props['sparqlVar']])) {
-            $filterGraph[$var_props['sparqlVar']] .= "VALUES {$var_props['sparqlVar']} { <{$ep_vars[$param_value]['uri']}> }";
+            $filterGraph[$var_props['sparqlVar']] .= "VALUES {$var_props['sparqlVar']} { {$final_param_value} }";
         }
         else {
-            $filterGraph[$var_props['sparqlVar']] = "VALUES {$var_props['sparqlVar']} { <{$ep_vars[$param_value]['uri']}> }";
+            $filterGraph[$var_props['sparqlVar']] = "VALUES {$var_props['sparqlVar']} { {$final_param_value} }";
         }
     }
     
