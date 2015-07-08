@@ -509,8 +509,14 @@ _SPARQL_;
 	if (isset($ep_vars[$param_value]['uri'])) {
 		$final_param_value="<{$ep_vars[$param_value]['uri']}>";
 	}
-	else {
+	elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
+		$final_param_value="<{$param_value}>";
+	}
+	elseif (filter_var($param_value, FILTER_VALIDATE_BOOLEAN) !== false || is_numeric($param_value)) {
 		$final_param_value=$param_value;
+	}
+	else {
+		$final_param_value='"' . $param_value . '"';
 	}
         if (isset($filterGraph[$var_props['sparqlVar']])) {
             $filterGraph[$var_props['sparqlVar']] .= "VALUES {$var_props['sparqlVar']} { {$final_param_value} }";
@@ -541,6 +547,9 @@ _SPARQL_;
         elseif (is_numeric($token)) {
             $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
         }
+	elseif (is_bool($token)) {
+	    $token = $token ;
+	}
         else {
             $token = '"' . $token  . '"';
         }
@@ -556,7 +565,7 @@ _SPARQL_;
 	    elseif (is_numeric($token)) {
             	$token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
             }
-            else {
+            elseif (filter_var($token, FILTER_VALIDATE_BOOLEAN) === false) {
             	$token = '"' . $token  . '"';
             }
             $filter.=" UNION { " . $var_props['sparqlVar']  . " <" . $filterPredicate . '> ' . $token  . "*#*";
@@ -581,7 +590,7 @@ _SPARQL_;
             if (is_numeric($param_value)) {
                 $param_value = '"' . $param_value  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
             }
-            else {
+            elseif (filter_var($param_value, FILTER_VALIDATE_BOOLEAN) === false) {
                 $param_value = '"' . $param_value  . '"';
             }
         }
@@ -790,6 +799,9 @@ _SPARQL_;
                 }
                 else if ( preg_match("/GRAPH[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
                     $query=preg_replace("/(.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query);
+                }
+                else if ( preg_match("/OPTIONAL[^\}]*?\{[^\}]*?\\".$sparqlVar."/", $query)===1 ){
+                    $query=preg_replace("/(.*?OPTIONAL[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
                 }
                 else {
                     $query=preg_replace("/(WHERE.*?)(GRAPH[^\}]*[^\}]*?\\".$sparqlVar.")/s", "$1 {$filterClause} $2", $query, 1);
