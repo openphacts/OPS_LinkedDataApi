@@ -547,7 +547,7 @@ _SPARQL_;
         elseif (is_numeric($token)) {
             $token = '"' . $token  . '"^^<http://www.w3.org/2001/XMLSchema#float>';
         }
-	elseif (is_bool($token)) {
+	elseif (filter_var($token, FILTER_VALIDATE_BOOLEAN) !== false) {
 	    $token = $token ;
 	}
         else {
