@@ -77,7 +77,7 @@ do
 				echo '              "required": true,'
 				echo '              "paramType": "path",'
 				echo '              "dataType": "string"'
-			elif [[ "$var" == "chembl:standardValue" || "$var" == "chembl:pChembl" ]]
+			elif [[ "$var" == "chembl:standardValue" || "$var" == "chembl:pChembl" || "$var" == "schembl:SCCO_000028" || "$var" == "schembl:SCCO_000038" ]]
 			then
 				echo '              "dataType": "double",'
 				echo '              "paramType": "query"'
