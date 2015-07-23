@@ -74,8 +74,8 @@
 	?rev dc:identifier ?pw_uri ; 
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
-		dc:title ?title . 
-	?organism_uri rdfs:label ?organism .
+		dc:title ?title ; 
+		wp:organismName ?organism .
 	?part_internal dcterms:isPartOf ?rev ;
 		a ?type ;
 		dc:identifier ?part .

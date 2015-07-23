@@ -109,28 +109,28 @@ wp:organism api:name "pathway_organism" ;
 	dc:identifier ?identifier ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
-	dcterms:hasPart ?pw_uri ;
+	dcterms:hasPart ?pw_compound_uri ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
-?pw_uri a wp:Metabolite ; 
-	skos:exactMatch ?cw_uri .
-?cw_uri skos:prefLabel ?prefLabel ;
+?pw_compound_uri a wp:Metabolite ; 
+	skos:exactMatch ?cw_compound_uri .
+?cw_compound_uri skos:prefLabel ?prefLabel ;
 	void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
 	?item a wp:Pathway ;
 		dc:title ?title ; 
-		wp:organism ?organism_uri ; 
+		wp:organism ?organism_uri ;
+		wp:organismName ?organism ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
         ?metabolite dcterms:isPartOf ?item ;
                 a wp:Metabolite ;
-                dc:identifier ?pw_uri .
-	?organism_uri rdfs:label ?organism . 
+                dc:identifier ?pw_compound_uri .
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }
 OPTIONAL { GRAPH <http://www.conceptwiki.org> {
-	?cw_uri skos:prefLabel ?prefLabel .
+	?cw_compound_uri skos:prefLabel ?prefLabel .
 } }" .

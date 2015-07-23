@@ -113,8 +113,8 @@ wp:organism api:name "pathway_organism" ;
 		dc:title ?title ; 
 		wp:organism ?organism_uri ; 
 		foaf:page ?page ;
-		dc:identifier ?identifier . 
-	?organism_uri rdfs:label ?organism . 
+		dc:identifier ?identifier ;
+		wp:organismName ?organism . 
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }" .

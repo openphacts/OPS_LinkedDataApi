@@ -43,8 +43,8 @@
 "{
 SELECT DISTINCT ?item ?label COUNT(?pathway) AS ?count WHERE {
 GRAPH <http://www.wikipathways.org>  {
-	?pathway wp:organism ?item  .
-	?item rdfs:label ?label .
+	?pathway wp:organism ?item  ;
+		wp:organismName ?label .
 }
 } GROUP BY ?item ?label ORDER BY DESC(?count)
 }" ;
@@ -62,12 +62,10 @@ GRAPH <http://www.wikipathways.org>  {
 ops:pathway_count ?count ." ; 
 	api:where
 "{
-SELECT DISTINCT ?item COUNT(?pathway) AS ?count WHERE {
+SELECT DISTINCT ?item ?label COUNT(?pathway) AS ?count WHERE {
   GRAPH <http://www.wikipathways.org>  {
-   ?pathway wp:organism ?item  .
+   ?pathway wp:organism ?item  ;
+	wp:organismName ?label .
   }
- } GROUP BY ?item
-}
-GRAPH <http://www.wikipathways.org> {
-	?item rdfs:label ?label 
+ } GROUP BY ?item ?label
 }" .
