@@ -22,6 +22,11 @@ RUN sed -i "s|'IMS_MAP_ENDPOINT'.*|'IMS_MAP_ENDPOINT', 'http://ims:8080/QueryExp
 RUN sed -i "s|'IMS_EXPAND_ENDPOINT'.*|'IMS_EXPAND_ENDPOINT', 'http://ims:8080/QueryExpander/expandXML?query=');|" deployment.settings.php
 RUN sed -i "s|'PUELIA_MEMCACHE_HOST'.*|'PUELIA_MEMCACHE_HOST', 'memcached');|" deployment.settings.php
 
+# Silence warnings (Issue #13)
+RUN echo "display_errors=0" > /usr/local/etc/php/conf.d/ops-warnings.ini
+RUN echo "log_errors=1" >> /usr/local/etc/php/conf.d/ops-warnings.ini
+RUN echo "html_errors=0" >> /usr/local/etc/php/conf.d/ops-warnings.ini
+
 
 
 #RUN sed -i '/<\/VirtualHost/ i\ <Directory /var/www/html/>\n  AllowOverride All\n </Directory>' /etc/apache2/sites-available/000-default.conf
