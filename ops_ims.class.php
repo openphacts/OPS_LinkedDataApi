@@ -16,7 +16,11 @@ class OpsIms {
 	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
 	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_&targetUriPattern=http://www.bioassayontology.org/bao#BAO_&targetUriPattern=http://purl.obolibrary.org/obo/DOID_',
 	    '?aers_compound_uri' => 'http://aers.data2semantics.org/resource/drug/',
-	    '?patent_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/patent/'
+	    '?patent_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/patent/',
+	    '?pw_uri' => 'http://identifiers.org/wikipathways/',
+	    '?pw_compound_uri' => '',
+	    '?pw_target_uri' => '',
+	    '?pw_ref_uri' => 'http://identifiers.org/pubmed/'
     );
     
     var $IMS_interm_variables = array(
@@ -35,7 +39,7 @@ class OpsIms {
     
     
     
-    var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
+    var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
 	$params='';       
@@ -66,8 +70,10 @@ class OpsIms {
                $variableInfoMap[$variableName] = array();
                $url = IMS_MAP_ENDPOINT;
                $url .= '?rdfFormat=RDF/XML';
-               $url .= "&targetUriPattern={$pattern}";
-               $url .= '&overridePredicateURI=http://www.w3.org/2004/02/skos/core#exactMatch';
+	       if ($pattern != '') {
+                  $url .= '&targetUriPattern='.urlencode($pattern);
+	       }
+               $url .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');
                $url .= '&lensUri=';
                if ($lens==''){
                   $url .= 'Default';
@@ -144,7 +150,7 @@ class OpsIms {
    
    private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
        $response = curl_multi_getcontent($varInfo['handle']);
-	//logDebug("IMS Response: {$response}");
+       //logDebug("IMS Response: {$response}");
        curl_close($varInfo['handle']);
        curl_multi_remove_handle($multiHandle, $varInfo['handle']);
        //echo $url;
@@ -192,8 +198,10 @@ class OpsIms {
 		$expanded = array();
 		$urlStart = IMS_MAP_ENDPOINT;
 		$urlStart .= '?rdfFormat=N-Triples';
-		$urlStart .= "&targetUriPattern={$pattern}";
-                $urlStart .= '&overridePredicateURI=http://www.w3.org/2004/02/skos/core#exactMatch';		
+		if ($pattern != '') {
+                  $url .= '&targetUriPattern='.urlencode($pattern);
+                }
+                $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');		
 		$urlStart .= '&lensUri=';
 		if ($lens==''){
 		    $urlStart .= 'Default';
