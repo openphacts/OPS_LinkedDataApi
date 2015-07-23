@@ -34,7 +34,7 @@ class OpsIms {
     
     
     
-    var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?pw_uri' , '?aers_uri');
+    var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
 	$params='';       
@@ -65,8 +65,10 @@ class OpsIms {
                $variableInfoMap[$variableName] = array();
                $url = IMS_MAP_ENDPOINT;
                $url .= '?rdfFormat=RDF/XML';
-               $url .= "&targetUriPattern={$pattern}";
-               $url .= '&overridePredicateURI=http://www.w3.org/2004/02/skos/core#exactMatch';
+	       if ($pattern != '') {
+                  $url .= '&targetUriPattern='.urlencode($pattern);
+	       }
+               $url .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');
                $url .= '&lensUri=';
                if ($lens==''){
                   $url .= 'Default';
@@ -143,7 +145,7 @@ class OpsIms {
    
    private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
        $response = curl_multi_getcontent($varInfo['handle']);
-	//logDebug("IMS Response: {$response}");
+       //logDebug("IMS Response: {$response}");
        curl_close($varInfo['handle']);
        curl_multi_remove_handle($multiHandle, $varInfo['handle']);
        //echo $url;
@@ -191,8 +193,10 @@ class OpsIms {
 		$expanded = array();
 		$urlStart = IMS_MAP_ENDPOINT;
 		$urlStart .= '?rdfFormat=N-Triples';
-		$urlStart .= "&targetUriPattern={$pattern}";
-                $urlStart .= '&overridePredicateURI=http://www.w3.org/2004/02/skos/core#exactMatch';		
+		if ($pattern != '') {
+                  $url .= '&targetUriPattern='.urlencode($pattern);
+                }
+                $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');		
 		$urlStart .= '&lensUri=';
 		if ($lens==''){
 		    $urlStart .= 'Default';
