@@ -30,6 +30,23 @@ if(rtrim($Request->getPath(), '/')==$Request->getInstallSubDir()){
 	exit;
 } 	    
 
+
+if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
+        $swagger = file_get_contents("api-config-files/swagger.json", true);
+        $json = json_decode($swagger, true);
+        $base = preg_replace(",(.*)/[^/]*$,", '$1/', $Request->getUri());
+	if (isset($_SERVER["HTTP_X_3SCALE_PROXY_SECRET_TOKEN"])) {
+            $base = str_replace("http://", "https://", $base);
+        }
+        $json["basePath"] = $base;
+
+//phpinfo();
+        header("Content-Type: application/json");
+        echo json_encode($json); // JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
+}
+
+
 if (  
     defined("PUELIA_SERVE_FROM_CACHE") 
         AND
