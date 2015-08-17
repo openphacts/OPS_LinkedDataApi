@@ -110,7 +110,10 @@ class OpsIms {
            if ($activeHandles==0 || $mrc!=CURLM_OK) break;
             
            if (curl_multi_select($multiHandle) != -1){//wait for requests
-               $this->handleAvailableResponses($multiHandle, $input_uri, $variableInfoMap);
+// Disabled due to issue openphacts/OPS_LinkedDataApi#13
+// The responses are handled later in foreach-handleResponse loop
+//
+//               $this->handleAvailableResponses($multiHandle, $input_uri, $variableInfoMap);
            }
        }
        while (true);
