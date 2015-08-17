@@ -15,7 +15,10 @@ RUN rm -rf /var/www/html
 ADD . /var/www/html
 WORKDIR /var/www/html
 
+# SPARQL server
 RUN sed -i "s,<http://[^>]*/sparql/>,<http://sparql:8890/sparql/>,g" api-config-files/*ttl
+# http://ops-ims-15:8080/QueryExpander
+RUN sed -i "s,http://[^>]*/QueryExpander/,<http://ims:8890/QueryExpander/,g" api-config-files/*ttl
 # TODO: parameterize conceptwiki URL
 RUN sed -i "s,http://[^/]*/web-ws/concept,http://conceptwiki.openlinksw.com/web-ws/concept,g" api-config-files/*ttl
 RUN sed -i "s|'IMS_MAP_ENDPOINT'.*|'IMS_MAP_ENDPOINT', 'http://ims:8080/QueryExpander/mapBySetRDF');|" deployment.settings.php
