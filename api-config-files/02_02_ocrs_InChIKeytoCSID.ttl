@@ -18,7 +18,7 @@
 		api:name "Chemical Structure Conversion: InchiKey to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?inchi_key={inchi_key}" ;
-		api:externalRequestTemplate "http://ops.rsc.org/api/v1/JSON.ashx?op=ConvertTo&convertOptions.Direction=InChiKey2CSID&convertOptions.Text={inchi_key}" ;
+		api:externalRequestTemplate "https://ops.rsc.org/api/v1/JSON.ashx?op=ConvertTo&convertOptions.Direction=InChiKey2CSID&convertOptions.Text={inchi_key}" ;
 		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
 		api:exampleRequestPath "/structure?inchi_key=BSYNRYMUTXBXSQ-UHFFFAOYSA-N" ;
 		api:viewer <#externalResponseViewer> ;

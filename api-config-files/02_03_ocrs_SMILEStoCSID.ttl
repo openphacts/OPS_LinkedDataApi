@@ -20,7 +20,7 @@
 		api:name "Chemical Structure Conversion: SMILES to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?smiles={smiles}" ;
-		api:externalRequestTemplate "http://ops.rsc.org/api/v1/JSON.ashx?op=ConvertTo&convertOptions.Direction=Smiles2InChi&convertOptions.Text={smiles}" ;
+		api:externalRequestTemplate "https://ops.rsc.org/api/v1/JSON.ashx?op=ConvertTo&convertOptions.Direction=Smiles2InChi&convertOptions.Text={smiles}" ;
 		api:externalResponseHandler "converters/smiles_to_chemspider_id_xml_to_rdf.php" ;
 		api:exampleRequestPath "/structure?smiles=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
 		api:viewer <#externalResponseViewer> ;
