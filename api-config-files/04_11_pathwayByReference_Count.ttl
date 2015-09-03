@@ -114,5 +114,5 @@ GRAPH <http://www.wikipathways.org> {
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
         ?pw_ref_uri dcterms:isPartOf ?pathway ;
-                a wp:publicationReference .
+                a wp:PublicationReference .
 } } }" .

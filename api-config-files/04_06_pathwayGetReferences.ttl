@@ -66,6 +66,6 @@
 	?rev dc:identifier ?pw_uri ;
 		dc:title ?title .
 	?reference dcterms:isPartOf ?rev ;
-		a wp:publicationReference
+		a wp:PublicationReference
 	FILTER(!isBlank(?reference)) 
 }" .

@@ -123,7 +123,7 @@ wp:organism api:name "pathway_organism" ;
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
         ?pw_ref_uri dcterms:isPartOf ?item ;
-                a wp:publicationReference .
+                a wp:PublicationReference .
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }" .
