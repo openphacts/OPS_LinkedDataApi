@@ -71,7 +71,11 @@ class OpsIms {
                $url = IMS_MAP_ENDPOINT;
                $url .= '?rdfFormat=RDF/XML';
 	       if ($pattern != '') {
-                  $url .= '&targetUriPattern='.urlencode($pattern);
+		  $encoded_pattern = urlencode($pattern);
+		  if (strpos($pattern, '&') !== FALSE) {
+		    $encoded_pattern = str_replace('%26targetUriPattern%3D','&targetUriPattern=', $encoded_pattern);
+		  }
+                  $url .= '&targetUriPattern='.$encoded_pattern;
 	       }
                $url .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');
                $url .= '&lensUri=';
@@ -199,7 +203,11 @@ class OpsIms {
 		$urlStart = IMS_MAP_ENDPOINT;
 		$urlStart .= '?rdfFormat=N-Triples';
 		if ($pattern != '') {
-                  $url .= '&targetUriPattern='.urlencode($pattern);
+		  $encoded_pattern = urlencode($pattern);
+                  if (strpos($pattern, '&') !== FALSE) {
+                    $encoded_pattern = str_replace('%26targetUriPattern%3D','&targetUriPattern=', $encoded_pattern);
+                  }
+                  $url .= '&targetUriPattern='.$encoded_pattern;
                 }
                 $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');		
 		$urlStart .= '&lensUri=';
