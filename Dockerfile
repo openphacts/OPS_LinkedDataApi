@@ -34,7 +34,7 @@ RUN sed -i "s,http.*/v1/JSON.ashx,http://crs/JSON.ashx,g" api-config-files/*ttl
 #ENV CONCEPTWIKI http://www.conceptwiki.org/web-ws/concept
 ENV CONCEPTWIKI http://conceptwiki:8080/web-ws/concept
 #ENV CRS https://ops.rsc.org/api/v1/
-ENV CRS https://crc/api/v1/
+ENV CRS https://crs/api/v1/
 # ..as injected by the entrypoint
 ADD docker-entrypoint.sh /
 RUN chmod 755 /docker-entrypoint.sh
