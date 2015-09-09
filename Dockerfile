@@ -15,15 +15,31 @@ RUN rm -rf /var/www/html
 ADD . /var/www/html
 WORKDIR /var/www/html
 
+
+#### Hostname modifications
+
+
 # SPARQL server
 RUN sed -i "s,<http://[^>]*/sparql/>,<http://sparql:8890/sparql/>,g" api-config-files/*ttl
 # http://ops-ims-15:8080/QueryExpander
 RUN sed -i "s,http://[^>]*/QueryExpander/,http://ims:8080/QueryExpander/,g" api-config-files/*ttl
-# TODO: parameterize conceptwiki URL
-RUN sed -i "s,http://[^/]*/web-ws/concept,http://www.conceptwiki.org/web-ws/concept,g" api-config-files/*ttl
 RUN sed -i "s|'IMS_MAP_ENDPOINT'.*|'IMS_MAP_ENDPOINT', 'http://ims:8080/QueryExpander/mapBySetRDF');|" deployment.settings.php
 RUN sed -i "s|'IMS_EXPAND_ENDPOINT'.*|'IMS_EXPAND_ENDPOINT', 'http://ims:8080/QueryExpander/expandXML?query=');|" deployment.settings.php
 RUN sed -i "s|'PUELIA_MEMCACHE_HOST'.*|'PUELIA_MEMCACHE_HOST', 'memcached');|" deployment.settings.php
+# Safe local hostnames by default
+RUN sed -i "s,http://[^/]*/web-ws/concept,http://conceptwiki:8080/web-ws/concept,g" api-config-files/*ttl
+RUN sed -i "s,http.*/v1/JSON.ashx,http://crs/JSON.ashx,g" api-config-files/*ttl
+## but will be replaced with system environment variables:
+
+#ENV CONCEPTWIKI http://www.conceptwiki.org/web-ws/concept
+ENV CONCEPTWIKI http://conceptwiki:8080/web-ws/concept
+#ENV CRS https://ops.rsc.org/api/v1/
+ENV CRS https://crc/api/v1/
+# ..as injected by the entrypoint
+ADD docker-entrypoint.sh /
+RUN chmod 755 /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
 
 # Silence warnings (Issue #13)
 RUN echo "display_errors=0" > /usr/local/etc/php/conf.d/ops-warnings.ini
