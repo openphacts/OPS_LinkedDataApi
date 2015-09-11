@@ -39,6 +39,8 @@ ENV CRS https://crs/api/v1/
 ADD docker-entrypoint.sh /
 RUN chmod 755 /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
+# For some reason need to repeat the CMD
+CMD ["apache2-foreground"]
 
 
 # Silence warnings (Issue #13)
