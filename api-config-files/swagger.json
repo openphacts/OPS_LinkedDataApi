@@ -8967,6 +8967,7 @@
             {
               "name": "app_id",
               "description": "Your access application id",
+              "required": true,
               "dataType": "string",
               "paramType": "query",
               "threescale_name": "app_ids"
@@ -8974,6 +8975,7 @@
             {
               "name": "app_key",
               "description": "Your access application key",
+              "required": true,
               "dataType": "string",
               "paramType": "query",
               "threescale_name": "app_keys"
@@ -8992,6 +8994,7 @@
               },
               "dataType": "integer",
               "required": false,
+              "required": false,
               "paramType": "query"
             },
             {
@@ -9007,6 +9010,7 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
+              "required": false,
               "required": false,
               "paramType": "query"
             },
@@ -9024,6 +9028,7 @@
               },
               "dataType": "integer",
               "required": false,
+              "required": false,
               "paramType": "query"
             },
             {
@@ -9040,6 +9045,7 @@
               },
               "dataType": "integer",
               "required": false,
+              "required": false,
               "paramType": "query"
             },
             {
@@ -9055,6 +9061,7 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
+              "required": false,
               "required": false,
               "paramType": "query"
             },
@@ -9110,7 +9117,7 @@
             },
             {
               "name":  "title" ,
-              "description":  "If set to 'true' the method returns only entities mentioned in the title of the patent." ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
               "allowableValues": {
                 "values": [
                   "true"
@@ -9123,7 +9130,7 @@
             },
             {
               "name":  "abstract" ,
-              "description":  "If set to 'true' the method returns only entities mentioned in the abstract of the patent." ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
               "allowableValues": {
                 "values": [
                   "true"
@@ -9136,7 +9143,7 @@
             },
             {
               "name":  "description" ,
-              "description":  "If set to 'true' the method returns only entities mentioned in the description section of the patent." ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
               "allowableValues": {
                 "values": [
                   "true"
@@ -9149,7 +9156,7 @@
             },
             {
               "name":  "claims" ,
-              "description":  "If set to 'true' the method returns only entities mentioned in the claims section of the patent." ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
               "allowableValues": {
                 "values": [
                   "true"
@@ -9162,7 +9169,7 @@
             },
             {
               "name":  "image" ,
-              "description":  "If set to 'true' the method returns only entities in an image in the patent." ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
               "allowableValues": {
                 "values": [
                   "true"
@@ -9175,7 +9182,7 @@
             },
             {
               "name":  "cwu" ,
-              "description":  "If set to 'true' the method returns only entities mentioned in a CWU of the patent." ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
               "allowableValues": {
                 "values": [
                   "true"
@@ -9185,6 +9192,1831 @@
               "paramType": "query",
               "required": false,
               "dataType": "boolean"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/byCompound/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patents for Compound: Count" ,
+          "description":  "The total number of patents which mention the Compound specified<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:patent_count ?count </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A compound URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/molecule/SCHEMBL1325" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "min-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score greater than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score greater than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "max-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score less than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score less than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is greater than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is greater than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is less than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is less than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "classification" ,
+              "description":  "Only return patents that have been classified with this classification code. The CPC, IPC and IPCR classification schemes are currently supported." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "title" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "abstract" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "description" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "claims" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "image" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "cwu" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/byCompound" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patents for Compound: List" ,
+          "description":  "A list of patents which mention the Compound specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?schembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?compound_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Compound' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A compound URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/molecule/SCHEMBL1325" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "min-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score greater than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score greater than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "max-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score less than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-score" ,
+              "description":  "Only return patents in which the compound occurs with a relevance score less than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is greater than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is greater than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is less than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-frequency" ,
+              "description":  "Only return patents in which the number of times the compound is mentioned is less than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "classification" ,
+              "description":  "Only return patents that have been classified with this classification code. The CPC, IPC and IPCR classification schemes are currently supported." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "title" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "abstract" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "description" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "claims" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "image" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "cwu" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?abstract_occ",
+                  "DESC(?abstract_occ)",
+                  "?assoc",
+                  "DESC(?assoc)",
+                  "?claims_occ",
+                  "DESC(?claims_occ)",
+                  "?class_code",
+                  "DESC(?class_code)",
+                  "?class_res",
+                  "DESC(?class_res)",
+                  "?class_sys",
+                  "DESC(?class_sys)",
+                  "?compound_smiles",
+                  "DESC(?compound_smiles)",
+                  "?cwu_occ",
+                  "DESC(?cwu_occ)",
+                  "?date",
+                  "DESC(?date)",
+                  "?desc_occ",
+                  "DESC(?desc_occ)",
+                  "?freq",
+                  "DESC(?freq)",
+                  "?image_occ",
+                  "DESC(?image_occ)",
+                  "?item",
+                  "DESC(?item)",
+                  "?rel_score",
+                  "DESC(?rel_score)",
+                  "?schembl_compound_uri",
+                  "DESC(?schembl_compound_uri)",
+                  "?title",
+                  "DESC(?title)",
+                  "?title_occ",
+                  "DESC(?title_occ)",
+                  "?title_res",
+                  "DESC(?title_res)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/byTarget/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patents for Target: Count" ,
+          "description":  "The total number of patents which mention the Target specified<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:patent_count ?count </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A target URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/target/HMGCS1" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "min-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score greater than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score greater than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "max-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score less than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score less than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is greater than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is greater than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is less than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is less than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "classification" ,
+              "description":  "Only return patents that have been classified with this classification code. The CPC, IPC and IPCR classification schemes are currently supported." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "title" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "abstract" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "description" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "claims" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "image" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "cwu" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/byTarget" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patents for Target: List" ,
+          "description":  "A list of patents which mention the Target specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?schembl_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A target URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/target/HMGCS1" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "min-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score greater than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score greater than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "max-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score less than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-score" ,
+              "description":  "Only return patents in which the target occurs with a relevance score less than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is greater than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is greater than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is less than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-frequency" ,
+              "description":  "Only return patents in which the number of times the target is mentioned is less than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "classification" ,
+              "description":  "Only return patents that have been classified with this classification code. The CPC, IPC and IPCR classification schemes are currently supported." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "title" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "abstract" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "description" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "claims" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "image" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "cwu" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?abstract_occ",
+                  "DESC(?abstract_occ)",
+                  "?assoc",
+                  "DESC(?assoc)",
+                  "?claims_occ",
+                  "DESC(?claims_occ)",
+                  "?class_code",
+                  "DESC(?class_code)",
+                  "?class_res",
+                  "DESC(?class_res)",
+                  "?class_sys",
+                  "DESC(?class_sys)",
+                  "?cwu_occ",
+                  "DESC(?cwu_occ)",
+                  "?date",
+                  "DESC(?date)",
+                  "?desc_occ",
+                  "DESC(?desc_occ)",
+                  "?freq",
+                  "DESC(?freq)",
+                  "?image_occ",
+                  "DESC(?image_occ)",
+                  "?item",
+                  "DESC(?item)",
+                  "?rel_score",
+                  "DESC(?rel_score)",
+                  "?schembl_target_uri",
+                  "DESC(?schembl_target_uri)",
+                  "?target_name",
+                  "DESC(?target_name)",
+                  "?title",
+                  "DESC(?title)",
+                  "?title_occ",
+                  "DESC(?title_occ)",
+                  "?title_res",
+                  "DESC(?title_res)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/byDisease/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patents for Disease: Count" ,
+          "description":  "The total number of patents which mention the Disease specified<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:patent_count ?count </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A disease URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/indication/D002561" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "min-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score greater than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score greater than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "max-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score less than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score less than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is greater than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is greater than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is less than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is less than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "classification" ,
+              "description":  "Only return patents that have been classified with this classification code. The CPC, IPC and IPCR classification schemes are currently supported." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "title" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "abstract" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "description" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "claims" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "image" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "cwu" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/byDisease" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patents for Disease: List" ,
+          "description":  "A list of patents which mention the Disease specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_disease_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?schembl_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?disease_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A disease URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/indication/D002561" ,
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "min-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score greater than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score greater than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "max-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score less than or equal to this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-score" ,
+              "description":  "Only return patents in which the disease occurs with a relevance score less than this number. An integer between 0 and 3." ,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "integer",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name":  "frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "min-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is greater than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "minEx-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is greater than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "max-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is less than or equal to this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "maxEx-frequency" ,
+              "description":  "Only return patents in which the number of times the disease is mentioned is less than this number. A positive integer." ,
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name":  "classification" ,
+              "description":  "Only return patents that have been classified with this classification code. The CPC, IPC and IPCR classification schemes are currently supported." ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "title" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "abstract" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "description" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "claims" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "image" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is in an image. " ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name":  "cwu" ,
+              "description":  "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent." ,
+              "allowableValues": {
+                "values": [
+                  "true"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "required": false,
+              "dataType": "boolean"
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?abstract_occ",
+                  "DESC(?abstract_occ)",
+                  "?assoc",
+                  "DESC(?assoc)",
+                  "?claims_occ",
+                  "DESC(?claims_occ)",
+                  "?class_code",
+                  "DESC(?class_code)",
+                  "?class_res",
+                  "DESC(?class_res)",
+                  "?class_sys",
+                  "DESC(?class_sys)",
+                  "?cwu_occ",
+                  "DESC(?cwu_occ)",
+                  "?date",
+                  "DESC(?date)",
+                  "?desc_occ",
+                  "DESC(?desc_occ)",
+                  "?disease_name",
+                  "DESC(?disease_name)",
+                  "?freq",
+                  "DESC(?freq)",
+                  "?image_occ",
+                  "DESC(?image_occ)",
+                  "?item",
+                  "DESC(?item)",
+                  "?rel_score",
+                  "DESC(?rel_score)",
+                  "?schembl_disease_uri",
+                  "DESC(?schembl_disease_uri)",
+                  "?title",
+                  "DESC(?title)",
+                  "?title_occ",
+                  "DESC(?title_occ)",
+                  "?title_res",
+                  "DESC(?title_res)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
             },
             {
               "name": "_format",
