@@ -8994,7 +8994,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9010,7 +9009,6 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
-              "required": false,
               "required": false,
               "paramType": "query"
             },
@@ -9028,7 +9026,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9045,7 +9042,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9061,7 +9057,6 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
-              "required": false,
               "required": false,
               "paramType": "query"
             },
@@ -9286,7 +9281,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9302,7 +9296,6 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
-              "required": false,
               "required": false,
               "paramType": "query"
             },
@@ -9320,7 +9313,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9337,7 +9329,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9353,7 +9344,6 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
-              "required": false,
               "required": false,
               "paramType": "query"
             },
@@ -9564,7 +9554,6 @@
               },
               "dataType": "integer",
               "required": false,
-              "required": false,
               "paramType": "query"
             },
             {
@@ -9580,7 +9569,6 @@
                 "valueType": "LIST"
               },
               "dataType": "integer",
-              "required": false,
               "required": false,
               "paramType": "query"
             },
