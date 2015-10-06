@@ -8182,7 +8182,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Hierarchies: Root Nodes" ,
-          "description":  "A representation of the root classes in each hierarchy. The BioAssay Ontology, the ChEBI Ontology, the ChEMBL Target Tree, the Gene Ontology, the Enzyme Classification, and the Human Disease Ontology are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ops:conceptHierarchy <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?g_short </span> .<br> ?g_short <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:rootNode ?root_node </span> .<br> ?root_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
+          "description":  "A representation of the root classes in each hierarchy. The BioAssay Ontology, the ChEBI Ontology, the ChEMBL Target Tree, the Gene Ontology, the Enzyme Classification, and the Human Disease Ontology are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ops:conceptHierarchy <span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?g_short </span> .<br> ?g_short <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:rootNode ?root_node </span> .<br> ?root_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> &lt;http://www.bioassayontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'BioAssayOntology' </span> .<br> &lt;http://purl.obolibrary.org/obo/doid&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Human Disease Ontology' </span> .<br> ",
           "group": "Concept Class Hierarchies" ,
           "parameters": [
             {
@@ -8272,7 +8272,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Hierarchies: Child Nodes" ,
-          "description":  "A representation of all child nodes of the given class in the supportted hierarchies. The BioAssay Ontology, the ChEBI Ontology, the ChEMBL Target Tree, the Gene Ontology, the Enzyme Classification, and the Human Disease Ontology are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?node_uri </span> .<br> ?node_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:childNode ?child_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?child_node <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?child_label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
+          "description":  "A representation of all child nodes of the given class in the supportted hierarchies. The BioAssay Ontology, the ChEBI Ontology, the ChEMBL Target Tree, the Gene Ontology, the Enzyme Classification, and the Human Disease Ontology are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?node_uri </span> .<br> ?node_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:childNode ?child_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?child_node <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?child_label </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> &lt;http://www.bioassayontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'BioAssayOntology' </span> .<br> &lt;http://purl.obolibrary.org/obo/doid&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Human Disease Ontology' </span> .<br> ",
           "group": "Concept Class Hierarchies" ,
           "parameters": [
             {
@@ -8351,7 +8351,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Hierarchies: Parent Nodes" ,
-          "description":  "A representation of all parent nodes of the given class in the supportted hierarchies. The BioAssay Ontology, the ChEBI Ontology, the ChEMBL Target Tree, the Gene Ontology, the Enzyme Classification, and the Human Disease Ontology are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?node_uri </span> .<br> ?node_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:parentNode ?parent_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?parent_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_name </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> ",
+          "description":  "A representation of all parent nodes of the given class in the supportted hierarchies. The BioAssay Ontology, the ChEBI Ontology, the ChEMBL Target Tree, the Gene Ontology, the Enzyme Classification, and the Human Disease Ontology are currently supported.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?node_uri </span> .<br> ?node_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:parentNode ?parent_node </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?g_short </span> .<br> ?parent_node <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?parent_name </span> .<br> &lt;http://purl.uniprot.org/enzyme&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Enzyme Classification' </span> .<br> &lt;http://www.ebi.ac.uk/chembl/target&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .<br> &lt;http://www.ebi.ac.uk/chebi&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> &lt;http://www.geneontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .<br> &lt;http://www.bioassayontology.org&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'BioAssayOntology' </span> .<br> &lt;http://purl.obolibrary.org/obo/doid&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Human Disease Ontology' </span> .<br> ",
           "group": "Concept Class Hierarchies" ,
           "parameters": [
             {
@@ -8953,7 +8953,86 @@
         {
           "httpMethod": "GET",
           "summary":  "[PREVIEW] Patent Information" ,
-          "description":  "Information about a single patent.<br><hr><br>Response template: <br><br><hr><br>  ?patent_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:classification ?class_res </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:mentions ?entity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?entity <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?entity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?entity_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?entity_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?class_res <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationCode ?class_code </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationSystem ?class_sys </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000010&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Molecule' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "description":  "Information about a single patent.<br><hr><br>Response template: <br><br><hr><br>  ?patent_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:classification ?class_res </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?class_res <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationCode ?class_code </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationSystem ?class_sys </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
+          "group": "Patent" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A patent URI." ,
+              "defaultValue": "http://rdf.ebi.ac.uk/resource/surechembl/patent/EP-1339685-A2",
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "required": true,
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/patent/getEntities" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Patent Information: Get Entities" ,
+          "description":  "Retrieves a list of entities that are mentioned in the user specified patent.<br><hr><br>Response template: <br><br><hr><br>  ?patent_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:mentions ?entity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ?entity <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?entity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?entity_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?entity_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000010&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Molecule' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&gt; </span> .<br> ",
           "group": "Patent" ,
           "parameters": [
             {
