@@ -8,3 +8,6 @@
 <http://www.ebi.ac.uk/chembl/target> <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEMBL Target Hierarchy' </span> .
 <http://www.ebi.ac.uk/chebi> <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'ChEBI Ontology' </span> .
 <http://www.geneontology.org> <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .
+<http://www.geneontology.org> <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'GeneOntology' </span> .
+<http://www.bioassayontology.org> <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'BioAssayOntology' </span> .
+<http://purl.obolibrary.org/obo/doid> <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Human Disease Ontology' </span> .
