@@ -8844,7 +8844,7 @@
             },
             {
               "name":  "targetUriPattern" ,
-              "description":  "List of URI patterns (text only, no regex support) separated by '|' characters. Limits the results to URIs which start with the given pattern. Example: http://identifiers.org returns all indentifiers.org URIs." ,
+              "description":  "List of URI patterns (text only, no regex support) separated by '|' characters. Limits the results to URIs which start with the given pattern. Example: http://identifiers.org returns all identifiers.org URIs." ,
               "paramType": "query",
               "dataType": "string"
             },
