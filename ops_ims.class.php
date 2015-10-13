@@ -23,7 +23,9 @@ class OpsIms {
 	    '?pw_ref_uri' => 'http://identifiers.org/pubmed/',
 	    '?schembl_target_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/target/',
 	    '?schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
-	    '?schembl_disease_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/indication/'
+	    '?schembl_disease_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/indication/',
+	    '?oidd_assay_uri' => 'http://openinnovation.lilly.com/bioassay#',   
+	    '?chembl_assay_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/assay/'
     );
     
     var $IMS_interm_variables = array(
