@@ -11130,6 +11130,329 @@
           ]
         }
       ]
+    },
+    {
+"path": "/assay" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Assay Information" ,
+          "description":  "Information about a single assay.<br><hr><br>Response template: <br><br><hr><br>  ?chembl_assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?oidd_assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?bao_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?pubchem_assay </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr&gt; </span> .<br> ?pubchem_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?assay_title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayStage ?assay_stage </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr/pubchem&gt; </span> .<br> ?assay_format <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_format_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_format_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?bao_type <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?bao_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?bao_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?assay_stage <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_stage_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_stage_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ",
+          "group": "Assay" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "An assay URI." ,
+              "defaultValue": "http://openinnovation.lilly.com/bioassay#29",
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/assay/members/count" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Assay Class Members: Count" ,
+          "description":  "A list of assays classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the BioAssay Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:memberCount ?count </span> .<br> ",
+          "group": "Assay" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A class URI from one of the supported hierarchies." ,
+              "defaultValue": "http://www.bioassayontology.org/bao#BAO_0000219",
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "dataset" ,
+              "description": "The dataset to retrieve Assays from. One of: chembl, opddr, opddr-pubchem." ,
+              "allowableValues": {
+                "values": [
+                  "chembl",
+                  "opddr",
+                  "opddr-pubchem"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string",
+              "required": false
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+"path": "/assay/members/pages" ,
+      "operations": [
+        {
+          "httpMethod": "GET",
+          "summary":  "[PREVIEW] Assay Class Members: List" ,
+          "description":  "A list of assays classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the BioAssay Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?dataset </span> .<br> ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?bao_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?pubchem_assay </span> .<br> ?pubchem_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?assay_title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayStage ?assay_stage </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr/pubchem&gt; </span> .<br> ?assay_format <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_format_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_format_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?bao_type <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?bao_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?bao_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?assay_stage <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_stage_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_stage_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ",
+          "group": "Assay" ,
+          "parameters": [
+            {
+              "name":  "uri" ,
+              "description":  "A class URI from one of the supported hierarchies." ,
+              "defaultValue": "http://www.bioassayontology.org/bao#BAO_0000219",
+              "dataType": "string",
+              "required": true,
+              "paramType": "query"
+            },
+            {
+              "name": "app_id",
+              "description": "Your access application id",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_ids"
+            },
+            {
+              "name": "app_key",
+              "description": "Your access application key",
+              "dataType": "string",
+              "paramType": "query",
+              "threescale_name": "app_keys"
+            },
+            {
+              "name":  "dataset" ,
+              "description": "The dataset to retrieve Assays from. One of: chembl, opddr, opddr-pubchem." ,
+              "allowableValues": {
+                "values": [
+                  "chembl",
+                  "opddr",
+                  "opddr-pubchem"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string",
+              "required": false
+            },
+            {
+              "name": "_page",
+              "description": "A number; the page that should be viewed",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_pageSize",
+              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "dataType": "integer",
+              "paramType": "query"
+            },
+            {
+              "name": "_orderBy",
+              "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+              "allowableValues": {
+                "values": [
+                  "?assay_description",
+                  "DESC(?assay_description)",
+                  "?assay_format",
+                  "DESC(?assay_format)",
+                  "?assay_format_def",
+                  "DESC(?assay_format_def)",
+                  "?assay_format_label",
+                  "DESC(?assay_format_label)",
+                  "?assay_stage",
+                  "DESC(?assay_stage)",
+                  "?assay_stage_def",
+                  "DESC(?assay_stage_def)",
+                  "?assay_stage_label",
+                  "DESC(?assay_stage_label)",
+                  "?assay_title",
+                  "DESC(?assay_title)",
+                  "?bao_def",
+                  "DESC(?bao_def)",
+                  "?bao_label",
+                  "DESC(?bao_label)",
+                  "?bao_type",
+                  "DESC(?bao_type)",
+                  "?chembl_type",
+                  "DESC(?chembl_type)",
+                  "?child_node",
+                  "DESC(?child_node)",
+                  "?dataset",
+                  "DESC(?dataset)",
+                  "?item",
+                  "DESC(?item)",
+                  "?node_uri",
+                  "DESC(?node_uri)",
+                  "?organism",
+                  "DESC(?organism)",
+                  "?organism_name",
+                  "DESC(?organism_name)",
+                  "?pubchem_assay",
+                  "DESC(?pubchem_assay)"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_format",
+              "description": "The desired result format.",
+              "allowableValues": {
+                "values": [
+                  "json",
+                  "tsv",
+                  "ttl",
+                  "xml",
+                  "rdf",
+                  "rdfjson",
+                  "html"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            },
+            {
+              "name": "_callback",
+              "description": "For JSONP",
+              "dataType": "string",
+              "paramType": "query"
+            },
+            {
+              "name": "_metadata",
+              "description": "Additional metadata to be included with response.",
+              "allowableValues": {
+                "values": [
+                  "execution",
+                  "site",
+                  "formats",
+                  "views",
+                  "all"
+                ],
+                "valueType": "LIST"
+              },
+              "dataType": "string",
+              "required": false,
+              "paramType": "query"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

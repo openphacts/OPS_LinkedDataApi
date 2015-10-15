@@ -42,7 +42,7 @@
 
 _:dataset api:name "dataset" ;
 	api:label "dataset" ;
-	api:vale "The dataset to retrieve Assays from. One of: chembl, opddr, opddr-pubchem" ;
+	api:value "The dataset to retrieve Assays from. One of: chembl, opddr, opddr-pubchem" ;
 	api:filterVariable "?dataset" ;
 	rdfs:subPropertyOf api:graphFilter ;
         a rdf:Property .
