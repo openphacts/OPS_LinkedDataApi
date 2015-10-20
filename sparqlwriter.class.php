@@ -640,7 +640,7 @@ _SPARQL_;
             if (!empty($ops_uri)){
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $query);
                 $query = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
-                logDebug("View query before filter: ".$query);
+                //logDebug("View query before filter: ".$query);
             }     
             
             logDebug("View query after filter: ".$query);
