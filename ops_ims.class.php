@@ -212,7 +212,7 @@ class OpsIms {
                   if (strpos($pattern, '&') !== FALSE) {
                     $encoded_pattern = str_replace('%26targetUriPattern%3D','&targetUriPattern=', $encoded_pattern);
                   }
-                  $url .= '&targetUriPattern='.$encoded_pattern;
+                  $urlStart .= '&targetUriPattern='.$encoded_pattern;
                 }
                 $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');		
 		$urlStart .= '&lensUri=';
@@ -226,7 +226,6 @@ class OpsIms {
 		$graph = new SimpleGraph() ;
 		$iter = 1;
 		$url=$urlStart;
-
 		foreach ($uriList AS $uri){
 		    if ($iter % REQUEST_URI_NO == 0){
 		        $response = $this->getResponse($url, "text/plain");
