@@ -114,10 +114,12 @@ drugbank:drugType api:name "drug_type" ;
 " ;
 	api:where "
 {
+{ SELECT DISTINCT * WHERE {
 	GRAPH <http://www.conceptwiki.org> {
 		?cw_target_uri skos:prefLabel ?target_name 
-	} }
-UNION {
+	} 
+} }
+} UNION {
 { SELECT DISTINCT * WHERE { 
 	GRAPH <http://purl.uniprot.org> {
 		{?uniprot_target_uri uniprot:existence ?existence .
@@ -148,6 +150,7 @@ UNION {
                         ?ppi uniprot:database <http://purl.uniprot.org/database/IntAct> . }
 	} } } }
 UNION {
+{ SELECT DISTINCT * WHERE {
          GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
                 { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
 		UNION { ?db_target_uri drugbank:cellular-location ?cellularLocation }
@@ -157,14 +160,17 @@ UNION {
 				drugbank:drug-group ?drugType_uri .
 			?drugType_uri rdfs:label ?drugType }
         }
+} }
 } 
 UNION {
+{ SELECT DISTINCT * WHERE {
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?chembl_target_uri a ?target_type .
                 ?chembl_target_uri rdfs:label ?synonym . 
 		?chembl_target_uri chembl:hasTargetComponent ?target_component . 
 		?target_component dcterms:description ?description .
 	}
+} }
 }
 ".
 
