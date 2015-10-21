@@ -150,9 +150,9 @@
 <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
 <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
 
-chembl:organismName api:name "assay_organism" ;
-        api:label "assay_organism" ;
-        api:value "A literal assay organism in ChEMBL." ;
+chembl:targetRelType api:name "target_rel_type" ;
+        api:label "target_rel_type" ;
+        api:value "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ;
         api:filterVariable "?assay_uri";
         a rdf:Property .
 
