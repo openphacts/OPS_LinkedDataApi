@@ -91,4 +91,5 @@ SELECT DISTINCT ?root_node ?g_short WHERE {
 UNION { 
 	?root_node skos:prefLabel ?name 
 }
+MINUS { ?root_node uniprot:obsolete true }
 " .

@@ -89,4 +89,5 @@ UNION { ?node_uri skos:prefLabel ?label }
 }
 OPTIONAL { ?parent_node rdfs:label ?parent_label }
 OPTIONAL { ?parent_node skos:prefLabel ?parent_name }
+MINUS { ?parent_node uniprot:obsolete true }
 " .
