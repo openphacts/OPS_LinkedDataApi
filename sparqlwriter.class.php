@@ -512,7 +512,7 @@ _SPARQL_;
 	elseif (filter_var($param_value, FILTER_VALIDATE_URL) !== false) {
 		$final_param_value="<{$param_value}>";
 	}
-	elseif (filter_var($param_value, FILTER_VALIDATE_BOOLEAN) !== false || is_numeric($param_value)) {
+	elseif (filter_var($param_value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== NULL || is_numeric($param_value)) {
 		$final_param_value=$param_value;
 	}
 	else {
