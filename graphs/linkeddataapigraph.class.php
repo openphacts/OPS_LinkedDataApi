@@ -267,7 +267,7 @@ class LinkedDataApiGraph extends PueliaGraph {
         $format = $dom->createAttribute('format');
         $format->appendChild($dom->createTextNode('linked-data-api'));
         $version = $dom->createAttribute('version');
-        $version->appendChild($dom->createTextNode('1.5'));
+        $version->appendChild($dom->createTextNode('2.0'));
         $resultEl->appendChild($format);
         $resultEl->appendChild($version);   
 
