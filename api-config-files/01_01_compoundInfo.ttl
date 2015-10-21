@@ -34,7 +34,7 @@
 	api:endpoint [ 
 		a api:ItemEndpoint ;
 		api:name "Compound Information" ;
-		api:description "Information about a single compound.";
+		api:description "Returns information about a single compound including (but not limited to): molecular weight, biotransformation, protein binding and toxicity. Adverse event data (AERS) is returned where available, as well as drug/drug interactions.";
 		api:uriTemplate "/compound?uri={uri}" ;
 	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
