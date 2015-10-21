@@ -152,10 +152,10 @@ drugbank:drugType api:name "drug_type" ;
 UNION {
 { SELECT DISTINCT * WHERE {
          GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
-                { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
-		UNION { ?db_target_uri drugbank:cellular-location ?cellularLocation }
-		UNION { ?db_target_uri drugbank:theoretical-pi ?theoreticalPi }
-		UNION { ?db_compound drugbank:target ?db_target_uri ;
+                OPTIONAL { ?db_target_uri drugbank:numberOfResidues ?numberOfResidues }
+		OPTIONAL { ?db_target_uri drugbank:cellular-location ?cellularLocation }
+		OPTIONAL { ?db_target_uri drugbank:theoretical-pi ?theoreticalPi }
+		OPTIONAL { ?db_compound drugbank:target ?db_target_uri ;
 				dcterms:title ?drug_name ;
 				drugbank:drug-group ?drugType_uri .
 			?drugType_uri rdfs:label ?drugType }
