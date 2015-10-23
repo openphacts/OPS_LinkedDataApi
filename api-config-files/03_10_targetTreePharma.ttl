@@ -28,6 +28,11 @@
 	api:variable chembl:standardRelation ;
 	api:variable chembl:organismName ;
 	api:variable chembl:pChembl ;
+        api:variable chembl:dataValidityIssue ;
+        api:variable chembl:dataValidityComment ;
+        api:variable chembl:potentialDuplicate ;
+        api:variable chembl:targetConfScore ;
+        api:variable chembl:targetRelType ;
         api:variable _:type ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://purl.uniprot.org/enzyme/> ;
@@ -90,77 +95,75 @@
 		api:exampleRequestPath "/target/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=IC50&activity_unit=nanomolar&assay_organism=Rattus%20norvegicus&target_organism=Rattus%20norvegicus&minEx-activity_value=50000&maxEx-activity_value=200000";
 		api:selector [
 		api:where "
-{ SELECT DISTINCT ?item ?chembl_compound ?chembl_target ?assay_uri ?target_type ?assay_organism ?assay_description ?assay_type ?target_name ?target_organism ?protein ?protein_name ?published_type ?published_relation ?published_value ?published_unit ?activity_type ?activity_relation ?activity_value ?activity_unit ?qudt_uri ?pChembl ?act_comment ?document ?doi ?pmid WHERE {
-	{ SELECT DISTINCT ?chembl_target WHERE {
-		  ?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
-          GRAPH ?g {
-            ?class rdfs:subClassOf ?node_uri .
-          }
-	} }
+{ SELECT DISTINCT ?chembl_target ?chembl_compound ?ocrs_compound ?node ?assay_uri ?item ?target_type ?issue ?dup ?conf_score WHERE {
+	?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
+	GRAPH ?g {
+		?class rdfs:subClassOf ?node_uri .
+	} 
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?item a chembl:Activity ;
-		      chembl:hasAssay ?assay_uri ;
-		      chembl:hasMolecule ?chembl_compound .
+		chembl:hasAssay ?assay_uri ;
+		chembl:hasMolecule ?chembl_compound .
 		?assay_uri chembl:hasTarget ?chembl_target .
 		?chembl_target a ?target_type .
+		OPTIONAL { 
+			GRAPH <http://ops.rsc.org> {
+				?ocrs_compound skos:exactMatch ?chembl_compound .
+			}
+		}
+		OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp }
+		BIND (IF (BOUND(?issue_tmp) , true, false) AS ?issue)
+		OPTIONAL { ?item chembl:potentialDuplicate ?dup_tmp }
+		BIND (IF (BOUND(?dup_tmp) , true, false) AS ?dup)
+		OPTIONAL { ?assay_uri chembl:targetConfScore ?conf_score_tmp }
+		BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
 	}
-        GRAPH <http://www.ebi.ac.uk/chembl> {
-          { ?assay_uri chembl:organismName ?assay_organism }
-          UNION { ?assay_uri dcterms:description ?assay_description }
-          UNION { ?assay_uri chembl:assayTestType ?assay_type }
-          UNION { ?chembl_target dcterms:title ?target_name }
-          UNION { ?chembl_target chembl:organismName ?target_organism }
-          UNION { ?chembl_target chembl:hasTargetComponent ?protein .
-		    OPTIONAL {
-		      GRAPH <http://www.conceptwiki.org> {
-			?cw_target skos:exactMatch ?protein ;
-				   skos:prefLabel ?protein_name
-		      } 
-		    }
-          }
-          UNION { ?item chembl:publishedType ?published_type }
-          UNION { ?item chembl:publishedRelation ?published_relation }
-          UNION { ?item chembl:publishedValue ?published_value }
-          UNION { ?item chembl:publishedUnits ?published_unit }
-          UNION { ?item chembl:standardType ?activity_type }
-          UNION { ?item chembl:standardRelation ?activity_relation }
-          UNION { ?item chembl:standardValue ?std_value .
-		    BIND (xsd:decimal(?std_value) as ?activity_value) 
-          }
-          UNION { ?item chembl:standardUnits ?activity_unit }
-          UNION { ?item chembl:hasQUDT ?qudt_uri }
-          UNION { ?item chembl:pChembl ?pChembl }
-          UNION { ?item chembl:activityComment ?act_comment }
-          UNION { ?item chembl:hasDocument ?document .
-		    { ?document owl:sameAs ?doi }
-		    UNION { ?document bibo:pmid ?pmid }
-          }
-        } 
 } }
-OPTIONAL {
-	GRAPH <http://ops.rsc.org> {
-	{ ?ocrs_compound skos:exactMatch ?chembl_compound ;
-        	cheminf:CHEMINF_000396 ?inchi;
-		cheminf:CHEMINF_000399 ?inchi_key;
-		cheminf:CHEMINF_000018 ?smiles .
-	} UNION {
-        [] obo:IAO_0000136 ?ocrs_compound ;
-		a cheminf:CHEMINF_000484 ;
-		qudt:numericValue ?molweight .
+GRAPH <http://www.ebi.ac.uk/chembl> {
+	{ ?assay_uri chembl:organismName ?assay_organism }
+	UNION { ?assay_uri dcterms:description ?assay_description }
+	UNION { ?assay_uri chembl:assayTestType ?assay_type }
+	UNION { ?assay_uri chembl:targetConfDesc ?conf_desc }
+	UNION { ?assay_uri chembl:targetRelType ?rel_type ;
+		chembl:targetRelDesc ?rel_desc }
+	UNION { ?chembl_target dcterms:title ?target_name }
+	UNION { ?chembl_target chembl:organismName ?target_organism }
+	UNION { ?chembl_target chembl:hasTargetComponent ?protein .
+		OPTIONAL {
+			GRAPH <http://www.conceptwiki.org> {
+				?cw_target skos:exactMatch ?protein ;
+					skos:prefLabel ?protein_name
+			} 
+		}
 	}
+	UNION { ?item chembl:publishedType ?published_type }
+	UNION { ?item chembl:publishedRelation ?published_relation }
+	UNION { ?item chembl:publishedValue ?published_value }
+	UNION { ?item chembl:publishedUnits ?published_unit }
+	UNION { ?item chembl:standardType ?activity_type }
+	UNION { ?item chembl:standardRelation ?activity_relation }
+	UNION { ?item chembl:standardValue ?std_value .
+		BIND (xsd:decimal(?std_value) as ?activity_value) 
+	}
+	UNION { ?item chembl:standardUnits ?activity_unit }
+	UNION { ?item chembl:hasQUDT ?qudt_uri }
+	UNION { ?item chembl:pChembl ?pChembl }
+	UNION { ?item chembl:activityComment ?act_comment }
+	UNION { ?item chembl:hasDocument ?document .
+		{ ?document owl:sameAs ?doi }
+		UNION { ?document bibo:pmid ?pmid }
+	}
+	UNION { ?item chembl:dataValidityComment ?comment}
+
 	UNION {
-        [] obo:IAO_0000136 ?ocrs_compound ;
-		a cheminf:CHEMINF_000367;
-		qudt:numericValue ?num_ro5_violations .
-	}
-	OPTIONAL {
-		GRAPH <http://www.conceptwiki.org> {
-			?cw_compound skos:exactMatch ?ocrs_compound ;
-				skos:prefLabel ?compound_name .
+		GRAPH <http://ops.rsc.org> {
+			{ ?ocrs_compound cheminf:CHEMINF_000396 ?inchi }
+			UNION {?ocrs_compound cheminf:CHEMINF_000399 ?inchi_key}
+			UNION {?ocrs_compound cheminf:CHEMINF_000018 ?smiles }
 		} 
 	}
-	} 
-}" ;
+}
+" ;
 		api:expansionVariable "chembl_compound" ;
 ] ;
 		api:viewer <#targetTreePharmaViewer> ;
@@ -169,6 +172,12 @@ OPTIONAL {
 <http://www.ebi.ac.uk/chembl> api:label "ChEMBL - RDF" .
 <http://purl.uniprot.org/enzyme/> api:label "Enzyme Classification" .
 <http://www.geneontology.org> api:name "Gene Ontology" .
+
+chembl:targetRelType api:name "target_rel_type" ;
+        api:label "target_rel_type" ;
+        api:value "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ;
+        api:filterVariable "?assay_uri";
+        a rdf:Property .
 
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
@@ -218,6 +227,33 @@ _:type api:name "target_type" ;
         api:filterVariable "?chembl_target";
         api:value "One of the types listed at /target/types. e.g. single_protein" ;
         rdfs:subPropertyOf rdf:type ;
+        a rdf:Property .
+
+chembl:dataValidityIssue api:name "data_validity_issue" ;
+        api:label "data_validity_issue" ;
+        api:filterVariable "?issue" ;
+        api:value "ChEMBL data validity issue annotation. One of: true, false." ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
+chembl:dataValidityComment api:name "data_validity_comment" ;
+        api:label "data_validity_comment" ;
+        api:filterVariable "?item" ;
+        api:value "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ;
+        a rdf:Property .
+
+chembl:potentialDuplicate api:name "potential_duplicate" ;
+        api:label "potential_duplicate" ;
+        api:filterVariable "?dup" ;
+        api:value "ChEMBL potential duplicate annotation. One of: true, false." ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
+chembl:targetConfScore api:name "target_conf_score";
+        api:label "target_conf_score" ;
+        api:value "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ;
+        api:filterVariable "?conf_score" ;
+        rdfs:subPropertyOf api:graphFilter ;
         a rdf:Property .
 
 <#input> api:name "uri" ;
@@ -286,6 +322,9 @@ _:type api:name "target_type" ;
         chembl:hasAssay ?assay_uri ;
         chembl:pChembl ?pChembl ;
 	chembl:activityComment ?act_comment ;
+        ops:dataValidityIssue ?issue ;
+        ops:dataValidityComment ?comment ;
+        ops:potentialDuplicate ?dup ;
         chembl:hasDocument ?doi ;
         bibo:pmid ?pmid ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
@@ -293,6 +332,10 @@ _:type api:name "target_type" ;
 ?assay_uri chembl:hasTarget ?chembl_target ;
         chembl:assayTestType ?assay_type ;
         dcterms:description ?assay_description ;
+        chembl:targetConfDesc ?conf_desc ;
+        ops:targetConfScore ?conf_score ;
+        ops:targetRelType ?rel_type ;
+        chembl:targetRelDesc ?rel_desc ;
         chembl:assayOrganismName ?assay_organism ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_target dcterms:title ?target_name;
@@ -324,9 +367,18 @@ _:type api:name "target_type" ;
                         chembl:hasMolecule ?chembl_compound .
                 ?assay_uri chembl:hasTarget ?chembl_target .
                 ?chembl_target a ?target_type .
+        	OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp }
+        	BIND (IF (BOUND(?issue_tmp) , ?issue_tmp, false) AS ?issue)
+        	OPTIONAL { ?item chembl:potentialDuplicate ?dup_tmp }
+        	BIND (IF (BOUND(?dup_tmp) , ?dup_tmp, false) AS ?dup)
+        	OPTIONAL { ?assay_uri chembl:targetConfScore ?conf_score_tmp }
+	        BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
                 OPTIONAL { ?assay_uri chembl:organismName ?assay_organism }
                 OPTIONAL { ?assay_uri dcterms:description ?assay_description }
                 OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
+		OPTIONAL { ?assay_uri chembl:targetConfDesc ?conf_desc }
+       	 	OPTIONAL { ?assay_uri chembl:targetRelType ?rel_type ;
+                chembl:targetRelDesc ?rel_desc }
                 OPTIONAL { ?chembl_target dcterms:title ?target_name }
                 OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
                 OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
@@ -351,6 +403,7 @@ _:type api:name "target_type" ;
                         OPTIONAL { ?document owl:sameAs ?doi }
                         OPTIONAL { ?document bibo:pmid ?pmid }
                 }
+	        OPTIONAL { ?item chembl:dataValidityComment ?comment}
         }
 } UNION 
 { 
