@@ -8704,6 +8704,12 @@
               "threescale_name": "app_keys"
             },
             {
+              "name":  "activity_type" ,
+              "description":  "One of the activity types listed at /pharmacology/filters/activities" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_page",
               "description": "A number; the page that should be viewed",
               "dataType": "integer",
