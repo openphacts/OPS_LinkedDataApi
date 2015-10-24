@@ -21,10 +21,10 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;
-        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.ebi.ac.uk/chembl> </span> .
 ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span> ;
