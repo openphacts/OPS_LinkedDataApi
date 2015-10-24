@@ -378,7 +378,7 @@ chembl:targetConfScore api:name "target_conf_score";
                 OPTIONAL { ?assay_uri chembl:assayTestType ?assay_type }
 		OPTIONAL { ?assay_uri chembl:targetConfDesc ?conf_desc }
        	 	OPTIONAL { ?assay_uri chembl:targetRelType ?rel_type ;
-                chembl:targetRelDesc ?rel_desc }
+			chembl:targetRelDesc ?rel_desc }
                 OPTIONAL { ?chembl_target dcterms:title ?target_name }
                 OPTIONAL { ?chembl_target chembl:organismName ?target_organism }
                 OPTIONAL { ?chembl_target chembl:hasTargetComponent ?protein .
