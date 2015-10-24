@@ -1,6 +1,6 @@
 echo '{
-  "basePath": "https://beta.openphacts.org/1.4",
-  "apiVersion": "v1.5",
+  "basePath": "https://beta.openphacts.org/2.0",
+  "apiVersion": "v2.0",
   "apis": [' 
 lastfile=`ls *.ttl | tail -1`
 for file in ./*.ttl
