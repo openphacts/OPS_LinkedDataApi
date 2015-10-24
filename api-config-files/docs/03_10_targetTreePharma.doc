@@ -10,6 +10,9 @@
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityIssue ?issue </span> ;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityComment ?comment </span> ;
+        <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:potentialDuplicate ?dup </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.ebi.ac.uk/chembl> </span> .
@@ -18,6 +21,10 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.ebi.ac.uk/chembl> </span> .
 ?chembl_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span> ;
