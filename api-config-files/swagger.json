@@ -11833,7 +11833,7 @@
         {
           "httpMethod": "GET",
           "summary":  "[PREVIEW] Assay Information" ,
-          "description":  "Information about a single assay.<br><hr><br>Response template: <br><br><hr><br>  ?chembl_assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?oidd_assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?bao_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?pubchem_assay </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr&gt; </span> .<br> ?pubchem_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?assay_title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayStage ?assay_stage </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr/pubchem&gt; </span> .<br> ?assay_format <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_format_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_format_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?bao_type <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?bao_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?bao_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?assay_stage <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_stage_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_stage_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ",
+          "description":  "Information about a single assay.<br><hr><br>Response template: <br><br><hr><br>  ?chembl_assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?oidd_assay_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?bao_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?pubchem_assay </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr&gt; </span> .<br> ?pubchem_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?assay_title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayStage ?assay_stage </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr/pubchem&gt; </span> .<br> ?assay_format <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_format_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_format_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?bao_type <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?bao_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?bao_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?assay_stage <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_stage_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_stage_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ",
           "group": "Assay" ,
           "parameters": [
             {
@@ -11951,6 +11951,52 @@
               "required": false
             },
             {
+              "name":  "organism_uri" ,
+              "description":  "An identifiers.org taxonomy URI e.g. http://identifiers.org/taxonomy/9606" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -12002,7 +12048,7 @@
         {
           "httpMethod": "GET",
           "summary":  "[PREVIEW] Assay Class Members: List" ,
-          "description":  "A list of assays classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the BioAssay Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?dataset </span> .<br> ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?bao_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?pubchem_assay </span> .<br> ?pubchem_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?assay_title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayStage ?assay_stage </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr/pubchem&gt; </span> .<br> ?assay_format <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_format_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_format_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?bao_type <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?bao_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?bao_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?assay_stage <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_stage_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_stage_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ",
+          "description":  "A list of assays classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the BioAssay Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?dataset </span> .<br> ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?bao_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?pubchem_assay </span> .<br> ?pubchem_assay <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?assay_title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayStage ?assay_stage </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://rdf.ncats.nih.gov/opddr/pubchem&gt; </span> .<br> ?assay_format <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_format_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_format_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?bao_type <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?bao_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?bao_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ?assay_stage <span style=\"BACKGROUND-COLOR: #FFCC99\"> rdfs:label ?assay_stage_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?assay_stage_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.bioassayontology.org&gt; </span> .<br> ",
           "group": "Assay" ,
           "parameters": [
             {
@@ -12041,6 +12087,52 @@
               "paramType": "query",
               "dataType": "string",
               "required": false
+            },
+            {
+              "name":  "organism_uri" ,
+              "description":  "An identifiers.org taxonomy URI e.g. http://identifiers.org/taxonomy/9606" ,
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
             },
             {
               "name": "_page",
