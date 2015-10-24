@@ -38,6 +38,10 @@
 	ops:assayFormat ?assay_format ;
 	chembl:assayType ?chembl_type ;
         chembl:taxonomy ?organism ;
+        chembl:targetConfDesc ?conf_desc ;
+        ops:targetConfScore ?conf_score ;
+        ops:targetRelType ?rel_type ;
+        chembl:targetRelDesc ?rel_desc ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?organism rdfs:label ?organism_name;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
@@ -66,6 +70,11 @@
 			chembl:assayType ?chembl_type ;
 			chembl:taxonomy ?organism ;
 			chembl:organismName ?organism_name .
+		OPTIONAL { ?chembl_assay_uri chembl:targetConfScore ?conf_score_tmp }
+		BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
+		OPTIONAL { ?chembl_assay_uri chembl:targetConfDesc ?conf_desc }
+		OPTIONAL { ?chembl_assay_uri chembl:targetRelType ?rel_type ;
+			chembl:targetRelDesc ?rel_desc }
 		FILTER(STRSTARTS(STR(?organism),'http://identifiers.org/taxonomy/'))
 	}
 	GRAPH <http://www.bioassayontology.org> {

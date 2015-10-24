@@ -13,6 +13,9 @@
         rdfs:label "Assay"@en ;
         api:sparqlEndpoint <http://localhost:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
+        api:variable chembl:taxonomy ;
+        api:variable chembl:targetConfScore ;
+        api:variable chembl:targetRelType ;
         api:variable <#input> ;
 	api:variable _:dataset ;
         api:description "An API configuration to return information about assays" ;
@@ -29,6 +32,25 @@
 		api:selector <#assayMemberViewer> ;
 		api:viewer <#assayMemberViewer> ;
 		api:defaultViewer <#assayMemberViewer> ] .
+
+chembl:taxonomy api:name "organism_uri" ;
+        api:label "organism_uri" ;
+        api:value "An identifiers.org taxonomy URI e.g. http://identifiers.org/taxonomy/9606" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:targetRelType api:name "target_rel_type" ;
+        api:label "target_rel_type" ;
+        api:value "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:targetConfScore api:name "target_conf_score";
+        api:label "target_conf_score" ;
+        api:value "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ;
+        api:filterVariable "?conf_score" ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
 
 <#input> api:name "uri" ;
         api:label "uri";
@@ -56,6 +78,10 @@ _:dataset api:name "dataset" ;
         ops:assayFormat ?assay_format ;
         chembl:assayType ?chembl_type ;
         chembl:taxonomy ?organism ;
+        chembl:targetConfDesc ?conf_desc ;
+        ops:targetConfScore ?conf_score ;
+        ops:targetRelType ?rel_type ;
+        chembl:targetRelDesc ?rel_desc ;
         void:inDataset ?dataset .
 ?organism rdfs:label ?organism_name;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
@@ -90,6 +116,11 @@ _:dataset api:name "dataset" ;
                         chembl:assayType ?chembl_type ;
                         chembl:taxonomy ?organism ;
                         chembl:organismName ?organism_name .
+		OPTIONAL { ?item chembl:targetConfScore ?conf_score_tmp }
+                BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
+                OPTIONAL { ?item chembl:targetConfDesc ?conf_desc }
+                OPTIONAL { ?item chembl:targetRelType ?rel_type ;
+                        chembl:targetRelDesc ?rel_desc }
                 FILTER(STRSTARTS(STR(?organism),'http://identifiers.org/taxonomy/'))
         }
         GRAPH <http://www.bioassayontology.org> {
