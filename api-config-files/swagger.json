@@ -879,6 +879,93 @@
               "dataType": "string"
             },
             {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -930,7 +1017,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Pharmacology: List" ,
-          "description":  "Returns a variety of pharmacological data, including assay and activity information, for a user specified compound. Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?ocrs_compound_uri </span> .<br> ?ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?db_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.openphacts.org/bio2rdf/drugbank&gt; </span> .<br> ",
+          "description":  "Returns a variety of pharmacological data, including assay and activity information, for a user specified compound. Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityIssue ?issue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityComment ?comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:potentialDuplicate ?dup </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?ocrs_compound_uri </span> .<br> ?ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?chembl_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?db_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> drugbank:drugType ?drugType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:genericName ?drug_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.openphacts.org/bio2rdf/drugbank&gt; </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -1110,6 +1197,93 @@
                   "tissue",
                   "unclassified",
                   "unknown"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
                 ],
                 "valueType": "LIST"
               },
@@ -1470,6 +1644,93 @@
               "dataType": "string"
             },
             {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -1521,7 +1782,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Compound Class Pharmacology: List" ,
-          "description":  "Returns a list of activity types, values and units in the linked data cache (LDC) for a user specified compound class. Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc. Currently only the ChEBI Ontology is supported.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasTarget ?target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?chembl_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?ocrs_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_compound </span> .<br> ",
+          "description":  "Returns a list of activity types, values and units in the linked data cache (LDC) for a user specified compound class. Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc. Currently only the ChEBI Ontology is supported.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityIssue ?issue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityComment ?comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:potentialDuplicate ?dup </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasTarget ?target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchiKey </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?chembl_compound <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?ocrs_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_compound </span> .<br> ",
           "group": "Compound" ,
           "parameters": [
             {
@@ -1701,6 +1962,93 @@
                   "tissue",
                   "unclassified",
                   "unknown"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
                 ],
                 "valueType": "LIST"
               },
@@ -3418,6 +3766,93 @@
               "dataType": "string"
             },
             {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -3469,7 +3904,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Pharmacology: List" ,
-          "description":  "Returns a variety of pharmacological data, including assay and activity information, for a user specified target. Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target </span> .<br> ?chembl_compound <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?ocrs_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_compound </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchi_key </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
+          "description":  "Returns a variety of pharmacological data, including assay and activity information, for a user specified target. Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityIssue ?issue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityComment ?comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:potentialDuplicate ?dup </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name_chembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target </span> .<br> ?chembl_compound <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?ocrs_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_compound </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchi_key </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -3649,6 +4084,93 @@
                   "tissue",
                   "unclassified",
                   "unknown"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
                 ],
                 "valueType": "LIST"
               },
@@ -4007,6 +4529,93 @@
               "dataType": "string"
             },
             {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
               "name": "_format",
               "description": "The desired result format.",
               "allowableValues": {
@@ -4058,7 +4667,7 @@
         {
           "httpMethod": "GET",
           "summary":  "Target Class Pharmacology: List " ,
-          "description":  "Returns a variety of pharmacological information, such as assay information, Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, and the Gene Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetOrganismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classifiedUnder ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_compound <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?ocrs_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchi_key </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
+          "description":  "Returns a variety of pharmacological information, such as assay information, Filtering of results is possible via a variety of options such as: target organism, activity type, activity value, etc. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree, and the Gene Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasMolecule ?chembl_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedType ?published_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedRelation ?published_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedValue ?published_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:publishedUnits ?published_unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardType ?activity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardRelation ?activity_relation </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:standardValue ?activity_value </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasQUDT ?qudt_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasAssay ?assay_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:pChembl ?pChembl </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:activityComment ?act_comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityIssue ?issue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:dataValidityComment ?comment </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:potentialDuplicate ?dup </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:hasDocument ?doi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> bibo:pmid ?pmid </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?qudt_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?activity_unit </span> .<br> ?assay_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> chembl:hasTarget ?chembl_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayTestType ?assay_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?assay_description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayOrganismName ?assay_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:title ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:organismName ?target_organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classifiedUnder ?class </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> chembl:hasTargetComponent ?protein </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?chembl_compound <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?ocrs_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_compound </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/chembl&gt; </span> .<br> ?ims_ocrs_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchi ?inchi </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:inchikey ?inchi_key </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:molweight ?molweight </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:ro5_violations ?num_ro5_violations </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://ops.rsc.org&gt; </span> .<br> ?protein <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target </span> .<br> ?cw_target <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?protein_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ?ims_cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
           "group": "Target" ,
           "parameters": [
             {
@@ -4238,6 +4847,93 @@
                   "tissue",
                   "unclassified",
                   "unknown"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "data_validity_issue" ,
+              "description":  "ChEMBL data validity issue annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "data_validity_comment" ,
+              "description":  "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "Manually validated",
+                  "Non standard unit for type",
+                  "Outside typical range",
+                  "Potential missing data",
+                  "Potential transcription error",
+                  "Potential author error",
+                  "Author confirmed error"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "string"
+            },
+            {
+              "name":  "potential_duplicate" ,
+              "description":  "ChEMBL potential duplicate annotation. One of: true, false." ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "true",
+                  "false"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "boolean"
+            },
+            {
+              "name":  "target_conf_score",
+              "description":  "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "0",
+                  "1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9"
+                ],
+                "valueType": "LIST"
+              },
+              "paramType": "query",
+              "dataType": "integer"
+            },
+            {
+              "name":  "target_rel_type" ,
+              "description":  "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ,
+              "required": false,
+              "allowableValues": {
+                "values": [
+                  "U",
+                  "D",
+                  "H",
+                  "M",
+                  "N",
+                  "S"
                 ],
                 "valueType": "LIST"
               },
