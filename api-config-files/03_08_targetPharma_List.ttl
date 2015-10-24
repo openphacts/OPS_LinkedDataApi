@@ -309,7 +309,6 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	chembl:standardValue ?activity_value ;
 	chembl:hasQUDT ?qudt_uri;
 	chembl:hasAssay ?assay_uri ;
-	chembl:assayTestType ?assay_type ;
 	chembl:pChembl ?pChembl ;
 	chembl:activityComment ?act_comment ;
         ops:dataValidityIssue ?issue ;
@@ -326,6 +325,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
         ops:targetConfScore ?conf_score ;
         ops:targetRelType ?rel_type ;
         chembl:targetRelDesc ?rel_desc ;
+        chembl:assayTestType ?assay_type ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_target_uri dcterms:title ?target_name_chembl ;
 	chembl:targetOrganismName ?target_organism ;
