@@ -2,6 +2,10 @@
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:assayFormat ?assay_format </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:assayType ?chembl_type </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:taxonomy ?organism </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetConfDesc ?conf_desc </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetConfScore ?conf_score </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:targetRelType ?rel_type </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> chembl:targetRelDesc ?rel_desc </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?dataset </span> .
 ?organism <span style=\"BACKGROUND-COLOR: #FFFFCC\"> rdfs:label ?organism_name </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://www.ebi.ac.uk/chembl> </span> .
