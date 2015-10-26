@@ -48,6 +48,10 @@ RUN echo "display_errors=0" > /usr/local/etc/php/conf.d/ops-warnings.ini
 RUN echo "log_errors=1" >> /usr/local/etc/php/conf.d/ops-warnings.ini
 RUN echo "html_errors=0" >> /usr/local/etc/php/conf.d/ops-warnings.ini
 
+# Fixes https://github.com/openphacts/GLOBAL/issues/292
+RUN echo "[Pcre]" > /usr/local/etc/php/conf.d/ops-pcre.ini
+RUN echo "pcre.backtrack_limit=100000000" >> /usr/local/etc/php/conf.d/ops-pcre.ini
+RUN echo "pcre.recursion_limit=100000000" >> /usr/local/etc/php/conf.d/ops-pcre.ini
 
 
 #RUN sed -i '/<\/VirtualHost/ i\ <Directory /var/www/html/>\n  AllowOverride All\n </Directory>' /etc/apache2/sites-available/000-default.conf
