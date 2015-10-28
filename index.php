@@ -35,8 +35,14 @@ if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
         $swagger = file_get_contents("api-config-files/swagger.json", true);
         $json = json_decode($swagger, true);
         $base = preg_replace(",(.*)/[^/]*$,", '$1/', $Request->getUri());
-	if (isset($_SERVER["HTTP_X_3SCALE_PROXY_SECRET_TOKEN"])) {
-            $base = str_replace("http://", "https://", $base);
+
+        if (isset($_ENV["BASE_PATH"])) {
+           $base = $_ENV["BASE_PATH"];
+        } else {
+            $base = preg_replace(",(.*)/[^/]*$,", '$1/', $Request->getUri());
+            if (isset($_SERVER["HTTP_X_3SCALE_PROXY_SECRET_TOKEN"])) {
+                $base = str_replace("http://", "https://", $base);
+            }
         }
         $json["basePath"] = $base;
 
