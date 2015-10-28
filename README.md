@@ -1,6 +1,12 @@
 # OPS LinkedDataApi
 
-A repository to host API configuration files, and code extensions
+The Linked Data API for [Open PHACTS](http://www.openphacts.org/).
+
+Based on the [Puelia PHP](https://code.google.com/p/puelia-php/) implementation
+of the [Linked Data API](https://github.com/UKGovLD/linked-data-api/blob/wiki/Specification.md) specification.
+
+This is a repository to host [API configuration files](api-config-files/)
+ and code extensions
 
 Requirements are php 5.2, with `php_xsl`, `lib_curl`, and `mod_rewrite` and `.htaccess` override enabled.
 
@@ -39,6 +45,7 @@ public services, by adding the following to `docker run`:
     --env CRS=https://ops.rsc.org/api/v1/ \
     --env CONCEPTWIKI=http://www.conceptwiki.org/web-ws/concept
 
+
 ### Example Docker run
 
 To run:
@@ -57,3 +64,22 @@ and link to existing Docker containers `memcached`, `identitymappingservice`
 and `virtuoso` (which must already be running), and the
 public APIs for [CRS](https://ops.rsc.org/) and
 [ConceptWiki](http://www.conceptwiki.org/).
+
+## Swagger
+
+The API includes a [Swagger](http://swagger.io/) definition in JSON
+for the exposed services, available at `/swagger` - for example
+http://localhost:8081/swagger
+
+Note that the hostname and port returned as `basePath` here
+depends on the URL the swagger file is accessed at. If you are
+exposing the API via a proxy, the swagger definition might be
+wrongly exposing the internal URI.
+
+To override the `basePath`, set the `BASE_PATH` environment variable.
+
+For example:
+
+    docker run -p 8081:80 \
+      --env BASE_PATH=http://cool.example.com/ \
+      -d openphacts/ops-linkeddataapi
