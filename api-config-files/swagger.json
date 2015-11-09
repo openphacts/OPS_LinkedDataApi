@@ -10523,7 +10523,7 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
@@ -11129,7 +11129,7 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
@@ -11735,7 +11735,7 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
@@ -12148,7 +12148,7 @@
             },
             {
               "name": "_pageSize",
-              "description": "The desired page size. Set to all to retrieve all results in a single page.",
+              "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
               "dataType": "integer",
               "paramType": "query"
             },
