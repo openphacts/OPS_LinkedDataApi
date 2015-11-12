@@ -9092,7 +9092,7 @@
                 "summary": "Map URL",
                 "description": "Returns a list of URIs associated to the input URI.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?url </span> .<br> ",
                 "tags": [
-                    "Mapping service betweem URLs"
+                    "Mapping service between URLs"
                 ],
                 "parameters": [
                     {
