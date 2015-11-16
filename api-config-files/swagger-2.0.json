@@ -5483,7 +5483,7 @@
         "/pathways/byCompound": {
             "get": {
                 "summary": "Pathways for Compound: List",
-                "description": "Returns a list of pathways in which the user specified compound, usually a metabolite, plays a role.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:Metabolite </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_uri </span> .<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?prefLabel </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
+                "description": "Returns a list of pathways in which the user specified compound, usually a metabolite, plays a role.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:Metabolite </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_compound_uri </span> .<br> ?cw_compound_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?prefLabel </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.conceptwiki.org&gt; </span> .<br> ",
                 "tags": [
                     "Pathway"
                 ],
@@ -5544,8 +5544,8 @@
                         "name": "_orderBy",
                         "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
                         "enum": [
-                            "?cw_uri",
-                            "DESC(?cw_uri)",
+                            "?cw_compound_uri",
+                            "DESC(?cw_compound_uri)",
                             "?description",
                             "DESC(?description)",
                             "?identifier",
@@ -5708,7 +5708,7 @@
         "/pathways/byTarget": {
             "get": {
                 "summary": "Pathways for Target: List",
-                "description": "Returns a list of pathways which contain a user specified target.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:GeneProduct </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_uri </span> .<br> ?cw_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?prefLabel </span> .<br> ",
+                "description": "Returns a list of pathways which contain a user specified target.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:GeneProduct </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?cw_target_uri </span> .<br> ?cw_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?prefLabel </span> .<br> ",
                 "tags": [
                     "Pathway"
                 ],
@@ -5769,8 +5769,8 @@
                         "name": "_orderBy",
                         "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
                         "enum": [
-                            "?cw_uri",
-                            "DESC(?cw_uri)",
+                            "?cw_target_uri",
+                            "DESC(?cw_target_uri)",
                             "?description",
                             "DESC(?description)",
                             "?gene_product",
