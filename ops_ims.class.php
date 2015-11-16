@@ -44,7 +44,7 @@ class OpsIms {
     
     
     
-    var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
+    var $expander_variables = array();//'?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
 	$params='';       
