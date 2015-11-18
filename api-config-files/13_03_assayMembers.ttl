@@ -110,7 +110,6 @@ _:dataset api:name "dataset" ;
 } }
 {
         GRAPH <http://www.ebi.ac.uk/chembl> {
-		?assay_format ops:tmp* ?child_node .
 		?item bao:BAO_0000205 ?child_node ;
                 	dct:description ?assay_description ;
                         chembl:assayType ?chembl_type ;
@@ -122,6 +121,7 @@ _:dataset api:name "dataset" ;
                 OPTIONAL { ?item chembl:targetRelType ?rel_type ;
                         chembl:targetRelDesc ?rel_desc }
                 FILTER(STRSTARTS(STR(?organism),'http://identifiers.org/taxonomy/'))
+		BIND(?child_node AS ?assay_format)
         }
         GRAPH <http://www.bioassayontology.org> {
                 ?child_node rdfs:label ?assay_format_label ;
@@ -131,8 +131,8 @@ _:dataset api:name "dataset" ;
 } UNION {
 	{
 		GRAPH <http://rdf.ncats.nih.gov/opddr> {
-			?bao_type ops:tmp* ?child_node .
 			?pubchem_assay a ?child_node
+			BIND(?child_node AS ?bao_type)
 		}
 	        GRAPH <http://www.bioassayontology.org> {
         	        ?child_node rdfs:label ?bao_label ;
@@ -141,8 +141,8 @@ _:dataset api:name "dataset" ;
 		BIND(<http://rdf.ncats.nih.gov/opddr> AS ?dataset)
 	} UNION {
 		GRAPH <http://rdf.ncats.nih.gov/opddr/pubchem> {
-			?assay_stage ops:tmp* ?child_node .
 			?pubchem_assay bao:BAO_0000210 ?child_node .
+			BIND(?child_node AS ?assay_stage)
 		}
 		GRAPH <http://www.bioassayontology.org> {
 			?child_node rdfs:label ?assay_stage_label ;
