@@ -7238,7 +7238,7 @@
         },
         "/tissue": {
             "get": {
-                "summary": "[PREVIEW] Tissue Information",
+                "summary": "Tissue Information",
                 "description": "Information about a single tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Tissue"
@@ -7317,7 +7317,7 @@
         },
         "/tissue/batch": {
             "get": {
-                "summary": "[PREVIEW] Tissue Information: Batch",
+                "summary": "Tissue Information: Batch",
                 "description": "Information about a list of tissues.<br><hr><br>Response template: <br><br><hr><br>  ?ims_caloha_tissue_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:definition ?tissue_def </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> oboowl:hasDbXref ?tissue_xref </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Tissue"
@@ -7396,7 +7396,7 @@
         },
         "/tissue/byProtein/count": {
             "get": {
-                "summary": "[PREVIEW] Tissues for Protein: Count",
+                "summary": "Tissues for Protein: Count",
                 "description": "The total number of assertions in the LDC that a given protein is expressed in a tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:tissueExpressionTotalResults ?count </span> .<br> ",
                 "tags": [
                     "Tissue"
@@ -7504,7 +7504,7 @@
         },
         "/tissue/byProtein": {
             "get": {
-                "summary": "[PREVIEW] Tissues for Protein: List",
+                "summary": "Tissues for Protein: List",
                 "description": "A page of items corresponding to assertions that a given protein is expressed in a tissue.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> terms:tissue ?tissue </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> a ?evidence_type </span> ;<br> prv:usedDat <span style=\"BACKGROUND-COLOR: #A9A9F5\"> a ?data_used </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&#xfeff;&gt; </span> .<br> ?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target_uri </span> .<br> ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&#xfeff;&gt; </span> .<br> ?tissue <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&#xfeff;&gt; </span> .<br> ?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Tissue"
@@ -7671,7 +7671,7 @@
         },
         "/tissue/getProteins/count": {
             "get": {
-                "summary": "[PREVIEW] Proteins for Tissue: Count",
+                "summary": "Proteins for Tissue: Count",
                 "description": "The total number of assertions in the LDC that a protein is expressed in a given tissue.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:tissueExpressionTotalResults ?count </span> .<br> ",
                 "tags": [
                     "Tissue"
@@ -7779,7 +7779,7 @@
         },
         "/tissue/getProteins": {
             "get": {
-                "summary": "[PREVIEW] Proteins for Tissue: List",
+                "summary": "Proteins for Tissue: List",
                 "description": "A page of items corresponding to assertions that a protein is expressed in a given tissue.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:tissue ?ops_item </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> terms:protein ?nextprot_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> rel:has_quality ?quality </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> a ?evidence_type </span> ;<br> prv:usedDat <span style=\"BACKGROUND-COLOR: #A9A9F5\"> a ?data_used </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> wi:evidence ?evidence_qual_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasDerivedFrom ?derived_from </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> prov:wasGeneratedBy ?generated_by </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&#xfeff;&gt; </span> .<br> ?nextprot_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target </span> .<br> ?uniprot_target <span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://purl.uniprot.org&#xfeff;&gt; </span> .<br> ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?tissue_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org/caloha&#xfeff;&gt; </span> .<br> ?evidence_qual_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?evidence_qual_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.nextprot.org&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Tissue"
