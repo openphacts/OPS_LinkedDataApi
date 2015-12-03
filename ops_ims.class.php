@@ -276,7 +276,7 @@ class OpsIms {
           $filter.= " }";
       }
       else{
-          $filter = " VALUES {$variableName} {'No mappings found'}" ;
+          $filter = " VALUES {$variableName} { ops:no_mappings_found }" ;
       }
 
       return $filter;
