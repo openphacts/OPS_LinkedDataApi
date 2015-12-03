@@ -1,5 +1,5 @@
 ?ops_item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target_uri </span> ;
-	<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?uniprot_target_uri </span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> skos:exactMatch ?uniprot_target_uri </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?chembl_target_uri </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?db_target_uri </span> .
 ?cw_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;
