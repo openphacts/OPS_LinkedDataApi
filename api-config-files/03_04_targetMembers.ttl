@@ -128,6 +128,7 @@ uniprot:organism api:name "target_organism_uri" ;
 	chembl:organismName ?mapping_org ;
 	a ?mapping_type ;
 	void:inDataset ?mapping_dataset .
+ops:no_mappings_found rdfs:label 'No mappings found' .
 ";
 	api:where 
 "
