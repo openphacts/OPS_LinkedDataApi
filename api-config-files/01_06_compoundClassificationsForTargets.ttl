@@ -196,7 +196,9 @@ chembl:pChembl api:name "pChembl" ;
 			?class rdfs:label ?class_label
 		}
 	}
-} 
-GRAPH <http://www.conceptwiki.org> {
-	?cw_compound_uri skos:prefLabel ?cw_label
+	UNION {
+		GRAPH <http://www.conceptwiki.org> {
+			?cw_compound_uri skos:prefLabel ?cw_label
+		}
+	}
 }" 
