@@ -83,7 +83,7 @@ rdf:type skos:prefLabel 'Type' .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' . ";
 	api:where 
-"	{ GRAPH <http://www.ebi.ac.uk/chembl> {
+"	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?chembl_compound_uri skos:exactMatch ?chebi_compound
         	GRAPH ?g { 
 			{ ?chebi_compound rdfs:subClassOf ?chebi_class .
@@ -96,7 +96,7 @@ rdf:type skos:prefLabel 'Type' .
 	                        ?chebi_class_type rdfs:label ?chebi_class_type_label }
 		} 
 	} 
-	GRAPH <http://www.conceptwiki.org> {
+	{ GRAPH <http://www.conceptwiki.org> {
                 ?cw_compound_uri skos:prefLabel ?cw_label
         } } UNION
 	{ GRAPH <http://www.geneontology.org> {
