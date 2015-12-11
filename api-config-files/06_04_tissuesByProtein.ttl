@@ -50,9 +50,8 @@
 "GRAPH <http://purl.uniprot.org> {
 	?uniprot_target_uri [] [] 
 }
-BIND(IRI(CONCAT('http://www.nextprot.org/db/search#NX_',STRAFTER(STR(?uniprot_target_uri),'http://purl.uniprot.org/uniprot/'))) AS ?nextprot_uri)
 GRAPH ?item { 
-	?nextprot_uri bfo:BFO_0000066 ?tissue ;
+	?nextprot_target_uri bfo:BFO_0000066 ?tissue ;
 		obo-rel:has_quality ?quality .
 }
 	?nanopub ns:hasAssertion ?item ;
@@ -89,14 +88,14 @@ wi:evidence api:name "evidence" ;
 obo-rel:has_quality api:name "quality" ;
         api:label "quality" ;
         api:value "One of: none, moderate, high, low, medium, negative, positive, strong, weak." ;
-        api:filterVariable "?nextprot_uri" ;
+        api:filterVariable "?nextprot_target_uri" ;
         a rdf:Property .
 
 <#tissueListViewer> a api:Viewer ;
 	api:name "tissueListViewer" ;
 	api:template 
 "?item ops-terms:tissue ?tissue ; 
-	ops-terms:protein ?nextprot_uri ;
+	ops-terms:protein ?nextprot_target_uri ;
 	obo-rel:has_quality ?quality ;
 	a ?evidence_type ;
 	prv:usedData ?data_used ;
@@ -104,7 +103,7 @@ obo-rel:has_quality api:name "quality" ;
 	prov:wasDerivedFrom ?derived_from ;
 	prov:wasGeneratedBy ?generated_by ;
 	void:inDataset <http://www.nextprot.org> .
-?nextprot_uri skos:exactMatch ?uniprot_target_uri .
+?nextprot_target_uri skos:exactMatch ?uniprot_target_uri .
 ?uniprot_target_uri void:inDataset <http://purl.uniprot.org> .
 ?tissue rdfs:label ?tissue_label ;
 	void:inDataset <http://www.nextprot.org/caloha> .
@@ -115,9 +114,8 @@ obo-rel:has_quality api:name "quality" ;
 "GRAPH <http://purl.uniprot.org> {
         ?uniprot_target_uri [] []
 }
-BIND(IRI(CONCAT('http://www.nextprot.org/db/search#NX_',STRAFTER(STR(?uniprot_target_uri),'http://purl.uniprot.org/uniprot/'))) AS ?nextprot_uri)
 GRAPH ?item {
-        ?nextprot_uri bfo:BFO_0000066 ?tissue ;
+        ?nextprot_target_uri bfo:BFO_0000066 ?tissue ;
                 obo-rel:has_quality ?quality .
 }
         ?nanopub ns:hasAssertion ?item ;
