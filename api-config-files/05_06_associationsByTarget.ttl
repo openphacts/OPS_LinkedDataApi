@@ -18,7 +18,7 @@
 
 <#diseaseByTarget> a api:API ;
         rdfs:label "Disease"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:variable rdf:type ;
