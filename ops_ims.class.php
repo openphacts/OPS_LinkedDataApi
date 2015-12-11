@@ -25,7 +25,8 @@ class OpsIms {
 	    '?schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
 	    '?schembl_disease_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/indication/',
 	    '?oidd_assay_uri' => 'http://openinnovation.lilly.com/bioassay#',   
-	    '?chembl_assay_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/assay/'
+	    '?chembl_assay_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/assay/',
+	    '?nextprot_target_uri' => 'http://www.nextprot.org/db/search#'
     );
     
     var $IMS_interm_variables = array(
