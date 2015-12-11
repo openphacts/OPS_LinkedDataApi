@@ -20,7 +20,7 @@
 
 		
 		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
+		api:externalRequestTemplate "http://ops-ims-14:8081/web-ws/concept/get?uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;
 		api:exampleRequestPath "/getConceptDescription?uuid=8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" ;
 		api:viewer <#externalResponseViewer> ;
