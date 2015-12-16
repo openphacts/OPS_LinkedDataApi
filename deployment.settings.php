@@ -12,7 +12,7 @@ define('CACHE_OFF', 0);
 define('PUELIA_CACHE_AGE', CACHE_ONE_YEAR);
 define('PUELIA_MEMCACHE_HOST', 'localhost');
 define('PUELIA_MEMCACHE_PORT', '11211');
-define ('IMS_EXPAND_ENDPOINT', 'http://ops-ims-20/QueryExpander/expandXML?query=');
-define ('CHEMSPIDER_ENDPOINT', 'http://ops2.rsc.org/ops/JSON.ashx');
+define ('IMS_EXPAND_ENDPOINT', 'http://ops-ims-20:8080/QueryExpander/expandXML?query=');
+define ('CHEMSPIDER_ENDPOINT', 'https://ops2.rsc.org/ops/JSON.ashx');
 define ('IMS_MAP_ENDPOINT', 'http://ops-ims-20:8080/QueryExpander/mapUriRDF')
 ?>
