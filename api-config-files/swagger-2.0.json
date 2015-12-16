@@ -2180,22 +2180,19 @@
                     },
                     {
                         "name": "inchi",
-                        "description": "An InChI string.",
-                        "default": "InChI=1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)",
+                        "description": "An InChI string. E.g. : InChI=1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)",
                         "in": "query",
                         "type": "string"
                     },
                     {
                         "name": "inchi_key",
-                        "description": "An InChIKey string.",
-                        "default": "BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
+                        "description": "An InChIKey string. E.g. : BSYNRYMUTXBXSQ-UHFFFAOYSA-N",
                         "in": "query",
                         "type": "string"
                     },
                     {
                         "name": "smiles",
-                        "description": "A SMILES string.",
-                        "default": "CC(=O)Oc1ccccc1C(=O)O",
+                        "description": "A SMILES string. E.g. : CC(=O)Oc1ccccc1C(=O)O",
                         "in": "query",
                         "type": "string"
                     },
