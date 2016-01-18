@@ -250,7 +250,7 @@
         "/compound/members/pages": {
             "get": {
                 "summary": "Compound Class Members: List",
-                "description": "A list of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?compound_cw </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #FFFFCC> skos:prefLabel ?compound_name </span> <br> ",
+                "description": "A list of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?compound_ocrs </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp; <span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?compound_cw </span> .<br> ?compound_cw <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?compound_name</span>.",
                 "tags": [
                     "Compound"
                 ],
