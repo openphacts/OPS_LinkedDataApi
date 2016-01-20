@@ -5856,7 +5856,7 @@
                     {
                         "name": "uri",
                         "description": "A reference URI.",
-                        "default": "http://identifiers.org/pubmed/9789062",
+                        "default": "http://identifiers.org/pubmed/14769483",
                         "type": "string",
                         "required": true,
                         "in": "query"
@@ -5941,7 +5941,7 @@
                     {
                         "name": "uri",
                         "description": "A reference URI.",
-                        "default": "http://identifiers.org/pubmed/9789062",
+                        "default": "http://identifiers.org/pubmed/14769483",
                         "type": "string",
                         "required": true,
                         "in": "query"
