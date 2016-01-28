@@ -85,20 +85,6 @@ _:claims api:name "claims" ;
         rdfs:subPropertyOf api:graphFilter ;
         a rdf:Property .
 
-_:image api:name "image" ;
-        api:label "image" ;
-        api:filterVariable "?image_occ" ;
-        api:value "If set to 'true' the method returns only entities in an image in the patent." ;
-        rdfs:subPropertyOf api:graphFilter ;
-        a rdf:Property .
-
-_:cwu api:name "cwu" ;
-        api:label "cwu" ;
-        api:filterVariable "?cwu_occ" ;
-        api:value "If set to 'true' the method returns only entities mentioned in a CWU of the patent." ;
-        rdfs:subPropertyOf api:graphFilter ;
-        a rdf:Property .
-
 <#patentByTargetCountViewer> a api:Viewer ;
 	api:name "patentByTargetViewer" ;
 	api:template 
