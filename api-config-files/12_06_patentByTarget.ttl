@@ -127,12 +127,18 @@ GRAPH <http://www.ebi.ac.uk/surechembl> {
 		?class_res schembl:SCCO_000033 ?class_code ;
 			schembl:SCCO_000034 ?class_sys .
 	}
-	OPTIONAL { ?assoc schembl:SCCO_000022 ?desc_occ }
-	OPTIONAL { ?assoc schembl:SCCO_000023 ?title_occ }
-	OPTIONAL { ?assoc schembl:SCCO_000024 ?claims_occ }
-	OPTIONAL { ?assoc schembl:SCCO_000025 ?abstract_occ }
-	OPTIONAL { ?assoc schembl:SCCO_000026 ?image_occ }
-	OPTIONAL { ?assoc schembl:SCCO_000027 ?cwu_occ }
+	OPTIONAL { ?assoc schembl:SCCO_000022 ?desc_occ_tmp }
+	OPTIONAL { ?assoc schembl:SCCO_000023 ?title_occ_tmp }
+	OPTIONAL { ?assoc schembl:SCCO_000024 ?claims_occ_tmp }
+	OPTIONAL { ?assoc schembl:SCCO_000025 ?abstract_occ_tmp }
+	OPTIONAL { ?assoc schembl:SCCO_000026 ?image_occ_tmp }
+	OPTIONAL { ?assoc schembl:SCCO_000027 ?cwu_occ_tmp }
 	OPTIONAL { ?schembl_target_uri schembl:SCCO_000037 ?target_name }
+        BIND ( IF( ?desc_occ_tmp = true, true, false ) AS ?desc_occ )
+        BIND ( IF( ?title_occ_tmp = true, true, false ) AS ?title_occ )
+        BIND ( IF( ?claims_occ_tmp = true, true, false ) AS ?claims_occ )
+        BIND ( IF( ?abstract_occ_tmp = true, true, false ) AS ?abstract_occ )
+        BIND ( IF( ?image_occ_tmp = true, true, false ) AS ?image_occ )
+        BIND ( IF( ?cwu_occ_tmp = true, true, false ) AS ?cwu_occ )
 }
 " . 

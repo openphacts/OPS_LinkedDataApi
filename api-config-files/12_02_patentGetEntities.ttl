@@ -148,14 +148,20 @@ GRAPH <http://www.ebi.ac.uk/surechembl> {
 		schembl:SCCO_000028 ?rel_score ;
 		schembl:SCCO_000038 ?freq .
 		?entity a ?entity_type .
-		OPTIONAL { ?assoc schembl:SCCO_000022 ?desc_occ }
-		OPTIONAL { ?assoc schembl:SCCO_000023 ?title_occ }
-		OPTIONAL { ?assoc schembl:SCCO_000024 ?claims_occ }
-		OPTIONAL { ?assoc schembl:SCCO_000025 ?abstract_occ }
-		OPTIONAL { ?assoc schembl:SCCO_000026 ?image_occ }
-		OPTIONAL { ?assoc schembl:SCCO_000027 ?cwu_occ }
+		OPTIONAL { ?assoc schembl:SCCO_000022 ?desc_occ_tmp }
+		OPTIONAL { ?assoc schembl:SCCO_000023 ?title_occ_tmp }
+		OPTIONAL { ?assoc schembl:SCCO_000024 ?claims_occ_tmp }
+		OPTIONAL { ?assoc schembl:SCCO_000025 ?abstract_occ_tmp }
+		OPTIONAL { ?assoc schembl:SCCO_000026 ?image_occ_tmp }
+		OPTIONAL { ?assoc schembl:SCCO_000027 ?cwu_occ_tmp }
 		OPTIONAL { ?entity schembl:SCCO_000037 ?entity_name }
 		OPTIONAL { ?entity schembl:SCCO_000017 ?entity_smiles }
 	}
+	BIND ( IF( ?desc_occ_tmp = true, true, false ) AS ?desc_occ )
+	BIND ( IF( ?title_occ_tmp = true, true, false ) AS ?title_occ )
+	BIND ( IF( ?claims_occ_tmp = true, true, false ) AS ?claims_occ )
+	BIND ( IF( ?abstract_occ_tmp = true, true, false ) AS ?abstract_occ )
+	BIND ( IF( ?image_occ_tmp = true, true, false ) AS ?image_occ )
+	BIND ( IF( ?cwu_occ_tmp = true, true, false ) AS ?cwu_occ )
 }
 ".
