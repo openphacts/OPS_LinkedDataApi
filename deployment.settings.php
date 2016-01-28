@@ -14,5 +14,5 @@ define('PUELIA_MEMCACHE_HOST', 'localhost');
 define('PUELIA_MEMCACHE_PORT', '11211');
 define ('IMS_EXPAND_ENDPOINT', 'http://localhost:8082/QueryExpander/expandXML?query=');
 define ('CHEMSPIDER_ENDPOINT', 'http://ops2.rsc.org/ops/JSON.ashx');
-define ('IMS_MAP_ENDPOINT', 'http://localhost:8082/QueryExpander/mapUriRDF')
+define ('IMS_MAP_ENDPOINT', 'http://localhost:8082/QueryExpander/mapUriRDF');
 ?>
