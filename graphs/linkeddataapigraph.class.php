@@ -173,7 +173,8 @@ class LinkedDataApiGraph extends PueliaGraph {
         } else if(isset($object['datatype']) AND in_array($object['datatype'], $xsd_numeric_datatypes) AND is_numeric($object['value'])){
             $target = $object['value']+0;
         } else if(isset($object['datatype']) AND $object['datatype'] == XSD.'dateTime'){
-            $target = date(DATE_COOKIE, strtotime($object['value']));
+	    $date = new DateTime($object['value']);
+            $target = $date->format(DATE_COOKIE);
         } else if(isset($object['datatype']) AND $object['datatype'] == XSD.'date'){
             $target = date(DATE_W3C, strtotime($object['value']));
         } else if($this->has_resource_triple($object['value'], RDF_TYPE, RDF_LIST)){
