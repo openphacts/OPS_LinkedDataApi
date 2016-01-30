@@ -10451,26 +10451,6 @@
                         "type": "boolean"
                     },
                     {
-                        "name": "image",
-                        "description": "If set to 'true' the method returns only patents where the entity is in an image. ",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "name": "cwu",
-                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent.",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
                         "name": "_format",
                         "description": "The desired result format.",
                         "enum": [
@@ -10683,26 +10663,6 @@
                     {
                         "name": "claims",
                         "description": "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent.",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "name": "image",
-                        "description": "If set to 'true' the method returns only patents where the entity is in an image. ",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "name": "cwu",
-                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent.",
                         "enum": [
                             "true"
                         ],
@@ -10988,26 +10948,6 @@
                         "type": "boolean"
                     },
                     {
-                        "name": "image",
-                        "description": "If set to 'true' the method returns only patents where the entity is in an image. ",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "name": "cwu",
-                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent.",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
                         "name": "_format",
                         "description": "The desired result format.",
                         "enum": [
@@ -11220,26 +11160,6 @@
                     {
                         "name": "claims",
                         "description": "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent.",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "name": "image",
-                        "description": "If set to 'true' the method returns only patents where the entity is in an image. ",
-                        "enum": [
-                            "true"
-                        ],
-                        "in": "query",
-                        "required": false,
-                        "type": "boolean"
-                    },
-                    {
-                        "name": "cwu",
-                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent.",
                         "enum": [
                             "true"
                         ],
