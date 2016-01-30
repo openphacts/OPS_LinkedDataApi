@@ -9489,10 +9489,306 @@
                 }
             }
         },
-        "/patent/getEntities": {
+        "/patent/entities/pages": {
             "get": {
-                "summary": "[PREVIEW] Patent Information: Get Entities",
-                "description": "Retrieves a list of entities that are mentioned in the user specified patent.<br><hr><br>Response template: <br><br><hr><br>  ?patent_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:mentions ?entity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?entity <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?entity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?entity_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?entity_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000010&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Molecule' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
+                "summary": "[PREVIEW] Patent Entities: List",
+                "description": "Retrieves a list of entities that are mentioned in the user specified patent.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?entity_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatent ?patent_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?entity_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?entity_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?patent_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br>&lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000010&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Molecule' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> &lt;http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
+                "tags": [
+                    "Patent"
+                ],
+                "parameters": [
+                    {
+                        "name": "uri",
+                        "description": "A patent URI.",
+                        "default": "http://rdf.ebi.ac.uk/resource/surechembl/patent/EP-1339685-A2",
+                        "type": "string",
+                        "required": true,
+                        "in": "query"
+                    },
+                    {
+                        "name": "app_id",
+                        "description": "Your access application id",
+                        "required": true,
+                        "type": "string",
+                        "in": "query",
+                        "x-data-threescale-name": "app_ids"
+                    },
+                    {
+                        "name": "app_key",
+                        "description": "Your access application key",
+                        "required": true,
+                        "type": "string",
+                        "in": "query",
+                        "x-data-threescale-name": "app_keys"
+                    },
+                    {
+                        "name": "score",
+                        "description": "Only return entities mentioned in the patent whose relevance score is equal to this number. An integer between 0 and 3.",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "min-score",
+                        "description": "Only return entities mentioned in the patent whose relevance score is greater than or equal to this number. An integer between 0 and 3.",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "minEx-score",
+                        "description": "Only return entities mentioned in the patent whose relevance score is greater than this number. An integer between 0 and 3.",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "max-score",
+                        "description": "Only return entities mentioned in the patent whose relevance score is less than or equal to this number. An integer between 0 and 3.",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "maxEx-score",
+                        "description": "Only return entities mentioned in the patent whose relevance score is less than this number. An integer between 0 and 3.",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "frequency",
+                        "description": "Only return entities mentioned in the patent with frequency equal to this number. A positive integer.",
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "min-frequency",
+                        "description": "Only return entities mentioned in the patent with frequency greater than or equal to this number. A positive integer.",
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "minEx-frequency",
+                        "description": "Only return entities mentioned in the patent with frequency greater than this number. A positive integer.",
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "max-frequency",
+                        "description": "Only return entities mentioned in the patent with frequency less than or equal to this number. A positive integer.",
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "maxEx-frequency",
+                        "description": "Only return entities mentioned in the patent with frequency less than this number. A positive integer.",
+                        "type": "integer",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "entity_type",
+                        "description": "Only return entities of the specified type (and are mentioned in the patent). One of: 'molecule', 'target', 'disease'.",
+                        "enum": [
+                            "molecule",
+                            "target",
+                            "disease"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "title",
+                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in the title of the patent.",
+                        "enum": [
+                            "true"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "abstract",
+                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in the abstract of the patent.",
+                        "enum": [
+                            "true"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "description",
+                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in the description section of the patent.",
+                        "enum": [
+                            "true"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "claims",
+                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in the claims section of the patent.",
+                        "enum": [
+                            "true"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "image",
+                        "description": "If set to 'true' the method returns only patents where the entity is in an image. ",
+                        "enum": [
+                            "true"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "cwu",
+                        "description": "If set to 'true' the method returns only patents where the entity is mentioned in a CWU of the patent.",
+                        "enum": [
+                            "true"
+                        ],
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "_page",
+                        "description": "A number; the page that should be viewed",
+                        "type": "integer",
+                        "in": "query"
+                    },
+                    {
+                        "name": "_pageSize",
+                        "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
+                        "type": "integer",
+                        "in": "query"
+                    },
+                    {
+                        "name": "_orderBy",
+                        "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+                        "enum": [
+                            "?entity_type",
+                            "DESC(?entity_type)",
+                            "?entity_name",
+                            "DESC(?entity_name)",
+                            "?entity_smiles",
+                            "DESC(?entity_smiles)",
+                            "?rel_score",
+                            "DESC(?rel_score)",
+                            "?freq",
+                            "DESC(?freq)",
+                            "?title_occ",
+                            "DESC(?title_occ)",
+                            "?abstract_occ",
+                            "DESC(?abstract_occ)",
+                            "?desc_occ",
+                            "DESC(?desc_occ)",
+                            "?claims_occ",
+                            "DESC(?claims_occ)",
+                            "?image_occ",
+                            "DESC(?cwu_occ)",
+                            "?title",
+                            "DESC(?title)",
+                            "?date",
+                            "DESC(?date)"
+                        ],
+                        "type": "string",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "_format",
+                        "description": "The desired result format.",
+                        "enum": [
+                            "json",
+                            "tsv",
+                            "ttl",
+                            "xml",
+                            "rdf",
+                            "rdfjson",
+                            "html"
+                        ],
+                        "type": "string",
+                        "required": false,
+                        "in": "query"
+                    },
+                    {
+                        "name": "_callback",
+                        "description": "For JSONP",
+                        "type": "string",
+                        "in": "query"
+                    },
+                    {
+                        "name": "_metadata",
+                        "description": "Additional metadata to be included with response.",
+                        "enum": [
+                            "execution",
+                            "site",
+                            "formats",
+                            "views",
+                            "all"
+                        ],
+                        "type": "string",
+                        "required": false,
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/patent/entities/count": {
+            "get": {
+                "summary": "[PREVIEW] Patent Entities: Count",
+                "description": "The number of entities mentioned in the Patent specified<br><hr><br>Response template: <br><br><hr><br>  ?patent_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:entity_count ?count </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Patent"
                 ],
@@ -9983,7 +10279,7 @@
         "/patent/byCompound": {
             "get": {
                 "summary": "[PREVIEW] Patents for Compound: List",
-                "description": "A list of patents which mention the Compound specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?schembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?compound_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Compound' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
+                "description": "A list of patents which mention the Compound specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_compound_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?schembl_compound_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:smiles ?compound_smiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Compound' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Patent"
                 ],
@@ -10500,7 +10796,7 @@
         "/patent/byTarget": {
             "get": {
                 "summary": "[PREVIEW] Patents for Target: List",
-                "description": "A list of patents which mention the Target specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?schembl_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
+                "description": "A list of patents which mention the Target specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_target_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?schembl_target_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?target_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Target' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Patent"
                 ],
@@ -10997,7 +11293,7 @@
         "/patent/byDisease": {
             "get": {
                 "summary": "[PREVIEW] Patents for Disease: List",
-                "description": "A list of patents which mention the Disease specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_disease_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?schembl_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?disease_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
+                "description": "A list of patents which mention the Disease specified<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:mentions ?schembl_disease_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:relevanceScore ?rel_score </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:frequency ?freq </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentTitle ?title_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentAbstract ?abstract_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentDescription ?desc_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentClaims ?claims_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentImage ?image_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:occursInPatentCWU ?cwu_occ </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ?schembl_disease_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a schembl:SCCO_000035 </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:prefLabel ?disease_name </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> schembl:SCCO_000035 <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel 'Disease' </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.ebi.ac.uk/surechembl&#xfeff;&gt; </span> .<br> ",
                 "tags": [
                     "Patent"
                 ],
