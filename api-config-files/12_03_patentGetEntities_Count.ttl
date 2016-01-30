@@ -23,18 +23,17 @@
 	api:variable _:cwu ;
 	api:description "An API configuration to return information about patents" ;
 	api:endpoint [
-		a api:ListEndpoint ;
-		api:name "Patent Entities: List" ;
-		api:description "Retrieves a list of entities that are mentioned in the user specified patent.";
-		api:uriTemplate "/patent/entities/pages?uri={uri}" ;
+		a api:ItemEndpoint ;
+		api:name "Patent Entities: Count" ;
+		api:description "Returns the number of entities that are mentioned in the user specified patent.";
+		api:uriTemplate "/patent/entities/count?uri={uri}" ;
 		api:itemTemplate "{uri}" ;
 		api:variable <http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000010> ;
 		api:variable <http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035> ;
 		api:variable <http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036> ;
-		api:exampleRequestPath "/patent/entities/pages?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fsurechembl%2Fpatent%2FEP-1339685-A2";
-		api:selector <#patentEntitiesViewer> ;
-		api:viewer <#patentEntitiesViewer> ;
-		api:defaultViewer <#patentEntitiesViewer> ] .
+		api:exampleRequestPath "/patent/entities/count?uri=http%3A%2F%2Frdf.ebi.ac.uk%2Fresource%2Fsurechembl%2Fpatent%2FEP-1339685-A2";
+		api:viewer <#patentEntitiesCountViewer> ;
+		api:defaultViewer <#patentEntitiesCountViewer> ] .
 
 <#input> api:name "uri" ;
 	api:label "uri";
@@ -106,63 +105,45 @@ _:cwu api:name "cwu" ;
 <http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035> api:name "target" .
 <http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036> api:name "disease" .
 
-<#patentEntitiesViewer> a api:Viewer ;
-	api:name "patentEntitiesViewer" ;
+<#patentEntitiesCountViewer> a api:Viewer ;
+	api:name "patentEntitiesCountViewer" ;
 	api:template 
 "
-?patent_uri dct:title ?title ;
-	ops:datePublished ?date ;
+?patent_uri ops:entityCount ?count ;
 	void:inDataset <http://www.ebi.ac.uk/surechembl> .
-?item a ?entity_type ;
-	ops:occursInPatent ?patent_uri ;
-	skos:prefLabel ?entity_name ;
-	ops:smiles ?entity_smiles ;
-	ops:relevanceScore ?rel_score ;
-	ops:frequency ?freq ;
-	ops:occursInPatentTitle ?title_occ;
-	ops:occursInPatentAbstract ?abstract_occ ;
-	ops:occursInPatentDescription ?desc_occ ;
-	ops:occursInPatentClaims ?claims_occ ;
-	ops:occursInPatentImage ?image_occ ;
-	ops:occursInPatentCWU ?cwu_occ ;
-	void:inDataset <http://www.ebi.ac.uk/surechembl> .
-<http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000010> skos:prefLabel 'Molecule' ;
-	void:inDataset <http://www.ebi.ac.uk/surechembl> .
-<http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000035> skos:prefLabel 'Target' ;
-        void:inDataset <http://www.ebi.ac.uk/surechembl> .
-<http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036> skos:prefLabel 'Disease' ;
-        void:inDataset <http://www.ebi.ac.uk/surechembl> .
 " ;
 	api:where 
 "
-GRAPH <http://www.ebi.ac.uk/surechembl> {
-	?patent_uri a schembl:SCCO_000002 ;
-	schembl:SCCO_000007 ?date .
-	OPTIONAL {
-		?patent_uri schembl:SCCO_000005 ?title_res .
-		?title_res schembl:SCCO_000030 ?title ;
-		schembl:SCCO_000031 'EN' .
+{ SELECT DISTINCT ?patent_uri ( COUNT ( ?entity ) AS ?count ) WHERE {
+	GRAPH <http://www.ebi.ac.uk/surechembl> {
+		?patent_uri a schembl:SCCO_000002 ;
+		schembl:SCCO_000007 ?date .
+		OPTIONAL {
+			?patent_uri schembl:SCCO_000005 ?title_res .
+			?title_res schembl:SCCO_000030 ?title ;
+			schembl:SCCO_000031 'EN' .
+		}
+		OPTIONAL {
+			?assoc schembl:SCCO_000020 ?patent_uri ;
+			schembl:SCCO_000021 ?entity ;
+			schembl:SCCO_000028 ?rel_score ;
+			schembl:SCCO_000038 ?freq .
+			?entity a ?entity_type .
+			OPTIONAL { ?assoc schembl:SCCO_000022 ?desc_occ_tmp }
+			OPTIONAL { ?assoc schembl:SCCO_000023 ?title_occ_tmp }
+			OPTIONAL { ?assoc schembl:SCCO_000024 ?claims_occ_tmp }
+			OPTIONAL { ?assoc schembl:SCCO_000025 ?abstract_occ_tmp }
+			OPTIONAL { ?assoc schembl:SCCO_000026 ?image_occ_tmp }
+			OPTIONAL { ?assoc schembl:SCCO_000027 ?cwu_occ_tmp }
+			OPTIONAL { ?entity schembl:SCCO_000037 ?entity_name }
+			OPTIONAL { ?entity schembl:SCCO_000017 ?entity_smiles }
+		}
+		BIND ( IF( ?desc_occ_tmp = true, true, false ) AS ?desc_occ )
+		BIND ( IF( ?title_occ_tmp = true, true, false ) AS ?title_occ )
+		BIND ( IF( ?claims_occ_tmp = true, true, false ) AS ?claims_occ )
+		BIND ( IF( ?abstract_occ_tmp = true, true, false ) AS ?abstract_occ )
+		BIND ( IF( ?image_occ_tmp = true, true, false ) AS ?image_occ )
+		BIND ( IF( ?cwu_occ_tmp = true, true, false ) AS ?cwu_occ )
 	}
-	OPTIONAL {
-		?assoc schembl:SCCO_000020 ?patent_uri ;
-		schembl:SCCO_000021 ?item ;
-		schembl:SCCO_000028 ?rel_score ;
-		schembl:SCCO_000038 ?freq .
-		?item a ?entity_type .
-		OPTIONAL { ?assoc schembl:SCCO_000022 ?desc_occ_tmp }
-		OPTIONAL { ?assoc schembl:SCCO_000023 ?title_occ_tmp }
-		OPTIONAL { ?assoc schembl:SCCO_000024 ?claims_occ_tmp }
-		OPTIONAL { ?assoc schembl:SCCO_000025 ?abstract_occ_tmp }
-		OPTIONAL { ?assoc schembl:SCCO_000026 ?image_occ_tmp }
-		OPTIONAL { ?assoc schembl:SCCO_000027 ?cwu_occ_tmp }
-		OPTIONAL { ?item schembl:SCCO_000037 ?entity_name }
-		OPTIONAL { ?item schembl:SCCO_000017 ?entity_smiles }
-	}
-	BIND ( IF( ?desc_occ_tmp = true, true, false ) AS ?desc_occ )
-	BIND ( IF( ?title_occ_tmp = true, true, false ) AS ?title_occ )
-	BIND ( IF( ?claims_occ_tmp = true, true, false ) AS ?claims_occ )
-	BIND ( IF( ?abstract_occ_tmp = true, true, false ) AS ?abstract_occ )
-	BIND ( IF( ?image_occ_tmp = true, true, false ) AS ?image_occ )
-	BIND ( IF( ?cwu_occ_tmp = true, true, false ) AS ?cwu_occ )
-}
+} }
 ".
