@@ -277,7 +277,7 @@ class OpsIms {
           $filter.= " }";
       }
       else{
-          $filter = " VALUES {$variableName} { ops:no_mappings_found }" ;
+          $filter = " VALUES {$variableName} { <http://www.openphacts.org/api#no_mappings_found> }" ;
       }
 
       return $filter;
