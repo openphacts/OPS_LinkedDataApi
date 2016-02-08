@@ -1,0 +1,100 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix bao: <http://www.bioassayontology.org/bao#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+
+<#assay> a api:API ;
+        rdfs:label "Assay"@en ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable <#input> ; 
+	api:description "An API configuration to return information about assays" ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Assay Information" ;
+		api:description "Information about a single assay.";
+		api:uriTemplate "/assay?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/assay?uri=http%3A%2F%2Fopeninnovation.lilly.com%2Fbioassay%2329";
+		api:viewer <#assayViewer> ;
+		api:defaultViewer <#assayViewer> ] .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "An assay URI. e.g.: http://openinnovation.lilly.com/bioassay#29" ;
+	rdfs:range rdfs:Resource .  
+
+<#assayViewer> a api:Viewer ;
+	api:name "assayViewer" ;
+	api:template 
+"
+?chembl_assay_uri dct:description ?assay_description ;
+	ops:assayFormat ?assay_format ;
+	chembl:assayType ?chembl_type ;
+        chembl:taxonomy ?organism ;
+        chembl:targetConfDesc ?conf_desc ;
+        ops:targetConfScore ?conf_score ;
+        ops:targetRelType ?rel_type ;
+        chembl:targetRelDesc ?rel_desc ;
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
+?organism rdfs:label ?organism_name;
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
+?oidd_assay_uri a ?bao_type ;
+	skos:exactMatch ?pubchem_assay ;
+	void:inDataset <http://rdf.ncats.nih.gov/opddr> .
+?pubchem_assay dct:title ?assay_title ;
+	ops:assayStage ?assay_stage ;
+	void:inDataset <http://rdf.ncats.nih.gov/opddr/pubchem> .
+?assay_format rdfs:label ?assay_format_label ;
+	ops:definition ?assay_format_def ;
+	void:inDataset <http://www.bioassayontology.org> .
+?bao_type rdfs:label ?bao_label ;
+	ops:definition ?bao_def ;
+        void:inDataset <http://www.bioassayontology.org> .
+?assay_stage rdfs:label ?assay_stage_label ;
+	ops:definition ?assay_stage_def;
+        void:inDataset <http://www.bioassayontology.org> .
+";
+	api:where 
+"
+{
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+		?chembl_assay_uri dct:description ?assay_description ;
+			bao:BAO_0000205 ?assay_format ;
+			chembl:assayType ?chembl_type ;
+			chembl:taxonomy ?organism ;
+			chembl:organismName ?organism_name .
+		OPTIONAL { ?chembl_assay_uri chembl:targetConfScore ?conf_score_tmp }
+		BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
+		OPTIONAL { ?chembl_assay_uri chembl:targetConfDesc ?conf_desc }
+		OPTIONAL { ?chembl_assay_uri chembl:targetRelType ?rel_type ;
+			chembl:targetRelDesc ?rel_desc }
+		FILTER(STRSTARTS(STR(?organism),'http://identifiers.org/taxonomy/'))
+	}
+	GRAPH <http://www.bioassayontology.org> {
+		?assay_format rdfs:label ?assay_format_label ;
+			obo:IAO_0000115 ?assay_format_def .
+	}
+} UNION {
+	GRAPH <http://rdf.ncats.nih.gov/opddr> {
+		?pubchem_assay skos:exactMatch ?oidd_assay_uri ;
+			a ?bao_type 
+	}
+	GRAPH <http://rdf.ncats.nih.gov/opddr/pubchem> {
+		?pubchem_assay dct:title ?assay_title ;
+			bao:BAO_0000210 ?assay_stage .
+	}
+	GRAPH <http://www.bioassayontology.org> {
+		?bao_type rdfs:label ?bao_label ;
+			obo:IAO_0000115 ?bao_def .
+		?assay_stage rdfs:label ?assay_stage_label ;
+			obo:IAO_0000115 ?assay_stage_def .
+	}
+}
+".

@@ -68,7 +68,7 @@ function getLine ($input, $curr_line, $prefix="", $parent_key="", $resource="") 
                 unset($input['isPrimaryTopicOf']);
         }
 	foreach ($input as $key => $value) {
-                if (!is_array($value) && $key != 'inDataset') {
+                if ((!is_array($value) && $key != 'inDataset') || (!is_array($value) && $key === 0)) {
 			$dataset_props=getDatasetProps($input['inDataset']);
 			if (preg_match('/^[0-9][0-9]*$/', $key)){
 				$key=$prefix.$parent_key;

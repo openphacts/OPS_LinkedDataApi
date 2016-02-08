@@ -24,7 +24,7 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organismName ;
         api:variable <#input> ; 
@@ -34,6 +34,11 @@
  	api:variable chembl:hasQUDT ;
 	api:variable chembl:standardRelation ;
 	api:variable chembl:pChembl ;
+        api:variable chembl:dataValidityIssue ;
+        api:variable chembl:dataValidityComment ;
+        api:variable chembl:potentialDuplicate ;
+        api:variable chembl:targetConfScore ;
+        api:variable chembl:targetRelType ;
 	api:variable _:type ; 
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
@@ -145,6 +150,12 @@
 <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> api:name "chimeric_protein" .
 <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> api:name "phenotype" .
 
+chembl:targetRelType api:name "target_rel_type" ;
+        api:label "target_rel_type" ;
+        api:value "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ;
+        api:filterVariable "?assay_uri";
+        a rdf:Property .
+
 chembl:organismName api:name "assay_organism" ;
 	api:label "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
@@ -195,6 +206,33 @@ _:type api:name "target_type" ;
  	rdfs:subPropertyOf rdf:type ;
         a rdf:Property .
 
+chembl:dataValidityIssue api:name "data_validity_issue" ;
+        api:label "data_validity_issue" ;
+        api:filterVariable "?issue" ;
+        api:value "ChEMBL data validity issue annotation. One of: true, false." ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
+chembl:dataValidityComment api:name "data_validity_comment" ;
+        api:label "data_validity_comment" ;
+        api:filterVariable "?item" ;
+        api:value "ChEMBL data validity issue annotation. One of: 'Manually validated', 'Non standard unit for type','Outside typical range' ,'Potential missing data', 'Potential transcription error', 'Potential author error', 'Author confirmed error'." ;
+        a rdf:Property .
+
+chembl:potentialDuplicate api:name "potential_duplicate" ;
+        api:label "potential_duplicate" ;
+        api:filterVariable "?dup" ;
+        api:value "ChEMBL potential duplicate annotation. One of: true, false." ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
+chembl:targetConfScore api:name "target_conf_score";
+        api:label "target_conf_score" ;
+        api:value "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ;
+        api:filterVariable "?conf_score" ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A compound URI. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ;
@@ -206,10 +244,18 @@ _:type api:name "target_type" ;
 "?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
+{ SELECT ?item ?issue ?dup ?conf_score WHERE {
          GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?item a chembl:Activity ;
                         chembl:hasMolecule ?chembl_compound_uri ;
                         chembl:hasAssay ?assay_uri .
                 ?assay_uri chembl:hasTarget ?target_uri .
-         } 
+ 	        OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp }
+        	BIND (IF (BOUND(?issue_tmp) , ?issue_tmp, false) AS ?issue)
+	        OPTIONAL { ?item chembl:potentialDuplicate ?dup_tmp }
+        	BIND (IF (BOUND(?dup_tmp) , ?dup_tmp, false) AS ?dup)
+	        OPTIONAL { ?assay_uri chembl:targetConfScore ?conf_score_tmp }
+	        BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
+         }
+} } 
 } }" .

@@ -22,7 +22,7 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:variable wp:organism ;
@@ -109,10 +109,10 @@ SELECT ( COUNT ( DISTINCT ?pathway ) AS ?count ) WHERE {
 GRAPH <http://www.wikipathways.org> {
 	?pathway a wp:Pathway ;
 		dc:title ?title ; 
-		wp:organism ?organism_uri ; 
+		wp:organism ?organism_uri ;
+		wp:organismName ?organism ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
-        ?pw_uri dcterms:isPartOf ?pathway ;
+        ?pw_ref_uri dcterms:isPartOf ?pathway ;
                 a wp:PublicationReference .
-	?organism_uri rdfs:label ?organism . 
 } } }" .

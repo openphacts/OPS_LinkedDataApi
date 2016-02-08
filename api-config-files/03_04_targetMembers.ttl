@@ -11,7 +11,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
         api:variable chembl:organismName ;
@@ -128,6 +128,7 @@ uniprot:organism api:name "target_organism_uri" ;
 	chembl:organismName ?mapping_org ;
 	a ?mapping_type ;
 	void:inDataset ?mapping_dataset .
+ops:no_mappings_found rdfs:label 'No mappings found' .
 ";
 	api:where 
 "

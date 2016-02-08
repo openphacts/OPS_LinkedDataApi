@@ -1,0 +1,2 @@
+?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:patent_count ?count </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.ebi.ac.uk/surechembl> </span> .

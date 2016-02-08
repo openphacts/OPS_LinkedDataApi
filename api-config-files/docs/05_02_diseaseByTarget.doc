@@ -1,7 +1,7 @@
 ?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:name ?diseaseName </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:forGene ?dg_gene_uri </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?diseaseDataset </span> .
-?dg_gene_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:encodes ?uniprot_target_uri </span> ;
+?dg_gene_uri <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:encodes ?uniprot_target_uri </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset ?geneDataset </span> .
 ?uniprot_target_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:exactMatch ?cw_target_uri </span> ;
 	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://purl.uniprot.org> </span> .

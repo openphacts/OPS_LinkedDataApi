@@ -20,9 +20,10 @@
 
 <#filters> a api:API ;
         rdfs:label "Pharmacology Filters"@en ;
-        api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
+	api:variable _:type_label ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
@@ -42,14 +43,21 @@
 "{
 SELECT DISTINCT ?item ?qudt_label COUNT(?activity) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl>  {
-	?activity chembl:hasQUDT ?item  .
-        ?item rdfs:label ?qudt_label    
-}  
+	?activity chembl:hasQUDT ?item .
+        ?item rdfs:label ?qudt_label 
+	}  
 } GROUP BY ?item ?qudt_label ORDER BY DESC( ?count )
 }" ;
 api:orderBy ""] ;
 		api:viewer <#pharmacologyFiltersUnitViewer> ; 
 		api:defaultViewer <#pharmacologyFiltersUnitViewer> . ] .
+
+_:type_label api:name "activity_type" ;
+        api:label "activity_type" ;
+        api:filterVariable "?activity" ;
+        api:value "One of the activity types listed at /pharmacology/filters/activities" ;
+	rdfs:subPropertyOf chembl:standardType ;
+        a rdf:Property .
 
 <http://www.openphacts.org/api#> api:label "ops" .
 <http://rdf.ebi.ac.uk/terms/chembl#> api:label "chembl" .

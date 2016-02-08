@@ -14,8 +14,19 @@ class OpsIms {
             '?db_target_uri'=>'http://bio2rdf.org/drugbank',
             '?dg_gene_uri' => 'http://identifiers.org/ncbigene/',
 	    '?umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
-	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_',
-	    '?aers_compound_uri' => 'http://aers.data2semantics.org/resource/drug/'
+	    '?node_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/protclass/&targetUriPattern=http://purl.obolibrary.org/obo/CHEBI_&targetUriPattern=http://purl.uniprot.org/enzyme/&targetUriPattern=http://purl.obolibrary.org/obo/GO_&targetUriPattern=http://www.bioassayontology.org/bao#BAO_&targetUriPattern=http://purl.obolibrary.org/obo/DOID_',
+	    '?aers_compound_uri' => 'http://aers.data2semantics.org/resource/drug/',
+	    '?patent_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/patent/',
+	    '?pw_uri' => 'http://identifiers.org/wikipathways/',
+	    '?pw_compound_uri' => '',
+	    '?pw_target_uri' => '',
+	    '?pw_ref_uri' => 'http://identifiers.org/pubmed/',
+	    '?schembl_target_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/target/',
+	    '?schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
+	    '?schembl_disease_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/indication/',
+	    '?oidd_assay_uri' => 'http://openinnovation.lilly.com/bioassay#',   
+	    '?chembl_assay_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/assay/',
+	    '?nextprot_target_uri' => 'http://www.nextprot.org/db/search#'
     );
     
     var $IMS_interm_variables = array(
@@ -34,7 +45,7 @@ class OpsIms {
     
     
     
-    var $expander_variables = array('?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
+    var $expander_variables = array();//'?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
     
     function expandQuery ( $query , $input_uri, $lens ) {
 	$params='';       
@@ -66,7 +77,11 @@ class OpsIms {
                $url = IMS_MAP_ENDPOINT;
                $url .= '?rdfFormat=RDF/XML';
 	       if ($pattern != '') {
-                  $url .= '&targetUriPattern='.urlencode($pattern);
+		  $encoded_pattern = urlencode($pattern);
+		  if (strpos($pattern, '&') !== FALSE) {
+		    $encoded_pattern = str_replace('%26targetUriPattern%3D','&targetUriPattern=', $encoded_pattern);
+		  }
+                  $url .= '&targetUriPattern='.$encoded_pattern;
 	       }
                $url .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');
                $url .= '&lensUri=';
@@ -197,7 +212,11 @@ class OpsIms {
 		$urlStart = IMS_MAP_ENDPOINT;
 		$urlStart .= '?rdfFormat=N-Triples';
 		if ($pattern != '') {
-                  $url .= '&targetUriPattern='.urlencode($pattern);
+		  $encoded_pattern = urlencode($pattern);
+                  if (strpos($pattern, '&') !== FALSE) {
+                    $encoded_pattern = str_replace('%26targetUriPattern%3D','&targetUriPattern=', $encoded_pattern);
+                  }
+                  $urlStart .= '&targetUriPattern='.$encoded_pattern;
                 }
                 $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');		
 		$urlStart .= '&lensUri=';
@@ -211,7 +230,6 @@ class OpsIms {
 		$graph = new SimpleGraph() ;
 		$iter = 1;
 		$url=$urlStart;
-
 		foreach ($uriList AS $uri){
 		    if ($iter % REQUEST_URI_NO == 0){
 		        $response = $this->getResponse($url, "text/plain");
@@ -262,7 +280,7 @@ class OpsIms {
           $filter.= " }";
       }
       else{
-          $filter = " VALUES {$variableName} {'No mappings found'}" ;
+          $filter = " VALUES {$variableName} { ops:no_mappings_found }" ;
       }
 
       return $filter;

@@ -1,0 +1,161 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix bao: <http://www.bioassayontology.org/bao#> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+
+<#assay> a api:API ;
+        rdfs:label "Assay"@en ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable chembl:taxonomy ;
+        api:variable chembl:targetConfScore ;
+        api:variable chembl:targetRelType ;
+        api:variable <#input> ;
+	api:variable _:dataset ;
+        api:description "An API configuration to return information about assays" ;
+        api:endpoint [
+		a api:ListEndpoint ;
+		api:name "Assay Class Members: List" ;
+		api:description "A list of assays classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the BioAssay Ontology." ;
+		api:itemTemplate "{uri}" ;
+		api:variable <http://www.ebi.ac.uk/chembl> ;
+		api:variable <http://rdf.ncats.nih.gov/opddr> ;
+                api:variable <http://rdf.ncats.nih.gov/opddr/pubchem> ;
+		api:uriTemplate "/assay/members/pages?uri={uri}" ;
+		api:exampleRequestPath "/assay/members/pages?uri=http%3A%2F%2Fwww.bioassayontology.org%2Fbao%23BAO_0000219";
+		api:selector <#assayMemberViewer> ;
+		api:viewer <#assayMemberViewer> ;
+		api:defaultViewer <#assayMemberViewer> ] .
+
+chembl:taxonomy api:name "organism_uri" ;
+        api:label "organism_uri" ;
+        api:value "An identifiers.org taxonomy URI e.g. http://identifiers.org/taxonomy/9606" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:targetRelType api:name "target_rel_type" ;
+        api:label "target_rel_type" ;
+        api:value "ChEMBL Assay relationship type annotation. A single capital letter as follows. U: Default value - Target has yet to be curated; D: Direct protein target assigned; H: Homologous protein target assigned; M: Molecular target other than protein assigned; N: Non-molecular target assigned; S: Subcellular target assigned" ;
+        api:filterVariable "?item";
+        a rdf:Property .
+
+chembl:targetConfScore api:name "target_conf_score";
+        api:label "target_conf_score" ;
+        api:value "ChEMBL Target confidence score. An integer denoting the confidence of the target assigned. 0: Default value - Target unknown or has yet to be assigned; 1: Target assigned is non-molecular; 2: Target assigned is subcellular fraction; 3: Target assigned is molecular non-protein target; 4: Multiple homologous protein targets may be assigned; 5: Multiple direct protein targets may be assigned; 6: Homologous protein complex subunits assigned; 7: Direct protein complex subunits assigned; 8: Homologous single protein target assigned; 9: Direct single protein target assigned" ;
+        api:filterVariable "?conf_score" ;
+        rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A class URI from one of the supported hierarchies. e.g.: http://www.bioassayontology.org/bao#BAO_0000219" ;
+        rdfs:range rdfs:Resource .
+
+<http://www.ebi.ac.uk/chembl> api:name "chembl" .
+
+<http://rdf.ncats.nih.gov/opddr> api:name "opddr" .
+
+<http://rdf.ncats.nih.gov/opddr/pubchem> api:name "opddr-pubchem" .
+
+_:dataset api:name "dataset" ;
+	api:label "dataset" ;
+	api:value "The dataset to retrieve Assays from. One of: chembl, opddr, opddr-pubchem" ;
+	api:filterVariable "?dataset" ;
+	rdfs:subPropertyOf api:graphFilter ;
+        a rdf:Property .
+
+<#assayMemberViewer> a api:Viewer ;
+        api:name "assayMemberViewer" ;
+        api:template
+"
+?item dct:description ?assay_description ;
+        ops:assayFormat ?assay_format ;
+        chembl:assayType ?chembl_type ;
+        chembl:taxonomy ?organism ;
+        chembl:targetConfDesc ?conf_desc ;
+        ops:targetConfScore ?conf_score ;
+        ops:targetRelType ?rel_type ;
+        chembl:targetRelDesc ?rel_desc ;
+        void:inDataset ?dataset .
+?organism rdfs:label ?organism_name;
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
+?item a ?bao_type ;
+        skos:exactMatch ?pubchem_assay .
+?pubchem_assay dct:title ?assay_title ;
+        ops:assayStage ?assay_stage ;
+        void:inDataset <http://rdf.ncats.nih.gov/opddr/pubchem> .
+?assay_format rdfs:label ?assay_format_label ;
+        ops:definition ?assay_format_def ;
+        void:inDataset <http://www.bioassayontology.org> .
+?bao_type rdfs:label ?bao_label ;
+        ops:definition ?bao_def ;
+        void:inDataset <http://www.bioassayontology.org> .
+?assay_stage rdfs:label ?assay_stage_label ;
+        ops:definition ?assay_stage_def;
+        void:inDataset <http://www.bioassayontology.org> .
+";
+        api:where
+"
+{ SELECT * WHERE {
+{ SELECT DISTINCT ?child_node {
+	GRAPH <http://www.bioassayontology.org> {
+		?child_node rdfs:subClassOf* ?node_uri
+	}
+} }
+{
+        GRAPH <http://www.ebi.ac.uk/chembl> {
+		?item bao:BAO_0000205 ?child_node ;
+                	dct:description ?assay_description ;
+                        chembl:assayType ?chembl_type ;
+                        chembl:taxonomy ?organism ;
+                        chembl:organismName ?organism_name .
+		OPTIONAL { ?item chembl:targetConfScore ?conf_score_tmp }
+                BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
+                OPTIONAL { ?item chembl:targetConfDesc ?conf_desc }
+                OPTIONAL { ?item chembl:targetRelType ?rel_type ;
+                        chembl:targetRelDesc ?rel_desc }
+                FILTER(STRSTARTS(STR(?organism),'http://identifiers.org/taxonomy/'))
+		BIND(?child_node AS ?assay_format)
+        }
+        GRAPH <http://www.bioassayontology.org> {
+                ?child_node rdfs:label ?assay_format_label ;
+                        obo:IAO_0000115 ?assay_format_def .
+        }
+	BIND(<http://www.ebi.ac.uk/chembl> AS ?dataset)
+} UNION {
+	{
+		GRAPH <http://rdf.ncats.nih.gov/opddr> {
+			?pubchem_assay a ?child_node
+			BIND(?child_node AS ?bao_type)
+		}
+	        GRAPH <http://www.bioassayontology.org> {
+        	        ?child_node rdfs:label ?bao_label ;
+                	        obo:IAO_0000115 ?bao_def .
+		}
+		BIND(<http://rdf.ncats.nih.gov/opddr> AS ?dataset)
+	} UNION {
+		GRAPH <http://rdf.ncats.nih.gov/opddr/pubchem> {
+			?pubchem_assay bao:BAO_0000210 ?child_node .
+			BIND(?child_node AS ?assay_stage)
+		}
+		GRAPH <http://www.bioassayontology.org> {
+			?child_node rdfs:label ?assay_stage_label ;
+				obo:IAO_0000115 ?assay_stage_def .
+		}
+		BIND(<http://rdf.ncats.nih.gov/opddr/pubchem> AS ?dataset)
+	}
+        GRAPH <http://rdf.ncats.nih.gov/opddr> {
+                ?pubchem_assay skos:exactMatch ?item .
+        }
+        GRAPH <http://rdf.ncats.nih.gov/opddr/pubchem> {
+                ?pubchem_assay dct:title ?assay_title .
+        }
+}
+} }
+".
