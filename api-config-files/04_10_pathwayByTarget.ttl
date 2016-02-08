@@ -55,6 +55,7 @@
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
 		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
+		api:variable <http://purl.obolibrary.org/obo/NCBITaxon_562> ;
 		api:uriTemplate "/pathways/byTarget?uri={uri}" ;
 	        api:itemTemplate "http://www.wikipathways.org" ;
 		api:exampleRequestPath "/pathways/byTarget?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2Fac1191aa-d28f-4102-94ec-0b67b40aeade" ;
@@ -88,6 +89,7 @@
 <http://purl.obolibrary.org/obo/NCBITaxon_10116> api:name "Rattus norvegicus" .
 <http://purl.obolibrary.org/obo/NCBITaxon_4932> api:name "Saccharomyces cerevisiae" .
 <http://purl.obolibrary.org/obo/NCBITaxon_4577> api:name "Zea mays" .
+<http://purl.obolibrary.org/obo/NCBITaxon_562> api:name "Escherichia coli" .
 
 wp:organism api:name "pathway_organism" ;
 	api:label "pathway_organism" ;

@@ -20,6 +20,7 @@ class OpsIms {
 	    '?pw_uri' => 'http://identifiers.org/wikipathways/',
 	    '?pw_compound_uri' => '',
 	    '?pw_target_uri' => '',
+            '?pw_entity_uri' => '',
 	    '?pw_ref_uri' => 'http://identifiers.org/pubmed/',
 	    '?schembl_target_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/target/',
 	    '?schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
@@ -279,7 +280,7 @@ class OpsIms {
       else{
           $filter = " VALUES {$variableName} { <http://www.openphacts.org/api#no_mappings_found> }" ;
       }
-
+//      logDebug("FILTER clause: ". $filter);
       return $filter;
   }
   

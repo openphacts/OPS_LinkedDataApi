@@ -1,0 +1,287 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/>.
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix rel: <http://vocab.org/relationship/> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix drugbank: <http://bio2rdf.org/drugbank_vocabulary:> .
+@prefix sio: <http://semanticscience.org/resource/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix cheminf: <http://semanticscience.org/resource/> .
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix wp: <http://vocabularies.wikipathways.org/wp#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix sioc: <http://sioc-project.org/ontology#> .
+
+<#pathway> a api:API ;
+        rdfs:label "Pathway"@en ;
+        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:contentNegotiation api:parameterBased ;
+        api:variable <#input> ;
+        api:variable wp:organism ; 
+	api:variable _:direction ;
+	api:variable _:interaction_type ;
+	api:dataset <http://www.wikipathways.org> ;
+	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
+	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
+	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
+	api:vocabulary <http://purl.org/dc/terms/> ;
+	api:description "An API configuration to return information about pathways." ;
+	api:endpoint [ 
+		a api:ListEndpoint ;
+		api:name "Pathway Interactions for Entity: List" ;
+		api:description "A list of interactions that the entity specified is a part of.";
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7165> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_3702> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1423> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9913> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_6239> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9615> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7955> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_7227> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9796> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9031> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_5518> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9606> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10090> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_1773> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4530> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_9598> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_10116> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4932> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_4577> ;
+                api:variable <http://purl.obolibrary.org/obo/NCBITaxon_562> ;
+		api:variable wp:source ;
+		api:variable wp:target ;
+		api:variable wp:DirectedInteraction ;
+		api:variable wp:UndirectedInteraction ;
+		api:uriTemplate "/pathways/interactions/byEntity?uri={uri}" ;
+	        api:itemTemplate "{uri}" ;
+		api:exampleRequestPath "/pathways/interactions/byEntity?uri=http%3A%2F%2Fidentifiers.org%2Fensembl%2FENSBTAG00000004037" ;
+		api:selector [
+			api:where "
+GRAPH <http://www.wikipathways.org> {
+	?entity dc:identifier|wp:bdbUniprot ?pw_entity_uri ;
+		dcterms:isPartOf ?rev .
+	?rev dc:identifier ?pathway ;
+		dc:title ?title ;
+		wp:organism ?organism_uri ;
+		wp:organismName ?organism .
+	OPTIONAL {
+		?entity dcterms:isPartOf ?item .
+		?item a wp:Interaction ;
+			dcterms:isPartOf ?rev .
+		MINUS { ?item a wp:DirectedInteraction }
+                MINUS { ?item a wp:ComplexBinding }
+		BIND ( wp:UndirectedInteraction AS ?dir_interaction_type)
+	} 
+	OPTIONAL {
+		?entity dcterms:isPartOf ?item .
+                ?item a wp:DirectedInteraction,
+				?dir_interaction_type ;
+                        ?rel ?pw_entity_uri ; 
+                        dcterms:isPartOf ?rev .
+	}
+	FILTER ( BOUND( ?item ) )
+}
+"
+		];
+		api:viewer <#pathwayInteractionsByEntityViewer> ;
+		api:defaultViewer <#pathwayInteractionsByEntityViewer> . ] .
+
+<http://www.wikipathways.org> api:label "WikiPathways" .
+
+<http://vocabularies.wikipathways.org/wp#> api:label "wikipathways" .
+<http://xmlns.com/foaf/0.1/> api:label "foaf" .
+<http://purl.org/dc/elements/1.1/> api:label "dc" .
+<http://purl.org/dc/terms/> api:label "dcterms" .
+
+<http://purl.obolibrary.org/obo/NCBITaxon_7165> api:name "Anopheles gambiae" .
+<http://purl.obolibrary.org/obo/NCBITaxon_3702> api:name "Arabidopsis thaliana" .
+<http://purl.obolibrary.org/obo/NCBITaxon_1423> api:name "Bacillus subtilis" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9913> api:name "Bos taurus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_6239> api:name "Caenorhabditis elegans" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9615> api:name "Canis familiaris" .
+<http://purl.obolibrary.org/obo/NCBITaxon_7955> api:name "Danio rerio" .
+<http://purl.obolibrary.org/obo/NCBITaxon_7227> api:name "Drosophila melanogaster" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9796> api:name "Equus caballus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9031> api:name "Gallus gallus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_5518> api:name "Gibberella zeae" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9606> api:name "Homo sapiens" .
+<http://purl.obolibrary.org/obo/NCBITaxon_10090> api:name "Mus musculus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_1773> api:name "Mycobacterium tuberculosis" .
+<http://purl.obolibrary.org/obo/NCBITaxon_4530> api:name "Oryza sativa" .
+<http://purl.obolibrary.org/obo/NCBITaxon_9598> api:name "Pan troglodytes" .
+<http://purl.obolibrary.org/obo/NCBITaxon_10116> api:name "Rattus norvegicus" .
+<http://purl.obolibrary.org/obo/NCBITaxon_4932> api:name "Saccharomyces cerevisiae" .
+<http://purl.obolibrary.org/obo/NCBITaxon_4577> api:name "Zea mays" .
+<http://purl.obolibrary.org/obo/NCBITaxon_562> api:name "Escherichia coli" .
+
+wp:source api:name "down" .
+wp:target api:name "up" .
+
+wp:DirectedInteraction api:name "directed" .
+wp:UndirectedInteraction api:name "undirected" .
+
+wp:organism api:name "pathway_organism" ;
+        api:label "pathway_organism" ;
+        api:value "The rdfs:label for the pathway organism (URL encode). e.g.: Homo sapiens." ;
+        api:filterVariable "?rev";
+        a rdf:Property .
+
+_:direction api:name "direction" ;
+	api:label "direction" ;
+	api:value "One of: 'up', 'down'. 'up' returns only Interactions where the specifies entity is the target, and 'down' returns only Interactions where the specified entity is the source." ;
+	api:filterVariable "?rel" ;
+	a rdf:Property ;
+	rdfs:subPropertyOf api:graphFilter . 
+
+_:interaction_type api:name "interaction_type" ;
+	api:label "interaction_type" ;
+	api:value "The type of interaction to return. One of: 'directed', 'undirected'" ;
+	api:filterVariable "?dir_interaction_type" ;
+	a rdf:Property ;
+	rdfs:subPropertyOf api:graphFilter .
+
+<#input> api:name "uri" ;
+	api:label "uri";
+	api:value "An Entity URI. e.g.: http://identifiers.org/ensembl/ENSBTAG00000004037" ;
+	rdfs:range rdfs:Resource .
+
+<#pathwayInteractionsByEntityViewer> a api:Viewer ;
+	api:name "pathwayInteractionsByEntityViewer" ;
+	api:template 
+"
+?pathway sioc:latest_version ?rev ;
+	wp:organism ?organism_uri ;
+	dc:title ?title ; 
+	void:inDataset <http://www.wikipathways.org> .
+?organism_uri rdfs:label ?organism ;
+        void:inDataset <http://www.wikipathways.org> .
+?interaction a wp:Interaction ;
+	wp:participants ?participants ;
+	dcterms:isPartOf ?pathway ;
+        void:inDataset <http://www.wikipathways.org> .
+?participants a ?part_type ;
+	wp:participants ?c_part ;
+	ops:source ?part_source ;
+        ops:target ?part_target ;
+        void:inDataset <http://www.wikipathways.org> .
+?dir_interaction a wp:DirectedInteraction ;
+	ops:source ?source ;
+	ops:target ?target ;
+	dcterms:isPartOf ?pathway ;
+        void:inDataset <http://www.wikipathways.org> .
+?source a ?source_type ;
+	wp:participants ?s_dir_c_part ;
+	ops:source ?source_source ;
+        ops:target ?source_target ;
+        void:inDataset <http://www.wikipathways.org> .
+?target a ?target_type ;
+	wp:participants ?t_dir_c_part ;
+	ops:source ?target_source ;
+        ops:target ?target_target ;
+	void:inDataset <http://www.wikipathways.org> .
+?c_part a ?c_part_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?s_dir_c_part a ?s_dir_c_part_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?t_dir_c_part a ?t_dir_c_part_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?part_source a ?part_source_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?part_target a ?part_target_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?source_source a ?source_source_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?source_target a ?source_target_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?target_source a ?target_source_type ;
+        void:inDataset <http://www.wikipathways.org> .
+?target_target a ?target_target_type ;
+        void:inDataset <http://www.wikipathways.org> .
+";
+	api:where
+"
+GRAPH <http://www.wikipathways.org> {
+	?rev dc:identifier ?pathway ;
+		dc:title ?title ;
+		wp:organism ?organism_uri ;
+		wp:organismName ?organism .
+	?item dcterms:isPartOf ?rev .
+	OPTIONAL {
+		?item a wp:Interaction ;
+			wp:participants ?participants .
+		MINUS {	?item a wp:DirectedInteraction }
+		MINUS {	?item a wp:ComplexBinding }
+		?participants a ?part_type_tmp .
+		FILTER ( ?part_type_tmp != wp:DataNode || STRSTARTS( STR( ?part_type_tmp ), 'http://identifiers.org/wikipathways/WP' ) )
+		OPTIONAL {
+			?participants wp:participants ?c_part .
+			MINUS {	?participants wp:source [] }
+			?c_part a ?c_part_type .
+			FILTER ( ?c_part_type != wp:DataNode || STRSTARTS( STR( ?c_part_type ), 'http://identifiers.org/wikipathways/WP' ) )
+		}
+		OPTIONAL {
+			?participants wp:source ?part_source .
+			?participants wp:target ?part_target .
+			?part_source a ?part_source_type .
+			?part_target a ?part_target_type .
+			FILTER ( ?part_source_type != wp:DataNode || STRSTARTS( STR( ?part_source_type ), 'http://identifiers.org/wikipathways/WP' ) )
+			FILTER ( ?part_target_type != wp:DataNode || STRSTARTS( STR( ?part_target_type ), 'http://identifiers.org/wikipathways/WP' ) )
+			BIND ( true AS ?part_directed )
+		}
+		BIND ( ?item AS ?interaction )
+	}
+	OPTIONAL {
+		?item a wp:DirectedInteraction ;
+			wp:source ?source ;
+			wp:target ?target .
+		?source a ?source_type_tmp .
+		?target a ?target_type_tmp .
+		FILTER ( ?source_type_tmp != wp:DataNode || STRSTARTS( STR( ?source ), 'http://identifiers.org/wikipathways/WP' ) )
+		FILTER ( ?target_type_tmp != wp:DataNode || STRSTARTS( STR( ?target ), 'http://identifiers.org/wikipathways/WP' ) )
+		OPTIONAL {
+			?source wp:participants ?s_dir_c_part .
+			MINUS {	?source wp:source [] }
+			?s_dir_c_part a ?s_dir_c_part_type .
+			FILTER ( ?s_dir_c_part_type != wp:DataNode || STRSTARTS( STR( ?s_dir_c_part ), 'http://identifiers.org/wikipathways/WP' ) )
+		}
+		OPTIONAL {
+			?target wp:participants ?t_dir_c_part .
+			MINUS {	?target wp:source [] }
+			?t_dir_c_part a ?t_dir_c_part_type .
+			FILTER ( ?t_dir_c_part_type != wp:DataNode || STRSTARTS( STR( ?t_dir_c_part ), 'http://identifiers.org/wikipathways/WP' ) )
+		}
+		OPTIONAL {
+			?source wp:source ?source_source .
+			?source wp:target ?source_target .
+			?source_source a ?source_source_type .
+			?source_target a ?source_target_type .
+			FILTER ( ?source_source_type != wp:DataNode || STRSTARTS( STR( ?source_source ), 'http://identifiers.org/wikipathways/WP' ) )
+			FILTER ( ?source_target_type != wp:DataNode || STRSTARTS( STR( ?source_target ), 'http://identifiers.org/wikipathways/WP' ) )
+			BIND ( true AS ?source_directed )
+		}
+		OPTIONAL {
+			?target wp:source ?target_source .
+			?target wp:target ?target_target .
+			?target_source a ?target_source_type .
+			?target_target a ?target_target_type .
+			FILTER ( ?target_source_type != wp:DataNode || STRSTARTS( STR( ?target_source ), 'http://identifiers.org/wikipathways/WP' ) )
+			FILTER ( ?target_target_type != wp:DataNode || STRSTARTS( STR( ?target_target ), 'http://identifiers.org/wikipathways/WP' ) )
+			BIND ( true AS ?target_directed ) 
+		}
+		BIND ( ?item AS ?dir_interaction )
+	}
+        BIND ( IF ( ?part_directed, wp:DirectedInteraction, ?part_type_tmp ) AS ?part_type )
+	BIND ( IF ( ?source_directed, wp:DirectedInteraction, ?source_type_tmp ) AS ?source_type )
+	BIND ( IF ( ?target_directed, wp:DirectedInteraction, ?target_type_tmp ) AS ?target_type )
+}
+" .
