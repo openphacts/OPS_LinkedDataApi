@@ -26,7 +26,7 @@
 
 <#tissue> a api:API ;
         rdfs:label "Tissue"@en ;
-        api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ; 
 	api:variable wi:evidence ;
@@ -59,7 +59,7 @@
 obo-rel:has_quality api:name "quality" ;
 	api:label "quality" ;
 	api:value "One of: none, moderate, high, low, medium, negative, positive, strong, weak." ;
-	api:filterVariable "?nextprot_uri" ;
+	api:filterVariable "?nextprot_target_uri" ;
 	a rdf:Property .
 
 wi:evidence api:name "evidence" ;
@@ -77,9 +77,8 @@ wi:evidence api:name "evidence" ;
 GRAPH <http://purl.uniprot.org> {
         ?uniprot_target_uri [] []
 }
-BIND(IRI(CONCAT('http://www.nextprot.org/db/search#NX_',STRAFTER(STR(?uniprot_target_uri),'http://purl.uniprot.org/uniprot/'))) AS ?nextprot_uri)
 GRAPH ?item {
-        ?nextprot_uri bfo:BFO_0000066 ?tissue ;
+        ?nextprot_target_uri bfo:BFO_0000066 ?tissue ;
                 obo-rel:has_quality ?quality .
 }
         ?nanopub ns:hasAssertion ?item ;

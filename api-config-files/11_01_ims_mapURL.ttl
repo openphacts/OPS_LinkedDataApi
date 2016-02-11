@@ -6,7 +6,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "Mapping service betweem URLs"@en;
-	api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#Uri> ;
 	api:variable <#targetUriPattern> ;
@@ -19,7 +19,7 @@
 		api:enableCache true ;
 		api:description "A set of URLs associated to the input URL." ;
 		api:uriTemplate "/mapUri?Uri={Uri}" ;
-		api:externalRequestTemplate "http://ops-ims-15:8080/QueryExpander/mapUri?Uri={Uri}" ;
+		api:externalRequestTemplate "http://ops-ims-20:8080/QueryExpander/mapUri?Uri={Uri}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
 		api:exampleRequestPath "/mapUri?Uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
 		api:viewer <#externalResponseViewer> ;

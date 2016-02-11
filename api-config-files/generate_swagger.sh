@@ -1,6 +1,6 @@
 echo '{
-  "basePath": "https://beta.openphacts.org/1.4",
-  "apiVersion": "v1.4",
+  "basePath": "https://beta.openphacts.org/2.0",
+  "apiVersion": "v2.0",
   "apis": [' 
 lastfile=`ls *.ttl | tail -1`
 for file in ./*.ttl
@@ -77,7 +77,7 @@ do
 				echo '              "required": true,'
 				echo '              "paramType": "path",'
 				echo '              "dataType": "string"'
-			elif [[ "$var" == "chembl:standardValue" || "$var" == "chembl:pChembl" ]]
+			elif [[ "$var" == "chembl:standardValue" || "$var" == "chembl:pChembl" || "$var" == "schembl:SCCO_000028" || "$var" == "schembl:SCCO_000038" ]]
 			then
 				echo '              "dataType": "double",'
 				echo '              "paramType": "query"'

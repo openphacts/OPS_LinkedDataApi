@@ -22,7 +22,7 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://ops-virt:8895/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8896/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ;
         api:variable wp:organism ; 
@@ -109,28 +109,28 @@ wp:organism api:name "pathway_organism" ;
 	dc:identifier ?identifier ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
-	dcterms:hasPart ?pw_uri ;
+	dcterms:hasPart ?pw_target_uri ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism . 
-?pw_uri a wp:GeneProduct ; 
-	skos:exactMatch ?cw_uri .
-?cw_uri skos:prefLabel ?prefLabel .
+?pw_target_uri a ?type ; 
+	skos:exactMatch ?cw_target_uri .
+?cw_target_uri skos:prefLabel ?prefLabel .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
+	?gene_product dc:identifier|wp:bdbUniprot ?pw_target_uri ;
+		dcterms:isPartOf ?item .
 	?item a wp:Pathway ;
 		dc:title ?title ; 
-		wp:organism ?organism_uri ; 
+		wp:organism ?organism_uri ;
+		wp:organismName ?organism ; 
 		foaf:page ?page ;
 		dc:identifier ?identifier . 
-        ?gene_product dcterms:isPartOf ?item .
-        { ?gene_product a wp:GeneProduct }
-	UNION { ?gene_product a wp:Protein }
-        ?gene_product dc:identifier|wp:bdbUniprot ?pw_uri .
-	?organism_uri rdfs:label ?organism . 
+        VALUES ?type { wp:GeneProduct wp:Protein }
+	?gene_product a ?type
 	OPTIONAL { ?item dcterms:description ?description }
 	OPTIONAL { ?item wp:pathwayOntology ?ontology }
 }
 OPTIONAL { GRAPH <http://www.conceptwiki.org> {
-	?cw_uri skos:prefLabel ?prefLabel .
+	?cw_target_uri skos:prefLabel ?prefLabel .
 } } " .

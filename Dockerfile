@@ -28,12 +28,12 @@ RUN sed -i "s|'IMS_EXPAND_ENDPOINT'.*|'IMS_EXPAND_ENDPOINT', 'http://ims:8080/Qu
 RUN sed -i "s|'PUELIA_MEMCACHE_HOST'.*|'PUELIA_MEMCACHE_HOST', 'memcached');|" deployment.settings.php
 # Safe local hostnames by default
 RUN sed -i "s,http://[^/]*/web-ws/concept,http://conceptwiki:8080/web-ws/concept,g" api-config-files/*ttl
-RUN sed -i "s,http.*/v1/JSON.ashx,http://crs/JSON.ashx,g" api-config-files/*ttl
+RUN sed -i "s,http.*/JSON.ashx,http://crs/JSON.ashx,g" api-config-files/*ttl deployment.settings.php
 ## but will be replaced with system environment variables:
 
 #ENV CONCEPTWIKI http://www.conceptwiki.org/web-ws/concept
 ENV CONCEPTWIKI http://conceptwiki:8080/web-ws/concept
-#ENV CRS https://ops.rsc.org/api/v1/
+#ENV CRS http://ops2.rsc.org/ops/JSON.ashx
 ENV CRS https://crs/api/v1/
 # ..as injected by the entrypoint
 ADD docker-entrypoint.sh /

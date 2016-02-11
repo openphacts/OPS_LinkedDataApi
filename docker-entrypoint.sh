@@ -8,7 +8,7 @@ fi
 
 if [ ! -z "$CRS" ] ; then
 	echo Using CRS instance at $CRS
-	sed -i "s,http.*/JSON.ashx,$CRS/JSON.ashx,g" /var/www/html/api-config-files/*ttl
+	sed -i "s,http.*/JSON.ashx,$CRS/JSON.ashx,g" /var/www/html/api-config-files/*ttl /var/www/html/deployment.settings.php
 fi
 
 exec "$@"
