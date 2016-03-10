@@ -1,6 +1,6 @@
 {
     "swagger": "2.0",
-    "host": "beta.openphacts.org",
+    "host": "api.openphacts.org",
     "basePath": "/2.0",
     "schemes": [
         "https"
