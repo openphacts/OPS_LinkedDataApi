@@ -6,6 +6,7 @@
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix ops: <http://www.openphacts.org/api#> .
 @prefix void: <http://rdfs.org/ns/void#> .
+@prefix prov: <http://www.w3.org/ns/prov#>.
 
 <#patent> a api:API ;
 	rdfs:label "Patent"@en ;
@@ -42,6 +43,7 @@
 ?class_res ops:classificationCode ?class_code ;
 	ops:classificationSystem ?class_sys ;
 	void:inDataset <http://www.ebi.ac.uk/surechembl> .
+?patent_uri prov:alternateOf ?related_patent .
 " ;
 	api:where 
 "
@@ -57,6 +59,11 @@ GRAPH <http://www.ebi.ac.uk/surechembl> {
 		?patent_uri schembl:SCCO_000009 ?class_res .
 		?class_res schembl:SCCO_000033 ?class_code ;
 		schembl:SCCO_000034 ?class_sys .
+	}
+	OPTIONAL {
+		?patent_uri schembl:SCCO_000008 ?family .
+		?related_patent schembl:SCCO_000008 ?family .
+		FILTER(?related_patent != ?patent_uri) 
 	}
 }
 ".
