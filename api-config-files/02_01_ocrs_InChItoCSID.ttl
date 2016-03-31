@@ -19,7 +19,7 @@
 		api:name "Chemical Structure Conversion: Inchi to URL" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure?inchi={inchi}" ;
-		api:externalRequestTemplate "http://ops2.rsc.org/ops/JSON.ashx?op=ConvertTo&convertOptions.Direction=InChi2CSID&convertOptions.Text={inchi}" ;
+		api:externalRequestTemplate "https://ops2.rsc.org/ops/json.ashx?op=ConvertTo&convertOptions.Direction=InChi2CSID&convertOptions.Text={inchi}" ;
 		api:externalResponseHandler "converters/chemspider_id_xml_to_rdf.php" ;
 		api:exampleRequestPath "/structure?inchi=InChI%3D1S%2FC22H44N2%2Fc1-5-10-21(11-6-2)12-14-22(15-13-21)16-19-24(20-22)18-9-17-23(7-3)8-4%2Fh5-20H2%2C1-4H3" ;
 		api:viewer <#externalResponseViewer> ;

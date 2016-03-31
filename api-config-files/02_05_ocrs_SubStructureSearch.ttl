@@ -24,7 +24,7 @@
 		api:name "Chemical Structure Search: Substructure" ;
 		api:enableCache false ;
 		api:uriTemplate "/structure/substructure?searchOptions.Molecule={searchOptions.Molecule}" ;
-		api:externalRequestTemplate "http://ops2.rsc.org/ops/JSON.ashx?op=SubStructureSearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "https://ops2.rsc.org/ops/json.ashx?op=SubStructureSearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/structure/substructure?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O" ;
 		api:viewer <#externalResponseViewer> ;
