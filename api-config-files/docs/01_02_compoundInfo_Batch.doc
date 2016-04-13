@@ -25,3 +25,14 @@ ops:molformul <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?molformula </span> ;
 ?interaction <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:interactingDrug ?interacting_drug </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> drugbank:text ?interaction_text </span> ;
 	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> </span> .
+?ims_schembl_compound_uri  <span style="BACKGROUND-COLOR: #FFFFCC"> ops:smiles ?s_smiles </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:inchi ?s_inchi </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:inchiKey ?s_inchiKey </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:logp ?s_logp </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:molweight ?s_molweight </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:hbd ?s_hbd </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:hba ?s_hba </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:rings ?s_rings </span> ;
+        <span style="BACKGROUND-COLOR: #FFFFCC"> ops:rotable_bonds ?s_rotable_bonds </span> ;
+        <span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://rdf.ebi.ac.uk/dataset/surechembl/1.1/void.ttl#surechembl_rdf_molecule_dataset> .
+
