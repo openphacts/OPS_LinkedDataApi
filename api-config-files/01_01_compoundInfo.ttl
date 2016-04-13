@@ -50,7 +50,7 @@
 <http://semanticscience.org/resource/> api:label "sio" .
 <http://bio2rdf.org/drugbank_vocabulary:> api:label "drugbank" .
 <http://www.w3.org/2004/02/skos/core#> api:label "skos" .
-<http://www.ebi.ac.uk/surechembl> api:label "surechembl" .
+<http://rdf.ebi.ac.uk/dataset/surechembl/1.1/void.ttl#surechembl_rdf_molecule_dataset> api:label "surechembl molecules" .
 
 <#input> api:name "uri" ;
 	api:label "uri";
