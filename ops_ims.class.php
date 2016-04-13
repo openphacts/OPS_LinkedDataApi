@@ -39,6 +39,7 @@ class OpsIms {
             '?ims_ocrs_compound_uri'=>'http://ops.rsc.org/OPS' ,
             '?ims_db_compound_uri'=>'http://bio2rdf.org/drugbank:',
             '?ims_db_target_uri'=>'http://bio2rdf.org/drugbank',
+	    '?ims_schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
             '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
 	    '?ims_umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
             '?ims_omim_disease_uri' => 'http://identifiers.org/omim/',
