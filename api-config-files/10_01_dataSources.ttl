@@ -12,7 +12,7 @@
 
 <#dataSources> a api:API ;
         rdfs:label "Data Sources"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://ops-virt:8897/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:vocabulary <http://rdfs.org/ns/void#> ;
 	api:description "An API configuration to return information about the loaded data sources" ;

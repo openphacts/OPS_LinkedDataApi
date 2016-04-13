@@ -7,7 +7,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8897/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable cheminf:CHEMINF_000399 ;
 	api:dataset <http://ops.rsc.org> ;

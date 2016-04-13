@@ -9,7 +9,7 @@
 
 <#patent> a api:API ;
 	rdfs:label "Patent"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://ops-virt:8897/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:variable schembl:SCCO_000028 ;
