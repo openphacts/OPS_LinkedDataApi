@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
-    "host": "ops2.few.vu.nl",
-    "basePath": "/2.0",
+    "host": "beta.openphacts.org",
+    "basePath": "/2.1",
     "schemes": [
         "https"
     ],
