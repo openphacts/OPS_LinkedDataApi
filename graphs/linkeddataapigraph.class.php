@@ -40,7 +40,7 @@ class LinkedDataApiGraph extends PueliaGraph {
         $this->_current_page_uri = $pageUri;
         $container = array(
             'format' => 'linked-data-api',
-            "version" => "2.0",
+            "version" => "2.1",
             "result" => $this->_resource_to_simple_json_object($pageUri, $pageUri, false, array()),
         );
         $index = $this->get_index();
@@ -268,7 +268,7 @@ class LinkedDataApiGraph extends PueliaGraph {
         $format = $dom->createAttribute('format');
         $format->appendChild($dom->createTextNode('linked-data-api'));
         $version = $dom->createAttribute('version');
-        $version->appendChild($dom->createTextNode('2.0'));
+        $version->appendChild($dom->createTextNode('2.1'));
         $resultEl->appendChild($format);
         $resultEl->appendChild($version);   
 
