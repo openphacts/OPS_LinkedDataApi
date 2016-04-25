@@ -1,0 +1,7 @@
+?patent_uri <span style=\"BACKGROUND-COLOR: #FFFFCC\"> dct:title ?title </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:datePublished ?date </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:classification ?class_res </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.ebi.ac.uk/surechembl> </span> .
+?class_res <span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationCode ?class_code </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops:classificationSystem ?class_sys </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset <http://www.ebi.ac.uk/surechembl> </span> .

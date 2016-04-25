@@ -400,9 +400,11 @@ class SimpleGraph {
    * @param string/array languages an ordered array of language preferences
    * @return string the first literal value found or the supplied default if no values were found
    */
-  function get_first_literal($s, $properties, $default = null, $languages = array('') ) {
+  /*function get_first_literal($s, $properties, $default = null, $languages = array('') ) {
     if (!$this->has_triples_about($s)) { return $default; }
-    if (!is_array($properties)) { $properties = array($properties); }
+    if (!is_array($properties)) { $properties = array($properties); 
+    }
+    
     if (!is_array($languages)) { $languages = array($languages); }
     foreach($languages as $language) {
       foreach($properties as $property) {
@@ -418,6 +420,31 @@ class SimpleGraph {
       }
     }
     return $default;
+  }*/
+  
+  /**
+   * Fetch the first literal value for a given subject and predicate. If there are multiple possible values then one is selected at random.
+   * @param string s the subject to search for
+   * @param string property the predicate(s) to search for
+   * @param string default a default value to use if no literal values are found
+   * @param string/array languages an ordered array of language preferences
+   * @return string the first literal value found or the supplied default if no values were found
+   */
+  function get_first_literal($s, $property, $default = null, $languages = array('') ) {  
+      if (!is_array($languages)) { $languages = array($languages); }
+      foreach($languages as $language) {
+          if (array_key_exists($s, $this->_index) && array_key_exists($property, $this->_index[$s]) ){
+              foreach ($this->_index[$s][$property] as $value) {
+                  if ($value['type'] != 'literal') {
+                      continue;
+                  }
+                  if ( (isset($value['lang']) && strtolower($value['lang']) == strtolower($language)) || empty($language) ) {
+                      return $value['value'];
+                  }
+              }
+          }
+      }
+      return $default;
   }
 
   /**
@@ -641,7 +668,7 @@ class SimpleGraph {
   }
 
 
-  private function _add_arc2_triple_list(&$triples) {
+  public function _add_arc2_triple_list(&$triples) {
     $bnode_index = array();
 
     // We can safely preserve bnode labels if the graph is empty, otherwise we need to rewrite them

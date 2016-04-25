@@ -1,6 +1,6 @@
 <?php
-require_once '../graphs/vocabularygraph.class.php';
-require_once '../lda-request.class.php';
+require_once 'graphs/vocabularygraph.class.php';
+require_once 'lda-request.class.php';
 
 class VocabularyGraphTest extends PHPUnit_Framework_TestCase {
     

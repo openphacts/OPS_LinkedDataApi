@@ -5,11 +5,16 @@ require 'converters/conceptwiki_util.inc.php';
 
 $paramNameToPredicate = array( 'q' => 'searchTerm',
                             'limit' => 'limit',
-                            'uuid' => 'tagUUID' );
+                            'uuid' => 'tagUUID',
+			    'branch' => 'branch' );
 
 $decodedResponse = json_decode($response);
 if ($decodedResponse===FALSE OR $decodedResponse===NULL){
     throw new ErrorException("Error decoding external service response: ".$response);
+}
+
+if (empty($decodedResponse)){
+    throw new EmptyResponseException("No results returned from the ConceptWiki");
 }
 
 $searchType = getSearchType($this->Request->getPathWithoutExtension());
@@ -44,12 +49,14 @@ foreach ($decodedResponse as $elem){
         $tagCounter++;
     }
     
-    foreach ($elem->{"urls"} as $url){
-        $urlBNode = '_:urlNode'.$urlCounter;
-        $this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $urlBNode);
-        $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#url', $url->{'value'});
-        $this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#matchType', $url->{'type'});
-        $urlCounter++;
+    if (isset($elem->{"urls"})){
+    	foreach ($elem->{"urls"} as $url){
+    		$urlBNode = '_:urlNode'.$urlCounter;
+    		$this->DataGraph->add_resource_triple($uuidNode, SKOS.'exactMatch', $urlBNode);
+    		$this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#url', $url->{'value'});
+    		$this->DataGraph->add_resource_triple($urlBNode, CONCEPTWIKI_PREFIX.'#matchType', $url->{'type'});
+    		$urlCounter++;
+    	}
     }
 }
 

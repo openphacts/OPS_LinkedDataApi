@@ -1,0 +1,5 @@
+?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span> .
+?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> .
+?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;
+	<span style=\"BACKGROUND-COLOR: #A9A9F5\"> dcterms:hasPart ?reference </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.wikipathways.org> </span> .

@@ -2,6 +2,8 @@
 
 $appRoot = dirname(__FILE__);
 set_include_path(get_include_path() . PATH_SEPARATOR . $appRoot . ':lib/' );
+define('MAX_RESPONSE', 80*1024*1024);
+define('MEMCACHED_LIMIT', 1024*1024);//1024*1024 - 1MB is the memcached limit
 define('PUELIA_VERSION', '0.9');
 define('PUELIA_RDF_ACCEPT_MIMES', 'application/rdf+xml;q=0.8,*/*;q=0.1');
 define('PUELIA_SPARQL_ACCEPT_MIMES', 'application/sparql-results+json;q=1,application/sparql-results+xml;q=0.8,*/*;q=0.1');
@@ -100,7 +102,7 @@ function queryStringToParams($query){
     $params = array();
     foreach($pairs as $pair){
         if($tuple = explode('=', $pair) AND isset($tuple[1])){
-            $params[urldecode($tuple[0])]=urldecode($tuple[1]);
+            $params[urldecode($tuple[0])]=trim(urldecode($tuple[1]));
         }
     }
     return $params;

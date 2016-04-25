@@ -1,6 +1,6 @@
 <?php
-require_once '../graphs/linkeddataapigraph.class.php';
-require_once '../graphs/configgraph.class.php';
+require_once 'graphs/linkeddataapigraph.class.php';
+require_once 'graphs/configgraph.class.php';
 
 class LinkedDataApiGraphTest extends PHPUnit_Framework_TestCase {
     

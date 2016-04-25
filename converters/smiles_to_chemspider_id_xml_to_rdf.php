@@ -1,22 +1,23 @@
 <?php
 
-define('CHEMSPIDER_NS', 'http://www.chemspider.com/');
-
 //extract inchi value from SMILES to InChI response
-$xmlData = simplexml_load_string($response);
-if ($xmlData==false){
-    throw new Exception("Error. External service returned: ".$response);
+$decodedResponse=json_decode($response);
+if ($decodedResponse===FALSE OR $decodedResponse===NULL){
+	throw new ErrorException("Unexpected results returned from ChemSpider: ".$response);
 }
 
-$ns = $xmlData->getDocNamespaces();
-if ($ns[''] !== CHEMSPIDER_NS){
-    throw new Exception("Converter - Chemspider Id XML to RDF: namespace ".$ns['']." not expected");
+if (!empty($decodedResponse->{"message"})){
+	throw new ErrorException("Results returned from ChemSpider contain warnings or errors: \"".$decodedResponse->{"message"}."\"");
 }
 
-$inchi = $xmlData[0];
+if ($decodedResponse->{"confidence"}!=100){
+	throw new ErrorException("Results returned from ChemSpider have only a confidence of ".$decodedResponse->{"confidence"}."%");
+}
+
+$inchi = $decodedResponse->{"mol"};
 
 //make request for InChI to CSID
-$inchiToCSIDRequest = 'http://www.chemspider.com/InChI.asmx/InChIToCSID?inchi='.urlencode($inchi);
+$inchiToCSIDRequest = CHEMSPIDER_ENDPOINT.'?op=ConvertTo&convertOptions.Direction=InChi2CSID&convertOptions.Text='.urlencode($inchi);
 
 $ch = curl_init($inchiToCSIDRequest);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

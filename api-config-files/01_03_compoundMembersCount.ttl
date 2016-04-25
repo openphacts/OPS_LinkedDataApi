@@ -1,0 +1,55 @@
+@base <http://www.openphacts.org/api#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix uniprot: <http://purl.uniprot.org/core/> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ops: <http://www.openphacts.org/api#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix chembl: <http://rdf.ebi.ac.uk/terms/chembl#> .
+@prefix obo: <http://www.semantic-systems-biology.org/ontology/rdf/OBO#> .
+@prefix goa: <http://www.semantic-systems-biology.org/ontology/rdf/GOA#> .
+
+<#compound> a api:API ;
+	rdfs:label "Compound"@en ;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#input> ;
+	api:dataset <http://www.ebi.ac.uk/chebi> ;
+	api:vocabulary rdfs: ;
+	api:vocabulary skos: ;
+	api:vocabulary uniprot: ;
+	api:vocabulary dcterms: ;
+	api:description "An API configuration to return information about compounds." ;
+	api:endpoint [ 
+		a api:ItemEndpoint ;
+		api:name "Compound Class Members: Count" ;
+		api:description "The number of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
+		api:itemTemplate "{uri}" ;
+		api:variable <http://www.ebi.ac.uk/chebi> ;
+		api:uriTemplate "/compound/members/count?uri={uri}" ;
+		api:exampleRequestPath "/compound/members/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_24431";
+		api:viewer <#compoundMemberCountViewer> ;
+		api:defaultViewer <#compoundMemberCountViewer> ] .
+
+<http://www.ebi.ac.uk/chebi> api:label "ChEBI Ontology" .
+<http://www.ebi.ac.uk/chebi> api:name "chebi" .
+
+<#input> api:name "uri" ;
+        api:label "uri";
+        api:value "A class URI from one of the supported hierarchies. e.g.: http://purl.obolibrary.org/obo/CHEBI_24431" ;
+        rdfs:range rdfs:Resource .
+
+<#compoundMemberCountViewer> a api:Viewer ;
+	api:name "compoundMemberCountViewer";
+	api:template 
+"?ops_item ops:memberCount ?count . ";
+	api:where 
+"{
+SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
+GRAPH <http://www.ebi.ac.uk/chebi/inference> {
+        ?child_node rdfs:subClassOf ?node_uri .
+}
+GRAPH <http://www.ebi.ac.uk/chebi> {
+        ?item rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
+}
+} }" .

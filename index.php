@@ -1,4 +1,6 @@
 <?php
+ini_set('memory_limit', '3072M');
+
 require 'deployment.settings.php';
 require_once 'lda.inc.php';
 require 'setup.php';
@@ -27,6 +29,23 @@ if(rtrim($Request->getPath(), '/')==$Request->getInstallSubDir()){
 	header("Location: ".CONFIG_URL, true, 303);
 	exit;
 } 	    
+
+
+if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
+        $swagger = file_get_contents("api-config-files/swagger.json", true);
+        $json = json_decode($swagger, true);
+        $base = preg_replace(",(.*)/[^/]*$,", '$1/', $Request->getUri());
+	if (isset($_SERVER["HTTP_X_3SCALE_PROXY_SECRET_TOKEN"])) {
+            $base = str_replace("http://", "https://", $base);
+        }
+        $json["basePath"] = $base;
+
+//phpinfo();
+        header("Content-Type: application/json");
+        echo json_encode($json); // JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
+}
+
 
 if (  
     defined("PUELIA_SERVE_FROM_CACHE") 
@@ -57,6 +76,11 @@ if (
 }
 else
 {
+	if (!(defined("PUELIA_SERVE_FROM_CACHE") AND PUELIA_SERVE_FROM_CACHE
+                                    AND !$Request->hasNoCacheHeader())){
+        	$HttpRequestFactory->read_from_cache(FALSE);
+    	}
+
 	logDebug("Generating fresh response");
 
   $files = glob('api-config-files/*.ttl');
@@ -124,7 +148,8 @@ else
 
 $Response->serve();
 if (defined("PUELIA_SERVE_FROM_CACHE") AND  PUELIA_SERVE_FROM_CACHE
-        AND !$Request->hasNoCacheHeader() AND $Response->cacheable)
+        AND !$Request->hasNoCacheHeader() 
+        AND $Response->cacheable)
 {
 	LinkedDataApiCache::cacheResponse($Request, $Response);
 }

@@ -1,0 +1,10 @@
+?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:page ?page </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:identifier ?identifier </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:description ?description </span> ;
+	<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:pathwayOntology ?ontology </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> dcterms:hasPart ?pw_uri </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset <http://www.wikipathways.org> </span> .
+?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> .
+?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> a wp:PublicationReference </span> .

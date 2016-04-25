@@ -1,0 +1,3 @@
+<http://www.ebi.ac.uk/chembl> <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_type ?item </span> .
+?item <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?type_label </span> ;
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .

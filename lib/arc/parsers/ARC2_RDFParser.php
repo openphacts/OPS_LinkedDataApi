@@ -20,7 +20,7 @@ class ARC2_RDFParser extends ARC2_Class {
   function __init() {/* proxy_host, proxy_port, proxy_skip, http_accept_header, http_user_agent_header, max_redirects, reader, skip_dupes */
     parent::__init();
     $this->a['format'] = $this->v('format', false, $this->a);
-    $this->keep_time_limit = $this->v('keep_time_limit', 1, $this->a);
+    $this->keep_time_limit = $this->v('keep_time_limit', 0, $this->a);
     $this->triples = array();
     $this->t_count = 0;
     $this->added_triples = array();

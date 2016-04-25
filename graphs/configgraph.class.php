@@ -172,7 +172,7 @@ class ConfigGraph extends PueliaGraph {
         foreach($api_subjects as $s){
             $configBase = $this->get_first_literal($s, API.'base');
             if(!empty($configBase)){
-                $requestUri = rtrim($requestUri, '/');
+                $requestUri = rtrim($requestUri, '/');                                                                                                                                                        
                 $configBase = rtrim($configBase, '/');
                 if(strpos($requestUri, $configBase)===0){
                     $this->apiUri = $s;
@@ -180,7 +180,13 @@ class ConfigGraph extends PueliaGraph {
                 }
             }
         }
-        return false;
+        return false;                                                                            
+    }
+    
+    function getExpansionVariable(){
+        $selector = $this->getSelectorUri();
+        $expansionVariable = $this->get_first_literal($selector, API.'expansionVariable');
+        return $expansionVariable;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     }
     
     function getApisWithoutBase(){
@@ -222,7 +228,7 @@ class ConfigGraph extends PueliaGraph {
     
     function getRequestMatchesFromUriTemplate($uriTemplate){
 
-        $path = $this->_request->getPathWithoutExtension();
+        $path = $this->_request->getPathWithoutVersionAndExtension();
 
 
         /* if an api:base is set, strip it from the request URI */
@@ -389,7 +395,7 @@ class ConfigGraph extends PueliaGraph {
                     isset($props['source']) AND $props['source']=='request' 
                     AND $name != 'uri')) {
                 # Antonis botch
-                $props['value'] = urlencode($props['value']);
+                $props['value'] = rawurlencode($props['value']);
             }
             
             $value = str_replace('{'.$name.'}', $props['value'], $value);
@@ -418,12 +424,12 @@ class ConfigGraph extends PueliaGraph {
         $paramBindings = $this->getRequestVariableBindings();
         
         //fill in api:externalRequestTemplate
-        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'externalRequestTemplate'));
+        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), API.'externalRequestTemplate');
         $externalRequest = $this->bindVariablesInValue($externalRequestTemplate, $paramBindings, RDFS.'Resource');
         
         //add params not appearing in the uri template
         $unreservedParams = $this->_request->getUnreservedParams();
-        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), API.'uriTemplate');
         foreach ($unreservedParams as $name => $value){
             if (strpos($uriTemplate, $name)===FALSE){
                 $valTokens = explode('|', $value);
@@ -440,7 +446,7 @@ class ConfigGraph extends PueliaGraph {
         $bindings = array_merge($this->getPathVariableBindings(),
                                 $this->getParamVariableBindings());
         
-        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), array(API.'uriTemplate'));
+        $uriTemplate = $this->get_first_literal($this->getEndpointUri(), API.'uriTemplate');
         $filledInUriTemplate = $this->bindURLEncodedVariablesInValue($uriTemplate, $bindings);
         return $filledInUriTemplate;
     }
@@ -769,19 +775,6 @@ class ConfigGraph extends PueliaGraph {
 
         $endpointType = $this->get_first_resource($this->getEndpointUri(), RDF_TYPE);
         
-        /*TODO check with Antonis
-        if($types = $this->get_resource_triple_values($this->getEndpointUri(), RDF_TYPE)){
-            if(in_array(API.'ItemEndpoint', $types)){
-                return API.'ItemEndpoint';
-            } else if(in_array(API.'ListEndpoint', $types)){
-                return API.'ListEndpoint';
-            } else if(in_array(PUELIA.'SearchEndpoint', $types)){
-                return PUELIA.'SearchEndpoint';
-                #Antonis botch
-            } else if(in_array(API.'OPSListEndpoint', $types)){
-                return API.'OPSListEndpoint';
-            }
-        }*/
         if ($endpointType==null){
             $itemTemplate = $this->getEndpointItemTemplate();
             if(!empty($itemTemplate)){

@@ -191,7 +191,7 @@ class ARC2_StoreEndpoint extends ARC2_Store {
     if ($errors = $this->getErrors()) {
       $this->setHeader('http', 'HTTP/1.1 400 Bad Request');
       $this->setHeader('content-type', 'Content-type: text/plain; charset=utf-8');
-      $this->result = join("\n", $errors);
+      $this->result = htmlspecialchars(join("\n", $errors));
       return true;
     }
     $qt = $infos['query']['type'];
@@ -425,15 +425,15 @@ class ARC2_StoreEndpoint extends ARC2_Store {
           $r .= '        "' .$var. '": {';
           if ($row[$var . ' type'] == 'uri') {
             $r .= $nl . '          "type": "uri",';
-            $r .= $nl . '          "value": "' .mysql_real_escape_string($row[$var], $con). '"';
+            $r .= $nl . '          "value": "' .mysqli_real_escape_string( $con, $row[$var]). '"';
           }
           elseif ($row[$var . ' type'] == 'bnode') {
             $r .= $nl . '          "type": "bnode",';
             $r .= $nl . '          "value": "' . substr($row[$var], 2) . '"';
           }
           else {
-            $dt = isset($row[$var . ' datatype']) ? ',' . $nl .'          "datatype": "' .mysql_real_escape_string($row[$var . ' datatype'], $con). '"' : '';
-            $lang = isset($row[$var . ' lang']) ? ',' . $nl .'          "xml:lang": "' .mysql_real_escape_string($row[$var . ' lang'], $con). '"' : '';
+            $dt = isset($row[$var . ' datatype']) ? ',' . $nl .'          "datatype": "' .mysqli_real_escape_string( $con, $row[$var . ' datatype']). '"' : '';
+            $lang = isset($row[$var . ' lang']) ? ',' . $nl .'          "xml:lang": "' .mysqli_real_escape_string( $con, $row[$var . ' lang']). '"' : '';
             $type = $dt ? 'typed-literal' : 'literal';
             $r .= $nl . '          "type": "' . $type . '",';
             $r .= $nl . '          "value": "' . $this->jsonEscape($row[$var]) . '"';
@@ -997,7 +997,7 @@ class ARC2_StoreEndpoint extends ARC2_Store {
           <p>
             <a href="?">This interface</a> implements 
             <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL</a> and
-            <a href="http://arc.semsol.org/docs/v2/sparql+">SPARQL+</a> via <a href="http://www.w3.org/TR/rdf-sparql-protocol/#query-bindings-http">HTTP Bindings</a>. 
+            <a href="https://github.com/semsol/arc2/wiki/SPARQL%2B">SPARQL+</a> via <a href="http://www.w3.org/TR/rdf-sparql-protocol/#query-bindings-http">HTTP Bindings</a>. 
           </p>
           <p>
             Enabled operations: ' . join(', ', $this->getFeatures()) . '

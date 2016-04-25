@@ -6,7 +6,6 @@
  * @license http://arc.semsol.org/license
  * @homepage <http://arc.semsol.org/>
  * @package ARC2
- * @version 2010-11-16
 */
 
 ARC2::inc('RDFParser');
@@ -47,7 +46,7 @@ class ARC2_RDFXMLParser extends ARC2_RDFParser {
     /* parse */
     $first = true;
     while ($d = $this->reader->readStream()) {
-      if (!$this->keep_time_limit) @set_time_limit($this->v('time_limit', 60, $this->a));
+      if (!$this->keep_time_limit) @set_time_limit($this->v('time_limit', 900, $this->a));
       if ($iso_fallback && $first) {
         $d = '<?xml version="1.0" encoding="ISO-8859-1"?>' . "\n" . preg_replace('/^\<\?xml [^\>]+\?\>\s*/s', '', $d);
         $first = false;
@@ -447,7 +446,7 @@ class ARC2_RDFXMLParser extends ARC2_RDFParser {
     $data = isset($s['o_xml_data']) ? $s['o_xml_data'] : '';
     $ns = isset($s['ns']) ? $s['ns'] : array();
     $parts = $this->splitURI($t);
-    if (count($parts) === 1) {
+    if ((count($parts) === 1) || empty($parts[1])) {
       $data .= '<'.$t;
     }
     else {
@@ -587,7 +586,7 @@ class ARC2_RDFXMLParser extends ARC2_RDFParser {
       }
       else {
         $parts = $this->splitURI($t);
-        if (count($parts) == 1) {
+        if ((count($parts) === 1) || empty($parts[1])) {
           $data .= '</'.$t.'>';
         }
         else {

@@ -1,18 +1,27 @@
 echo '{
-  "basePath": "https://beta.openphacts.org",
-  "apiVersion": "v1.2",
+  "basePath": "https://beta.openphacts.org/2.0",
+  "apiVersion": "v2.0",
   "apis": [' 
+lastfile=`ls *.ttl | tail -1`
 for file in ./*.ttl
 do
 	echo '    {'
-	sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/' 
+	path=`sed -n 's,[[:space:]]*api:uriTemplate[[:space:]]*,      "path": ,p' $file | sed 's/;/,/' | sed 's/[?{][[:print:]]*"/"/'`
+	if [[ "$path" == */units/* ]]
+	then
+		echo '"path": "/pharmacology/filters/units/{act_type}" ,'
+	else
+		echo $path
+	fi
 	echo '      "operations": [
         {
           "httpMethod": "GET",'
 	sed -n '/a [[:print:]]*Endpoint/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/' 
         sed -n '/a api:ExternalHTTPService/,/api:name/s/[[:space:]]*api:name/          "summary": /p' $file | sed 's/;/,/'
-	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:resultsDescription/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:resultsDescription/<hr>Response template: <hr><br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' |  sed 's|</span>[[:space:]]*[.;,]*[[:space:]]*",[[:print:]]*$|</span><br><br><hr>",|' | sed 's/<br>[[:space:]]*$/<hr>",/'
-	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' -e '/api:resultsDescription/,/"[[:space:]]*[.;,][[:space:]]*$/p' $file | sed '/"description"/s/"[[:space:]]*[,.;][[:space:]]*$//' | sed -e 's/api:resultsDescription/<hr>Response template: <hr><br>/' -e 's/$/<br>/' -e 's/"[[:space:]]*[,.;][[:space:]]*<br>$/",/' -e 's/"[[:space:]]*\([?<\[]\)/\1/' -e 's/\t/\&nbsp;\&nbsp;\&nbsp;\&nbsp;/g' | tr '\n' ' ' | grep '"description":' | sed 's|</span>[[:space:]]*[.;,]*[[:space:]]*",[[:print:]]*$|</span><br><br><hr>",|' | sed 's/<br>[[:space:]]*$/<hr>",/'
+	sed -n -e '/a [[:print:]]*Endpoint/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/"[[:space:]]*[,.;][[:space:]]*$/<br><hr><br>Response template: <br><br><hr><br> /'| tr '\n' ' '
+	sed -n -e '/a api:ExternalHTTPService/,/api:description/s/[[:space:]]*api:description/          "description": /p' $file | sed 's/"[[:space:]]*[,.;][[:space:]]*$/<br><hr><br>Response template: <br><br><hr><br> /' | tr '\n' ' '
+        cat docs/`basename $file .ttl`.doc | sed -e 's,<,\&lt;,g' -e 's,>,\&gt;,g' -e 's,&lt;span,<span,' -e 's,"&gt;,">,' -e 's,&lt;/span&gt;,</span>,' -e 's,$,<br>,' -e 's,\t,\&nbsp;\&nbsp;\&nbsp;\&nbsp;,g' | tr '\n' ' ' | sed 's/$/",\
+/'
 	sed -n '/a api:API/,/rdfs:label/s/[[:space:]]*rdfs:label \([[:print:]]*\)"[[:print:]]*/          "group": \1"/p' $file | sed 's/$/ ,/'
         echo '          "parameters": ['
 	inputLine=`sed -n '/<#input>/p' $file`
@@ -43,15 +52,15 @@ do
 	vars=`sed -n 's/[[:space:]]*api:variable[[:space:]]*//p' $file | sed 's,[[:space:]]*;[[:space:]]*$,,'`
 	for var in `sed -n 's/[[:space:]]*api:variable[[:space:]]*//p' $file | sed 's,[[:space:]]*;[[:space:]]*$,,' | grep -v '/'`
 	do
-                if [[ `echo $var | sed 's,:[[:print:]]*$,,'` == cs_api ]]
+                if [[ `echo $var | sed 's,:[[:print:]]*$,,'` == ops_api ]]
                 then    
                         for sub_var in `sed -n "/^[[:space:]]*$var/,/^[[:space:]]*$/p" $file | sed -n 's,[[:space:]]*api:subType[[:space:]]*,,p'  | sed 's,[[:space:]]*.[[:space:]]*$,,'`
                         do      
 				echo '            {'
-				echo '              "name": "'`echo $var | sed 's,^[[:print:]]*:,,'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
+				echo '              "name": "'`sed -n "/$var[[:space:]]*api:name/p" $file | sed 's/[[:print:]]*[[:space:]][[:space:]]*"//' | sed 's/"[[:print:]]*//'`.`echo $sub_var | sed 's,^[[:print:]]*:,,'`'",'
 				sed -n "/^[[:space:]]*$sub_var/,/api:value/s/[[:space:]]*[[:print:]]*api:value/              *description*: /p" $file | sed 's,*,",g' | sed 's/[[:space:]]*.[[:space:]]*$/ ,/'
                                 echo '              "paramType": "query",'
-				if [[ "$sub_var" == "cs_api_search:Molecule" ]]
+				if [[ "$sub_var" == "ops_api_search:Molecule" ]]
 				then
 					echo '              "required": true,'
 				fi
@@ -68,7 +77,7 @@ do
 				echo '              "required": true,'
 				echo '              "paramType": "path",'
 				echo '              "dataType": "string"'
-			elif [[ "$var" == "chembl-ops:normalisedValue" ]]
+			elif [[ "$var" == "chembl:standardValue" || "$var" == "chembl:pChembl" || "$var" == "schembl:SCCO_000028" || "$var" == "schembl:SCCO_000038" ]]
 			then
 				echo '              "dataType": "double",'
 				echo '              "paramType": "query"'
@@ -107,7 +116,7 @@ do
 	        	echo '            },'
 		fi
 	done
-	if [[ `sed -n '/api:ListEndpoint/p' $file` ]]
+	if [[ `sed -n '/api:ListEndpoint/p' $file` ]] || [[ `sed -n '/api:IntermediateExpansionEndpoint/p' $file` ]]
 	then
 	      echo '            {
               "name": "_page",
@@ -127,10 +136,10 @@ do
               "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
               "allowableValues": {
                 "values": ['
-		for sparql_var in `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | sort | uniq`
+		for sparql_var in `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | grep -v '</span>' | sort | uniq`
 		do
 			echo '                  "'$sparql_var'"',
-			if [[ "$sparql_var" == `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | sort | uniq | tail -n 1` ]]
+			if [[ "$sparql_var" == `sed 's,[[:space:]],\n,g' $file | sed 's/[(){}]//g' |sed -n '/^?/p' | sed 's/[\.;,]$//' | grep -v '</span>' | sort | uniq | tail -n 1` ]]
 			then
 				echo '                  "DESC('$sparql_var')"'
 			else
@@ -145,6 +154,17 @@ do
               "paramType": "query"
             },'
 	fi
+
+	if [[ ! `sed -n '/api:ExternalHTTPService/p' $file` ]]
+	then
+		echo '            {
+              "name": "_lens",
+              "description": "The Lens name",
+              "dataType": "string",
+              "paramType": "query"
+            },'
+	fi
+
 	echo '            {
               "name": "_format",
               "description": "The desired result format.",
@@ -165,7 +185,7 @@ do
               "paramType": "query"
             },
             {
-              "name": "callback",
+              "name": "_callback",
               "description": "For JSONP",
               "dataType": "string",
               "paramType": "query"
@@ -189,8 +209,13 @@ do
             }
           ]
         }
-      ]
-    },'
+      ]'
+	if [[ $file == *$lastfile* ]]
+	then
+		echo '    }'
+	else
+		echo '    },'
+	fi
 done
 echo '  ]
 }'

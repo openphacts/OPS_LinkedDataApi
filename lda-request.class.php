@@ -1,4 +1,7 @@
 <?php
+
+require_once 'lda.inc.php';
+
 class LinkedDataApiRequest {
     
     var $formatExtension = null;        
@@ -23,6 +26,7 @@ class LinkedDataApiRequest {
         '_select',#
         '_lang', # is a comma-separated list of languages
         '_callback', # for JSONP
+        '_lens',
         'callback', # for JSONP
 	'app_id',
 	'app_key',
@@ -51,12 +55,17 @@ class LinkedDataApiRequest {
     }
     
     function getParams(){
+	$post = file_get_contents('php://input');
         if ($this->params!=null){
             return $this->params;
         }
         if(!empty($_SERVER['QUERY_STRING'])){
             $this->params = queryStringToParams($_SERVER['QUERY_STRING']);            
-        } else {
+        } 
+	elseif(!empty($post)){
+            $this->params = queryStringToParams($post);
+        }
+	else {
             $this->params = array();
         }
         return $this->params;
@@ -82,6 +91,16 @@ class LinkedDataApiRequest {
             }
         }
         return false;
+    }
+    
+    function hasEmptyParamValues(){
+    	$params = $this->getParams();
+    	foreach($params as $k => $v){
+    		if($v===''){
+    			return $k;
+    		}
+    	}
+    	return false;
     }
     
     function getUnreservedParams(){
@@ -163,7 +182,17 @@ class LinkedDataApiRequest {
     }
     
     function getBase(){
-        return 'http://'.$_SERVER['SERVER_NAME'];
+        $serverName = $_SERVER['SERVER_NAME'];
+        if ($_SERVER['SERVER_PORT']!=80){
+            $serverName .= ':'.$_SERVER['SERVER_PORT'];
+        }
+
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+            return $_SERVER['HTTP_X_FORWARDED_PROTO'].'://'.$serverName;
+        }
+        else {
+            return 'http://'.$serverName;
+        }
     }
 
     function getServerName(){
@@ -189,6 +218,13 @@ class LinkedDataApiRequest {
     
     function getPath(){
         return str_replace( '?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
+    }
+    
+    function getPathWithoutVersionAndExtension(){
+        $pathWithoutExtension =  $this->getPathWithoutExtension();
+        $regex = '/^\/[0-9]+\.[0-9]+/';
+        $ret = preg_replace($regex, '\1', $pathWithoutExtension);
+        return $ret;
     }
     
 	function getMetadataParam(){

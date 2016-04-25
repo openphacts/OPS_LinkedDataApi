@@ -1,0 +1,57 @@
+@base <http://www.openphacts.org/api> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix api: <http://purl.org/linked-data/api/vocab#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#chemspider> a api:API ;
+	rdfs:label "Mapping service betweem URLs"@en;
+	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:contentNegotiation api:parameterBased ;
+	api:variable <#Uri> ;
+	api:variable <#targetUriPattern> ;
+	api:variable <#graph> ;
+	api:variable <#lensUri> ;
+	api:description "An API configuration to return a set of URLs associated to the input URL." ;
+	api:endpoint [
+		a api:ExternalHTTPService ;
+		api:name "Map URL" ;
+		api:enableCache true ;
+		api:description "A set of URLs associated to the input URL." ;
+		api:uriTemplate "/mapUri?Uri={Uri}" ;
+		api:externalRequestTemplate "http://localhost:8082/QueryExpander/mapUri?Uri={Uri}" ;
+		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
+		api:exampleRequestPath "/mapUri?Uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
+		api:viewer <#externalResponseViewer> ;
+		api:defaultViewer <#externalResponseViewer> . ] .
+
+<#Uri> api:name "Uri" ;
+	api:label "Uri";
+	api:value "An input Uri to be mapped." ;
+	rdfs:range rdfs:Resource .
+
+<#targetUriPattern> api:name "targetUriPattern" ;
+	api:label "targetUriPattern" ;
+	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." . 
+
+<#graph> api:name "graph" ;
+	api:label "graph";
+	api:value "Limits the results to ones required for this OpenRdf context/graph." ;
+	rdfs:range rdfs:Resource .
+
+<#lensUri> api:name "lensUri" ;
+	api:label "lensUri";
+	api:value "Lens URI." .
+
+
+<#externalResponseViewer> a api:Viewer ;
+	api:name "externalResponseViewer" ;
+	api:template "
+{pageUri} foaf:primaryTopic ?primaryTopic .
+?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
+?primaryTopic skos:exactMatch ?url ." ;
+
+	api:where "
+GRAPH <{result_hash}> {
+	?primaryTopic skos:exactMatch ?url .
+}".

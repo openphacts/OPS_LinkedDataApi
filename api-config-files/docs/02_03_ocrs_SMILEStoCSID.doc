@@ -1,0 +1,3 @@
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .
+	<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .
+?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> cheminf:CHEMINF_000018 ?smiles </span> .
