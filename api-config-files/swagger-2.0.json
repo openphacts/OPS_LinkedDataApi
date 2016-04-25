@@ -5395,6 +5395,78 @@
                 }
             }
         },
+        "/pathway/getInteractions": {
+    			"get": {
+    				"summary": "[PREVIEW] Pathway Information: Get Interactions",
+    				"description": "Returns a list of interactions that are part of the pathway specified.<br><hr><br>Response template: <br><br><hr><br>  ?ops_item <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:exactMatch ?pw_uri </span> .<br> ?pw_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> .<br> ?rev <span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?interaction </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> dcterms:hasPart ?dir_interaction </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?interaction <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:Interaction </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?participants </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?participants <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?c_part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:source ?part_source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:target ?part_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?dir_interaction <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:DirectedInteraction </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:source ?source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:target ?target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?s_dir_c_part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:source ?source_source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:target ?source_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?t_dir_c_part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:source ?target_source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:target ?target_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?c_part <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?c_part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?s_dir_c_part <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?s_dir_c_part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?t_dir_c_part <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?t_dir_c_part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?part_source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?part_source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?part_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?part_target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?source_source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?source_source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?source_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?source_target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?target_source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?target_source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?target_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?target_target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ",
+    				"tags": [
+    					"Pathway"
+    				],
+    				"parameters": [{
+    					"name": "uri",
+    					"description": "A Pathway URI.",
+    					"default": "http://identifiers.org/wikipathways/WP1015",
+    					"type": "string",
+    					"required": true,
+    					"in": "query"
+    				}, {
+    					"name": "app_id",
+    					"description": "Your access application id",
+    					"required": true,
+    					"type": "string",
+    					"in": "query",
+    					"x-data-threescale-name": "app_ids"
+    				}, {
+    					"name": "app_key",
+    					"description": "Your access application key",
+    					"required": true,
+    					"type": "string",
+    					"in": "query",
+    					"x-data-threescale-name": "app_keys"
+    				}, {
+    					"name": "_format",
+    					"description": "The desired result format.",
+    					"enum": [
+    						"json",
+    						"tsv",
+    						"ttl",
+    						"xml",
+    						"rdf",
+    						"rdfjson",
+    						"html"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}, {
+    					"name": "_callback",
+    					"description": "For JSONP",
+    					"type": "string",
+    					"in": "query"
+    				}, {
+    					"name": "_metadata",
+    					"description": "Additional metadata to be included with response.",
+    					"enum": [
+    						"execution",
+    						"site",
+    						"formats",
+    						"views",
+    						"all"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}],
+    				"responses": {
+    					"200": {
+    						"description": "OK"
+    					},
+    					"500": {
+    						"description": "Internal server error"
+    					}
+    				}
+    			}
+    		},
         "/pathways/byCompound/count": {
             "get": {
                 "summary": "Pathways for Compound: Count",
@@ -6064,6 +6136,237 @@
                 }
             }
         },
+        "/pathways/interactions/byEntity/count": {
+    			"get": {
+    				"summary": "[PREVIEW] Pathway Interactions for Entity: Count",
+    				"description": "Returns the total number of interactions which have as part a user given entity.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.wikipathways.org&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:interactions_count ?count </span> .<br> ",
+    				"tags": [
+    					"Pathway"
+    				],
+    				"parameters": [{
+    					"name": "uri",
+    					"description": "An entity URI.",
+    					"default": "http://identifiers.org/ensembl/ENSBTAG00000004037",
+    					"type": "string",
+    					"required": true,
+    					"in": "query"
+    				}, {
+    					"name": "app_id",
+    					"description": "Your access application id",
+    					"required": true,
+    					"type": "string",
+    					"in": "query",
+    					"x-data-threescale-name": "app_ids"
+    				}, {
+    					"name": "app_key",
+    					"description": "Your access application key",
+    					"required": true,
+    					"type": "string",
+    					"in": "query",
+    					"x-data-threescale-name": "app_keys"
+    				}, {
+    					"name": "pathway_organism",
+    					"description": "The rdfs:label for the pathway organism (URL encode).  e.g.: Homo sapiens.",
+    					"in": "query",
+    					"type": "string"
+    				}, {
+    					"name": "direction",
+    					"description": "One of: 'up', 'down'. 'up' returns only Interactions where the specifies entity is the target, and 'down' returns only Interactions where the specified entity is the source.",
+    					"enum": [
+    						"up",
+    						"down"
+    					],
+    					"in": "query",
+    					"type": "string",
+    					"required": false
+    				}, {
+    					"name": "interaction_type",
+    					"description": "The type of interaction to return. One of: 'directed', 'undirected'.",
+    					"enum": [
+    						"directed",
+    						"undirected"
+    					],
+    					"in": "query",
+    					"type": "string",
+    					"required": false
+    				}, {
+    					"name": "_format",
+    					"description": "The desired result format.",
+    					"enum": [
+    						"json",
+    						"tsv",
+    						"ttl",
+    						"xml",
+    						"rdf",
+    						"rdfjson",
+    						"html"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}, {
+    					"name": "_callback",
+    					"description": "For JSONP",
+    					"type": "string",
+    					"in": "query"
+    				}, {
+    					"name": "_metadata",
+    					"description": "Additional metadata to be included with response.",
+    					"enum": [
+    						"execution",
+    						"site",
+    						"formats",
+    						"views",
+    						"all"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}],
+    				"responses": {
+    					"200": {
+    						"description": "OK"
+    					},
+    					"500": {
+    						"description": "Internal server error"
+    					}
+    				}
+    			}
+    		},
+    		"/pathways/interactions/byEntity": {
+    			"get": {
+    				"summary": "[PREVIEW] Pathway Interactions for Entity: List",
+    				"description": "A list of interactions that the entity specified is a part of.<br><hr><br>Response template: <br><br><hr><br>  ?pathway <span style=\"BACKGROUND-COLOR: #66FFCC\"> sioc:latest_version ?rev </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> wp:organism ?organism_uri </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> dc:title ?title </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?organism_uri <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?organism </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?interaction <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:Interaction </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?participants </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:isPartOf ?pathway </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?participants <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?c_part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:source ?part_source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:target ?part_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?dir_interaction <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a wp:DirectedInteraction </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:source ?source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:target ?target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> dcterms:isPartOf ?pathway </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?s_dir_c_part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:source ?source_source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:target ?source_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> wp:participants ?t_dir_c_part </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:source ?target_source </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops:target ?target_target </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?c_part <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?c_part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?s_dir_c_part <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?s_dir_c_part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?t_dir_c_part <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?t_dir_c_part_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?part_source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?part_source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?part_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?part_target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?source_source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?source_source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?source_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?source_target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?target_source <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?target_source_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ?target_target <span style=\"BACKGROUND-COLOR: #FFCC99\"> a ?target_target_type </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset &lt;http://www.wikipathways.org&gt; </span> .<br> ",
+    				"tags": [
+    					"Pathway"
+    				],
+    				"parameters": [{
+    					"name": "uri",
+    					"description": "An entity URI.",
+    					"default": "http://identifiers.org/ensembl/ENSBTAG00000004037",
+    					"type": "string",
+    					"required": true,
+    					"in": "query"
+    				}, {
+    					"name": "app_id",
+    					"description": "Your access application id",
+    					"required": true,
+    					"type": "string",
+    					"in": "query",
+    					"x-data-threescale-name": "app_ids"
+    				}, {
+    					"name": "app_key",
+    					"description": "Your access application key",
+    					"required": true,
+    					"type": "string",
+    					"in": "query",
+    					"x-data-threescale-name": "app_keys"
+    				}, {
+    					"name": "pathway_organism",
+    					"description": "The rdfs:label for the pathway organism (URL encode). e.g.: Homo sapiens.",
+    					"in": "query",
+    					"type": "string"
+    				}, {
+    					"name": "direction",
+    					"description": "One of: 'up', 'down'. 'up' returns only Interactions where the specifies entity is the target, and 'down' returns only Interactions where the specified entity is the source.",
+    					"enum": [
+    						"up",
+    						"down"
+    					],
+    					"in": "query",
+    					"type": "string",
+    					"required": false
+    				}, {
+    					"name": "interaction_type",
+    					"description": "The type of interaction to return. One of: 'directed', 'undirected'.",
+    					"enum": [
+    						"directed",
+    						"undirected"
+    					],
+    					"in": "query",
+    					"type": "string",
+    					"required": false
+    				}, {
+    					"name": "_page",
+    					"description": "A number; the page that should be viewed",
+    					"type": "integer",
+    					"in": "query"
+    				}, {
+    					"name": "_pageSize",
+    					"description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
+    					"type": "integer",
+    					"in": "query"
+    				}, {
+    					"name": "_pageSize",
+    					"description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
+    					"enum": [
+    						"all"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}, {
+    					"name": "_orderBy",
+    					"description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
+    					"enum": [
+    						"?rev",
+    						"DESC(?rev)",
+    						"?pathway",
+    						"DESC(?pathway)",
+    						"?title",
+    						"DESC(?title)",
+    						"?organism",
+    						"DESC(?organism)",
+    						"?organism_uri",
+    						"DESC(?organism_uri)"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}, {
+    					"name": "_format",
+    					"description": "The desired result format.",
+    					"enum": [
+    						"json",
+    						"tsv",
+    						"ttl",
+    						"xml",
+    						"rdf",
+    						"rdfjson",
+    						"html"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}, {
+    					"name": "_callback",
+    					"description": "For JSONP",
+    					"type": "string",
+    					"in": "query"
+    				}, {
+    					"name": "_metadata",
+    					"description": "Additional metadata to be included with response.",
+    					"enum": [
+    						"execution",
+    						"site",
+    						"formats",
+    						"views",
+    						"all"
+    					],
+    					"type": "string",
+    					"required": false,
+    					"in": "query"
+    				}],
+    				"responses": {
+    					"200": {
+    						"description": "OK"
+    					},
+    					"500": {
+    						"description": "Internal server error"
+    					}
+    				}
+    			}
+    		},
         "/pathways/organisms": {
             "get": {
                 "summary": "Pathway Organisms",
