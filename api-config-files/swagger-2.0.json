@@ -1,13 +1,13 @@
 {
     "swagger": "2.0",
     "host": "ops2.few.vu.nl",
-    "basePath": "/2.0",
+    "basePath": "/2.1",
     "schemes": [
         "https"
     ],
     "info": {
         "title": "Open PHACTS API development version",
-        "version": "2.0"
+        "version": "2.1"
     },
     "paths": {
         "/compound": {
@@ -8195,83 +8195,6 @@
                 }
             }
         },
-        "/pharmacology/filters/count_units": {
-            "get": {
-                "summary": "[DEPRECATED] Activity Units: Count",
-                "description": "The total number of activity units that are available will be returned. Specifying the parameter “activity_type” returns the number of activity types that use the given unit. See “Activity Types: List” for allowed activity units (e.g. nanomolar).<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:normalised_activity_unit_count ?count </span> .<br> ",
-                "tags": [
-                    "Pharmacology Filters"
-                ],
-                "parameters": [
-                    {
-                        "name": "app_id",
-                        "description": "Your access application id",
-                        "required": true,
-                        "type": "string",
-                        "in": "query",
-                        "x-data-threescale-name": "app_ids"
-                    },
-                    {
-                        "name": "app_key",
-                        "description": "Your access application key",
-                        "required": true,
-                        "type": "string",
-                        "in": "query",
-                        "x-data-threescale-name": "app_keys"
-                    },
-                    {
-                        "name": "activity_type",
-                        "description": "One of the activity types listed at /pharmacology/filters/activities",
-                        "in": "query",
-                        "type": "string"
-                    },
-                    {
-                        "name": "_format",
-                        "description": "The desired result format.",
-                        "enum": [
-                            "json",
-                            "tsv",
-                            "ttl",
-                            "xml",
-                            "rdf",
-                            "rdfjson",
-                            "html"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    },
-                    {
-                        "name": "_callback",
-                        "description": "For JSONP",
-                        "type": "string",
-                        "in": "query"
-                    },
-                    {
-                        "name": "_metadata",
-                        "description": "Additional metadata to be included with response.",
-                        "enum": [
-                            "execution",
-                            "site",
-                            "formats",
-                            "views",
-                            "all"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
         "/pharmacology/filters/units/count": {
             "get": {
                 "summary": "Activity Units: Count",
@@ -8301,122 +8224,6 @@
                         "description": "One of the activity types listed at /pharmacology/filters/activities",
                         "in": "query",
                         "type": "string"
-                    },
-                    {
-                        "name": "_format",
-                        "description": "The desired result format.",
-                        "enum": [
-                            "json",
-                            "tsv",
-                            "ttl",
-                            "xml",
-                            "rdf",
-                            "rdfjson",
-                            "html"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    },
-                    {
-                        "name": "_callback",
-                        "description": "For JSONP",
-                        "type": "string",
-                        "in": "query"
-                    },
-                    {
-                        "name": "_metadata",
-                        "description": "Additional metadata to be included with response.",
-                        "enum": [
-                            "execution",
-                            "site",
-                            "formats",
-                            "views",
-                            "all"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/pharmacology/filters/units": {
-            "get": {
-                "summary": "[DEPRECATED] Activity Units: List",
-                "description": "Returns a list of available activity units.<br><hr><br>Response template: <br><br><hr><br>  &lt;http://www.ebi.ac.uk/chembl&#xfeff;&gt; <span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops:normalised_activity_unit ?item </span> .<br> ?item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> rdfs:label ?qudt_label </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:activity_count ?count </span> .<br> ",
-                "tags": [
-                    "Pharmacology Filters"
-                ],
-                "parameters": [
-                    {
-                        "name": "app_id",
-                        "description": "Your access application id",
-                        "required": true,
-                        "type": "string",
-                        "in": "query",
-                        "x-data-threescale-name": "app_ids"
-                    },
-                    {
-                        "name": "app_key",
-                        "description": "Your access application key",
-                        "required": true,
-                        "type": "string",
-                        "in": "query",
-                        "x-data-threescale-name": "app_keys"
-                    },
-                    {
-                        "name": "activity_type",
-                        "description": "One of the activity types listed at /pharmacology/filters/activities",
-                        "in": "query",
-                        "type": "string"
-                    },
-                    {
-                        "name": "_page",
-                        "description": "A number; the page that should be viewed",
-                        "type": "integer",
-                        "in": "query"
-                    },
-                    {
-                        "name": "_pageSize",
-                        "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-                        "type": "integer",
-                        "in": "query"
-                    },
-                    {
-                        "name": "_pageSize",
-                        "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-                        "enum": [
-                            "all"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    },
-                    {
-                        "name": "_orderBy",
-                        "description": "The desired variable to sort by. Multiple values can be specified seperated by spaces. Direction of sort can be specified with ASC(?var) and DESC(?var). Default is ascending",
-                        "enum": [
-                            "?activity",
-                            "DESC(?activity)",
-                            "?count",
-                            "DESC(?count)",
-                            "?item",
-                            "DESC(?item)",
-                            "?qudt_label",
-                            "DESC(?qudt_label)"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
                     },
                     {
                         "name": "_format",
@@ -8533,84 +8340,6 @@
                         "type": "string",
                         "required": false,
                         "in": "query"
-                    },
-                    {
-                        "name": "_format",
-                        "description": "The desired result format.",
-                        "enum": [
-                            "json",
-                            "tsv",
-                            "ttl",
-                            "xml",
-                            "rdf",
-                            "rdfjson",
-                            "html"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    },
-                    {
-                        "name": "_callback",
-                        "description": "For JSONP",
-                        "type": "string",
-                        "in": "query"
-                    },
-                    {
-                        "name": "_metadata",
-                        "description": "Additional metadata to be included with response.",
-                        "enum": [
-                            "execution",
-                            "site",
-                            "formats",
-                            "views",
-                            "all"
-                        ],
-                        "type": "string",
-                        "required": false,
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        },
-        "/pharmacology/filters/units/{act_type}": {
-            "get": {
-                "summary": "[DEPRECATED] Activity Units for Type",
-                "description": "Returns a list of activity units for the user specified activity type.<br><hr><br>Response template: <br><br><hr><br>  ?item <span style=\"BACKGROUND-COLOR: #A9A9F5\"> qudt:unit ?unit </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> rdfs:label ?act_label </span> .<br> ?unit <span style=\"BACKGROUND-COLOR: #A9A9F5\"> rdfs:label ?unit_label </span> .<br> ",
-                "tags": [
-                    "Pharmacology Filters"
-                ],
-                "parameters": [
-                    {
-                        "name": "app_id",
-                        "description": "Your access application id",
-                        "required": true,
-                        "type": "string",
-                        "in": "query",
-                        "x-data-threescale-name": "app_ids"
-                    },
-                    {
-                        "name": "app_key",
-                        "description": "Your access application key",
-                        "required": true,
-                        "type": "string",
-                        "in": "query",
-                        "x-data-threescale-name": "app_keys"
-                    },
-                    {
-                        "name": "act_type",
-                        "description": "http://www.openphacts.org/terms/chembl#{act_type}",
-                        "required": true,
-                        "in": "path",
-                        "type": "string"
                     },
                     {
                         "name": "_format",
