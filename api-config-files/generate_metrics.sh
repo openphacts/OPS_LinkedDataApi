@@ -17,7 +17,7 @@ rm curl.tmp
 fi
 
 counter=1
-for path in `grep '"/' swagger-2.0.json | sed -e 's,.*"/,/2.0/,' -e 's,".*,,' `
+for path in `grep '"/' swagger-2.0.json | sed -e 's,.*"/,/2.1/,' -e 's,".*,,' `
 do
 name=`sed -n 's,^ *"summary,,p' swagger-2.0.json|sed -e 's,[^"]*",,' -e 's,[^"]*",,' -e 's,\[PREVIEW\] ,,' -e 's,".*,,' | grep -v 'Activity Units for Type' | sed -n "$counter"p | sed -e 's,Information,Info,' -e 's,:,,' -e "s,$, ($1),"`
 id=`echo $name | sed -e 's,.*,\L&,' -e 's,[()],,g' -e 's,[\. ],_,g' -e 's,_\([0-9]_[0-9]\),-\1,'`
