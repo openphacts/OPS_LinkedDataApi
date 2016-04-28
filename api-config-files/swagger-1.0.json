@@ -1,5 +1,5 @@
 {
-  "basePath": "https://beta.openphacts.org/2.1,
+  "basePath": "https://beta.openphacts.org/2.1",
   "apiVersion": "v2.1",
   "apis": [
     {
