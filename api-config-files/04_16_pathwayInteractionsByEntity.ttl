@@ -166,6 +166,7 @@ _:interaction_type api:name "interaction_type" ;
 ?organism_uri rdfs:label ?organism ;
         void:inDataset <http://www.wikipathways.org> .
 ?interaction a wp:Interaction ;
+        a ?interaction_types ;
 	wp:participants ?participants ;
 	dcterms:isPartOf ?pathway ;
         void:inDataset <http://www.wikipathways.org> .
@@ -175,6 +176,8 @@ _:interaction_type api:name "interaction_type" ;
         ops:target ?part_target ;
         void:inDataset <http://www.wikipathways.org> .
 ?dir_interaction a wp:DirectedInteraction ;
+        a ?dir_interaction_types ;
+	wp:participants ?participants ;
 	ops:source ?source ;
 	ops:target ?target ;
 	dcterms:isPartOf ?pathway ;
@@ -234,6 +237,10 @@ GRAPH <http://www.wikipathways.org> {
 			?participants wp:target ?part_target .
 			?part_source a ?part_source_type .
 			?part_target a ?part_target_type .
+			OPTIONAL {
+			  ?item a ?interaction_types .
+			  FILTER ( ?interaction_types != wp:Interaction && ?interaction_types != wp:DirectedInteraction )
+			}
 			FILTER ( ?part_source_type != wp:DataNode || STRSTARTS( STR( ?part_source_type ), 'http://identifiers.org/wikipathways/WP' ) )
 			FILTER ( ?part_target_type != wp:DataNode || STRSTARTS( STR( ?part_target_type ), 'http://identifiers.org/wikipathways/WP' ) )
 			BIND ( true AS ?part_directed )
@@ -277,6 +284,10 @@ GRAPH <http://www.wikipathways.org> {
 			FILTER ( ?target_source_type != wp:DataNode || STRSTARTS( STR( ?target_source ), 'http://identifiers.org/wikipathways/WP' ) )
 			FILTER ( ?target_target_type != wp:DataNode || STRSTARTS( STR( ?target_target ), 'http://identifiers.org/wikipathways/WP' ) )
 			BIND ( true AS ?target_directed ) 
+		}
+		OPTIONAL {
+		  ?item a ?dir_interaction_types .
+		  FILTER ( ?dir_interaction_types != wp:Interaction && ?dir_interaction_types != wp:DirectedInteraction )
 		}
 		BIND ( ?item AS ?dir_interaction )
 	}
