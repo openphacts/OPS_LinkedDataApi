@@ -20,6 +20,7 @@ class OpsIms {
 	    '?pw_uri' => 'http://identifiers.org/wikipathways/',
 	    '?pw_compound_uri' => '',
 	    '?pw_target_uri' => '',
+            '?pw_entity_uri' => '',
 	    '?pw_ref_uri' => 'http://identifiers.org/pubmed/',
 	    '?schembl_target_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/target/',
 	    '?schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
@@ -38,6 +39,7 @@ class OpsIms {
             '?ims_ocrs_compound_uri'=>'http://ops.rsc.org/OPS' ,
             '?ims_db_compound_uri'=>'http://bio2rdf.org/drugbank:',
             '?ims_db_target_uri'=>'http://bio2rdf.org/drugbank',
+	    '?ims_schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
             '?ims_dg_gene_uri' => 'http://identifiers.org/ncbigene/',
 	    '?ims_umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
             '?ims_omim_disease_uri' => 'http://identifiers.org/omim/',
@@ -280,9 +282,9 @@ class OpsIms {
           $filter.= " }";
       }
       else{
-          $filter = " VALUES {$variableName} { ops:no_mappings_found }" ;
+          $filter = " VALUES {$variableName} { <http://www.openphacts.org/api#no_mappings_found> }" ;
       }
-
+//      logDebug("FILTER clause: ". $filter);
       return $filter;
   }
   
