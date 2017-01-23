@@ -32,8 +32,9 @@
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
 
-## File-based project format:
+## IntelliJ Project files:
 *.iws
+*.iml
 
 ## Plugin-specific files:
 
@@ -46,6 +47,5 @@
 # JIRA plugin
 atlassian-ide-plugin.xml
 
-# .gitignore
-# OPS_LinkedDataApi.iml
+# local/user-specific files:
 local
