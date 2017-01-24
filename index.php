@@ -116,7 +116,14 @@ else
           logDebug("Caching $file");
           LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
       }
-      
+
+      /*
+       * $ConfigGraph contains the Graph from the ttl file for this loop iteration.
+       * Next, see if the ConfigGraph matches the current $Request.  If it does, create a new
+       * $Response instance, which will contain the $Request and $ConfigGraph.
+       * Then, call $Response->process() and exit the loop.  Below, followup with
+       * $Response->serve();
+       */
       $ConfigGraph->init();
       if($selectedEndpointUri = $ConfigGraph->getEndpointUri()){
           logDebug("Endpoint Uri Selected: $selectedEndpointUri");

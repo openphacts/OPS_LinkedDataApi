@@ -8,6 +8,10 @@ require_once 'data_handler_components/request_selector.class.php';
 require_once 'data_handler_components/single_expansion_viewer.class.php';
 require_once 'data_handler_components/multiple_expansion_viewer.class.php';
 
+/*
+ * Only used in LinkedDataApiResponse.process() to create the DataHandler.
+ */
+
 class DataHandlerFactory{
 	
 	public static function createListDataHandler($dataHandlerParams){		

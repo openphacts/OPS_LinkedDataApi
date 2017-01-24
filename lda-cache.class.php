@@ -238,6 +238,9 @@ class LinkedDataApiCache
 		return $key;
 	}
 
+  /**
+   * @return cached object from memcache, or false if not found.
+   */
 	public static function hasCachedConfig($filepath){
 		
 		logDebug("Looking in memcache for $filepath");	

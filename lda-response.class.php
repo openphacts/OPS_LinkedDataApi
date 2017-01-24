@@ -55,6 +55,9 @@ class LinkedDataApiResponse {
         }
     }
 
+  /**
+   * Appears to only be used for displaying an error/debug page when API is called with a bad endpoint.
+   */
     function serveConfigGraph(){
         $this->overrideUserConfig=true;
         $api = API;
@@ -75,7 +78,11 @@ class LinkedDataApiResponse {
         $this->DataGraph->add_graph($this->ConfigGraph);
         $this->addMetadataToPage();   
     }
-    
+
+  /**
+   * Create a SparqlWriter, a Viewer, a SparqlService, a DataHandler, and then call:
+   * $this->dataHandler->loadData();
+   */
     function process(){
         try{
             if($param = $this->Request->hasUnrecognisedReservedParams()){
