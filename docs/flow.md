@@ -11,22 +11,24 @@ URL="https://beta.openphacts.org/2.1/compound?uri=http%3A%2F%2Fwww.conceptwiki.o
 curl -X GET --header "Accept: application/json" $URL
 ```
 
-    (changed the values of app_id and app_key)
+(changed the values of app_id and app_key)
 
 The HTTP request will be processed by the top-level `index.php` file.
 
+## file index.php
+
 The flow in `index.php`:
 
-* First, the memcache cache is checked.  If the request is in the cache, the cached result is returned and processing ends.
-* Loop thru all of the RDF *.ttl files in the 'api-config-files' directory.
-* For each file, load the rdf/ttl file into an RDF Graph, store in the variable $ConfigGraph.
-    * Note: the $ConfigGraph object also contains the $Request object.
-* If the config of $ConfigGraph matches the $Request, you have the right config. do:
-    * construct a $Response object from the $Request and $ConfigGraph
-    * call $Response->process()
-    * exit the loop.
-* call $Response->serve()
-* cache the $Request --> $Response pair.
+1. First, the memcache cache is checked.  If the request is in the cache, the cached result is returned and processing ends.
+2. Loop thru all of the RDF *.ttl files in the 'api-config-files' directory.
+3. For each file, load the rdf/ttl file into an RDF Graph, store in the variable $ConfigGraph.
+  * Note: the $ConfigGraph object also contains the $Request object.
+4. If the config of $ConfigGraph matches the $Request, you have the right config. do:
+  * construct a $Response object from the $Request and $ConfigGraph
+  * call $Response->process()
+  * exit the loop.
+5. call $Response->serve()
+6. cache the $Request --> $Response pair.
 
 
 ## class LinkedDataApiRequest
@@ -56,15 +58,14 @@ Selected Statements:
     $viewerUri = $this->getViewer();
     $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
 
-    $dataHandlerParams = new DataHandlerParams($this->Request,
-        										$this->ConfigGraph, $this->DataGraph, $viewerUri,
-        										$sparqlWriter, $this->SparqlEndpoint,
-        										$this->endpointUrl);
+    $dataHandlerParams = new DataHandlerParams($this->Request, $this->ConfigGraph, $this->DataGraph,
+                                               $viewerUri, $sparqlWriter,
+                                               $this->SparqlEndpoint, $this->endpointUrl);
 
     $this->dataHandler = DataHandlerFactory::createXXXDataHandler($dataHandlerParams);
     // XXX is one of five types of data handlers, depending on type of endpoint.
 
-   	$this->dataHandler->loadData();
+    $this->dataHandler->loadData();
 ```
 
 ## DataHandler
@@ -72,8 +73,8 @@ Selected Statements:
 Hierarchy of DataHandlers:
 
 - OneStepDataHandler
-    - ItemDataHandler
-    - ExternalServiceDataHandler
+  - ItemDataHandler
+  - ExternalServiceDataHandler
 - TwoStepDataHandler
 
 A TwoStepDataHandler consists of two steps: a _Selector_ object and a _Viewer_ object.
@@ -85,10 +86,10 @@ A _Selector_ obtains a list of items (i.e., URIs or literal values) to be added 
 Types of Selector:
 
 - RequestSelector
-    - Extracts the list of items from the HTTP Request.
+  - Extracts the list of items from the HTTP Request.
 - SparqlSelector
-    - Issues a SPARQL query to obtain the list of items.
-    - Obtains this SPARQL query via `SparqlWriter->getSelectQueryForUriList()`.
+  - Issues a SPARQL query to obtain the list of items.
+  - Obtains this SPARQL query via `SparqlWriter->getSelectQueryForUriList()`.
 
 Doc for function _Selector.getItemMap()_:
 
@@ -110,10 +111,10 @@ Types of Viewer:
 Methods of Viewer:
 
 - function getViewQuery();
-    - SingleExpansionViewer uses SparqlWriter->getViewQueryForUriList(..)
-    - MultipleExpansionViewer uses SparqlWriter->getViewQueryForBatchUriList(..)
+  - SingleExpansionViewer uses SparqlWriter->getViewQueryForUriList(..)
+  - MultipleExpansionViewer uses SparqlWriter->getViewQueryForBatchUriList(..)
 - function applyViewerAndBuildDataGraph($itemMap);
-    - called as second step by TwoStepDataHandler->loadData( $selector->getItemMap() ).
+  - called as second step by TwoStepDataHandler->loadData( $selector->getItemMap() ).
 
 
 ## class SparqlWriter
@@ -133,7 +134,7 @@ Methods:
 
 - query(...)
 - graph(...)
-    - execute a SPARQL query that returns an RDF Graph.
+  - execute a SPARQL query that returns an RDF Graph.
 
 
 ## class OpsIms
