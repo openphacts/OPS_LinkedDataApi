@@ -88,9 +88,15 @@ else
     $domainBasedConfigFilename= 'api-config-files/'.$Request->getServerName().'.ttl';
   if(in_array($domainBasedConfigFilename, $files)){
     $files = array($domainBasedConfigFilename);
-  } 
+  }
     /*
-	keep the config graph that matches the request, and keep a 'complete' configgraph to serve if none match
+     * Loop thru all of the RDF *.ttl files in the 'api-config-files' directory.
+     * For each, load the ttl file into an RDF Graph, in the variable $ConfigGraph.
+     * Note: the $ConfigGraph object contains the $Request object.
+     * If the config of $ConfigGraph matches the $Request, construct a $Response object from the
+     * $Request and $ConfigGraph, then call $Response->process() and exit the loop.
+     * Finally, call $Response->serve() and cache the $Request --> $Response pair.
+	 * Note: the $CompleteConfigGraph object is only used if no config matches the $Request.
     */
   $CompleteConfigGraph = new ConfigGraph(null, $Request, $HttpRequestFactory);
   foreach($files as $file){
