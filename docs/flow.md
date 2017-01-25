@@ -5,11 +5,13 @@ layout: default
 # Description of Flow
 
 User issues a HTTP call, such as:
+
 ```
 URL="https://beta.openphacts.org/2.1/compound?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&app_id=11a22&app_key=def456&_format=json"
 curl -X GET --header "Accept: application/json" $URL
 ```
-(changed the values of app_id and app_key)
+
+    (changed the values of app_id and app_key)
 
 The HTTP request will be processed by the top-level `index.php` file.
 
@@ -48,6 +50,7 @@ Main flow:
 - Create a SparqlWriter, a Viewer, a SparqlService, a DataHandler, and then load the data:
 
 Selected Statements:
+
 ```
     $sparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
     $viewerUri = $this->getViewer();
@@ -88,6 +91,7 @@ Types of Selector:
     - Obtains this SPARQL query via `SparqlWriter->getSelectQueryForUriList()`.
 
 Doc for function _Selector.getItemMap()_:
+
 ```
     /**
      * Returns a map between variable names and lists of items
