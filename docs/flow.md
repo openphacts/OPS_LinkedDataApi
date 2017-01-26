@@ -1,5 +1,8 @@
 ---
-layout: default
+title: Flow
+layout: page
+# permalink: /flow/
+# layout: default
 ---
 
 # Description of Flow
