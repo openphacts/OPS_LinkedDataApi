@@ -7,6 +7,6 @@ title: Open PHACTS Linked Data API
 layout: default
 ---
 
-github-pages "Home" page for the OPS_LinkedDataApi project.
+### Documentation for OPS_LinkedDataApi project.
 
-* [Linked Data API flow](flow)
+* [Linked Data API software flow](flow)
