@@ -7,7 +7,7 @@
   ],
   "info": {
     "title": "Open PHACTS API development version",
-    "version": "2.1"
+    "version": "2.2"
   },
   "paths": {
     "/search": {
