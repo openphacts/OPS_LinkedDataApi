@@ -17,17 +17,17 @@
 		a api:ExternalHTTPService ;
 		api:name "Free Text to 'thing'" ;
 		api:enableCache false ;
-		api:description "A set of URIs associated to the input free text." ;
+		api:description "A set of URIs associated with the input free text." ;
 		
 		api:uriTemplate "/search?query={q}" ;
-		api:externalRequestTemplate "http://localhost:8839/search?query={q}" ;
+		api:externalRequestTemplate "http://localhost:8839/search?query={query}" ;
 		api:externalResponseHandler "converters/ops_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/search?query=aspirin&limit=15" ;
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> ] .
 
-<#q> api:name "q" ;
-	api:label "q";
+<#q> api:name "query" ;
+	api:label "query";
 	api:value "Query; required. E.g. aspirin" .
 
 <#limit> api:name "limit" ;
