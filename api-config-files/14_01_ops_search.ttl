@@ -39,7 +39,7 @@
 	api:value "The search results will be filtered by this source authority; optional. Can be multiple values in an array. Possible values: chembl, chebi, uniprot, wikipathways, go, ocrs, drugbank" .
 <#type> api:name "type" ;
         api:label "type" ;
-        api:value "The type of thing you want to search for; optional. Limited to one value eg compound. Possible values are compound, target, gene, pathway."
+        api:value "The type of thing you want to search for; optional. Limited to one value eg compound. Possible values are compound, target, gene, pathway." .
 
 <#externalResponseViewer> a api:Viewer ;
 	api:name "externalResponseViewer" .
