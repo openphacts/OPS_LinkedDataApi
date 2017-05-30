@@ -1,7 +1,7 @@
 <?php
 define('MORIARTY_HTTP_CACHE_USE_STALE_ON_FAILURE', true);
 define('MORIARTY_ALWAYS_CACHE_EVERYTHING', true);
-define('PUELIA_SERVE_FROM_CACHE', true);
+define('PUELIA_SERVE_FROM_CACHE', false);
 define("LOG_SELECT_QUERIES", 1);
 define("LOG_VIEW_QUERIES", 1);
 define('CACHE_ONE_DAY', (60*60*24*1));
