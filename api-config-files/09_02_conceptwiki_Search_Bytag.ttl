@@ -22,7 +22,7 @@
 
 
 		api:uriTemplate "/search/byTag?q={q}&uuid={uuid}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/search/byTag?q={q}&uuid={uuid}" ;
+		api:externalRequestTemplate "http://alpha.openphacts.org:8839/web-ws/concept/search/byTag?q={q}&uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_freetextsearch_json_to_rdf.php" ;
 		api:exampleRequestPath "/search/byTag?q=water&uuid=07a84994-e464-4bbf-812a-a4b96fa3d197" ;
 		api:viewer <#externalResponseViewer> ;
