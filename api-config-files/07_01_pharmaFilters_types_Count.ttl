@@ -110,6 +110,6 @@ chembl:hasQUDT api:name "activity_unit" ;
 "{
 SELECT DISTINCT ?type_label COUNT(?type) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?type rdfs:subClassOf chembl:Activity .
+        ?type a chembl:Activity .
 }
 } }" .
