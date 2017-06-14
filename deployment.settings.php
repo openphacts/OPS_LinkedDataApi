@@ -12,7 +12,7 @@ define('CACHE_OFF', 1);
 define('PUELIA_CACHE_AGE', CACHE_ONE_YEAR);
 define('PUELIA_MEMCACHE_HOST', 'localhost');
 define('PUELIA_MEMCACHE_PORT', '11211');
-define ('IMS_EXPAND_ENDPOINT', 'http://localhost:8082/QueryExpander/expandXML?query=');
+define ('IMS_EXPAND_ENDPOINT', 'http://alpha.openphacts.org:3004/QueryExpander/expandXML?query=');
 define ('CHEMSPIDER_ENDPOINT', 'https://chemistry.openphacts.org/api/JSON.ashx');
-define ('IMS_MAP_ENDPOINT', 'http://localhost:8082/QueryExpander/mapUriRDF');
+define ('IMS_MAP_ENDPOINT', 'http://alpha.openphacts.org:3004/QueryExpander/mapUriRDF');
 ?>
