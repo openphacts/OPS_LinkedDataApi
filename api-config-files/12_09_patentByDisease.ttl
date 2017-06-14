@@ -9,7 +9,7 @@
 
 <#patent> a api:API ;
 	rdfs:label "Patent"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:variable schembl:SCCO_000028 ;
@@ -87,7 +87,7 @@ _:claims api:name "claims" ;
 
 <#patentByDiseaseViewer> a api:Viewer ;
 	api:name "patentByDiseaseViewer" ;
-	api:template 
+	api:template
 "
 ?item dct:title ?title ;
 	ops:datePublished ?date ;
@@ -141,4 +141,4 @@ GRAPH <http://www.ebi.ac.uk/surechembl> {
         BIND ( IF( ?image_occ_tmp = true, true, false ) AS ?image_occ )
         BIND ( IF( ?cwu_occ_tmp = true, true, false ) AS ?cwu_occ )
 }
-" . 
+" .

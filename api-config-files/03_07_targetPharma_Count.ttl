@@ -21,9 +21,9 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
@@ -46,7 +46,7 @@
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about targets" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Target Pharmacology: Count" ;
 		api:description "The total number of acitivity values in the LDC for a given target" ;
@@ -95,7 +95,7 @@
                 api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 		api:exampleRequestPath "/target/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c";
 		api:exampleRequestPath "/target/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F9bd09e03-8d88-402b-a1e0-dd6a73964d1c&activity_type=Potency&maxEx-activity_value=10&minEx-activity_value=1&activity_unit=nanomolar&assay_organism=Mus%20musculus";
-		api:viewer <#targetPharmacologyCountViewer> ; 
+		api:viewer <#targetPharmacologyCountViewer> ;
 		api:defaultViewer <#targetPharmacologyCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
@@ -171,10 +171,10 @@ chembl:standardType api:name "activity_type" ;
         api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
- 
+
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -237,8 +237,8 @@ chembl:targetConfScore api:name "target_conf_score";
 
 <#targetPharmacologyCountViewer> a api:Viewer ;
 	api:name "targetPharmacologyCountViewer" ;
-	api:template 
-"?ops_item ops:targetPharmacologyTotalResults ?count . " ; 
+	api:template
+"?ops_item ops:targetPharmacologyTotalResults ?count . " ;
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
 { SELECT ?item ?issue ?dup ?conf_score WHERE {

@@ -11,7 +11,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
 	api:variable _:type ;
@@ -24,7 +24,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about targets." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Target Classifications" ;
 		api:description "The classes the given target URI has been classified with. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. " ;
@@ -106,14 +106,14 @@ _:type api:name "target_type" ;
 	dcterms:title ?target_name ;
 	a ?target_type ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
-?uniprot_target_uri ops:hasGoComponent ?go_component ; 
+?uniprot_target_uri ops:hasGoComponent ?go_component ;
 	ops:hasGoFunction ?go_function ;
-	ops:hasGoProcess ?go_process ; 
+	ops:hasGoProcess ?go_process ;
 	ops:hasEnzymeClassification ?enzyme_class ;
 	skos:prefLabel ?uniprot_name ;
 	void:inDataset ?dataset .
 ?chembl_class skos:prefLabel ?chembl_label ;
-	void:inDataset <http://www.ebi.ac.uk/chembl> . 
+	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?enzyme_class skos:prefLabel ?enzyme_label ;
 	void:inDataset <http://purl.uniprot.org/enzyme> .
 ?go_component skos:prefLabel ?go_c_label ;
@@ -125,14 +125,14 @@ _:type api:name "target_type" ;
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
 <http://www.ebi.ac.uk/chembl/target> skos:prefLabel 'ChEMBL Target Hierarchy' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' .";
-	api:where 
+	api:where
 "{ GRAPH <http://www.ebi.ac.uk/chembl> {
         ?chembl_target_uri chembl:hasProteinClassification ?chembl_class ;
 		dcterms:title ?target_name ;
                 a ?target_type .
         GRAPH ?g {
                 ?chembl_class rdfs:label ?chembl_label
-        } 
+        }
 } } UNION {
 GRAPH <http://www.openphacts.org/goa> {
 	{ GRAPH <http://purl.uniprot.org> {
@@ -159,6 +159,6 @@ GRAPH <http://www.openphacts.org/goa> {
         } }
 	GRAPH <http://purl.uniprot.org> {
 		?uniprot_target_uri rdfs:label ?uniprot_name
-	} 
+	}
 }
-}" 
+}"

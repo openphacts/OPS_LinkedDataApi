@@ -22,9 +22,9 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:dataset <http://www.openphacts.org/bio2rdf/drugbank> ;
@@ -33,7 +33,7 @@
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:description "An API configuration to return information about compounds" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Compound Information" ;
 		api:description "Returns information about a single compound including (but not limited to): molecular weight, biotransformation, protein binding and toxicity. Adverse event data (AERS) is returned where available, as well as drug/drug interactions.";
@@ -55,11 +55,11 @@
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "A compound URI. e.g.: http://www.conceptwiki.org/concept/38932552-111f-4a4e-a46a-4ed1d7bdf9d5" ;
-	rdfs:range rdfs:Resource .  
+	rdfs:range rdfs:Resource .
 
 <#compoundViewer> a api:Viewer ;
 	api:name "compoundViewer" ;
-	api:template 
+	api:template
 "?ops_item skos:exactMatch ?cw_compound_uri .
 ?cw_compound_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
@@ -76,7 +76,7 @@
 	ops:molweight ?molweight ;
 	ops:molformula ?molformula ;
 	void:inDataset <http://ops.rsc.org> .
-?ops_item skos:exactMatch ?chembl_compound_uri . 
+?ops_item skos:exactMatch ?chembl_compound_uri .
 ?chembl_compound_uri ?bNode1 ?mw_freebase ;
 	a ?mol_type;
 	void:inDataset <http://www.ebi.ac.uk/chembl>.
@@ -95,7 +95,7 @@
 	void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> .
 ?ops_item skos:exactMatch ?aers_compound_uri .
 ?aers_compound_uri ops:reportedAdverseEvent ?event ;
-	skos:prefLabel ?aers_drug_name ; 
+	skos:prefLabel ?aers_drug_name ;
 	void:inDataset <http://aers.data2semantics.org/> .
 ?event skos:prefLabel ?event_label ;
         void:inDataset <http://aers.data2semantics.org/> .
@@ -121,7 +121,7 @@
 	UNION { [] obo:IAO_0000136 ?ocrs_compound_uri ;
 			a cheminf:CHEMINF_000484 ;
 			qudt:numericValue ?molweight . }
-	UNION { [] obo:IAO_0000136 ?ocrs_compound_uri ; 
+	UNION { [] obo:IAO_0000136 ?ocrs_compound_uri ;
 		      a cheminf:CHEMINF_000348 ;
 		      qudt:numericValue ?rtb . }
 	UNION { [] obo:IAO_0000136 ?ocrs_compound_uri ;
@@ -153,7 +153,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 			sio:SIO_000300 ?mw_freebase. }
 }
 }
-UNION { 
+UNION {
 GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
 	{ ?db_compound_uri drugbank:affected-organism/dcterms:title ?affectedOrganism . }
 	UNION { ?db_compound_uri drugbank:metabolism/dcterms:description ?metabolism . }
@@ -168,7 +168,7 @@ GRAPH <http://www.openphacts.org/bio2rdf/drugbank> {
 	UNION { ?db_compound_uri drugbank:drug-group/dcterms:title ?drugType . }
 	UNION { ?db_compound_uri drugbank:ddi-interactor-in ?interaction .
 		?interacting_drug drugbank:ddi-interactor-in ?interaction .
-		?interaction dcterms:title ?interaction_text . 
+		?interaction dcterms:title ?interaction_text .
 		FILTER (?db_compound_uri != ?interacting_drug) }
 }}
 UNION {
@@ -186,14 +186,14 @@ UNION {
     ?aers_compound_uri rdfs:label ?aers_drug_name .
   }
 }
-UNION {   GRAPH <http://www.ebi.ac.uk/surechembl> { 
+UNION {   GRAPH <http://www.ebi.ac.uk/surechembl> {
 	    {
 	     ?schembl_compound_uri a scco:SCCO_000010 ;
 		scco:SCCO_000017 ?s_smiles ;
 		scco:SCCO_000018 ?s_inchi ;
 		scco:SCCO_000019 ?s_inchiKey ;
 	        scco:SCCO_000011 ?s_molweight ;
-	        scco:SCCO_000012 ?s_logp 
+	        scco:SCCO_000012 ?s_logp
 	    }
 	   OPTIONAL { ?schembl_compound_uri scco:SCCO_000013 ?s_hbd }
 	   OPTIONAL { ?schembl_compound_uri scco:SCCO_000014 ?s_hba }

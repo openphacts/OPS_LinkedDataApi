@@ -25,9 +25,9 @@
 
 <#compound> a api:API ;
 	rdfs:label "Compound"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
-    	api:variable <#input> ; 
+    	api:variable <#input> ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
@@ -121,10 +121,10 @@ chembl:standardType api:name "activity_type" ;
         api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
 
- 
+
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -229,12 +229,12 @@ _:type api:name "target_type" ;
         api:variable <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> ;
         api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 	api:name "Compound Pharmacology: List" ;
-	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;	
-	
+	api:description "A page of items corresponding to acitivity values in the LDC for a given compound" ;
+
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
 	api:exampleRequestPath "/compound/pharmacology/pages?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=IC50&maxEx-activity_value=100&minEx-activity_value=40&activity_unit=nanomolar&assay_organism=Mus%20musculus";
 	api:selector [
-		api:where 
+		api:where
 "GRAPH <http://www.ebi.ac.uk/chembl> {
         ?item a chembl:Activity ;
                 chembl:hasMolecule ?chembl_compound_uri ;
@@ -273,7 +273,7 @@ _:type api:name "target_type" ;
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_target skos:exactMatch ?protein ;
 				skos:prefLabel ?protein_name .
-                } 
+                }
         }
 	UNION { ?assay_uri chembl:organismName ?assay_organism }
 	UNION { ?assay_uri dcterms:description ?assay_description }
@@ -298,13 +298,13 @@ _:type api:name "target_type" ;
 		UNION { ?doc_uri bibo:pmid ?pmid }
 	}
         UNION { ?item chembl:dataValidityComment ?comment}
-} }" ; 
+} }" ;
 	] ;
 	api:defaultViewer <#compoundPharmacologyListViewer> .
 
 <#compoundPharmacologyListViewer> a api:Viewer ;
         api:name "compoundPharmacologyListViewer" ;
-	api:template 
+	api:template
 "?item chembl:hasMolecule ?chembl_compound_uri ;
 	chembl:standardType ?activity_type ;
 	chembl:standardRelation ?activity_relation ;
@@ -337,7 +337,7 @@ _:type api:name "target_type" ;
 	chembl:targetOrganismName ?target_organism ;
 	chembl:hasTargetComponent ?protein ;
 	a ?target_type ;
-        void:inDataset <http://www.ebi.ac.uk/chembl> . 
+        void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chembl_compound_uri skos:exactMatch ?cw_compound_uri .
 ?protein skos:exactMatch ?cw_target .
 ?cw_target skos:prefLabel ?protein_name ;
@@ -355,15 +355,15 @@ _:type api:name "target_type" ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?db_compound_uri drugbank:drugType ?drugType ;
 	drugbank:genericName ?drug_name ;
-	void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> ." ; 
-	api:where 
+	void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> ." ;
+	api:where
 "GRAPH <http://www.ebi.ac.uk/chembl> {
         ?item a chembl:Activity ;
                 chembl:hasMolecule ?chembl_compound_uri ;
                 chembl:hasAssay ?assay_uri .
         ?assay_uri chembl:hasTarget ?target_uri .
         ?target_uri a ?target_type .
-	OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp } 
+	OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp }
 	BIND (IF (BOUND(?issue_tmp) , ?issue_tmp, false) AS ?issue)
 	OPTIONAL { ?item chembl:potentialDuplicate ?dup_tmp }
         BIND (IF (BOUND(?dup_tmp) , ?dup_tmp, false) AS ?dup)
@@ -394,7 +394,7 @@ _:type api:name "target_type" ;
         UNION { ?target_uri chembl:hasTargetComponent ?protein .
                 GRAPH <http://www.conceptwiki.org> {
                         ?cw_target skos:exactMatch ?protein ;
-                                skos:prefLabel ?protein_name . 
+                                skos:prefLabel ?protein_name .
                 }
         }
         UNION { ?assay_uri chembl:organismName ?assay_organism }
@@ -411,7 +411,7 @@ _:type api:name "target_type" ;
         UNION { ?item chembl:standardRelation ?activity_relation }
         UNION { ?item chembl:standardValue ?standard_value .
                 BIND (xsd:decimal(?standard_value) as ?activity_value)}
-        UNION { ?item chembl:hasQUDT ?qudt_uri 
+        UNION { ?item chembl:hasQUDT ?qudt_uri
 		OPTIONAL { ?item chembl:standardUnits ?activity_unit }
 	}
         UNION { ?item chembl:pChembl ?pChembl }

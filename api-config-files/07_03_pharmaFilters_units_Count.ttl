@@ -20,7 +20,7 @@
 
 <#filters> a api:API ;
         rdfs:label "Pharmacology Filters"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -31,14 +31,14 @@
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:variable rdfs:label ;
 	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Activity Units: Count" ;
 		api:description "A list of activity units which have been normalised" ;
 		api:uriTemplate "/pharmacology/filters/count_units" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/count_units";
-		api:viewer <#pharmacologyFiltersUnitCountViewer> ; 
+		api:viewer <#pharmacologyFiltersUnitCountViewer> ;
 		api:defaultViewer <#pharmacologyFiltersUnitCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
@@ -53,12 +53,12 @@ rdfs:label api:name "activity_type" ;
 
 <#pharmacologyFiltersUnitCountViewer> a api:Viewer ;
 	api:name "pharmacologyFiltersUnitCountViewer" ;
-	api:template 
-"<http://www.ebi.ac.uk/chembl> ops:normalised_activity_unit_count ?count ." ; 
+	api:template
+"<http://www.ebi.ac.uk/chembl> ops:normalised_activity_unit_count ?count ." ;
 	api:where
 "{
 SELECT COUNT( DISTINCT ?unit) AS ?count WHERE {
   GRAPH <http://www.ebi.ac.uk/chembl>  {
    ?type chembl:hasQUDT ?unit  .
-  } 
+  }
 }}" .

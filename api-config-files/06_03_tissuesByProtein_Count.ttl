@@ -26,9 +26,9 @@
 
 <#tissue> a api:API ;
         rdfs:label "Tissue"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable wi:evidence ;
 	api:variable obo-rel:has_quality ;
 	api:dataset <http://rdf.imim.es> ;
@@ -48,7 +48,7 @@
 	api:viewer <#tissueCountViewer> ;
 	api:defaultViewer <#tissueCountViewer> .
 
-<http://www.conceptwiki.org/concept/UUID-neXtProtGold> api:name "gold" . 
+<http://www.conceptwiki.org/concept/UUID-neXtProtGold> api:name "gold" .
 <http://www.conceptwiki.org/concept/UUID-neXtProtSilver> api:name "silver" .
 
 <#input> api:name "uri" ;
@@ -70,7 +70,7 @@ wi:evidence api:name "evidence" ;
 
 <#tissueCountViewer> a api:Viewer ;
 	api:name "tissueCountViewer" ;
-	api:template 
+	api:template
 "?ops_item ops:tissueExpressionTotalResults ?count .";
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {

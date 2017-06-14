@@ -21,7 +21,7 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -32,14 +32,14 @@
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about targets" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Target Types" ;
 		api:description "A list of target types in the LDC." ;
 		api:uriTemplate "/target/types" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/target/types";
-		api:viewer <#targetTypesViewer> ; 
+		api:viewer <#targetTypesViewer> ;
 		api:defaultViewer <#targetTypesViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
@@ -50,7 +50,7 @@
 
 <#targetTypesViewer> a api:Viewer ;
 	api:name "targetTypesViewer" ;
-	api:template 
+	api:template
 "<http://www.ebi.ac.uk/chembl> ops:hasTargetType ?target_type .
 ?target_type ops:targetCount ?target_count .
 <http://rdf.ebi.ac.uk/terms/chembl#SingleProtein> rdfs:label 'single_protein' .
@@ -68,12 +68,12 @@
 <http://rdf.ebi.ac.uk/terms/chembl#UnclassifiedTarget> rdfs:label 'unclassified' .
 <http://rdf.ebi.ac.uk/terms/chembl#ADMET> rdfs:label 'admet' .
 <http://rdf.ebi.ac.uk/terms/chembl#ChimericProtein> rdfs:label 'chimeric_protein' .
-<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> rdfs:label 'phenotype' ." ; 
+<http://rdf.ebi.ac.uk/terms/chembl#Phenotype> rdfs:label 'phenotype' ." ;
 	api:where
 "{ SELECT DISTINCT ?target_type (COUNT(DISTINCT ?chembl_target) AS ?target_count) WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl> {
         [] chembl:hasTarget ?chembl_target .
 	?chembl_target a ?target_type .
 }
-} GROUP BY ?target_type  
+} GROUP BY ?target_type
 }" .

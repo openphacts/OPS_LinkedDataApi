@@ -25,10 +25,10 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:targetOrganism ;
-	api:variable <#input> ; 
+	api:variable <#input> ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
  	api:variable chembl:hasQUDT ;
@@ -107,7 +107,7 @@ chembl:organismName api:name "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
 	api:filterVariable "?assay_uri";
 	a rdf:Property .
-	
+
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
@@ -123,7 +123,7 @@ chembl:standardType api:name "activity_type" ;
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -274,7 +274,7 @@ _:type api:name "target_type" ;
 		OPTIONAL { ?doc_uri owl:sameAs ?doi }
 		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
 	}
-	OPTIONAL { ?item chembl:dataValidityComment ?comment}	
+	OPTIONAL { ?item chembl:dataValidityComment ?comment}
 }
 OPTIONAL { GRAPH <http://ops.rsc.org> {
 	?ocrs_compound skos:exactMatch ?chembl_compound .
@@ -290,7 +290,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	OPTIONAL { GRAPH <http://www.conceptwiki.org> {
         	?cw_compound skos:exactMatch ?ocrs_compound ;
                 	skos:prefLabel ?compound_name .
-	} }	
+	} }
 } }" ;
 		api:expansionVariable "chembl_compound" ;
 ] ;
@@ -298,7 +298,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 
 <#targetPharmacologyListViewer> a api:Viewer ;
         api:name "targetPharmacologyListViewer" ;
-	api:template 
+	api:template
 "?item chembl:hasMolecule ?chembl_compound;
 	chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
@@ -319,7 +319,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?qudt_uri skos:prefLabel ?activity_unit .
 ?assay_uri chembl:assayOrganismName ?assay_organism ;
-	chembl:hasTarget ?chembl_target_uri ; 
+	chembl:hasTarget ?chembl_target_uri ;
 	dcterms:description ?assay_description ;
         chembl:targetConfDesc ?conf_desc ;
         ops:targetConfScore ?conf_score ;
@@ -346,15 +346,15 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	void:inDataset <http://ops.rsc.org> .
 ?ims_cw_compound_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
-" ; 
-	api:where 
-"{ 
+" ;
+	api:where
+"{
 GRAPH <http://www.ebi.ac.uk/chembl> {
         ?assay_uri chembl:hasTarget ?chembl_target_uri .
         ?assay_uri chembl:hasActivity ?item .
         ?item chembl:hasMolecule ?chembl_compound .
         ?chembl_target_uri a ?target_type .
-        OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp } 
+        OPTIONAL { ?item chembl:dataValidityIssue ?issue_tmp }
         BIND (IF (BOUND(?issue_tmp) , ?issue_tmp, false) AS ?issue)
         OPTIONAL { ?item chembl:potentialDuplicate ?dup_tmp }
         BIND (IF (BOUND(?dup_tmp) , ?dup_tmp, false) AS ?dup)
@@ -390,9 +390,9 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 		OPTIONAL { ?doc_uri owl:sameAs ?doi }
 		OPTIONAL { ?doc_uri bibo:pmid ?pmid }
 	}
-	OPTIONAL { ?item chembl:dataValidityComment ?comment}	
-} } UNION 
-{ 
+	OPTIONAL { ?item chembl:dataValidityComment ?comment}
+} } UNION
+{
 GRAPH <http://ops.rsc.org> {
         ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
@@ -403,8 +403,8 @@ GRAPH <http://ops.rsc.org> {
         OPTIONAL { [] obo:IAO_0000136 ?ims_ocrs_compound_uri ;
                 a cheminf:CHEMINF_000367;
                 qudt:numericValue ?num_ro5_violations . }
-	
-}} UNION 
+
+}} UNION
 {
 GRAPH <http://www.conceptwiki.org> {
 	?ims_cw_compound_uri skos:prefLabel ?compound_name .

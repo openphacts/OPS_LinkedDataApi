@@ -18,15 +18,15 @@
 
 <#diseaseByTarget> a api:API ;
         rdfs:label "Disease"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable rdf:type ;
 	api:dataset <http://rdf.imim.es> ;
 	api:vocabulary <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:description "An API configuration to return information about diseases" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ListEndpoint ;
 		api:name "Associations for Target: List" ;
 		api:description "A list of disease-target associations which correspond to a target {uri}.";
@@ -47,13 +47,13 @@
 
 rdf:type api:name "assoc_type" ;
         api:label "assoc_type" ;
-        api:filterVariable "?item";        
+        api:filterVariable "?item";
         api:value "One of the following association type URIs: http://semanticscience.org/resource/SIO_001119 (gene-disease association linked with causal mutation), http://semanticscience.org/resource/SIO_001120 (therapeutic gene-disease association), http://semanticscience.org/resource/SIO_001121 (gene-disease biomarker association), http://semanticscience.org/resource/SIO_001122 (gene-disease association linked with genetic variation), http://semanticscience.org/resource/SIO_001123 (gene-disease association linked with altered gene expression), http://semanticscience.org/resource/SIO_001124 (gene-disease association linked with post-translational modification)" ;
         a rdf:Property .
 
 <#assocByTargetViewer> a api:Viewer ;
 	api:name "assocByTargetViewer" ;
-	api:template 
+	api:template
 "?item ops:disease ?disease ;
 	ops:gene ?dg_gene_uri ;
 	rdf:type ?type ;
@@ -65,7 +65,7 @@ rdf:type api:name "assoc_type" ;
 ?disease foaf:name ?diseaseName ;
 	ops:diseaseClass ?diseaseClass ;
 	void:inDataset ?diseaseDataset .
-?diseaseClass foaf:name ?diseaseClassName ;	
+?diseaseClass foaf:name ?diseaseClassName ;
 	void:inDataset ?diseaseClassDataset .
 ?dg_gene_uri ops:encodes ?uniprot_target_uri ;
 	void:inDataset ?geneDataset .
@@ -87,7 +87,7 @@ GRAPH <http://rdf.imim.es> {
 	?type rdfs:label ?type_label .
 
 	?item sio:SIO_000253 ?primarySource .
-	
+
 	?item sio:SIO_000628 ?disease .
 	?disease rdf:type ncit:C7057 ;
 		foaf:name ?diseaseName ;
@@ -98,7 +98,7 @@ GRAPH <http://rdf.imim.es> {
                 	void:inDataset ?diseaseClassDataset .
 	}
 	OPTIONAL { ?item dcterms:description ?description .}
-	OPTIONAL { ?item sio:SIO_000772 ?pubmed_id . }	
+	OPTIONAL { ?item sio:SIO_000772 ?pubmed_id . }
 }
 OPTIONAL {GRAPH <http://www.conceptwiki.org> {
 	?cw_target_uri skos:prefLabel ?cw_prefLabel .

@@ -12,11 +12,11 @@
 
 <#dataSources> a api:API ;
         rdfs:label "Data Sources"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:vocabulary <http://rdfs.org/ns/void#> ;
 	api:description "An API configuration to return information about the loaded data sources" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Data Sources" ;
 		api:itemTemplate "http://www.openphacts.org/linked_data_cache" ;
@@ -28,7 +28,7 @@
 
 <#dataSourcesViewer> a api:Viewer ;
 	api:name "dataSourcesViewer" ;
-	api:template 
+	api:template
 "<http://www.openphacts.org/linked_data_cache> a void:Dataset ;
                                        void:subset ?top_dataset .
 ?top_dataset foaf:isPrimaryTopicOf ?description .
@@ -42,22 +42,22 @@
 ?dataset prov:wasRevisionOf ?revisionOf .
 ?dataset void:triples ?tripleNo .
 ?dataset void:dataDump ?dataDump .
-?dataset dcat:landingPage ?landingPage . 
+?dataset dcat:landingPage ?landingPage .
 ?dataset foaf:homepage ?homepage .
 ?dataset a void:Dataset . ";
 	api:where
-"GRAPH <http://www.openphacts.org/api/datasetDescriptors> { 
+"GRAPH <http://www.openphacts.org/api/datasetDescriptors> {
 ?dataset a void:Dataset .
 ?description foaf:primaryTopic ?top_dataset .
 OPTIONAL { ?dataset dcterms:title ?title . }
-OPTIONAL { ?dataset void:subset ?subset . } 
+OPTIONAL { ?dataset void:subset ?subset . }
 OPTIONAL { ?dataset dcterms:description ?dctDescription . }
 OPTIONAL { ?dataset dcterms:license ?license . }
 OPTIONAL { {?dataset prov:wasDerivedFrom ?derivedFrom . }
 UNION { ?dataset prov:hadPrimarySource ?primarySource . }
 UNION { ?dataset prov:wasQuotedFrom ?quotedFrom . }
 UNION { ?dataset prov:wasRevisionOf ?revisionOf . }
-} 
+}
 OPTIONAL { ?dataset void:dataDump ?dataDump . }
 OPTIONAL { ?dataset void:triples ?tripleNo . }
 OPTIONAL { {?dataset foaf:homepage ?homepage . }

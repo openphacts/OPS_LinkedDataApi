@@ -22,10 +22,10 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ;
-        api:variable wp:organism ; 
+        api:variable wp:organism ;
 	api:variable _:direction ;
 	api:variable _:interaction_type ;
 	api:dataset <http://www.wikipathways.org> ;
@@ -34,7 +34,7 @@
 	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
 	api:vocabulary <http://purl.org/dc/terms/> ;
 	api:description "An API configuration to return information about pathways." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ListEndpoint ;
 		api:name "Pathway Interactions for Entity: List" ;
 		api:description "A list of interactions that the entity specified is a part of.";
@@ -81,12 +81,12 @@ GRAPH <http://www.wikipathways.org> {
 		MINUS { ?item a wp:DirectedInteraction }
                 MINUS { ?item a wp:ComplexBinding }
 		BIND ( wp:UndirectedInteraction AS ?dir_interaction_type)
-	} 
+	}
 	OPTIONAL {
 		?entity dcterms:isPartOf ?item .
                 ?item a wp:DirectedInteraction,
 				?dir_interaction_type ;
-                        ?rel ?pw_entity_uri ; 
+                        ?rel ?pw_entity_uri ;
                         dcterms:isPartOf ?rev .
 	}
 	FILTER ( BOUND( ?item ) )
@@ -141,7 +141,7 @@ _:direction api:name "direction" ;
 	api:value "One of: 'up', 'down'. 'up' returns only Interactions where the specifies entity is the target, and 'down' returns only Interactions where the specified entity is the source." ;
 	api:filterVariable "?rel" ;
 	a rdf:Property ;
-	rdfs:subPropertyOf api:graphFilter . 
+	rdfs:subPropertyOf api:graphFilter .
 
 _:interaction_type api:name "interaction_type" ;
 	api:label "interaction_type" ;
@@ -157,11 +157,11 @@ _:interaction_type api:name "interaction_type" ;
 
 <#pathwayInteractionsByEntityViewer> a api:Viewer ;
 	api:name "pathwayInteractionsByEntityViewer" ;
-	api:template 
+	api:template
 "
 ?pathway sioc:latest_version ?rev ;
 	wp:organism ?organism_uri ;
-	dc:title ?title ; 
+	dc:title ?title ;
 	void:inDataset <http://www.wikipathways.org> .
 ?organism_uri rdfs:label ?organism ;
         void:inDataset <http://www.wikipathways.org> .
@@ -283,7 +283,7 @@ GRAPH <http://www.wikipathways.org> {
 			?target_target a ?target_target_type .
 			FILTER ( ?target_source_type != wp:DataNode || STRSTARTS( STR( ?target_source ), 'http://identifiers.org/wikipathways/WP' ) )
 			FILTER ( ?target_target_type != wp:DataNode || STRSTARTS( STR( ?target_target ), 'http://identifiers.org/wikipathways/WP' ) )
-			BIND ( true AS ?target_directed ) 
+			BIND ( true AS ?target_directed )
 		}
 		OPTIONAL {
 		  ?item a ?dir_interaction_types .

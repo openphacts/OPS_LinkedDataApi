@@ -11,7 +11,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
         api:variable chembl:organismName ;
@@ -24,7 +24,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about targets." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:IntermediateExpansionEndpoint ;
 		api:name "Target Class Members: List" ;
 		api:description "A list of targets classified with the given class in the supported hierarchies. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology." ;
@@ -36,7 +36,7 @@
 		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-";
 		api:exampleRequestPath "/target/members/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F6.2.-.-&target_organism=Homo%20sapiens";
 		api:selector [
-			api:where 
+			api:where
 "VALUES ?g { <http://purl.uniprot.org/enzyme/inference> <http://www.ebi.ac.uk/chembl/target/inference> <http://www.geneontology.org/inference> }
 GRAPH ?g {
         ?child_node rdfs:subClassOf ?node_uri.
@@ -53,11 +53,11 @@ VALUES ?g2 {<http://purl.uniprot.org> <http://www.ebi.ac.uk/chembl> <http://www.
 GRAPH ?g2 {
 	?item [] []
 }
-{ ?item dcterms:title ?chembl_name 
-FILTER (?chembl_name != '') } 
-UNION { ?item goa:description ?uniprot_name 
-FILTER (?uniprot_name != '') } 
-OPTIONAL { 
+{ ?item dcterms:title ?chembl_name
+FILTER (?chembl_name != '') }
+UNION { ?item goa:description ?uniprot_name
+FILTER (?uniprot_name != '') }
+OPTIONAL {
 	{?mapping skos:relatedMatch/skos:exactMatch ?item }
 	UNION { ?item skos:relatedMatch/skos:exactMatch ?mapping }
 	MINUS { ?mapping a chembl:ProteinComplexGroup }
@@ -65,22 +65,22 @@ OPTIONAL {
 	UNION { ?mapping dcterms:title ?mapping_name }
 	FILTER ( ?mapping_name != '' )
 	{ ?mapping uniprot:organism ?mapping_org_uri }
-	UNION { ?mapping chembl:organismName ?mapping_org 
-		GRAPH <http://www.ebi.ac.uk/chembl> { 
-			?mapping a ?mapping_type 
+	UNION { ?mapping chembl:organismName ?mapping_org
+		GRAPH <http://www.ebi.ac.uk/chembl> {
+			?mapping a ?mapping_type
 			FILTER ( ?mapping_type != chembl:UniprotRef )
 		}
 	}
-	BIND(IF(BOUND(?mapping_org), <http://www.ebi.ac.uk/chembl>, <http://purl.uniprot.org>) AS ?mapping_dataset) 
+	BIND(IF(BOUND(?mapping_org), <http://www.ebi.ac.uk/chembl>, <http://purl.uniprot.org>) AS ?mapping_dataset)
 }
-OPTIONAL { ?item uniprot:organism ?uniprot_organism 
+OPTIONAL { ?item uniprot:organism ?uniprot_organism
 	BIND (?item AS ?uniprot_target) }
-OPTIONAL { 
-	GRAPH <http://www.ebi.ac.uk/chembl> { 
-		?item a ?target_type 
-	} 
+OPTIONAL {
+	GRAPH <http://www.ebi.ac.uk/chembl> {
+		?item a ?target_type
+	}
 }
-OPTIONAL { ?item chembl:organismName ?chembl_organism 
+OPTIONAL { ?item chembl:organismName ?chembl_organism
 	BIND (?item AS ?chembl_target) }
 "] ;
 		api:expansionVariable "item" ;
@@ -114,7 +114,7 @@ uniprot:organism api:name "target_organism_uri" ;
 
 <#targetMemberViewer> a api:Viewer ;
 	api:name "targetMemberViewer";
-	api:template 
+	api:template
 "?ims_uniprot_target_uri skos:prefLabel ?uniprot_name ;
 	uniprot:organism ?uniprot_organism ;
 	void:inDataset <http://purl.uniprot.org> .
@@ -130,14 +130,14 @@ uniprot:organism api:name "target_organism_uri" ;
 	void:inDataset ?mapping_dataset .
 ops:no_mappings_found rdfs:label 'No mappings found' .
 ";
-	api:where 
+	api:where
 "
 { GRAPH <http://www.openphacts.org/goa> {
 	?ims_uniprot_target_uri goa:description ?uniprot_name
 	GRAPH <http://purl.uniprot.org> {
 		?ims_uniprot_target_uri uniprot:organism ?uniprot_organism
 	}
-} 
+}
 } UNION {
   GRAPH <http://www.ebi.ac.uk/chembl> {
 	?ims_chembl_target_uri dcterms:title ?chembl_name

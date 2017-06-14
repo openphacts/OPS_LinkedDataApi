@@ -9,7 +9,7 @@
 
 <#patent> a api:API ;
 	rdfs:label "Patent"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:variable schembl:SCCO_000028 ;
@@ -107,7 +107,7 @@ _:cwu api:name "cwu" ;
 
 <#patentEntitiesViewer> a api:Viewer ;
 	api:name "patentViewer" ;
-	api:template 
+	api:template
 "
 ?patent_uri dct:title ?title ;
 	ops:datePublished ?date ;
@@ -132,7 +132,7 @@ _:cwu api:name "cwu" ;
 <http://rdf.ebi.ac.uk/terms/surechembl#SCCO_000036> skos:prefLabel 'Disease' ;
         void:inDataset <http://www.ebi.ac.uk/surechembl> .
 " ;
-	api:where 
+	api:where
 "
 GRAPH <http://www.ebi.ac.uk/surechembl> {
 	?patent_uri a schembl:SCCO_000002 ;

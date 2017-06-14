@@ -22,9 +22,9 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable wp:organism ;
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
@@ -32,7 +32,7 @@
 	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
 	api:vocabulary <http://purl.org/dc/terms/> ;
 	api:description "An API configuration to return information about pathways" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ListEndpoint ;
 		api:name "Pathways for Publication: List" ;
 		api:description "A list of pathways which have as part the Reference specified.";
@@ -102,26 +102,26 @@ wp:organism api:name "pathway_organism" ;
 
 <#pathwayByReferenceViewer> a api:Viewer ;
 	api:name "pathwayByReferenceViewer" ;
-	api:template 
-"?item dc:title ?title ; 
-	wp:organism ?organism_uri ; 
+	api:template
+"?item dc:title ?title ;
+	wp:organism ?organism_uri ;
 	foaf:page ?page ;
 	dc:identifier ?identifier ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
 	dcterms:hasPart ?pw_ref_uri ;
 	void:inDataset <http://www.wikipathways.org> .
-?organism_uri rdfs:label ?organism . 
-?pw_ref_uri a wp:PublicationReference . 
+?organism_uri rdfs:label ?organism .
+?pw_ref_uri a wp:PublicationReference .
 ";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
 	?item a wp:Pathway ;
-		dc:title ?title ; 
+		dc:title ?title ;
 		wp:organism ?organism_uri ;
-		wp:organismName ?organism ; 
+		wp:organismName ?organism ;
 		foaf:page ?page ;
-		dc:identifier ?identifier . 
+		dc:identifier ?identifier .
         ?pw_ref_uri dcterms:isPartOf ?item ;
                 a wp:PublicationReference .
 	OPTIONAL { ?item dcterms:description ?description }

@@ -9,7 +9,7 @@
 
 <#patent> a api:API ;
 	rdfs:label "Patent"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:variable schembl:SCCO_000028 ;
@@ -107,12 +107,12 @@ _:cwu api:name "cwu" ;
 
 <#patentEntitiesCountViewer> a api:Viewer ;
 	api:name "patentEntitiesCountViewer" ;
-	api:template 
+	api:template
 "
 ?patent_uri ops:entityCount ?count ;
 	void:inDataset <http://www.ebi.ac.uk/surechembl> .
 " ;
-	api:where 
+	api:where
 "
 { SELECT DISTINCT ?patent_uri ( COUNT ( ?entity ) AS ?count ) WHERE {
 	GRAPH <http://www.ebi.ac.uk/surechembl> {

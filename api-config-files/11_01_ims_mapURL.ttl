@@ -6,7 +6,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "Mapping service betweem URLs"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#Uri> ;
 	api:variable <#targetUriPattern> ;
@@ -32,7 +32,7 @@
 
 <#targetUriPattern> api:name "targetUriPattern" ;
 	api:label "targetUriPattern" ;
-	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." . 
+	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." .
 
 <#graph> api:name "graph" ;
 	api:label "graph";

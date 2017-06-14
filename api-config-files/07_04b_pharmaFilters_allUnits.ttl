@@ -20,7 +20,7 @@
 
 <#filters> a api:API ;
         rdfs:label "Pharmacology Filters"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:variable _:type_label ;
@@ -31,7 +31,7 @@
 	api:vocabulary <http://qudt.org/schema/qudt#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ListEndpoint ;
 		api:name "Activity Units: List" ;
 		api:description "A list of activity units which have been normalised" ;
@@ -39,17 +39,17 @@
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/units/pages";
 		api:selector [
-			api:where 
+			api:where
 "{
 SELECT DISTINCT ?item ?qudt_label COUNT(?activity) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl>  {
 	?activity chembl:hasQUDT ?item .
-        ?item rdfs:label ?qudt_label 
-	}  
+        ?item rdfs:label ?qudt_label
+	}
 } GROUP BY ?item ?qudt_label ORDER BY DESC( ?count )
 }" ;
 api:orderBy ""] ;
-		api:viewer <#pharmacologyFiltersUnitViewer> ; 
+		api:viewer <#pharmacologyFiltersUnitViewer> ;
 		api:defaultViewer <#pharmacologyFiltersUnitViewer> . ] .
 
 _:type_label api:name "activity_type" ;
@@ -65,10 +65,10 @@ _:type_label api:name "activity_type" ;
 
 <#pharmacologyFiltersUnitViewer> a api:Viewer ;
 	api:name "pharmacologyFiltersUnitViewer" ;
-	api:template 
+	api:template
 "<http://www.ebi.ac.uk/chembl> ops:normalised_activity_unit ?item .
 ?item rdfs:label ?qudt_label ;
-ops:activity_count ?count ." ; 
+ops:activity_count ?count ." ;
 	api:where
 "{
 SELECT DISTINCT ?item COUNT(?activity) AS ?count WHERE {
@@ -77,6 +77,6 @@ SELECT DISTINCT ?item COUNT(?activity) AS ?count WHERE {
   } } GROUP BY ?item
 }
 GRAPH <http://www.ebi.ac.uk/chembl> {
-	?item rdfs:label ?qudt_label 
-}  
+	?item rdfs:label ?qudt_label
+}
 " .

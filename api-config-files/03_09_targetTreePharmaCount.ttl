@@ -17,7 +17,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:variable _:targetOrganism ;
@@ -41,7 +41,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about targets." ;
-	api:endpoint [ 
+	api:endpoint [
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 		api:variable <http://www.openphacts.org/units/Millimolar> ;
 		api:variable <http://www.openphacts.org/units/Nanomolar> ;
@@ -124,7 +124,7 @@ chembl:standardType api:name "activity_type" ;
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -233,9 +233,9 @@ chembl:targetConfScore api:name "target_conf_score";
 
 <#targetTreePharmaCountViewer> a api:Viewer ;
 	api:name "targetTreePharmaCountViewer";
-	api:template 
+	api:template
 "?ops_item ops:targetPharmacologyTotalResults ?count . ";
-	api:where 
+	api:where
 "{
 SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 { SELECT ?item ?issue ?dup ?conf_score WHERE {

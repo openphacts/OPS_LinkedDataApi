@@ -18,7 +18,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:variable _:targetOrganism ;
@@ -42,7 +42,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about targets." ;
-	api:endpoint [ 
+	api:endpoint [
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 		api:variable <http://www.openphacts.org/units/Millimolar> ;
 		api:variable <http://www.openphacts.org/units/Nanomolar> ;
@@ -99,14 +99,14 @@
 	?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?node_uri .
-	} 
+	}
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?item a chembl:Activity ;
 		chembl:hasAssay ?assay_uri ;
 		chembl:hasMolecule ?chembl_compound .
 		?assay_uri chembl:hasTarget ?chembl_target .
 		?chembl_target a ?target_type .
-		OPTIONAL { 
+		OPTIONAL {
 			GRAPH <http://ops.rsc.org> {
 				?ocrs_compound skos:exactMatch ?chembl_compound .
 			}
@@ -133,7 +133,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 			GRAPH <http://www.conceptwiki.org> {
 				?cw_target skos:exactMatch ?protein ;
 					skos:prefLabel ?protein_name
-			} 
+			}
 		}
 	}
 	UNION { ?item chembl:publishedType ?published_type }
@@ -143,7 +143,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	UNION { ?item chembl:standardType ?activity_type }
 	UNION { ?item chembl:standardRelation ?activity_relation }
 	UNION { ?item chembl:standardValue ?std_value .
-		BIND (xsd:decimal(?std_value) as ?activity_value) 
+		BIND (xsd:decimal(?std_value) as ?activity_value)
 	}
 	UNION { ?item chembl:standardUnits ?activity_unit }
 	UNION { ?item chembl:hasQUDT ?qudt_uri }
@@ -160,7 +160,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 			{ ?ocrs_compound cheminf:CHEMINF_000396 ?inchi }
 			UNION {?ocrs_compound cheminf:CHEMINF_000399 ?inchi_key}
 			UNION {?ocrs_compound cheminf:CHEMINF_000018 ?smiles }
-		} 
+		}
 	}
 }
 " ;
@@ -200,7 +200,7 @@ chembl:standardType api:name "activity_type" ;
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -309,7 +309,7 @@ chembl:targetConfScore api:name "target_conf_score";
 
 <#targetTreePharmaViewer> a api:Viewer ;
 	api:name "targetTreePharmaViewer";
-	api:template 
+	api:template
 "?item chembl:hasMolecule ?chembl_compound;
         chembl:publishedType ?published_type ;
         chembl:publishedRelation ?published_relation ;
@@ -360,8 +360,8 @@ chembl:targetConfScore api:name "target_conf_score";
         void:inDataset <http://www.conceptwiki.org> .
 ";
 	api:where "
-{ 
-	GRAPH <http://www.ebi.ac.uk/chembl> { 
+{
+	GRAPH <http://www.ebi.ac.uk/chembl> {
                 ?item a chembl:Activity ;
                         chembl:hasAssay ?assay_uri ;
                         chembl:hasMolecule ?chembl_compound .
@@ -405,8 +405,8 @@ chembl:targetConfScore api:name "target_conf_score";
                 }
 	        OPTIONAL { ?item chembl:dataValidityComment ?comment}
         }
-} UNION 
-{ 
+} UNION
+{
         GRAPH <http://ops.rsc.org> {
                 ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                         cheminf:CHEMINF_000399 ?inchi_key;
@@ -418,9 +418,9 @@ chembl:targetConfScore api:name "target_conf_score";
 			a cheminf:CHEMINF_000484 ;
 			qudt:numericValue ?molweight . }
         }
-} UNION 
-{ 
+} UNION
+{
         GRAPH <http://www.conceptwiki.org> {
                 ?ims_cw_compound_uri skos:prefLabel ?compound_name .
-        } 
+        }
 } " .

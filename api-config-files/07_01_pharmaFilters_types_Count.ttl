@@ -20,7 +20,7 @@
 
 <#filters> a api:API ;
         rdfs:label "Pharmacology Filters"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
 	api:vocabulary <http://semanticscience.org/resource/> ;
@@ -31,7 +31,7 @@
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:variable chembl:hasQUDT ;
 	api:description "An API configuration to return information about normalised Activity types and Units available for filtering." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:variable <http://www.openphacts.org/units/MicrogramPerMilliliter> ;
 		api:variable <http://www.openphacts.org/units/Millimolar> ;
@@ -63,7 +63,7 @@
 		api:uriTemplate "/pharmacology/filters/activities/count" ;
         	api:itemTemplate "http://www.ebi.ac.uk/chembl" ;
 		api:exampleRequestPath "/pharmacology/filters/activities/count";
-		api:viewer <#pharmacologyFiltersTypesCountViewer> ; 
+		api:viewer <#pharmacologyFiltersTypesCountViewer> ;
 		api:defaultViewer <#pharmacologyFiltersTypesCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
@@ -98,18 +98,18 @@
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?type";
         a rdf:Property .
 
 <#pharmacologyFiltersTypesCountViewer> a api:Viewer ;
 	api:name "pharmacologyFiltersTypesCountViewer" ;
-	api:template 
-"<http://www.ebi.ac.uk/chembl> ops:activity_type_count ?count " ; 
+	api:template
+"<http://www.ebi.ac.uk/chembl> ops:activity_type_count ?count " ;
 	api:where
 "{
 SELECT DISTINCT ?type_label COUNT(?type) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl> {
-        ?type rdfs:subClassOf chembl:Activity . 
+        ?type rdfs:subClassOf chembl:Activity .
 }
 } }" .
