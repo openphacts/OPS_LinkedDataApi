@@ -95,7 +95,7 @@
 		api:exampleRequestPath "/target/tree/pharmacology/pages?uri=http%3A%2F%2Fpurl.uniprot.org%2Fenzyme%2F1.1.-.-&activity_type=IC50&activity_unit=nanomolar&assay_organism=Rattus%20norvegicus&target_organism=Rattus%20norvegicus&minEx-activity_value=50000&maxEx-activity_value=200000";
 		api:selector [
 		api:where "
-{ SELECT DISTINCT ?chembl_target ?chembl_compound ?ocrs_compound ?node ?assay_uri ?item ?target_type ?issue ?dup ?conf_score WHERE {
+{ SELECT DISTINCT ?chembl_target ?chembl_compound ?ocrs_compound ?node_uri ?assay_uri ?item ?target_type ?issue ?dup ?conf_score WHERE {
 	?chembl_target chembl:hasProteinClassification|chembl:hasTargetComponent/chembl:targetCmptXref|chembl:hasTargetComponent/skos:exactMatch/obo_goa:C|chembl:hasTargetComponent/skos:exactMatch/obo_goa:F|chembl:hasTargetComponent/skos:exactMatch/obo_goa:P ?class .
 	GRAPH ?g {
 		?class rdfs:subClassOf ?node_uri .
