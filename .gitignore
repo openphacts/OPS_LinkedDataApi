@@ -50,3 +50,4 @@ atlassian-ide-plugin.xml
 # local/user-specific files:
 local
 docs/_site
+cache
