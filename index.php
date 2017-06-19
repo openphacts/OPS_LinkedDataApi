@@ -131,6 +131,7 @@ else
        * $Response->serve();
        */
       $ConfigGraph->init();
+      $ConfigGraph->sparqlEndpointUri = OPS_SPARQL_ENDPOINT;
       if($selectedEndpointUri = $ConfigGraph->getEndpointUri()){
           logDebug("Endpoint Uri Selected: $selectedEndpointUri");
           unset($CompleteConfigGraph);

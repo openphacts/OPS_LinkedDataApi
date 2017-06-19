@@ -15,4 +15,7 @@ define('PUELIA_MEMCACHE_PORT', '11211');
 define ('IMS_EXPAND_ENDPOINT', 'http://alpha.openphacts.org:3004/QueryExpander/expandXML?query=');
 define ('CHEMSPIDER_ENDPOINT', 'https://chemistry.openphacts.org/api/JSON.ashx');
 define ('IMS_MAP_ENDPOINT', 'http://alpha.openphacts.org:3004/QueryExpander/mapUriRDF');
+// Get sparql endpoint from environment variable
+$sparqlEndpointUri = getenv('OPS_SPARQL_ENDPOINT', true) ?: getenv('OPS_SPARQL_ENDPOINT');
+define('OPS_SPARQL_ENDPOINT', $sparqlEndpointUri);
 ?>
