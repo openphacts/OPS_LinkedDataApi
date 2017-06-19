@@ -12,7 +12,11 @@ define('CACHE_OFF', 0);
 define('PUELIA_CACHE_AGE', CACHE_ONE_YEAR);
 define('PUELIA_MEMCACHE_HOST', 'localhost');
 define('PUELIA_MEMCACHE_PORT', '11211');
-define ('IMS_EXPAND_ENDPOINT', 'http://localhost:8082/QueryExpander/expandXML?query=');
+define ('IMS_EXPAND_ENDPOINT', 'http://alpha.openphacts.org:3004/QueryExpander/expandXML?query=');
 define ('CHEMSPIDER_ENDPOINT', 'https://ops2.rsc.org/ops/json.ashx');
-define ('IMS_MAP_ENDPOINT', 'http://localhost:8082/QueryExpander/mapUriRDF');
+define ('IMS_MAP_ENDPOINT', 'http://alpha.openphacts.org:3004/QueryExpander/mapUriRDF');
+// Safely get the value of an environment variable, ignoring whether
+// or not it was set by a SAPI or has been changed with putenv
+$sparqlEndpointUri = getenv('OPS_SPARQL_ENDPOINT', true) ?: getenv('OPS_SPARQL_ENDPOINT');
+define('OPS_SPARQL_ENDPOINT', $sparqlEndpointUri);
 ?>

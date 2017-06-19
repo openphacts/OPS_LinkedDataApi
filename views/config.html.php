@@ -54,10 +54,14 @@
                     <?php echo $base ?>
                     </dd> -->
                     <dt>SPARQL Endpoint</dt><dd>
-                        <?php 
-                        $sparqlEndpoint = $ConfigGraph->get_first_resource($apiUri, API.'sparqlEndpoint');
+                    <!--  In theory each endpoint can have its own sparql endpoint but for OPS
+                          they are all pointing at the same one -->
+                        <?php
+                        $sparqlEndpoint = OPS_SPARQL_ENDPOINT;
                         echo empty($sparqlEndpoint)? "<em>Warning: No SPARQL Endpoint configured. This API will not work.</em>" : '<a href="'.$sparqlEndpoint.'">'.$sparqlEndpoint.'</a>';
-                        ?>  
+                        ?> 
+                        <!-- $sparqlEndpoint = $ConfigGraph->get_first_resource($apiUri, API.'sparqlEndpoint'); -->
+                         
                     </dd>
                     <dt>voiD Datasets</dt>
 <!-- Antonis -->
