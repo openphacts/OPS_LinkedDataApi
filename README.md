@@ -12,6 +12,8 @@ Requirements are php 5.2, with `php_xsl`, `lib_curl`, and `mod_rewrite` and `.ht
 
 Make sure that Apache's `DocumentRoot` directory and (all parent directories from /var/ forward) are writable by the user running Apache
 
+The sparql endpoint is set from an environment variable `export OPS_SPARQL_ENDPOINT=http://sparql-endpoint:8890/sparql` and read in `deployment.settings.php`.
+
 ## Docker image
 
 This application is also available as a [Docker](https://www.docker.com/) image:
