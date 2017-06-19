@@ -25,11 +25,11 @@ class OpsIms {
 	    '?schembl_target_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/target/',
 	    '?schembl_compound_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/molecule/',
 	    '?schembl_disease_uri' => 'http://rdf.ebi.ac.uk/resource/surechembl/indication/',
-	    '?oidd_assay_uri' => 'http://openinnovation.lilly.com/bioassay#',   
+	    '?oidd_assay_uri' => 'http://openinnovation.lilly.com/bioassay#',
 	    '?chembl_assay_uri' => 'http://rdf.ebi.ac.uk/resource/chembl/assay/',
 	    '?nextprot_target_uri' => 'http://www.nextprot.org/db/search#'
     );
-    
+
     var $IMS_interm_variables = array(
             '?ims_chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
             '?ims_chembl_compound_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/molecule/' ,
@@ -44,13 +44,16 @@ class OpsIms {
 	    '?ims_umls_disease_uri' => 'http://linkedlifedata.com/resource/umls/id/',
             '?ims_omim_disease_uri' => 'http://identifiers.org/omim/',
     );
-    
-    
-    
+
     var $expander_variables = array();//'?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
-    
+
+  /**
+   * Called by SparqlWriter
+   *
+   * @return mixed|SimpleXMLElement[]
+   */
     function expandQuery ( $query , $input_uri, $lens ) {
-	$params='';       
+	$params='';
         foreach ($this->expander_variables as &$var) {
             if (strpos($query , $var) !== false) {
                 $params.= ", {$var}";
@@ -59,20 +62,20 @@ class OpsIms {
         if ($params !='') {
             $output = $this->expandQueryThroughExpander($query, $params, $input_uri, $lens);
         }
-        else {        
+        else {
             $output = $this->expandQueryThroughIMS($query, $input_uri, $lens);
 		}
-	
+
 	    return $output ;
    }
-   
+
    private function expandQueryThroughIMS($query, $input_uri, $lens){
        $output = $query ;
        //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
        $multiHandle = curl_multi_init();
        $variableInfoMap = array();
-           
-       //build curl multi handle setup      
+
+       //build curl multi handle setup
        foreach ($this->IMS_variables AS $variableName => $pattern ){
            if (strpos($query, $variableName)!==false) {
                $variableInfoMap[$variableName] = array();
@@ -93,9 +96,9 @@ class OpsIms {
                else{
                   $url .= $lens;
                }
-       
+
               $url .= '&Uri='.urlencode($input_uri);
-	      //logDebug("IMS Request: ".$url);                   
+	      //logDebug("IMS Request: ".$url);
               $variableInfoMap[$variableName]['url']=$url;
               $ch = curl_init();
               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -105,8 +108,8 @@ class OpsIms {
               curl_multi_add_handle($multiHandle, $ch);
            }
        }
-       
-       $this->doSelectAndHandleResponses($multiHandle, $input_uri, $variableInfoMap);       
+
+       $this->doSelectAndHandleResponses($multiHandle, $input_uri, $variableInfoMap);
        curl_multi_close($multiHandle);
        foreach ($variableInfoMap AS $variableName => $info){
            if (isset($info['filter']) && preg_match("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$variableName.")/s",$output)) {
@@ -117,15 +120,15 @@ class OpsIms {
        $output = preg_replace("/\*#\*/","}",$output);
        return $output;
    }
-   
+
    private function doSelectAndHandleResponses($multiHandle, $input_uri, &$variableInfoMap){
        do{
            do {
                $mrc = curl_multi_exec($multiHandle, $activeHandles);
            } while ($mrc==CURLM_CALL_MULTI_PERFORM);
-       
+
            if ($activeHandles==0 || $mrc!=CURLM_OK) break;
-            
+
            if (curl_multi_select($multiHandle) != -1){//wait for requests
 // Disabled due to issue openphacts/OPS_LinkedDataApi#13
 // The responses are handled later in foreach-handleResponse loop
@@ -134,19 +137,19 @@ class OpsIms {
            }
        }
        while (true);
-        
+
        foreach ($variableInfoMap AS $variableName => $varInfo){
            if (isset($varInfo['url'])&&!isset($varInfo['filter'])){
                $this->handleResponse($varInfo, $multiHandle, $input_uri, $variableName, $variableInfoMap);
            }
        }
    }
-   
+
    private function handleAvailableResponses($multiHandle, $input_uri, $variableInfoMap){
        do{
            $info = curl_multi_info_read($multiHandle);
            if ($info===FALSE) break;
-       
+
            if ( $info['result'] != CURLE_OK ) {
                logError("Error receiving info from the IMS");
                break;
@@ -162,7 +165,7 @@ class OpsIms {
        }
        while(true);
    }
-   
+
    private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
        $response = curl_multi_getcontent($varInfo['handle']);
        //logDebug("IMS Response: {$response}");
@@ -173,7 +176,7 @@ class OpsIms {
        $graph->add_rdf($response);
        $variableInfoMap[$variableName]['filter'] = $this->buildFilterFromMappings($graph, array($input_uri), $variableName);
    }
-   
+
    private function expandQueryThroughExpander($query, $params, $input_uri, $lens){
        $expanded = preg_replace("/\*#\*/","}",$query);
        $url = IMS_EXPAND_ENDPOINT;
@@ -188,10 +191,10 @@ class OpsIms {
        else{
            $url .= $lens;
        }
-       
+
        $url .= '&inputURI=' . urlencode($input_uri) ;
        $response = $this->getResponse($url, "application/xml");
-       
+
 //      echo "<pre>\n";
 //      echo $query;
 //      echo "\n</pre><pre>\n";
@@ -204,6 +207,11 @@ class OpsIms {
        return $expanded;
    }
 
+  /**
+   * Called by SparqlWriter
+   *
+   * @return mixed
+   */
   function expandBatchQuery( $query , $uriList, $lens) {
 	$rdf = "";
 	$output['expandedQuery']=$query;
@@ -220,7 +228,7 @@ class OpsIms {
                   }
                   $urlStart .= '&targetUriPattern='.$encoded_pattern;
                 }
-                $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');		
+                $urlStart .= '&overridePredicateURI='.urlencode('http://www.w3.org/2004/02/skos/core#exactMatch');
 		$urlStart .= '&lensUri=';
 		if ($lens==''){
 		    $urlStart .= 'Default';
@@ -228,7 +236,7 @@ class OpsIms {
 		else{
 		    $urlStart .= $lens;
 		}
-		
+
 		$graph = new SimpleGraph() ;
 		$iter = 1;
 		$url=$urlStart;
@@ -236,24 +244,24 @@ class OpsIms {
 		    if ($iter % REQUEST_URI_NO == 0){
 		        $response = $this->getResponse($url, "text/plain");
 		        //echo $url . "\n";
-		        
+
 		        $graph->add_rdf($response);
 		        $rdf.=$response;
-		        
+
 		        $url=$urlStart;
 		    }
-		    
+
 		    $url .= '&Uri='.urlencode($uri);
-		    
+
 		    $iter++;
 		}
-		
+
 		$response = $this->getResponse($url, "text/plain");
 		//echo $url . "\n";
 		$graph->add_rdf($response);
 		$rdf.=$response;
-		
-		$filter = $this->buildFilterFromMappings($graph, $uriList, $name, $expanded);		
+
+		$filter = $this->buildFilterFromMappings($graph, $uriList, $name, $expanded);
 		if (isset($filter) ) {
 		    $output['expandedQuery'] = preg_replace("/(WHERE.*?)(GRAPH[^\}]*?\{[^\}]*?\\".$name.")/s",
 		    								"$1{$filter} $2",
@@ -265,7 +273,7 @@ class OpsIms {
 	$output['imsRDF']=$rdf;
 	return $output;
   }
-  
+
   private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
       foreach ($uriList AS $input_uri){
           foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
@@ -287,16 +295,16 @@ class OpsIms {
 //      logDebug("FILTER clause: ". $filter);
       return $filter;
   }
-  
+
   private function getResponse($url, $mimetype){
       $ch = curl_init($url);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
       curl_setopt($ch,CURLOPT_HTTPHEADER,array ("Accept: ".$mimetype));
       curl_setopt($ch,CURLOPT_FAILONERROR, true);
       $response = curl_exec($ch);
-      
+
       curl_close($ch);
-      
+
       return $response;
   }
 
