@@ -26,7 +26,7 @@ class ConfigGraph extends PueliaGraph {
     var $prefixesFromLoadedTurtle = array();
     var $_vocab = null;
     var $sparqlEndpointUri = '';
-        
+
     function __construct($rdf, $request, $requestFactory=false){
         $this->_request = $request;
         parent::__construct($rdf);
@@ -699,9 +699,19 @@ class ConfigGraph extends PueliaGraph {
    * @return string
    * @throws ConfigGraphException
    */
-    function getSparqlEndpointUri(){
-    	return $this->sparqlEndpointUri;
-        if($uri = $this->get_first_resource($this->getApiUri(), API.'sparqlEndpoint')){
+    function getSparqlEndpointUri() {
+      $sparqlEndpointFromRequest = $this->_request->getParam('sparqlendpoint');
+//      echo '$sparqlEndpointFromRequest = ' . $sparqlEndpointFromRequest;
+//      return $this->sparqlEndpointUri;
+      if ($sparqlEndpointFromRequest) {
+        return $sparqlEndpointFromRequest;
+      }
+      else {
+//        echo 'NOT using Request';
+//        echo $this->sparqlEndpointUri;
+        return $this->sparqlEndpointUri;
+      }
+      if($uri = $this->get_first_resource($this->getApiUri(), API.'sparqlEndpoint')){
             return $uri;
         } else {
             throw new ConfigGraphException("No sparqlEndpoint was specified for <".$this->getApiUri().">");
