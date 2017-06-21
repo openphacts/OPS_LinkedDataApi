@@ -700,7 +700,7 @@ class ConfigGraph extends PueliaGraph {
    * @throws ConfigGraphException
    */
     function getSparqlEndpointUri() {
-      $sparqlEndpointFromRequest = $this->_request->getParam('sparqlendpoint');
+      $sparqlEndpointFromRequest = $this->_request->getParam('_sparqlendpoint');
 //      echo '$sparqlEndpointFromRequest = ' . $sparqlEndpointFromRequest;
 //      return $this->sparqlEndpointUri;
       if ($sparqlEndpointFromRequest) {
