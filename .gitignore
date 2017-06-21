@@ -47,7 +47,11 @@
 # JIRA plugin
 atlassian-ide-plugin.xml
 
+# Mac hidden files
+.DS_Store
+
 # local/user-specific files:
 local
 docs/_site
 cache
+/logs/puelia.log
