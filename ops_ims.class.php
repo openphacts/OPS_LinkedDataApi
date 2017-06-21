@@ -3,6 +3,9 @@
 define('REQUEST_URI_NO', 40);
 
 class OpsIms {
+
+    private $_request;
+
     var $IMS_variables = array(
             '?chembl_target_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/target/' ,
             '?chembl_compound_uri'=>'http://rdf.ebi.ac.uk/resource/chembl/molecule/' ,
@@ -46,6 +49,10 @@ class OpsIms {
     );
 
     var $expander_variables = array();//'?cw_uri' , '?ocrs_uri' , '?db_uri' , '?chembl_uri' , '?uniprot_uri' , '?aers_uri');
+
+  function __construct($request){
+    $this->_request = $request;
+  }
 
   /**
    * Called by SparqlWriter
