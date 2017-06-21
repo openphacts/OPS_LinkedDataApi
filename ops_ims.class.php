@@ -76,7 +76,22 @@ class OpsIms {
 	    return $output ;
    }
 
+  private function getImsMapEndpoint() {
+//      return IMS_MAP_ENDPOINT;
+    $imsEndpointFromRequest = $this->_request->getParam('_imsendpoint');
+    if ($imsEndpointFromRequest) {
+      $imsMapEndpoint = $imsEndpointFromRequest . '/QueryExpander/mapUriRDF';
+    } else {
+      $imsMapEndpoint = IMS_MAP_ENDPOINT;
+    }
+//    echo '$imsMapEndpoint = ' . $imsMapEndpoint;
+    return $imsMapEndpoint;
+  }
+
    private function expandQueryThroughIMS($query, $input_uri, $lens){
+//     echo "expandQueryThroughIMS";
+//     echo $input_uri;
+//     echo $query;
        $output = $query ;
        //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
        $multiHandle = curl_multi_init();
@@ -86,7 +101,8 @@ class OpsIms {
        foreach ($this->IMS_variables AS $variableName => $pattern ){
            if (strpos($query, $variableName)!==false) {
                $variableInfoMap[$variableName] = array();
-               $url = IMS_MAP_ENDPOINT;
+//             $url = IMS_MAP_ENDPOINT;
+             $url = $this->getImsMapEndpoint();
                $url .= '?rdfFormat=RDF/XML';
 	       if ($pattern != '') {
 		  $encoded_pattern = urlencode($pattern);
@@ -220,13 +236,17 @@ class OpsIms {
    * @return mixed
    */
   function expandBatchQuery( $query , $uriList, $lens) {
+//    echo "expandBatchQuery";
+//    echo $uriList;
+//    echo $query;
 	$rdf = "";
 	$output['expandedQuery']=$query;
 	$output['imsRDF']=$rdf;
 	foreach ($this->IMS_interm_variables AS $name => $pattern) {
 	    if (strpos($query, $name)!==false){
 		$expanded = array();
-		$urlStart = IMS_MAP_ENDPOINT;
+//		$urlStart = IMS_MAP_ENDPOINT;
+        $urlStart = $this->getImsMapEndpoint();
 		$urlStart .= '?rdfFormat=N-Triples';
 		if ($pattern != '') {
 		  $encoded_pattern = urlencode($pattern);
