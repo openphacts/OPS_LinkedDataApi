@@ -3,14 +3,14 @@
 require_once 'lda.inc.php';
 
 class LinkedDataApiRequest {
-    
-    var $formatExtension = null;        
+
+    var $formatExtension = null;
     var $pathWithoutExtension = null;
     var $unreservedParams = null;
     var $params = null;
     var $orderedUriWithoutApiKeys = null;
     var $orderedUriNoExtensionReservedParams = null;
-    
+
     static $reservedParams = array(
         '_search', # a free text search query
         '_metadata', # is a comma separated list of names of metadata graphs to show: site,formats,views,all,execution
@@ -28,10 +28,12 @@ class LinkedDataApiRequest {
         '_callback', # for JSONP
         '_lens',
         'callback', # for JSONP
-	'app_id',
-	'app_key',
+        '_sparqlendpoint',
+        '_imsendpoint',
+	    'app_id',
+	    'app_key',
         );
-    
+
     function __construct(){
         if (isset($_SERVER['HTTP_IF_NONE_MATCH']))
         {
@@ -43,7 +45,7 @@ class LinkedDataApiRequest {
         }
         $this->uri = $this->getUri();
     }
-    
+
     public static function eliminateDebugParams(){
         $params = array('XDEBUG_SESSION_START', 'KEY');
         foreach($params as $param){
@@ -51,17 +53,17 @@ class LinkedDataApiRequest {
             $_SERVER['REQUEST_URI'] = rtrim(preg_replace($regex, '\1', $_SERVER['REQUEST_URI']), '?&');
             $_SERVER['QUERY_STRING'] = rtrim(preg_replace($regex, '\1', $_SERVER['QUERY_STRING']), '?&');
             unset($_REQUEST[$param]);
-        }   
+        }
     }
-    
+
     function getParams(){
 	$post = file_get_contents('php://input');
         if ($this->params!=null){
             return $this->params;
         }
         if(!empty($_SERVER['QUERY_STRING'])){
-            $this->params = queryStringToParams($_SERVER['QUERY_STRING']);            
-        } 
+            $this->params = queryStringToParams($_SERVER['QUERY_STRING']);
+        }
 	elseif(!empty($post)){
             $this->params = queryStringToParams($post);
         }
@@ -70,7 +72,7 @@ class LinkedDataApiRequest {
         }
         return $this->params;
     }
-    
+
     function hasNoCacheHeader(){
         if(
             (isset($_SERVER['HTTP_CACHE_CONTROL']) AND $_SERVER['HTTP_CACHE_CONTROL']=='no-cache')
@@ -82,7 +84,7 @@ class LinkedDataApiRequest {
             return false;
         }
     }
-    
+
     function hasUnrecognisedReservedParams(){
         $params = $this->getParams();
         foreach($params as $k => $v){
@@ -92,7 +94,7 @@ class LinkedDataApiRequest {
         }
         return false;
     }
-    
+
     function hasEmptyParamValues(){
     	$params = $this->getParams();
     	foreach($params as $k => $v){
@@ -102,12 +104,12 @@ class LinkedDataApiRequest {
     	}
     	return false;
     }
-    
+
     function getUnreservedParams(){
         if ($this->unreservedParams!=null){
             return $this->unreservedParams;
         }
-        
+
         $params = $this->getParams();
         $this->unreservedParams = array();
         foreach($params as $k => $v){
@@ -115,16 +117,16 @@ class LinkedDataApiRequest {
                 $this->unreservedParams[$k] = $v;
             }
         }
-        
+
         uksort($this->unreservedParams, 'strcasecmp');
         return $this->unreservedParams;
     }
-    
+
     function getOrderedUriWithoutApiKeys(){
         if ($this->orderedUriWithoutApiKeys!=null){
             return $this->orderedUriWithoutApiKeys;
         }
-    
+
         $this->orderedUriWithoutApiKeys = $this->getPath();
         $params = $this->getParams();
         if (count($params) > 0){
@@ -141,15 +143,15 @@ class LinkedDataApiRequest {
                 }
             }
         }
-        
+
         return $this->orderedUriWithoutApiKeys;
     }
-    
+
     function getOrderedUriWithoutExtensionAndReservedParams(){
         if ($this->orderedUriNoExtensionReservedParams!=null){
             return $this->orderedUriNoExtensionReservedParams;
         }
-    
+
         $this->orderedUriNoExtensionReservedParams = $this->getPathWithoutExtension();
         $params = $this->getUnreservedParams();
         if (count($params) > 0){
@@ -163,10 +165,10 @@ class LinkedDataApiRequest {
                 $this->orderedUriNoExtensionReservedParams .= $paramName.'='.$paramValue;
             }
         }
-        
+
         return $this->orderedUriNoExtensionReservedParams;
     }
-    
+
     function getParam($k){
         $params = $this->getParams();
         if(isset($params[$k])){
@@ -176,11 +178,11 @@ class LinkedDataApiRequest {
             return null;
         }
     }
-    
+
     function getInstallSubDir(){
         return $this->_pathIntersect(dirname(__FILE__), $_SERVER['REQUEST_URI']);
     }
-    
+
     function getBase(){
         $serverName = $_SERVER['SERVER_NAME'];
         if ($_SERVER['SERVER_PORT']!=80){
@@ -202,11 +204,11 @@ class LinkedDataApiRequest {
     function getBaseAndSubDir(){
         return $this->getBase().$this->getInstallSubDir();
     }
-            
+
     function getUri(){
         return $this->removeEmptyParams($this->getBase().$_SERVER['REQUEST_URI']);
     }
-    
+
     function removeEmptyParams($uri){
         $replaced = rtrim(preg_replace('/([&?])[^=]+=(&|$)/i', '\1', $uri), '?&');
         if ($replaced == $uri) {
@@ -215,18 +217,18 @@ class LinkedDataApiRequest {
           return $this->removeEmptyParams($replaced);
         }
     }
-    
+
     function getPath(){
         return str_replace( '?'.$_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']);
     }
-    
+
     function getPathWithoutVersionAndExtension(){
         $pathWithoutExtension =  $this->getPathWithoutExtension();
         $regex = '/^\/[0-9]+\.[0-9]+/';
         $ret = preg_replace($regex, '\1', $pathWithoutExtension);
         return $ret;
     }
-    
+
 	function getMetadataParam(){
  		$m = array_filter(explode(',', trim($this->getParam('_metadata'))));
 		return $m;
@@ -239,15 +241,15 @@ class LinkedDataApiRequest {
             return 1;
         }
     }
-    
+
     function getView(){
         return $this->getParam('_view');
     }
-    
+
     function getPathWithoutExtension(){
         if(!$this->pathWithoutExtension){
             if($this->hasFormatExtension()){
-                $this->pathWithoutExtension = str_replace('.'.$this->getFormatExtension(), '', $this->getPath());                
+                $this->pathWithoutExtension = str_replace('.'.$this->getFormatExtension(), '', $this->getPath());
             } else {
                 $this->pathWithoutExtension = $this->getPath();
             }
@@ -255,7 +257,7 @@ class LinkedDataApiRequest {
         }
         return $this->pathWithoutExtension;
     }
-    
+
     function hasFormatExtension(){
         $path = $this->getPath();
         $hasExtension =  preg_match('@^(.+?)\.([a-z]+)$@', $path, $m);
@@ -265,7 +267,7 @@ class LinkedDataApiRequest {
         }
         return $hasExtension==true;
     }
-    
+
     function getFormatExtension(){
         if($this->hasFormatExtension()){
             return $this->formatExtension;
@@ -273,13 +275,13 @@ class LinkedDataApiRequest {
             return false;
         }
     }
-    
+
     function getAcceptHeader(){
         if(isset($_SERVER['HTTP_ACCEPT'])) return trim($_SERVER['HTTP_ACCEPT']);
         else return null;
     }
-    
-    function getAcceptTypes($paramTypes = array()){        
+
+    function getAcceptTypes($paramTypes = array()){
         $header = $this->getAcceptHeader();
         $mimes = explode(',',$header);
         $accept_mimetypes = array();
@@ -293,20 +295,20 @@ class LinkedDataApiRequest {
             }
             else {
                 $accept_mimetypes[$mime]=1;
-            }   
+            }
         }
         if (empty($accept_mimetypes)){
             $accept_mimetypes['*/*'] = 1;
         }
 
-        $defaultTypes = array_merge(array('application/json', 'application/xml', 'text/turtle', 
-                                            'application/rdf+xml', 'application/x-rdf+json', 
+        $defaultTypes = array_merge(array('application/json', 'application/xml', 'text/turtle',
+                                            'application/rdf+xml', 'application/x-rdf+json',
                                             'text/tab-separated-values', 'text/html', 'application/xhtml+xml'),
                                             $paramTypes);
         if (!empty($paramTypes)){
             array_unique($defaultTypes);
         }
-        
+
         //expand the mimetype '*/*' to remaining values
         if (isset($accept_mimetypes['*/*'])){
             //$tempDefaults contains all the mimetypes which do not explicitly appear in the header
@@ -315,10 +317,10 @@ class LinkedDataApiRequest {
                     $accept_mimetypes[$defaultType] = $accept_mimetypes['*/*'];
                 }
             }
-            
+
             unset($accept_mimetypes['*/*']);
         }
-        
+
         //give weight according to the order in the $defaultTypes array
         foreach($defaultTypes as $defaultType){
             $count_values = array_count_values($accept_mimetypes);
@@ -327,32 +329,32 @@ class LinkedDataApiRequest {
                 $accept_mimetypes[$defaultType]=strval(0.001*($count_values[$defaultVal]-1)+$accept_mimetypes[$defaultType]);
             }
         }
-        
+
         arsort($accept_mimetypes);//sort descending according to weight
         return array_keys($accept_mimetypes);
     }
-    
+
     function hasAcceptTypes(){
         $acceptheader = $this->getAcceptHeader();
         if(empty($acceptheader)){
-           return false; 
+           return false;
         } else {
             return true;
         }
     }
-    
+
     function getUriWithoutPageParam(){
         return $this->getUriWithoutParam('_page');
     }
-    
+
     function getUriWithoutViewParam(){
         return $this->getUriWithoutParam('_view');
     }
-    
+
     function getUriWithoutBase(){
         return str_replace( $this->getBase(), '', $_SERVER['REQUEST_URI']);
     }
-    
+
     function getUriWithoutParam($params, $stripextension=false){
         if(is_string($params)){
             $params = array($params);
@@ -371,7 +373,7 @@ class LinkedDataApiRequest {
         }
         return $uri;
     }
-   
+
     function getUriWithParam($paramname, $paramvalue=false, $defaultparamvalue=false){
            if(!$paramvalue) $paramvalue = $this->getParam($paramname);
            if(!$paramvalue) $paramvalue = $defaultparamvalue;
@@ -384,16 +386,16 @@ class LinkedDataApiRequest {
            $uri.=$paramname.'='.urlencode($paramvalue);
            return $uri;
        }
-   
-    
+
+
     function getUriWithViewParam($viewername=false){
         return $this->getUriWithParam('_view', $viewername);
     }
-    
+
     function getUriWithPageParam($pageno=false, $defaultparamvalue=1){
         return $this->getUriWithParam('_page', $pageno, $defaultparamvalue);
     }
-    
+
     function getRequestUriWithoutFormatExtension(){
         if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $_SERVER['REQUEST_URI'], $m)){
             $ret = $m[1].$m[3];
@@ -401,11 +403,11 @@ class LinkedDataApiRequest {
         else{//the uri does not have a format extension
             $ret = $_SERVER['REQUEST_URI'];
         }
-        
+
         return $ret;
     }
-    
-    
+
+
     function getPageUriWithFormatExtension($uri, $extension){
         if(preg_match('@^(.+?)\.([a-z]+)(\?.+)?$@', $uri, $m)){
           return preg_replace('@^(.+?)\.([a-z]+)(\?.+)?$@', '$1.'.$extension.'$3', $uri);
@@ -414,10 +416,10 @@ class LinkedDataApiRequest {
                 return str_replace('?', '.'.$extension.'?', $uri);
              } else {
                 return $uri.'.'.$extension;
-             }            
+             }
         }
     }
-    
+
     function _pathIntersect($a, $b){
         if (strlen($a)<strlen($b)) list($b,$a) = array($a, $b);
     	$patha = explode('/', $a);
@@ -426,7 +428,7 @@ class LinkedDataApiRequest {
     	if(!empty($intersect)) while(strpos($b, $intersect)===false) $intersect = substr($intersect, 1);
     	return $intersect;
     }
-    
+
 }
 
 ?>
