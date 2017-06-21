@@ -15,9 +15,17 @@ define('PUELIA_MEMCACHE_PORT', '11211');
 define ('CHEMSPIDER_ENDPOINT', 'https://chemistry.openphacts.org/api/JSON.ashx');
 // IMS endpoint
 $imsEndpointUri = getenv('IMS_ENDPOINT', true) ?: getenv('IMS_ENDPOINT');
-define('IMS_EXPAND_ENDPOINT', $imsEndpointUri . '/QueryExpander/expandXML?query=');
-define('IMS_MAP_ENDPOINT', $imsEndpointUri . '/QueryExpander/mapUriRDF');
+if ($imsEndpointUri) {
+    define('IMS_EXPAND_ENDPOINT', $imsEndpointUri . '/QueryExpander/expandXML?query=');
+    define('IMS_MAP_ENDPOINT', $imsEndpointUri . '/QueryExpander/mapUriRDF');
+} else {
+	define('IMS_MAP_ENDPOINT', null);
+}
 // Get sparql endpoint from environment variable
 $sparqlEndpointUri = getenv('OPS_SPARQL_ENDPOINT', true) ?: getenv('OPS_SPARQL_ENDPOINT');
-define('OPS_SPARQL_ENDPOINT', $sparqlEndpointUri);
+if ($sparqlEndpointUri) {
+    define('OPS_SPARQL_ENDPOINT', $sparqlEndpointUri);
+} else {
+	define('OPS_SPARQL_ENDPOINT', null);
+}
 ?>

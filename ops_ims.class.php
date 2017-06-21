@@ -1,4 +1,5 @@
 <?php
+require_once 'exceptions.inc.php';
 
 define('REQUEST_URI_NO', 40);
 
@@ -80,12 +81,17 @@ class OpsIms {
 //      return IMS_MAP_ENDPOINT;
     $imsEndpointFromRequest = $this->_request->getParam('_imsendpoint');
     if ($imsEndpointFromRequest) {
+    	logDebug("Using IMS endpoint from params: $imsEndpointFromRequest");
       $imsMapEndpoint = $imsEndpointFromRequest . '/QueryExpander/mapUriRDF';
-    } else {
+      return $imsMapEndpoint;
+    } else if (IMS_MAP_ENDPOINT){
+    	logDebug("using IMS endpoint from environment variable: ".IMS_MAP_ENDPOINT);
       $imsMapEndpoint = IMS_MAP_ENDPOINT;
+      return $imsMapEndpoint;
+    }else {
+    	logDebug("No IMS endpoint was specified for <".$this->_request->getUri().">");
+    	throw new ConfigGraphException("No IMS endpoint was specified for <".$this->_request->getUri().">");
     }
-//    echo '$imsMapEndpoint = ' . $imsMapEndpoint;
-    return $imsMapEndpoint;
   }
 
    private function expandQueryThroughIMS($query, $input_uri, $lens){

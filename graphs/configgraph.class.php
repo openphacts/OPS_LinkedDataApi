@@ -25,7 +25,7 @@ class ConfigGraph extends PueliaGraph {
     var $apiUri = false;
     var $prefixesFromLoadedTurtle = array();
     var $_vocab = null;
-    var $sparqlEndpointUri = '';
+    var $sparqlEndpointUri = null;
 
     function __construct($rdf, $request, $requestFactory=false){
         $this->_request = $request;
@@ -701,22 +701,21 @@ class ConfigGraph extends PueliaGraph {
    */
     function getSparqlEndpointUri() {
       $sparqlEndpointFromRequest = $this->_request->getParam('_sparqlendpoint');
-//      echo '$sparqlEndpointFromRequest = ' . $sparqlEndpointFromRequest;
-//      return $this->sparqlEndpointUri;
       if ($sparqlEndpointFromRequest) {
+      	logDebug("Using sparql endpoint from params: $sparqlEndpointFromRequest");
         return $sparqlEndpointFromRequest;
-      }
-      else {
-//        echo 'NOT using Request';
-//        echo $this->sparqlEndpointUri;
+      } else if ($this->sparqlEndpointUri) {
+      	logDebug("Using sparql endpoint from environment variable: $this->sparqlEndpointUri");
         return $this->sparqlEndpointUri;
-      }
-      if($uri = $this->get_first_resource($this->getApiUri(), API.'sparqlEndpoint')){
+      } else {
+      	if($uri = $this->get_first_resource($this->getApiUri(), API.'sparqlEndpoint')){
+      		logDebug("Using sparql endpoint from config: $uri");
             return $uri;
         } else {
+        	logDebug("No sparqlEndpoint was specified for <".$this->getApiUri().">");
             throw new ConfigGraphException("No sparqlEndpoint was specified for <".$this->getApiUri().">");
         }
-
+      }
     }
 
     function getSparqlEndpointGraphs(){
