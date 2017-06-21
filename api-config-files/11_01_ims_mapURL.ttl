@@ -6,7 +6,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "Mapping service betweem URLs"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#Uri> ;
 	api:variable <#targetUriPattern> ;
@@ -19,7 +19,7 @@
 		api:enableCache true ;
 		api:description "A set of URLs associated to the input URL." ;
 		api:uriTemplate "/mapUri?Uri={Uri}" ;
-		api:externalRequestTemplate "http://localhost:8082/QueryExpander/mapUri?Uri={Uri}" ;
+		api:externalRequestTemplate "http://alpha.openphacts.org:3004/QueryExpander/mapUri?Uri={Uri}" ;
 		api:externalResponseHandler "converters/ims_mapURL_xml_to_rdf.php" ;
 		api:exampleRequestPath "/mapUri?Uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F0053aa4c-b723-46dc-a7be-530c1504da7f" ;
 		api:viewer <#externalResponseViewer> ;
@@ -32,7 +32,7 @@
 
 <#targetUriPattern> api:name "targetUriPattern" ;
 	api:label "targetUriPattern" ;
-	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." . 
+	api:value "List of URI patterns separated by '|' characters. Limits the results to ones with URIs with this pattern(s)." .
 
 <#graph> api:name "graph" ;
 	api:label "graph";

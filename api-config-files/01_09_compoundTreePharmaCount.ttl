@@ -21,9 +21,9 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:organismName ;
 	api:variable chembl:standardType;
@@ -46,7 +46,7 @@
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about compounds" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Compound Class Pharmacology: Count" ;
 		api:description "The total number of activity values in the LDC for a given Compound class. Currently only the ChEBI Ontology is supported. " ;
@@ -95,7 +95,7 @@
         	api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100";
 		api:exampleRequestPath "/compound/tree/pharmacology/count?uri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2FCHEBI_100&assay_organism=Mus%20musculus&minEx-activity_value=10000&activity_unit=nanomolar";
-		api:viewer <#compoundClassPharmaCountViewer> ; 
+		api:viewer <#compoundClassPharmaCountViewer> ;
 		api:defaultViewer <#compoundClassPharmaCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
@@ -158,7 +158,7 @@ chembl:organismName api:name "assay_organism" ;
 	api:value "A literal organism in ChEMBL." ;
 	api:filterVariable "?assay_uri";
 	a rdf:Property .
-	
+
 _:targetOrganism api:name "target_organism" ;
 	api:label "target_organism" ;
 	api:value "A literal target organism in ChEMBL." ;
@@ -238,8 +238,8 @@ _:type api:name "target_type" ;
 
 <#compoundClassPharmaCountViewer> a api:Viewer ;
 	api:name "compoundClassPharmaCountViewer" ;
-	api:template 
-"?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
+	api:template
+"?ops_item ops:compoundPharmacologyTotalResults ?count . " ;
 	api:where
 "{ SELECT (COUNT(?activity_uri) AS ?count) WHERE {
 	GRAPH <http://www.ebi.ac.uk/chebi/inference> {

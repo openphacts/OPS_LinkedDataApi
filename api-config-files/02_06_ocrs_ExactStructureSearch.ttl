@@ -10,7 +10,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable ops_api:searchOptions ;
 	api:variable ops_api:commonOptions ;
@@ -23,7 +23,7 @@
 		api:name "Chemical Structure Search: Exact" ;
 		api:enableCache true ;
 		api:uriTemplate "/structure/exact?searchOptions.Molecule={searchOptions.Molecule}" ;
-		api:externalRequestTemplate "https://ops2.rsc.org/ops/json.ashx?op=ExactStructureSearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "https://chemistry.openphacts.org/api/JSON.ashx?op=ExactStructureSearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/structure/exact?searchOptions.Molecule=CNC(%3DO)c1cc(ccn1)Oc2ccc(cc2)NC(%3DO)Nc3ccc(c(c3)C(F)(F)F)Cl" ;
 		api:viewer <#externalResponseViewer> ;
@@ -77,7 +77,7 @@ ops_api_common:HasPatents api:name "HasPatents" ;
 ?primaryTopic foaf:isPrimaryTopicOf {pageUri} .
   ?primaryTopic rdf:type ?searchType ;
 		ops_api_search:Molecule ?moleculeSmiles ;
-		ops_api_search:MatchType ?searchMatchType ; 
+		ops_api_search:MatchType ?searchMatchType ;
 		ops_api:result ?result ;
 		ops_api_common:Complexity ?complexity ;
 		ops_api_common:Isotopic ?isotopic ;

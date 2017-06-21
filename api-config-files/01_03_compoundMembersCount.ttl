@@ -11,7 +11,7 @@
 
 <#compound> a api:API ;
 	rdfs:label "Compound"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:dataset <http://www.ebi.ac.uk/chebi> ;
@@ -20,7 +20,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about compounds." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Compound Class Members: Count" ;
 		api:description "The number of compounds classified with the given class in the supported hierarchies. Currently the only supported hierarchy is the ChEBI Ontology." ;
@@ -41,9 +41,9 @@
 
 <#compoundMemberCountViewer> a api:Viewer ;
 	api:name "compoundMemberCountViewer";
-	api:template 
+	api:template
 "?ops_item ops:memberCount ?count . ";
-	api:where 
+	api:where
 "{
 SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 GRAPH <http://www.ebi.ac.uk/chebi/inference> {

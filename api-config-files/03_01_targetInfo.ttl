@@ -17,9 +17,9 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable drugbank:drugType ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -28,7 +28,7 @@
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:description "An API configuration to return information about targets" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Target Information" ;
 		api:description "Information about a single target.";
@@ -52,12 +52,12 @@
 <http://bio2rdf.org/drugbank_vocabulary:> api:label "drugbank" .
 <http://www.w3.org/2004/02/skos/core#> api:label "skos" .
 
-<http://bio2rdf.org/drugbank_resource:Approved> api:name "approved" . 
-<http://bio2rdf.org/drugbank_resource:Experimental> api:name "experimental" . 
-<http://bio2rdf.org/drugbank_resource:Illicit> api:name "illicit" . 
-<http://bio2rdf.org/drugbank_resource:Investigational> api:name "investigational" . 
-<http://bio2rdf.org/drugbank_resource:Nutraceutical> api:name "nutraceutical" . 
-<http://bio2rdf.org/drugbank_resource:Withdrawn> api:name "withdrawn" . 
+<http://bio2rdf.org/drugbank_resource:Approved> api:name "approved" .
+<http://bio2rdf.org/drugbank_resource:Experimental> api:name "experimental" .
+<http://bio2rdf.org/drugbank_resource:Illicit> api:name "illicit" .
+<http://bio2rdf.org/drugbank_resource:Investigational> api:name "investigational" .
+<http://bio2rdf.org/drugbank_resource:Nutraceutical> api:name "nutraceutical" .
+<http://bio2rdf.org/drugbank_resource:Withdrawn> api:name "withdrawn" .
 
 <#input> api:name "uri" ;
 	api:label "uri";
@@ -68,12 +68,12 @@ drugbank:drugType api:name "drug_type" ;
 	api:label "drug_type" ;
 	api:value "One of: 'approved', 'experimental', 'illicit', 'investigational', 'nutraceutical', 'withdrawn'";
 	api:filterVariable "?drugType_uri" ;
-	rdfs:subPropertyOf api:graphFilter ; 
+	rdfs:subPropertyOf api:graphFilter ;
 	a rdf:Property .
 
 <#targetViewer> a api:Viewer ;
 	api:name "targetViewer" ;
-	api:template 
+	api:template
 "?ops_item skos:exactMatch ?cw_target_uri ;
 	skos:exactMatch ?uniprot_target_uri ;
 	skos:exactMatch ?chembl_target_uri ;
@@ -88,14 +88,14 @@ drugbank:drugType api:name "drug_type" ;
 	uniprot:classifiedWith ?class ;
 	uniprot:alternativeName ?alt_name ;
 	uniprot:mass ?mass ;
-        ops:molecularWeight ?mass ; 
+        ops:molecularWeight ?mass ;
 	rdfs:seeAlso ?target_pdb ;
 	rdfs:seeAlso ?ppi ;
         void:inDataset <http://purl.uniprot.org> .
 ?inter_prot rdfs:label ?inter_label .
 ?chembl_target_uri chembl:hasTargetComponent ?target_component ;
 	a ?target_type ;
-	rdfs:label ?synonym ;	
+	rdfs:label ?synonym ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_component dcterms:description ?description ;
 	skos:exactMatch ?cw_target ;
@@ -105,7 +105,7 @@ drugbank:drugType api:name "drug_type" ;
 ?db_target_uri drugbank:cellularLocation ?cellularLocation ;
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
-	drugbank:theoreticalPi ?theoreticalPi ; 
+	drugbank:theoreticalPi ?theoreticalPi ;
 	ops:targetForDrug ?db_compound ;
         void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> .
 ?db_compound drugbank:genericName ?drug_name ;
@@ -116,14 +116,14 @@ drugbank:drugType api:name "drug_type" ;
 {
 { SELECT DISTINCT * WHERE {
 	GRAPH <http://www.conceptwiki.org> {
-		?cw_target_uri skos:prefLabel ?target_name 
-	} 
+		?cw_target_uri skos:prefLabel ?target_name
+	}
 } }
 } UNION {
-{ SELECT DISTINCT * WHERE { 
+{ SELECT DISTINCT * WHERE {
 	GRAPH <http://purl.uniprot.org> {
 		{?uniprot_target_uri uniprot:existence ?existence .
-		?uniprot_target_uri uniprot:organism ?organism . 
+		?uniprot_target_uri uniprot:organism ?organism .
 		?uniprot_target_uri uniprot:alternativeName/uniprot:fullName ?alt_name .}
 		UNION { ?uniprot_target_uri uniprot:annotation ?fun_uri .
                         ?fun_uri a uniprot:Function_Annotation ;
@@ -131,7 +131,7 @@ drugbank:drugType api:name "drug_type" ;
 		UNION { ?uniprot_target_uri uniprot:sequence ?seq_uri .
 			?seq_uri rdf:value ?sequence ;
 				uniprot:mass ?mass .
-			{[] uniprot:sequenceFor ?uniprot_target_uri, 
+			{[] uniprot:sequenceFor ?uniprot_target_uri,
 					?seq_uri}
 			UNION {
 				[] uniprot:sequenceFor ?uniprot_target_uri,
@@ -161,13 +161,13 @@ UNION {
 			?drugType_uri rdfs:label ?drugType }
         }
 } }
-} 
+}
 UNION {
 { SELECT DISTINCT * WHERE {
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?chembl_target_uri a ?target_type .
-                ?chembl_target_uri rdfs:label ?synonym . 
-		?chembl_target_uri chembl:hasTargetComponent ?target_component . 
+                ?chembl_target_uri rdfs:label ?synonym .
+		?chembl_target_uri chembl:hasTargetComponent ?target_component .
 		?target_component dcterms:description ?description .
 	}
 } }

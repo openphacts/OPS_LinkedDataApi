@@ -11,7 +11,7 @@
 
 <#assay> a api:API ;
         rdfs:label "Assay"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:taxonomy ;
         api:variable chembl:targetConfScore ;
@@ -89,7 +89,7 @@ _:dataset api:name "dataset" ;
                 	dct:description ?assay_description ;
                         chembl:assayType ?chembl_type ;
                         chembl:taxonomy ?organism ;
-                        chembl:organismName ?organism_name . 
+                        chembl:organismName ?organism_name .
 		OPTIONAL { ?item chembl:targetConfScore ?conf_score_tmp }
 		BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
 		OPTIONAL { ?item chembl:targetRelType ?rel_type }

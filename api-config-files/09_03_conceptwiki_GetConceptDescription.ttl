@@ -7,7 +7,7 @@
 
 <#conceptWiki> a api:API ;
 	rdfs:label "Concept Wiki services"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#uuid> ;
 	api:variable <#branch> ;
@@ -18,9 +18,9 @@
 		api:enableCache false ;
 		api:description "Get the description of a concept, based on a concept URL. Driven by ConceptWiki." ;
 
-		
+
 		api:uriTemplate "/getConceptDescription?uuid={uuid}" ;
-		api:externalRequestTemplate "http://ops.conceptwiki.org/web-ws/concept/get?uuid={uuid}" ;
+		api:externalRequestTemplate "http://alpha.openphacts.org:8839/web-ws/concept/get?uuid={uuid}" ;
 		api:externalResponseHandler "converters/conceptwiki_getConceptDescription_json_to_rdf.php" ;
 		api:exampleRequestPath "/getConceptDescription?uuid=8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" ;
 		api:viewer <#externalResponseViewer> ;
@@ -29,7 +29,7 @@
 <#uuid> api:name "uuid" ;
 	api:label "uuid";
 	api:value "UUID of the concept; required. E.g. 8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa" .
-	
+
 <#branch> api:name "branch" ;
 	api:label "branch" ;
 	api:value "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways" .

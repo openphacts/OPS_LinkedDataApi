@@ -11,11 +11,11 @@
 
 <#assay> a api:API ;
         rdfs:label "Assay"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:description "An API configuration to return information about assays" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Assay Information" ;
 		api:description "Information about a single assay.";
@@ -28,11 +28,11 @@
 <#input> api:name "uri" ;
 	api:label "uri";
 	api:value "An assay URI. e.g.: http://openinnovation.lilly.com/bioassay#29" ;
-	rdfs:range rdfs:Resource .  
+	rdfs:range rdfs:Resource .
 
 <#assayViewer> a api:Viewer ;
 	api:name "assayViewer" ;
-	api:template 
+	api:template
 "
 ?chembl_assay_uri dct:description ?assay_description ;
 	ops:assayFormat ?assay_format ;
@@ -61,7 +61,7 @@
 	ops:definition ?assay_stage_def;
         void:inDataset <http://www.bioassayontology.org> .
 ";
-	api:where 
+	api:where
 "
 {
 	GRAPH <http://www.ebi.ac.uk/chembl> {
@@ -84,7 +84,7 @@
 } UNION {
 	GRAPH <http://rdf.ncats.nih.gov/opddr> {
 		?pubchem_assay skos:exactMatch ?oidd_assay_uri ;
-			a ?bao_type 
+			a ?bao_type
 	}
 	GRAPH <http://rdf.ncats.nih.gov/opddr/pubchem> {
 		?pubchem_assay dct:title ?assay_title ;

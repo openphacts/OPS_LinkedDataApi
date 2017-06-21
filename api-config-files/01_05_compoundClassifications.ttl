@@ -12,7 +12,7 @@
 
 <#compound> a api:API ;
 	rdfs:label "Compound"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
 	api:variable <#input> ;
@@ -23,7 +23,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about compounds." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Compound Classifications" ;
 		api:description "The classes the given compound URI has been classified with. Currently supported hierarchies are the ChEBI Ontology and the Gene Ontology. " ;
@@ -56,19 +56,19 @@ _:hierarchy api:name "tree" ;
 
 <#compoundClassificationsViewer> a api:Viewer ;
 	api:name "compoundClassificationsViewer";
-	api:template 
+	api:template
 "?ops_item skos:exactMatch ?chembl_compound_uri ;
 	skos:exactMatch ?cw_compound_uri .
-?chembl_compound_uri ops:hasChebiClassification ?chebi_class ; 
+?chembl_compound_uri ops:hasChebiClassification ?chebi_class ;
 	ops:hasChebiClassification ?chebi_other_class ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?chebi_input ops:hasGoClassification ?go_class ;
-	skos:prefLabel ?chebi_input_label ; 
+	skos:prefLabel ?chebi_input_label ;
 	void:inDataset <http://www.geneontology.org> .
 ?go_input ops:hasChebiClassification ?chebi_class ;
 	skos:prefLabel ?go_input_label ;
         void:inDataset <http://www.ebi.ac.uk/chembl> .
-?cw_compound_uri skos:prefLabel ?cw_label ; 
+?cw_compound_uri skos:prefLabel ?cw_label ;
 	void:inDataset <http://www.conceptwiki.org> .
 ?chebi_class skos:prefLabel ?chebi_label ;
 	ops:classificationType rdf:type ;
@@ -82,10 +82,10 @@ rdf:type skos:prefLabel 'Type' .
 	void:inDataset <http://www.geneontology.org> .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .
 <http://www.geneontology.org> skos:prefLabel 'GeneOntology' . ";
-	api:where 
+	api:where
 "	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?chembl_compound_uri skos:exactMatch ?chebi_compound
-        	GRAPH ?g { 
+        	GRAPH ?g {
 			{ ?chebi_compound rdfs:subClassOf ?chebi_class .
 			?chebi_class rdfs:label ?chebi_label .
 			FILTER(!isBlank(?chebi_class)) }
@@ -94,8 +94,8 @@ rdf:type skos:prefLabel 'Type' .
 					owl:onProperty ?chebi_class_type .
 	                        ?chebi_other_class rdfs:label ?chebi_other_label .
 	                        ?chebi_class_type rdfs:label ?chebi_class_type_label }
-		} 
-	} 
+		}
+	}
 	{ GRAPH <http://www.conceptwiki.org> {
                 ?cw_compound_uri skos:prefLabel ?cw_label
         } } UNION
@@ -108,7 +108,7 @@ rdf:type skos:prefLabel 'Type' .
 		}
 		GRAPH ?g {
                         ?go_class rdfs:label ?go_label
-		}}  
+		}}
 	} UNION
         { GRAPH <http://www.geneontology.org> {
 		BIND(?ops_item AS ?go_input)
@@ -120,4 +120,4 @@ rdf:type skos:prefLabel 'Type' .
 		GRAPH ?g {
                         ?chebi_class rdfs:label ?chebi_label
                 }} .
-        }" 
+        }"

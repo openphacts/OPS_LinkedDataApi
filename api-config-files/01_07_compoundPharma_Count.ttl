@@ -24,10 +24,10 @@
 
 <#compound> a api:API ;
         rdfs:label "Compound"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
 	api:variable chembl:organismName ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
 	api:variable chembl:standardValue ;
@@ -39,7 +39,7 @@
         api:variable chembl:potentialDuplicate ;
         api:variable chembl:targetConfScore ;
         api:variable chembl:targetRelType ;
-	api:variable _:type ; 
+	api:variable _:type ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
 	api:dataset <http://www.openphacts.org/bio2rdf/drugbank> ;
@@ -49,7 +49,7 @@
 	api:vocabulary <http://www.openphacts.org/api#> ;
 	api:vocabulary <http://rdf.ebi.ac.uk/terms/chembl#> ;
 	api:description "An API configuration to return information about compounds" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Compound Pharmacology: Count" ;
 		api:description "The total number of acitivity values in the LDC for a given compound" ;
@@ -98,7 +98,7 @@
 		api:variable <http://rdf.ebi.ac.uk/terms/chembl#Phenotype> ;
 		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5";
 		api:exampleRequestPath "/compound/pharmacology/count?uri=http%3A%2F%2Fwww.conceptwiki.org%2Fconcept%2F38932552-111f-4a4e-a46a-4ed1d7bdf9d5&activity_type=IC50&maxEx-activity_value=100&minEx-activity_value=40&activity_unit=nanomolar&assay_organism=Mus%20musculus";
-		api:viewer <#compoundPharmacologyCountViewer> ; 
+		api:viewer <#compoundPharmacologyCountViewer> ;
 		api:defaultViewer <#compoundPharmacologyCountViewer> . ] .
 
 <http://www.openphacts.org/api#> api:label "ops" .
@@ -174,10 +174,10 @@ chembl:standardType api:name "activity_type" ;
 	api:filterVariable "?item";
         api:value "One of the activity types listed at /pharmacology/filters/activities" ;
 	a rdf:Property .
- 
+
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?item";
         a rdf:Property .
 
@@ -240,8 +240,8 @@ chembl:targetConfScore api:name "target_conf_score";
 
 <#compoundPharmacologyCountViewer> a api:Viewer ;
 	api:name "compoundPharmacologyCountViewer" ;
-	api:template 
-"?ops_item ops:compoundPharmacologyTotalResults ?count . " ; 
+	api:template
+"?ops_item ops:compoundPharmacologyTotalResults ?count . " ;
 	api:where
 "{ SELECT (COUNT(DISTINCT ?item) AS ?count) {
 { SELECT ?item ?issue ?dup ?conf_score WHERE {
@@ -257,5 +257,5 @@ chembl:targetConfScore api:name "target_conf_score";
 	        OPTIONAL { ?assay_uri chembl:targetConfScore ?conf_score_tmp }
 	        BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
          }
-} } 
+} }
 } }" .

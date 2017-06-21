@@ -11,7 +11,7 @@
 
 <#target> a api:API ;
 	rdfs:label "Target"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:targetOrganism ;
 	api:variable chembl:standardType;
@@ -29,7 +29,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about targets." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Classification of Compounds for Target" ;
 		api:description "The hierarchy classes for the different Compounds that interact with a given Target. Currently only the ChEBI Ontology is supported. " ;
@@ -96,7 +96,7 @@ chembl:standardType api:name "activity_type" ;
 
 chembl:hasQUDT api:name "activity_unit" ;
         api:label "activity_unit" ;
-        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ; 
+        api:value "The unit in which {activity_value} is given. See /pharmacology/filters/units/{activity_type} for allowed valued. For e.g. IC50: /pharmacology/filters/units/IC50" ;
         api:filterVariable "?activity";
         a rdf:Property .
 
@@ -146,21 +146,21 @@ chembl:pChembl api:name "pChembl" ;
 
 <#targetClassForCompoundViewer> a api:Viewer ;
 	api:name "targetClassForCompoundViewer";
-	api:template 
+	api:template
 "?ops_item skos:exactMatch ?chembl_target_uri ;
 	skos:exactMatch ?cw_target_uri .
 ?chembl_target_uri ops:interactsWithMoleculeOfClass ?chebi_class ;
 	ops:interactsWithMoleculeOfClass ?chebi_other_class ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
-?cw_target_uri skos:prefLabel ?cw_label . 
+?cw_target_uri skos:prefLabel ?cw_label .
 ?chebi_class skos:prefLabel ?chebi_label ;
-	void:inDataset <http://www.ebi.ac.uk/chebi> . 
+	void:inDataset <http://www.ebi.ac.uk/chebi> .
 ?chebi_other_class skos:prefLabel ?chebi_other_label ;
 	ops:classificationType ?chebi_class_type ;
 	void:inDataset <http://www.ebi.ac.uk/chebi> .
 ?chebi_class_type skos:prefLabel ?chebi_class_type_label .
 <http://www.ebi.ac.uk/chebi> skos:prefLabel 'ChEBI Ontology' .";
-	api:where 
+	api:where
 "	GRAPH <http://www.ebi.ac.uk/chebi> {
 		?chebi_compound rdfs:subClassOf ?chebi_class .
                 ?chebi_class rdfs:label ?chebi_label
@@ -176,5 +176,5 @@ chembl:pChembl api:name "pChembl" ;
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?assay chembl:hasTarget ?chembl_target_uri .
 		?activity chembl:hasAssay ?assay ;
-			chembl:hasMolecule/skos:exactMatch ?chebi_compound . 
-	}" 
+			chembl:hasMolecule/skos:exactMatch ?chebi_compound .
+	}"

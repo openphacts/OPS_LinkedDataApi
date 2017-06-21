@@ -22,10 +22,10 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ;
-        api:variable wp:organism ; 
+        api:variable wp:organism ;
 	api:variable _:direction ;
 	api:variable _:interaction_type ;
 	api:dataset <http://www.wikipathways.org> ;
@@ -34,7 +34,7 @@
 	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
 	api:vocabulary <http://purl.org/dc/terms/> ;
 	api:description "An API configuration to return information about pathways." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Pathway Interactions for Entity: Count" ;
 		api:description "A list of interactions that the entity specified is a part of.";
@@ -113,7 +113,7 @@ _:direction api:name "direction" ;
 	api:value "One of: 'up', 'down'. 'up' returns only Interactions where the specifies entity is the target, and 'down' returns only Interactions where the specified entity is the source." ;
 	api:filterVariable "?rel" ;
 	a rdf:Property ;
-	rdfs:subPropertyOf api:graphFilter . 
+	rdfs:subPropertyOf api:graphFilter .
 
 _:interaction_type api:name "interaction_type" ;
 	api:label "interaction_type" ;
@@ -129,7 +129,7 @@ _:interaction_type api:name "interaction_type" ;
 
 <#pathwayInteractionsByEntityCountViewer> a api:Viewer ;
 	api:name "pathwayInteractionsByEntityCountViewer" ;
-	api:template 
+	api:template
 "
 <http://www.wikipathways.org> ops:interactions_count ?count .
 ";

@@ -1,6 +1,6 @@
 <?php
 
-define('CONCEPTWIKI_PREFIX', 'http://www.conceptwiki.org/concept/');
+define('CONCEPTWIKI_PREFIX', 'http://alpha.openphacts.org:8839/concept/');
 
 function addLabelWithLanguage($node, $label, $dataGraph){
     $language=null;
@@ -21,7 +21,7 @@ function addConceptWithLabels($bNode, $jsonElement, $dataGraph){
     foreach($jsonElement->{'labels'} as $label){
         addLabelWithLanguage($bNode, $label, $dataGraph);
     }
-     
+
     $dataGraph->add_literal_triple($bNode, CONCEPTWIKI_PREFIX.'#deleted',
             (bool)$jsonElement->{'deleted'} ? 'true' : 'false',
             null, XSD.'boolean');

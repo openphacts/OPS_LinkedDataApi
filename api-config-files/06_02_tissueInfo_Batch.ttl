@@ -15,14 +15,14 @@
 
 <#tissue> a api:API ;
         rdfs:label "Tissue"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:dataset <http://rdf.imim.es> ;
 	api:vocabulary <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#> ;
 	api:vocabulary <http://semanticscience.org/resource/> ;
 	api:description "An API configuration to return information about tissues" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:BatchEndpoint ;
 		api:name "[PREVIEW] Tissue Information: Batch" ;
 		api:description "Information about a list of tissues.";
@@ -39,7 +39,7 @@
 
 <#tissueInfoBatchViewer> a api:Viewer ;
 	api:name "tissueInfoBatchViewer" ;
-	api:template 
+	api:template
 "?ims_caloha_tissue_uri rdfs:label ?tissue_label ;
 	ops:definition ?tissue_def ;
 	oboowl:hasDbXref ?tissue_xref ;

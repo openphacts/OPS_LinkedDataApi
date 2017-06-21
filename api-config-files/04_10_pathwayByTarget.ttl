@@ -22,17 +22,17 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
         api:variable <#input> ;
-        api:variable wp:organism ; 
+        api:variable wp:organism ;
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
 	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
 	api:vocabulary <http://purl.org/dc/terms/> ;
 	api:description "An API configuration to return information about pathways" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ListEndpoint ;
 		api:name "Pathways for Target: List" ;
 		api:description "A list of pathways which have as part the Gene Product specified." ;
@@ -104,17 +104,17 @@ wp:organism api:name "pathway_organism" ;
 
 <#pathwayByTargetViewer> a api:Viewer ;
 	api:name "pathwayByTargetViewer" ;
-	api:template 
-"?item dc:title ?title ; 
-	wp:organism ?organism_uri ; 
+	api:template
+"?item dc:title ?title ;
+	wp:organism ?organism_uri ;
 	foaf:page ?page ;
 	dc:identifier ?identifier ;
 	dcterms:description ?description ;
 	wp:pathwayOntology ?ontology ;
 	dcterms:hasPart ?pw_target_uri ;
 	void:inDataset <http://www.wikipathways.org> .
-?organism_uri rdfs:label ?organism . 
-?pw_target_uri a ?type ; 
+?organism_uri rdfs:label ?organism .
+?pw_target_uri a ?type ;
 	skos:exactMatch ?cw_target_uri .
 ?cw_target_uri skos:prefLabel ?prefLabel .
 ";
@@ -123,11 +123,11 @@ wp:organism api:name "pathway_organism" ;
 	?gene_product dc:identifier|wp:bdbUniprot ?pw_target_uri ;
 		dcterms:isPartOf ?item .
 	?item a wp:Pathway ;
-		dc:title ?title ; 
+		dc:title ?title ;
 		wp:organism ?organism_uri ;
-		wp:organismName ?organism ; 
+		wp:organismName ?organism ;
 		foaf:page ?page ;
-		dc:identifier ?identifier . 
+		dc:identifier ?identifier .
         VALUES ?type { wp:GeneProduct wp:Protein }
 	?gene_product a ?type
 	OPTIONAL { ?item dcterms:description ?description }

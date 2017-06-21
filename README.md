@@ -12,6 +12,12 @@ Requirements are php 5.2, with `php_xsl`, `lib_curl`, and `mod_rewrite` and `.ht
 
 Make sure that Apache's `DocumentRoot` directory and (all parent directories from /var/ forward) are writable by the user running Apache
 
+The sparql endpoint is set from environment variable `OPS_SPARQL_ENDPOINT` eg `export OPS_SPARQL_ENDPOINT=http://sparql-endpoint:8890/sparql` and read in `deployment.settings.php`.
+
+The IMS API endpoint is set from environment variable `IMS_ENDPOINT` eg `export IMS_ENDPOINT=http://ims-endpoint:8000` and read in `deployment.settings.php`.
+
+You can also run on localhost without Apache using php -S localhost:3000.
+
 ## Docker image
 
 This application is also available as a [Docker](https://www.docker.com/) image:

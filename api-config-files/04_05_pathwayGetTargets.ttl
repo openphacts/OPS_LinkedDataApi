@@ -22,16 +22,16 @@
 
 <#pathway> a api:API ;
         rdfs:label "Pathway"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:dataset <http://www.wikipathways.org> ;
 	api:vocabulary <http://vocabularies.wikipathways.org/wp#> ;
 	api:vocabulary <http://xmlns.com/foaf/0.1/> ;
 	api:vocabulary <http://purl.org/dc/elements/1.1/> ;
 	api:vocabulary <http://purl.org/dc/terms/> ;
 	api:description "An API configuration to return information about pathways." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Pathway Information: Get Targets" ;
 		api:description "A list of targets that are part of the pathway specified.";
@@ -55,16 +55,16 @@
 
 <#pathwayTargetViewer> a api:Viewer ;
 	api:name "pathwayTargetViewer" ;
-	api:template 
+	api:template
 "?ops_item skos:exactMatch ?pw_uri .
 ?pw_uri sioc:latest_version ?rev .
-?rev dc:title ?title ; 
+?rev dc:title ?title ;
 	dcterms:hasPart ?gene_product;
 	void:inDataset <http://www.wikipathways.org> .";
 	api:where
 "GRAPH <http://www.wikipathways.org> {
 	?rev dc:identifier ?pw_uri .
-	?rev dc:title ?title . 
+	?rev dc:title ?title .
 	?gene_product_internal dcterms:isPartOf ?rev ;
 		a ?type ;
 		dc:identifier ?gene_product .

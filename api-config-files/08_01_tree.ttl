@@ -8,7 +8,7 @@
 
 <#tree> a api:API ;
 	rdfs:label "Concept Class Hierarchies"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
@@ -17,7 +17,7 @@
 	api:vocabulary skos: ;
 	api:vocabulary uniprot: ;
 	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the BioAssay Ontology, the Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology, the Disease Ontology and the Gene Ontology" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Hierarchies: Root Nodes" ;
 		api:description "A representation of the root classes in each hierachy. The BioAssay Ontology, the ChEBI Ontology, the Disease Ontology, the Gene Ontology, the Enzyme Classification, and the ChEMBL Target Tree are currently supported." ;
@@ -65,31 +65,31 @@ _:hierarchy api:name "root" ;
 	api:where "{
 SELECT DISTINCT ?root_node ?g_short WHERE {
 	VALUES ?g {
-		<http://purl.uniprot.org/enzyme/direct> 
+		<http://purl.uniprot.org/enzyme/direct>
 		<http://www.ebi.ac.uk/chembl/target/direct>
 		<http://www.ebi.ac.uk/chebi/direct>
-		<http://www.geneontology.org> 
+		<http://www.geneontology.org>
 		<http://www.bioassayontology.org>
 		<http://purl.obolibrary.org/obo/doid>
 	}
 	GRAPH ?g {
-		[] rdfs:subClassOf ?root_node . 
+		[] rdfs:subClassOf ?root_node .
 		MINUS {?root_node rdfs:subClassOf []}
 		FILTER ( isURI(?root_node) )
-		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, IRI(<http://purl.uniprot.org/enzyme>) , 
+		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, IRI(<http://purl.uniprot.org/enzyme>) ,
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, IRI(<http://www.ebi.ac.uk/chembl/target>) ,
-				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, IRI(<http://www.ebi.ac.uk/chebi>) , 
-					IF(?g = <http://www.geneontology.org>, IRI(<http://www.geneontology.org>) , 
+				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, IRI(<http://www.ebi.ac.uk/chebi>) ,
+					IF(?g = <http://www.geneontology.org>, IRI(<http://www.geneontology.org>) ,
 						IF(?g = <http://www.bioassayontology.org>, IRI(<http://www.bioassayontology.org>) ,
 							IF(?g = <http://purl.obolibrary.org/obo/doid>, IRI(<http://purl.obolibrary.org/obo/doid>), 'Error')))))) AS ?g_short )
-	} 
+	}
 }
 }
-{ 
+{
 	?root_node rdfs:label ?name
 }
-UNION { 
-	?root_node skos:prefLabel ?name 
+UNION {
+	?root_node skos:prefLabel ?name
 }
 MINUS { ?root_node uniprot:obsolete true }
 " .

@@ -26,9 +26,9 @@
 
 <#tissue> a api:API ;
         rdfs:label "Tissue"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable wi:evidence ;
 	api:variable obo-rel:has_quality ;
 	api:dataset <http://rdf.imim.es> ;
@@ -47,7 +47,7 @@
 	api:exampleRequestPath "/tissue/getProteins?uri=ftp%3A%2F%2Fftp.nextprot.org%2Fpub%2Fcurrent_release%2Fcontrolled_vocabularies%2Fcaloha.obo%23TS-0016" ;
 	api:selector [
 		api:where
-"GRAPH ?item { 
+"GRAPH ?item {
 	?nextprot_uri bfo:BFO_0000066 ?ops_item ;
 		obo-rel:has_quality ?quality .
 }
@@ -55,20 +55,20 @@
 		ns:hasProvenance ?prov .
 GRAPH ?prov {
 	?item a ?evidence_type ;
-		prv:usedData ?data_used ; 
-		wi:evidence ?evidence_qual_uri ; 
+		prv:usedData ?data_used ;
+		wi:evidence ?evidence_qual_uri ;
 		prov:wasDerivedFrom ?derived_from ;
 		prov:wasGeneratedBy ?generated_by .
 	?evidence_qual_uri rdfs:label ?evidence_qual_label .
 }
-GRAPH <http://www.nextprot.org/caloha> { 
-	?ops_item rdfs:label ?tissue_label . 
-}" 
+GRAPH <http://www.nextprot.org/caloha> {
+	?ops_item rdfs:label ?tissue_label .
+}"
 		] ;
 	api:viewer <#tissueListViewer> ;
 	api:defaultViewer <#tissueListViewer> .
 
-<http://www.conceptwiki.org/concept/UUID-neXtProtGold> api:name "gold" . 
+<http://www.conceptwiki.org/concept/UUID-neXtProtGold> api:name "gold" .
 <http://www.conceptwiki.org/concept/UUID-neXtProtSilver> api:name "silver" .
 
 <#input> api:name "uri" ;
@@ -90,8 +90,8 @@ obo-rel:has_quality api:name "quality" ;
 
 <#tissueListViewer> a api:Viewer ;
 	api:name "tissueListViewer" ;
-	api:template 
-"?item ops-terms:tissue ?ops_item ; 
+	api:template
+"?item ops-terms:tissue ?ops_item ;
 	ops-terms:protein ?nextprot_uri ;
 	obo-rel:has_quality ?quality ;
 	a ?evidence_type ;

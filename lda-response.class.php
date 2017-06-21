@@ -20,16 +20,21 @@ require_once 'data_handlers/data_handler_factory.class.php';
 require_once 'data_handlers/item_data_handler.class.php';
 require_once 'data_handlers/external_service_data_handler.class.php';
 
+/**
+ * Class LinkedDataApiResponse
+ *
+ * Constructor is called from index.php, immediately followed by: process();
+ */
 class LinkedDataApiResponse {
-    
+
     var $statusCode = HTTP_OK;
     var $Request = false;
     var $ConfigGraph = false;
     var $SanitizationHandler = false;
     var $ParameterPropertyMapper = false;
     var $DataGraph = false;
-    var $SparqlEndpoint = false;
-    var $cacheable = false;    
+    var $SparqlEndpoint = false;    // an instance of SparqlService, init in process()
+    var $cacheable = false;
     var $pageUri = false;
     var $viewer = false;
     var $errorMessages = array();
@@ -37,9 +42,18 @@ class LinkedDataApiResponse {
     var $overrideUserConfig= false;
     var $HttpRequestFactory=null;
     var $outputFormats;
-    
+
     var $dataHandler = null;
 
+  /**
+   * LinkedDataApiResponse constructor.
+   *
+   * Only caller = index.php
+   *
+   * @param $request
+   * @param $ConfigGraph
+   * @param bool $HttpRequestFactory
+   */
     function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
         global $outputFormats;
         $this->Request = $request;
@@ -71,12 +85,12 @@ class LinkedDataApiResponse {
         $this->ConfigGraph->add_literal_triple(CONFIG_URL.'#HtmlFormatter',  API.'mimeType', 'text/html');
         $this->ConfigGraph->add_literal_triple(CONFIG_URL.'#HtmlFormatter',  API.'name', 'html');
         $this->ConfigGraph->add_resource_triple(CONFIG_URL.'#HtmlFormatter',  RDF.'type', API.'Formatter');
-        
+
         $this->outputFormats['xml']['view']= 'views/rdf_xml.php';
         $this->outputFormats['json']['view']= 'views/rdf_json.php';
         $this->outputFormats['html']['view']= 'views/config.html.php';
         $this->DataGraph->add_graph($this->ConfigGraph);
-        $this->addMetadataToPage();   
+        $this->addMetadataToPage();
     }
 
   /**
@@ -91,30 +105,30 @@ class LinkedDataApiResponse {
             else if ($param=$this->Request->hasEmptyParamValues()){
             	throw new BadRequestException("Bad Request: Empty value not accepted for parameter: {$param}");
             }
-            
+
             $endpointUri = $this->ConfigGraph->getEndpointUri();
             $apiUri = $this->ConfigGraph->getApiUri();
             if(empty($endpointUri) OR empty($apiUri)){
                 $this->setStatusCode(HTTP_Not_Found);
                 $this->serve();
             }
-            
+
             $this->ParameterPropertyMapper = new ParameterPropertyMapper($this->ConfigGraph);
             $this->SanitizationHandler = new SanitizationHandler($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
-            $sparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);            
+            $sparqlWriter = new SparqlWriter($this->ConfigGraph, $this->Request, $this->ParameterPropertyMapper);
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
-            
+
             if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
                 throw new BadRequestException("Unknown Properties in Request: {$param}");
             } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
                 $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
-                throw new BadRequestException($msg); 
+                throw new BadRequestException($msg);
             } else if (!$this->SanitizationHandler->hasValidURIParameters()){
                 throw new BadRequestException("URIs in the request not well formed");
             }
-        } 
+        }
         catch (BadRequestException $e){
         	$this->setStatusCode(HTTP_Bad_Request);
         	$this->errorMessages[]=$e->getMessage();
@@ -129,38 +143,39 @@ class LinkedDataApiResponse {
         }
 
         $this->endpointUrl = $this->ConfigGraph->getEndpointUri();
-        if(strpos($this->endpointUrl, '_:')===0) 
+        if(strpos($this->endpointUrl, '_:')===0)
             $this->endpointUrl = CONFIG_URL;
-        
+
         try {
+          // only used to create $this->SparqlEndpoint below
             $sparqlEndpointUri = $this->ConfigGraph->getSparqlEndpointUri();
         } catch (Exception $e) {
             $this->setStatusCode(HTTP_Internal_Server_Error);
             logError($e->getMessage());
             $apiUri = $this->ConfigGraph->getApiUri();
             $this->errorMessages[]=" The API is not configured correctly; <{$apiUri}> needs to be given an api:sparqlEndpoint property";
-            $this->serve();        
+            $this->serve();
         }
         if(defined('SPARQL_Username') && defined('SPARQL_Password')){
           $credentials = new Credentials(SPARQL_Username, SPARQL_Password);
         } else {
           $credentials = false;
         }
-        
+
         //$noCacheRequestFactory = new HttpRequestFactory();
         //$noCacheRequestFactory->read_from_cache(FALSE);
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
-        
-        $dataHandlerParams = new DataHandlerParams($this->Request, 
-        										$this->ConfigGraph, $this->DataGraph, $viewerUri, 
+
+        $dataHandlerParams = new DataHandlerParams($this->Request,
+        										$this->ConfigGraph, $this->DataGraph, $viewerUri,
         										$sparqlWriter, $this->SparqlEndpoint,
         										$this->endpointUrl);
         try{
         	switch($this->ConfigGraph->getEndpointType()){
-        		case API.'ListEndpoint' :        			
+        		case API.'ListEndpoint' :
         			$this->dataHandler = DataHandlerFactory::createListDataHandler($dataHandlerParams);
         			break;
-        		case API.'ItemEndpoint' :      	
+        		case API.'ItemEndpoint' :
         			$this->dataHandler = DataHandlerFactory::createItemDataHandler($dataHandlerParams);
         			break;
         		case API.'ExternalHTTPService' :
@@ -181,7 +196,7 @@ class LinkedDataApiResponse {
         			break;
         		}
         	}
-        	
+
         	$this->dataHandler->loadData();
         	$this->pageUri = $this->dataHandler->getPageUri();
         }
@@ -205,11 +220,11 @@ class LinkedDataApiResponse {
         	$this->serve();
         	exit;
         }
-        
+
         $this->addMetadataToPage();
-        
+
     }
-       
+
     function getViewer(){
         if($this->viewer)
             return $this->viewer;
@@ -241,7 +256,7 @@ class LinkedDataApiResponse {
     function setStatusCode($code){
         $this->statusCode = $code;
     }
-    
+
     function extensionIsSupported($ext){
         logDebug("Requested File Extension: $ext");
         foreach($this->outputFormats as $name => $props){
@@ -251,9 +266,9 @@ class LinkedDataApiResponse {
             }
         }
         if($formatUri = $this->ConfigGraph->getFormatterUriByName($ext)) return true;
-        return false;        
+        return false;
     }
-    
+
     function getOutputFormat(){
         if($this->Request->hasFormatExtension()){
             $extension = $this->Request->getFormatExtension();
@@ -266,8 +281,8 @@ class LinkedDataApiResponse {
             } else {
                 $this->setStatusCode(HTTP_Unsupported_Media_Type);
                 return false;
-            } 
-        } 
+            }
+        }
         else if($this->Request->hasAcceptTypes()){
             $mimeTypes = $this->ConfigGraph->getDefaultMimeTypes();
             foreach($this->Request->getAcceptTypes($mimeTypes) as $acceptType){
@@ -282,9 +297,9 @@ class LinkedDataApiResponse {
             return false;
         }
     }
-  
+
 	function addMetadataToPage(){
-    
+
         $this->addRelatedPages();
 
 		$metadataRequested = $this->Request->getMetadataParam();
@@ -328,9 +343,9 @@ class LinkedDataApiResponse {
             $this->DataGraph->add_resource_triple($altViewUri, DCT.'isVersionOf',  $this->pageUri);
             $this->DataGraph->add_literal_triple($altViewUri, RDFS_LABEL,  $viewerName);
           }
-      }		
+      }
 	}
-	
+
 	function addRelatedPages(){
 	    $viewerUri = $this->getViewer();
 	    if($this->dataHandler!=null and $list = $this->dataHandler->getItemURIList() and is_array($list)){
@@ -344,9 +359,9 @@ class LinkedDataApiResponse {
 	        }
 	    }
 	}
-	
+
 	function addSiteMetadata(){
-	
+
 	    $apiLiteralProperties = array(
 	            DCT.'description',
 	            API.'base'
@@ -357,7 +372,7 @@ class LinkedDataApiResponse {
 	            PUELIA.'javascript',
 	            XHTML.'stylesheet',
 	    );
-	
+
 	    $siteUri = $this->ConfigGraph->getApiUri();
 	    $this->DataGraph->add_resource_triple($this->pageUri , PUELIA.'site', $siteUri);
 	    $this->DataGraph->add_literal_triple($siteUri, RDFS_LABEL, $this->ConfigGraph->get_label($siteUri));
@@ -371,15 +386,15 @@ class LinkedDataApiResponse {
 	            $this->DataGraph->add_resource_triple($siteUri, $p, $v);
 	        }
 	    }
-	
+
 	    $pathsAndLabels = $this->ConfigGraph->getUriTemplatesWithoutVariables();
 	    $paths = array_keys($pathsAndLabels);
-	
+
 	    foreach($paths  as $no => $path){
 	        $fullLink = $this->Request->getBaseAndSubDir().$path.'?_page=1';
 	        $label = $pathsAndLabels[$path];
 	        $this->DataGraph->add_literal_triple($fullLink, RDFS_LABEL, $label);
-	
+
 	        foreach($paths as $noB => $pathB){
 	            if(strpos($path, $pathB)===0 AND $path!=$pathB){
 	                $this->DataGraph->add_resource_triple($this->Request->getBaseAndSubDir().$pathB.'?_page=1', PUELIA.'link', $fullLink);
@@ -389,7 +404,7 @@ class LinkedDataApiResponse {
 	        $this->DataGraph->add_resource_triple($siteUri, PUELIA.'link', $fullLink);
 	    }
 	}
-		
+
 	function addFormattersMetadata(){
 		$currentFormat = $this->getOutputFormat();
 		foreach($this->ConfigGraph->getFormatters() as $formatName => $formatUri){
@@ -410,10 +425,10 @@ class LinkedDataApiResponse {
         }
       }
 	}
-	
+
 	function addExecutionMetadata(){
 		$endpointUrl = $this->ConfigGraph->getEndpointUri();
- 
+
 		if(strpos($endpointUrl, '_:')===0) $endpointUrl = CONFIG_URL;
 
 
@@ -459,7 +474,7 @@ class LinkedDataApiResponse {
 			 $this->DataGraph->add_resource_triple('_:selectionResult', SPARQL.'query', '_:selectionQuery');
 			 $this->DataGraph->add_literal_triple('_:selectionQuery', RDF.'value', $selectQuery);
 			 $this->DataGraph->add_resource_triple('_:selectionResult', SPARQL.'endpoint', '_:sparqlEndpoint');
-		 } 
+		 }
 	}
 
 	function addTermBindingsMetadata(){
@@ -512,7 +527,7 @@ class LinkedDataApiResponse {
           $this->addTermBindingsToExecution($propPath);
         }
       }
-      
+
 	}
 
 	function addTermBindingsToExecution($propertyPath) {
@@ -527,7 +542,7 @@ class LinkedDataApiResponse {
 
 	function getFormatter(){
 	    if($format = $this->Request->getParam('_format')){
-	       
+
 	        if($this->ConfigGraph->getApiContentNegotiation()==API.'parameterBased'){
 	            if($this->extensionIsSupported($format)){
 	                return $format;
@@ -579,11 +594,11 @@ class LinkedDataApiResponse {
 	    return 'json';
 
 	}
-  
+
 	function serve(){
 	    $Request = $this->Request;
 	    header($this->statusCode);
-	    
+
 	    if($this->statusCode != HTTP_OK){
 	        header("Content-Type: text/html");
 	        switch($this->statusCode){
@@ -611,11 +626,11 @@ class LinkedDataApiResponse {
 	        if(!$outputFormat){
 	            throw new Exception("No output format provided");
 	        }
-	        
+
 	        if(!$mimetype = $this->ConfigGraph->getMimetypesOfFormatterByName($outputFormat)){
-	            if(isset( $this->outputFormats[$outputFormat])) 
+	            if(isset( $this->outputFormats[$outputFormat]))
 	                $mimetype = $this->outputFormats[$outputFormat]['mimetypes'];
-	            else 
+	            else
 	                $mimetype= array('text/html');
 	        }
 	        $mimetype = $mimetype[0];
@@ -668,16 +683,16 @@ class LinkedDataApiResponse {
 	        $this->setStatusCode(HTTP_Internal_Server_Error);
 	        $this->serve();
 	    }
-	    
+
 	    $this->serveHTTPSuccessPage($mimetype, $viewFile, $Request);
 	}
-	
+
 	function serveHTTPSuccessPage($mimetype, $viewFile, $Request){
 	    header("Content-Type: {$mimetype}");
 	    header("Last-Modified: {$this->lastModified}");
 	    header("x-served-from-cache: false");
 	    $DataGraph = $this->getDataGraph();
-	    
+
 	    try {
 	        ob_start();
 	        require $viewFile;
@@ -695,7 +710,7 @@ class LinkedDataApiResponse {
 	        exit;
 	    }
 	}
-	    
+
 	function handleHTTPErrors(){
 	    header("Content-Type: text/html");
 	    switch($this->statusCode){
@@ -710,14 +725,14 @@ class LinkedDataApiResponse {
 	        case HTTP_Not_Found :
 	            require 'views/errors/404.php';
 	            break;
-	    
+
 	    }
 	}
-    
+
     function getDataGraph(){
         return $this->DataGraph;
     }
-        
+
 }
 
 

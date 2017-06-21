@@ -8,7 +8,7 @@
 
 <#tree> a api:API ;
 	rdfs:label "Concept Class Hierarchies"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable <#input> ;
 	api:dataset <http://www.ebi.ac.uk/chembl> ;
@@ -17,7 +17,7 @@
 	api:vocabulary skos: ;
 	api:vocabulary uniprot: ;
 	api:description "An API configuration to return information about concept class based on hierarchical structures. Currently supported hierarchies are the BioAssay Ontology, Enzyme Classification, the ChEMBL Target Tree, the ChEBI ontology, the Human Disease Ontology and the Gene Ontology" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Hierarchies: Parent Nodes" ;
 		api:description "A representation of all parent nodes of the given class in the supportted hierarchies. The BioAssay Ontology, ChEBI Ontology, the Gene Ontology, the Enzyme Classification, the ChEMBL Target Tree, and the Human Disease Ontology are currently supported." ;
@@ -52,7 +52,7 @@
 ?ops_item skos:exactMatch ?node_uri .
 ?node_uri ops:parentNode ?parent_node ;
 	skos:prefLabel ?label ;
-	void:inDataset ?g_short . 
+	void:inDataset ?g_short .
 ?parent_node skos:prefLabel ?parent_label ;
 	skos:prefLabel ?parent_name .
 <http://purl.uniprot.org/enzyme> skos:prefLabel 'Enzyme Classification' .
@@ -65,7 +65,7 @@
 	api:where "{
 SELECT DISTINCT ?parent_node ?node_uri ?g_short WHERE {
 	VALUES ?g {
-		<http://purl.uniprot.org/enzyme/direct> 
+		<http://purl.uniprot.org/enzyme/direct>
 		<http://www.ebi.ac.uk/chembl/target/direct>
 		<http://www.ebi.ac.uk/chebi/direct>
 		<http://www.geneontology.org>
@@ -73,15 +73,15 @@ SELECT DISTINCT ?parent_node ?node_uri ?g_short WHERE {
                 <http://purl.obolibrary.org/obo/doid>
 	}
 	GRAPH ?g {
-		?node_uri rdfs:subClassOf ?parent_node . 
+		?node_uri rdfs:subClassOf ?parent_node .
 		FILTER ( isURI(?parent_node) )
-		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, <http://purl.uniprot.org/enzyme> , 
+		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, <http://purl.uniprot.org/enzyme> ,
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, <http://www.ebi.ac.uk/chembl/target> ,
-				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, <http://www.ebi.ac.uk/chebi> , 
-					IF(?g = <http://www.geneontology.org>, <http://www.geneontology.org> , 
+				IF(?g = <http://www.ebi.ac.uk/chebi/direct>, <http://www.ebi.ac.uk/chebi> ,
+					IF(?g = <http://www.geneontology.org>, <http://www.geneontology.org> ,
                                                 IF(?g = <http://www.bioassayontology.org>, IRI(<http://www.bioassayontology.org>) ,
                                                         IF(?g = <http://purl.obolibrary.org/obo/doid>, IRI(<http://purl.obolibrary.org/obo/doid>), 'Error')))))) AS ?g_short )
-	} 
+	}
 }
 }
 OPTIONAL { { ?node_uri rdfs:label ?label }

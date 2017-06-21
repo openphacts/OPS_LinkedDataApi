@@ -10,7 +10,7 @@
 
 <#chemspider> a api:API ;
 	rdfs:label "ChemSpider structure search"@en;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable ops_api:searchOptions ;
 	api:variable ops_api:commonOptions ;
@@ -24,7 +24,7 @@
 
 		api:enableCache false ;
 		api:uriTemplate "/structure/similarity?searchOptions.Molecule={searchOptions.Molecule}" ;
-		api:externalRequestTemplate "https://ops2.rsc.org/ops/json.ashx?op=SimilaritySearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
+		api:externalRequestTemplate "https://chemistry.openphacts.org/api/JSON.ashx?op=SimilaritySearch&CSCSearchScopeOptions.RealOnly=true&searchOptions.Molecule={searchOptions.Molecule}" ;
 		api:externalResponseHandler "converters/chemspider_structure_search_json_to_rdf.php" ;
 		api:exampleRequestPath "/structure/similarity?searchOptions.Molecule=CC(%3DO)Oc1ccccc1C(%3DO)O&searchOptions.Threshold=0.99&searchOptions.SimilarityType=Tanimoto" ;
 		api:viewer <#externalResponseViewer> ;
@@ -109,7 +109,7 @@ ops_api_result:Count api:name "Count" ;
 		ops_api_search:Molecule ?moleculeSmiles ;
 		ops_api:result ?result ;
 		ops_api_search:Threshold ?searchThreshold ;
-		ops_api_search:Alpha ?searchAlpha ; 
+		ops_api_search:Alpha ?searchAlpha ;
 		ops_api_search:Beta ?searchBeta ;
 		ops_api_search:SimilarityType ?searchSimilarityType ;
 		ops_api_common:Complexity ?complexity ;

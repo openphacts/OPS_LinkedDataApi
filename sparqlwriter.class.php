@@ -3,25 +3,25 @@ require_once 'graphs/vocabularygraph.class.php';
 require_once 'ops_ims.class.php';
 require_once 'virtuosoformatter.class.php';
 class SparqlWriter {
-    
+
     private $_config;
     private $_request;
     private $_parameterPropertyMapper;
-    
+
     var $_unknownPropertiesFromRequestParameter = array();
     var $_unknownPropertiesFromConfig = array();
-    
+
     function __construct($config, $request, $parameterPropertyMapper){
         $this->_config = $config;
         $this->_request = $request;
         $this->_parameterPropertyMapper = $parameterPropertyMapper;
     }
-    
+
     private function addPrefixesToQuery($query){
         $prefixesString='';
         $prefixes = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
         preg_match_all('/([a-zA-Z_\-]+)\:[a-zA-Z0-9_\-]+/', $query, $matches);
-        
+
         foreach($matches[1] as $prefix){
             if(isset($prefixes[$prefix])){
                 $ns = $prefixes[$prefix];
@@ -31,7 +31,7 @@ class SparqlWriter {
         }
         return $prefixesString.$query;
     }
-    
+
     function getLimit(){
         $maxPageSize = $this->getConfigGraph()->getMaxPageSize();
         $requestedPageSize = $this->_request->getParam('_pageSize');
@@ -43,7 +43,7 @@ class SparqlWriter {
         else if($apiDefaultPageSize) return $apiDefaultPageSize;
         else return 10;
     }
-    
+
     function getDefaultSelectLangs(){
         $requestedDefaultLangs = $this->_request->getParam('_lang');
         $endpointDefaultLangs = $this->getConfigGraph()->getEndpointDefaultLangs();
@@ -53,7 +53,7 @@ class SparqlWriter {
         else if($apiDefaultLangs) return explode(',', $apiDefaultLangs);
         else return null;
     }
-    
+
     function filterValueToSparqlTerm($val, $langs, $propertyUri){
         $varNames = $this->getConfigGraph()->variableNamesInValue($val);
         $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
@@ -79,7 +79,7 @@ class SparqlWriter {
             return $this->addDatatypeOrLangToLiteral($literal, $propertyUri, $langs);
         }
     }
-    
+
     private function addDatatypeOrLangToLiteral($literal, $propertyUri=false, $langs=null){
         if($propertyUri){
             if($propertyRange = $this->getConfigGraph()->getVocabPropertyRange($propertyUri) AND $propertyRange!=RDFS_LITERAL){
@@ -92,7 +92,7 @@ class SparqlWriter {
           return $this->addLangToLiteral($literal, $langs);
         }
     }
-    
+
     private function addLangToLiteral($literal, $langs){
         if ($langs){
           $literals = array();
@@ -104,7 +104,7 @@ class SparqlWriter {
           return array($literal);
         }
     }
-    
+
     private function fillQueryTemplate($template, $bindings){
         foreach($bindings as $name => $props){
 #Antonis botch
@@ -114,13 +114,13 @@ class SparqlWriter {
             $sparqlVal = $this->variableBindingToSparqlTerm($props);
             $sparqlVar = '?'.$name;
             logDebug("SPARQL Variable binding: {$sparqlVal} = {$sparqlVar}");
-            //replace all variables with values 
+            //replace all variables with values
             //(but not variables that simply start with this variable name)
             $template = preg_replace('/\\'.$sparqlVar.'([^_a-zA-Z0-9])/', $sparqlVal.'$1', $template); # the \ is to escape the ? and needs \\ because it is escape char in php ...
         }
         return $template;
     }
-    
+
     private function variableBindingToSparqlTerm($props, $propertyUri=false){
         if(isset($props['type']) AND $props['type'] == RDFS.'Resource'){
             $sparqlVal = "<{$props['value']}>";
@@ -139,13 +139,13 @@ class SparqlWriter {
         }
         return $sparqlVal;
     }
-    
+
     function getOffset(){
         $pageNo = $this->_request->getPage();
         return ($pageNo - 1 ) * $this->getLimit();
     }
-    
-    
+
+
     function getOrderBy(){
         $graphConditions = false;
         $orderBy = false;
@@ -165,7 +165,7 @@ class SparqlWriter {
             'orderBy' => $orderBy,
         );
     }
-    
+
     private function sortToOrderBy($sort, $source){
         $sortPropNames = explode(',',$sort);
         $propertyLists = array();
@@ -177,11 +177,11 @@ class SparqlWriter {
                     'property-list'=> $this->_parameterPropertyMapper->mapParamNameToProperties($sortName),
                 );
         }
-        
+
         return $this->propertyNameListToOrderBySparql($propertyLists);
     }
-    
-    
+
+
     private function propertyNameListToOrderBySparql($propertyLists){
         $namespaces = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
         $sparql = '';
@@ -206,38 +206,38 @@ class SparqlWriter {
                      $varName = 'item';
                      $nextName = $propertyNames[0];
                  }
-                 
+
                  $nextProp = $propertiesList[$nextName];
                  $nextPropQnameOrUri = $this->qnameOrUri($nextProp, $namespaces);
                  $nextVarName = $varName.'_'.$nextName;
 
                  if ( ($counter+1) < count($propertyNames)  ){ //if not last item
-                     $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} .";  
-                     $variableNames[$nextVarName] = $nextProp; 
+                     $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} .";
+                     $variableNames[$nextVarName] = $nextProp;
                  }
-                 
+
                  if ( ($counter+2) == count($propertyNames) ){
                      //if this is the last property in the chain, add to the order by
                      $orderBy.= $sortOrder.'(?'.$nextVarName.') ';
                  }
-                 
+
                  $varName = $nextVarName;
                  $counter++;
              }
-            
+
         }
-        return array('graphConditions' => $sparql, 'orderBy' => $orderBy); 
+        return array('graphConditions' => $sparql, 'orderBy' => $orderBy);
     }
-    
-    
+
+
     function getSelectQueryForUriList(){
         if($response = $this->getExplicitSelectQuery()){
             return $response;
         } /*else {
             return $this->getGeneratedSelectQuery();
         }*/
-    }    
-    
+    }
+
     private function getExplicitSelectQuery(){
         if($template = $this->getConfigGraph()->getSelectWhere()){
             $limit = $this->getLimit();
@@ -248,7 +248,7 @@ class SparqlWriter {
             else{
                 $projectionVariable='?'.$expansionVariable;
             }
-            
+
             $offset = $this->getOffset();
             $orderBy = $this->getOrderBy();
             if (empty($orderBy['orderBy']) AND stristr($template,'ORDER BY')===FALSE) {
@@ -277,7 +277,7 @@ class SparqlWriter {
                     }
                 }
             }
-            $ims = new OpsIms();
+            $ims = $this->createOpsIms();
             $sparql = $ims->expandQuery($this->addPrefixesToQuery($sparql), $ops_uri, $lens_uri);
             //$sparql = preg_replace("/\*#\*/","}",$sparql);
             $formatter = new VirtuosoFormatter();
@@ -290,7 +290,7 @@ class SparqlWriter {
         }
 
     }
-    
+
     private function getGeneratedSelectQuery(){
         $GroupGraphPattern = $this->getGroupGraphPattern();
         $order = $this->getOrderBy();
@@ -310,7 +310,7 @@ OFFSET {$offset}
 _SPARQL_;
     return $this->addPrefixesToQuery($query);
     }
-    
+
     private function getGroupGraphPattern(){
         $whereRequestParam              =  $this->_request->getParam('_where');
         $selectorConfigWhereProperty    = $this->getConfigGraph()->getSelectWhere();
@@ -334,15 +334,15 @@ _SPARQL_;
             }
         }
         $GGP .= $this->paramsToSparql($params, $langs);
-    
+
         $GGP = trim($GGP);
         if(empty($GGP)){
             $GGP = "\n  ?item ?property ?value .";
         }
-    
+
         return $GGP;
     }
-    
+
     private function paramsToSparql($paramsArray, $langArray=array()){
         $sparql = '';
         $filters = '';
@@ -440,7 +440,7 @@ _SPARQL_;
         }
         return  $sparql;
     }
-    
+
     private function castOrderByVariable($varName, $propertyUri){
         $xsdDatatypes = array(
             XSD."integer"  ,
@@ -458,13 +458,13 @@ _SPARQL_;
             return "?{$varName}";
         }
     }
-            
+
     function getFilterGraph() {
     	$params = $this->_request->getParams();
     	$vars = $this->_config->getApiConfigVariableBindings();
     	$ep_vars = $this->_config->getEndpointConfigVariableBindings();
     	$filterGraph = array();
-    	
+
     	$count=1;//TODO ??
     	foreach ($params as $param_name => $param_value) {
     		if ($param_name != 'uri' && $param_name != 'uri_list'){
@@ -472,7 +472,7 @@ _SPARQL_;
     				if ($param_name==$var_name AND $param_value !=""){
     					$filterPredicate = $this->findSuperProperty($var_props['uri']);
 					if ($filterPredicate === API.'graphFilter'){
-						$this->getFilterGraphForGraphValue($param_value, $var_props, $ep_vars, $filterGraph);	
+						$this->getFilterGraphForGraphValue($param_value, $var_props, $ep_vars, $filterGraph);
 					}
     					elseif (stripos($param_value , "|")!== false){
     						$this->getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, $filterGraph);
@@ -482,15 +482,15 @@ _SPARQL_;
     					}
     				}
     				elseif (stripos($param_name,"min-")!==false AND substr($param_name,4) == $var_name){
-    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '>=', $filterGraph); 					
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '>=', $filterGraph);
        					$count++;
     				}
     				elseif (stripos($param_name,"max-")!==false AND substr($param_name,4) == $var_name){
-    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '<=', $filterGraph); 					
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '<=', $filterGraph);
        					$count++;
     				}
     				elseif (stripos($param_name,"minEx-")!==false AND substr($param_name,6) == $var_name){
-    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '>', $filterGraph); 					
+    					$this->getFilterForBoundaryValue($var_props, $var_name, $param_value, '>', $filterGraph);
        					$count++;
     				}
     				elseif (stripos($param_name,"maxEx-")!==false AND substr($param_name,6) == $var_name){
@@ -525,7 +525,7 @@ _SPARQL_;
             $filterGraph[$var_props['sparqlVar']] = "VALUES {$var_props['sparqlVar']} { {$final_param_value} }";
         }
     }
-    
+
     private function getFilterForBoundaryValue($var_props, $var_name, $param_value, $relation, &$filterGraph){
         $filterPredicate = $this->findSuperProperty($var_props['uri']);
         if (isset($filterGraph[$var_props['sparqlVar']])) {
@@ -535,7 +535,7 @@ _SPARQL_;
             $filterGraph[$var_props['sparqlVar']] = "{ " . $var_props['sparqlVar'] . " <" . $filterPredicate . '> ?' . $var_name . " FILTER( ?" . $var_name . ' '.$relation.' ' . $param_value . ' ) *#*';
         }
     }
-    
+
     private function getFilterGraphForComposedParamValue($param_value, $filterPredicate, $var_props, $ep_vars, &$filterGraph){
         $token = strtok($param_value,'|');
 	if (isset($ep_vars[$token]['uri'])) {
@@ -612,37 +612,41 @@ _SPARQL_;
         return $current;
     }
 
+   function createOpsIms() {
+    return new OpsIms($this->_request);
+  }
+
     function getViewQueryForBatchUriList($itemList, $viewerUri, $uriList=null) {
-        $ims = new OpsIms();
+        $ims = $this->createOpsIms();
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
                 AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
             $ops_uri = $this->_request->getParam('uri');
-            
+
             $limit = $this->getLimit();
             if (strcasecmp($limit,"all")!==0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { " .  $whereGraph  . " }"));
             }
             else {//_pageSize=all
                 $whereGraph = $this->_config->getSelectWhere();
-                
+
                 $pattern = '@(\?ims_)(.*?)(_uri)@';
                 $replacement = '?${2}';
                 $template = preg_replace($pattern, $replacement, $template);
-                
+
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
                 $filterGraph = $this->getFilterGraph();
                 $query = $this->addFilterClause($filterGraph, $query);
                 //$query = preg_replace("/\*#\*/","}",$query);
-                $output['expandedQuery'] = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));               
+                $output['expandedQuery'] = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
                 $output['imsRDF']='';
                 return $output;
-            }           
+            }
             if (!empty($ops_uri)){
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $query);
                 $query = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
                 //logDebug("View query before filter: ".$query);
-            }     
-            
+            }
+
             logDebug("View query after filter: ".$query);
             if (!empty($uriList)){//expand another variable besides ?item
                 if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
@@ -658,16 +662,16 @@ _SPARQL_;
                     foreach (array_chunk($itemList,25) AS $key => $chunk) {
                         $queries[]=$ims->expandBatchQuery($query, $chunk, $this->_request->getParam('_lens'));
                     }
-                    return $queries;    
+                    return $queries;
                 } else {
                     return $ims->expandBatchQuery($query, $itemList, $this->_request->getParam('_lens'));
 		}
             }
-            
+
         }
 
     }
-     
+
     function getViewQueryForUri($uri, $viewerUri){
         return $this->getViewQueryForUriList(array($uri), $viewerUri);
     }
@@ -696,7 +700,7 @@ _SPARQL_;
                 //$query = preg_replace("/\*#\*/","}",$query);
             }
 
-            $ims = new OpsIms();
+            $ims = $this->createOpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")!==0) {
                 $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery, $uriList);
@@ -709,18 +713,18 @@ _SPARQL_;
             $filterGraph = $this->getFilterGraph();
             $query = $this->addFilterClause($filterGraph, $query);
             //$query = preg_replace("/\*#\*/","}",$query);
-            $ims = new OpsIms();
+            $ims = $this->createOpsIms();
             $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             if (strstr($expandedQuery, "?item")!==FALSE AND strcasecmp($limit,"all")!==0) {
                 $expandedQuery = $this->addItemsToExpandedQuery($expandedQuery, $uriList);
             }
             elseif ($this->_config->getEndpointType() == API.'ListEndpoint' AND strcasecmp($limit,"all")== 0 ) {
                 $query = str_replace('?ops_item', '<'.$ops_uri.'>', $this->addPrefixesToQuery("CONSTRUCT { {$template}  } {$fromClause} WHERE { {$whereGraph} }"));
-                
+
                 $query = $this->addFilterClause($filterGraph, $query);
-                
+
                 //$query = preg_replace("/\*#\*/","}",$query);
-                $ims = new OpsIms();
+                $ims = $this->createOpsIms();
                 $expandedQuery = $ims->expandQuery($query, $ops_uri, $this->_request->getParam('_lens'));
             }
             $formatter = new VirtuosoFormatter();
@@ -769,7 +773,7 @@ _SPARQL_;
                                 }
                             }
                         }
-                         
+
                         $propQnameOrUri = $this->qnameOrUri($prop, $namespaces);
                         $triple = "    <{$uri}> {$propQnameOrUri} {$propvar} .\n";
                     }
@@ -790,7 +794,7 @@ _SPARQL_;
         }
 
     }
-    
+
     private function addFilterClause($filterGraph, $query){
         if (!empty($filterGraph)) {
             foreach ($filterGraph as $sparqlVar => $filterClause) {
@@ -808,10 +812,10 @@ _SPARQL_;
                 }
             }
         }
-        
+
         return $query;
     }
-    
+
     private function addItemsToExpandedQuery($expandedQuery, $uriList){
 	$sparqlVar="?item";
         $filterGraph = "VALUES ?item { ";
@@ -823,7 +827,7 @@ _SPARQL_;
         $expandedQuery=preg_replace("/(WHERE.*?GRAPH[^\}]*?\{)([^\}]*?\\".$sparqlVar.")/s", "$1 {$filterGraph} $2", $expandedQuery, 1);
         return $expandedQuery;
     }
-    
+
     private function getFromClause(){
         $graphNames = '';
         foreach($this->getConfigGraph()->getSparqlEndpointGraphs() as $graphUri){
@@ -831,7 +835,7 @@ _SPARQL_;
         }
         return $graphNames;
     }
-    
+
     /**
      * Builds the query that inserts data into a graph
      *
@@ -841,10 +845,10 @@ _SPARQL_;
      */
     function getInsertQueryForExternalServiceData($rdfData, $graphName){
         $query = "INSERT IN GRAPH <{$graphName}>{".$rdfData."}";
-    
+
         return $query;
     }
-    
+
     /**
      * Build query that retrieves all the information from a certain graph
      *
@@ -864,12 +868,12 @@ _SPARQL_;
         $whereGraphTemplate = $this->_config->getViewerWhere($viewerUri);
         //fill in the graph name
         $whereGraph = str_replace("{result_hash}", $graphName, $whereGraphTemplate);
-        
+
         $query = "CONSTRUCT { {$template} } WHERE { {$whereGraph} }";
         $finalQuery = $this->addPrefixesToQuery($query);
         return $finalQuery;
     }
-    
+
     private function mapPropertyStructureToWhereGraph($structure, $uriPosition, $namespaces) {
       $var = $structure['var'];
       $props = $structure['props'];
@@ -877,7 +881,7 @@ _SPARQL_;
       foreach($props as $prop => $substruct) {
         $propvar = $substruct['var'] . '_' . $uriPosition;
         if ($prop == API.'allProperties') {
-          $graph .= "    OPTIONAL { {$var}_{$uriPosition} {$propvar}_prop {$propvar} .";          
+          $graph .= "    OPTIONAL { {$var}_{$uriPosition} {$propvar}_prop {$propvar} .";
         } else {
           $propQnameOrUri = $this->qnameOrUri($prop, $namespaces);
 
@@ -889,7 +893,7 @@ _SPARQL_;
                       if (array_key_exists('props', $substruct)) {
                         $graph .= $this->mapPropertyStructureToWhereGraph($substruct, $uriPosition, $namespaces);
                       }
-                      $graph .= "}"; 
+                      $graph .= "}";
                     }
                 }
             $graph .= "    OPTIONAL { {$var}_{$uriPosition} {$propQnameOrUri} {$propvar} .";
@@ -901,7 +905,7 @@ _SPARQL_;
       }
       return $graph;
     }
-    
+
     private function mapPropertyStructureToConstructGraph($structure, $uriPosition, $namespaces) {
       $var = $structure['var'];
       $props = $structure['props'];
@@ -915,7 +919,7 @@ _SPARQL_;
 /*          if($invProp = $this->getConfigGraph()->getInverseOfProperty($prop)){
               $invPropQnameOrUri = $this->qnameOrUri($invPropQnameOrUri, $namespaces);
               $graph .= "\n  {$propvar} {$propQnameOrUri} {$var}_{$uriPosition} . \n # inverse property mapping \n";
-          } 
+          }
  */
           $graph .= "    {$var}_{$uriPosition} {$propQnameOrUri} {$propvar} .\n";
         }
@@ -925,7 +929,7 @@ _SPARQL_;
       }
       return $graph;
     }
-    
+
     /*
     Creating a structure that looks like:
     array(
@@ -954,11 +958,11 @@ _SPARQL_;
       }
       return $structure;
     }
-    
+
     private function getViewerPropertyChains($viewerUri){
         return array_merge($this->getConfigGraph()->getRequestPropertyChainArray(), $this->getConfigGraph()->getViewerDisplayPropertiesValueAsPropertyChainArray($viewerUri), $this->getConfigGraph()->getAllViewerPropertyChains($viewerUri));
     }
-    
+
     private function qnameOrUri($uri, $prefixes) {
         $hash = strpos($uri, '#');
         if (!$hash) {
@@ -976,10 +980,10 @@ _SPARQL_;
         }
         return '<'.$uri.'>';
     }
-    
+
     function getConfigGraph(){
         return $this->_config;
     }
-    
+
 }
 ?>

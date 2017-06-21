@@ -12,7 +12,7 @@
 
 <#compound> a api:API ;
 	rdfs:label "Compound"@en ;
-	api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable _:hierarchy ;
         api:variable _:targetOrganism ;
@@ -31,7 +31,7 @@
 	api:vocabulary uniprot: ;
 	api:vocabulary dcterms: ;
 	api:description "An API configuration to return information about compounds." ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:ItemEndpoint ;
 		api:name "Classification of Targets for Compound" ;
 		api:description "The hierarchy of classes for the different Targets that interact with a given Compound. Currently supported hierarchies are the Enzyme Classification, the ChEMBL Target Tree and the Gene Ontology. " ;
@@ -161,16 +161,16 @@ chembl:pChembl api:name "pChembl" ;
 
 <#compoundClassificationsForTargetsViewer> a api:Viewer ;
 	api:name "compoundClassificationsForTargetsViewer";
-	api:template 
+	api:template
 "?ops_item skos:exactMatch ?chembl_compound_uri ;
 	skos:exactMatch ?cw_compound_uri .
-?chembl_compound_uri ops:interactsWithTargetOfClass ?class ; 
+?chembl_compound_uri ops:interactsWithTargetOfClass ?class ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?cw_compound_uri skos:prefLabel ?cw_label ;
-        void:inDataset <http://www.conceptwiki.org> . 
+        void:inDataset <http://www.conceptwiki.org> .
 ?class skos:prefLabel ?class_label ;
 	void:inDataset ?g . ";
-	api:where 
+	api:where
 "GRAPH <http://www.ebi.ac.uk/chembl> {
 	?activity chembl:hasMolecule ?chembl_compound_uri ;
 		chembl:hasAssay ?assay .
@@ -184,7 +184,7 @@ chembl:pChembl api:name "pChembl" ;
 		?chembl_tc chembl:targetCmptXref ?class .
 		?class a chembl:EnzymeClassRef
 		GRAPH <http://purl.uniprot.org/enzyme> {
-			?class skos:prefLabel ?class_label 
+			?class skos:prefLabel ?class_label
 		}
 	}
 	UNION {
@@ -201,4 +201,4 @@ chembl:pChembl api:name "pChembl" ;
 			?cw_compound_uri skos:prefLabel ?cw_label
 		}
 	}
-}" 
+}"

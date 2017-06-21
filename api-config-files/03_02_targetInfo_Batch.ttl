@@ -17,9 +17,9 @@
 
 <#target> a api:API ;
         rdfs:label "Target"@en ;
-        api:sparqlEndpoint <http://localhost:8890/sparql/> ;
+        api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
         api:contentNegotiation api:parameterBased ;
-        api:variable <#input> ; 
+        api:variable <#input> ;
 	api:variable drugbank:drugType ;
 	api:dataset <http://www.conceptwiki.org> ;
 	api:dataset <http://www.ebi.ac.uk/chembl>;
@@ -28,7 +28,7 @@
 	api:vocabulary <http://bio2rdf.org/drugbank_vocabulary:> ;
 	api:vocabulary <http://www.w3.org/2004/02/skos/core#> ;
 	api:description "An API configuration to return information about targets" ;
-	api:endpoint [ 
+	api:endpoint [
 		a api:BatchEndpoint ;
 		api:name "Target Information: Batch" ;
 		api:description "Information about a list of targets, separated by '|'.";
@@ -67,12 +67,12 @@ drugbank:drugType api:name "drug_type" ;
 	api:label "drug_type" ;
 	api:value "One of: 'approved', 'biotech', 'experimental', 'illicit', 'investigational', 'nutraceutical', 'smallMolecule', 'withdrawn'";
 	api:filterVariable "?drugType_uri" ;
-	rdfs:subPropertyOf api:graphFilter ; 
+	rdfs:subPropertyOf api:graphFilter ;
 	a rdf:Property .
 
 <#targetBatchViewer> a api:Viewer ;
 	api:name "targetBatchViewer" ;
-	api:template 
+	api:template
 "?ims_cw_target_uri skos:prefLabel ?target_name ;
 	void:inDataset <http://www.conceptwiki.org> .
 ?ims_uniprot_target_uri uniprot:existence ?existence ;
@@ -83,14 +83,14 @@ drugbank:drugType api:name "drug_type" ;
 	uniprot:classifiedWith ?class ;
 	uniprot:alternativeName ?alt_name ;
 	uniprot:mass ?mass ;
-        ops:molecularWeight ?mass ; 
+        ops:molecularWeight ?mass ;
 	rdfs:seeAlso ?target_pdb ;
 	rdfs:seeAlso ?ppi ;
         void:inDataset <http://purl.uniprot.org> .
 ?inter_prot rdfs:label ?inter_label .
 ?ims_chembl_target_uri chembl:hasTargetComponent ?target_component ;
 	a ?target_type ;
-	rdfs:label ?synonym ;	
+	rdfs:label ?synonym ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?target_component dcterms:description ?description ;
 	skos:exactMatch ?cw_target ;
@@ -98,7 +98,7 @@ drugbank:drugType api:name "drug_type" ;
 ?ims_db_target_uri drugbank:cellularLocation ?cellularLocation ;
 	drugbank:molecularWeight ?molecularWeight ;
 	drugbank:numberOfResidues ?numberOfResidues ;
-	drugbank:theoreticalPi ?theoreticalPi ; 
+	drugbank:theoreticalPi ?theoreticalPi ;
 	ops:targetForDrug ?db_compound ;
         void:inDataset <http://www.openphacts.org/bio2rdf/drugbank> .
 ?db_compound drugbank:genericName ?drug_name ;
@@ -108,25 +108,25 @@ drugbank:drugType api:name "drug_type" ;
 	api:where "
 {
 	GRAPH <http://www.conceptwiki.org> {
-		?ims_cw_target_uri skos:prefLabel ?target_name 
-	} 
+		?ims_cw_target_uri skos:prefLabel ?target_name
+	}
 	GRAPH <http://purl.uniprot.org> {
 		{?ims_uniprot_target_uri uniprot:existence ?existence .
-		?ims_uniprot_target_uri uniprot:organism ?organism . 
+		?ims_uniprot_target_uri uniprot:organism ?organism .
 		?ims_uniprot_target_uri uniprot:alternativeName/uniprot:fullName ?alt_name .}
 		UNION { ?ims_uniprot_target_uri uniprot:annotation ?fun_uri .
                         ?fun_uri a uniprot:Function_Annotation ;
                         rdfs:comment ?function . }
 		UNION { ?ims_uniprot_target_uri uniprot:sequence ?seq_uri .
 			?seq_uri rdf:value ?sequence ;
-				uniprot:mass ?mass . 
-			{ [] uniprot:sequenceFor ?ims_uniprot_target_uri, 
+				uniprot:mass ?mass .
+			{ [] uniprot:sequenceFor ?ims_uniprot_target_uri,
 					?seq_uri}
 			UNION {
                                 [] uniprot:sequenceFor ?ims_uniprot_target_uri,
                                        ?seq_dot_uri
                                 FILTER(STRSTARTS(STR(?seq_dot_uri), STR(?ims_uniprot_target_uri)))
-                        } 
+                        }
 		}
 		UNION { ?intact1 owl:sameAs ?ims_uniprot_target_uri .
 			[] uniprot:participant ?intact1, ?intact2 .
@@ -149,12 +149,12 @@ UNION {
 				drugbank:drug-group ?drugType_uri .
 			?drugType_uri rdfs:label ?drugType }
         }
-} 
+}
 UNION {
 	GRAPH <http://www.ebi.ac.uk/chembl> {
 		?ims_chembl_target_uri a ?target_type .
-                ?ims_chembl_target_uri rdfs:label ?synonym . 
-		?ims_chembl_target_uri chembl:hasTargetComponent ?target_component . 
+                ?ims_chembl_target_uri rdfs:label ?synonym .
+		?ims_chembl_target_uri chembl:hasTargetComponent ?target_component .
 		?target_component dcterms:description ?description .
 	}
 }
