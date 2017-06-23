@@ -31,7 +31,8 @@ RUN echo "[Pcre]" > /usr/local/etc/php/conf.d/ops-pcre.ini
 RUN echo "pcre.backtrack_limit=100000000" >> /usr/local/etc/php/conf.d/ops-pcre.ini
 RUN echo "pcre.recursion_limit=100000000" >> /usr/local/etc/php/conf.d/ops-pcre.ini
 
-RUN mkdir -p /var/www/html/logs /var/www/html/cache && \
+RUN rm -rf /var/www/html/logs /var/www/html/cache && \
+    mkdir /var/www/html/logs /var/www/html/cache && \
     chmod 777 /var/www/html/logs /var/www/html/cache && \
     chown -R www-data:www-data /var/www/html
 
