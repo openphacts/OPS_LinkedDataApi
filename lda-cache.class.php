@@ -43,6 +43,9 @@ class LinkedDataApiCache
     }
 
     public function load($id, $doNotTestCacheValidity = FALSE, $doNotUnserialize = FALSE) {
+
+      return false; // DISABLE
+
         if(!$this->connection) $this->connection = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
         if(@$tmp = $this->connection->get($id)){
           if (is_array($tmp)) {
@@ -60,6 +63,8 @@ class LinkedDataApiCache
     }
 
     public function save($data, $id, $tags = array(), $specificLifetime = false, $priority=0){
+
+      return false; // DISABLE
 
       $lifetime = $this->getLifetime($specificLifetime);
 
@@ -84,6 +89,8 @@ class LinkedDataApiCache
 
       if(!$this->connection) $this->connection = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 
+      return false; // DISABLE
+
       return $this->connection->delete($id);
     }
 
@@ -101,6 +108,8 @@ class LinkedDataApiCache
 
 	public static function hasCachedResponse(LinkedDataApiRequest $request)
 	{
+      return false; // DISABLE
+
 		if(!function_exists("memcache_connect")) return false;
 
 		$acceptableTypes = self::getAcceptableTypes($request);
@@ -155,6 +164,8 @@ class LinkedDataApiCache
 
 	public static function cacheResponse(LinkedDataApiRequest $request, LinkedDataApiResponse $response)
 	{
+      return false; // DISABLE
+
 		if(!function_exists("memcache_connect")) return false;
 		$cacheableResponse = new LinkedDataApiCachedResponse();
 		$cacheableResponse->eTag = $response->eTag;
@@ -199,6 +210,9 @@ class LinkedDataApiCache
 	}
 
 	public static function cacheURI($uri){
+
+      return false; // DISABLE
+
 	    if(!function_exists("memcache_connect"))
 	        return false;
 
@@ -210,6 +224,8 @@ class LinkedDataApiCache
 	}
 
 	public static function hasCachedUri($uri){
+
+      return false; // DISABLE
 
 //	    logDebug("Looking in memcache for $uri");
 	    if(!function_exists("memcache_connect"))
@@ -231,6 +247,8 @@ class LinkedDataApiCache
 	public static function cacheConfig($filepath, ConfigGraph $configgraph){
 		if(!function_exists("memcache_connect")) return false;
 
+      return false; // DISABLE
+
 //		logDebug('Caching '.$filepath);
 		$key = LinkedDataApiCache::configCacheKey($filepath);
 		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
@@ -242,6 +260,8 @@ class LinkedDataApiCache
    * @return cached object from memcache, or false if not found.
    */
 	public static function hasCachedConfig($filepath){
+
+      return false; // DISABLE
 
 //		logDebug("Looking in memcache for $filepath");
 		if(!function_exists("memcache_connect")) return false;
