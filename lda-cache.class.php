@@ -60,11 +60,11 @@ class LinkedDataApiCache
     }
 
     public function save($data, $id, $tags = array(), $specificLifetime = false, $priority=0){
-      
+
       $lifetime = $this->getLifetime($specificLifetime);
-        
+
         if(!$this->connection) $this->connection = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
-        
+
         if (isset($this->_options['compression']) AND $this->_options['compression']) {
             $flag = MEMCACHE_COMPRESSED;
         } else {
@@ -77,18 +77,18 @@ class LinkedDataApiCache
             @$result = $this->connection->set($id, array($data, time(), $lifetime), $flag, $lifetime);
         }
        return $result;
- 
+
     }
 
     public function remove($id){
-      
+
       if(!$this->connection) $this->connection = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
-      
-      return $this->connection->delete($id);    
+
+      return $this->connection->delete($id);
     }
 
     public function test($id){
-    
+
         if(@$tmp = $this->connection->get($id)){
           if (is_array($tmp)) {
               return $tmp[1];
@@ -96,47 +96,47 @@ class LinkedDataApiCache
         }
 
         return false;
-    
+
     }
 
 	public static function hasCachedResponse(LinkedDataApiRequest $request)
 	{
 		if(!function_exists("memcache_connect")) return false;
-	
+
 		$acceptableTypes = self::getAcceptableTypes($request);
 		$uri = $request->getOrderedUriWithoutApiKeys();
-		
+
 		foreach ($acceptableTypes as $mimetype)
 		{
 			$key = LinkedDataApiCache::cacheKey($uri, $mimetype);
 			$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 			$cachedObject = $mc->get($key);
 			if ($cachedObject)
-			{				
+			{
 				if ($cachedObject->nChunks > 1){
 				    $cachedObject->body = array();
 				    for ($i=0; $i<$cachedObject->nChunks; $i++){
 				        $splitKey = LinkedDataApiCache::cacheIndexedKey($uri, $mimetype, $i);
 				        $cachedObject->body[$i] = $mc->get($splitKey);
 				    }
-				    
+
 				    logDebug("Found a cached response > 1 MB for $mimetype under key $key ; Aggregating response from ".$cachedObject->nChunks." chunks");
 				}
 				else{
 				    logDebug("Found a cached response for $mimetype under key $key");
 				}
-				
+
 				return $cachedObject;
-			} 
+			}
 			logDebug("No cached response for $mimetype under key $key");
 		}
 		logDebug('No suitable cached responses found');
 		return false;
 	}
-	
+
 	private static function getAcceptableTypes($request){
 	    global $outputFormats;
-	    
+
 	    $extension = $request->getFormatExtension();
 	    if ($extension!==false AND $extension!='ico'){
 	        $acceptableTypes = $outputFormats[$extension]['mimetypes'];
@@ -161,47 +161,47 @@ class LinkedDataApiCache
 		$cacheableResponse->generatedTime = $response->generatedTime;
 		$cacheableResponse->lastModified = $response->lastModified;
 		$cacheableResponse->mimetype = $response->mimetype;
-		
+
 		$key = LinkedDataApiCache::cacheKey($request->getOrderedUriWithoutApiKeys(), $cacheableResponse->mimetype);
-		
-		$responseLength = strlen($response->body); 
+
+		$responseLength = strlen($response->body);
 		if ($responseLength>MAX_RESPONSE){
 			logDebug('Response larger than '.MAX_RESPONSE.', will not cache');
 			return;
 		}
 
 		if ($responseLength > MEMCACHED_LIMIT){
-		    $cacheableResponse->nChunks = (int)(($responseLength+MEMCACHED_LIMIT)/MEMCACHED_LIMIT); 
+		    $cacheableResponse->nChunks = (int)(($responseLength+MEMCACHED_LIMIT)/MEMCACHED_LIMIT);
 		    $splits = str_split($response->body, MEMCACHED_LIMIT);
 		    $cacheableResponse->body = false;
-		    
+
 		    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 		    $mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
 		    logDebug('Main key: '.$key);
-		    
+
 		    for ($i=0; $i<$cacheableResponse->nChunks; $i++){
 		        $splitKey = LinkedDataApiCache::cacheIndexedKey($request->getOrderedUriWithoutApiKeys(), $cacheableResponse->mimetype, $i);
 		        $mc->add($splitKey, $splits[$i], false, PUELIA_CACHE_AGE);
 		        logDebug('Split key: '.$splitKey);
 		    }
-		    
+
 		    logDebug('Caching Response > 1MB as '.$key.' with mimetype '.$cacheableResponse->mimetype."; writing ".$cacheableResponse->nChunks." chunks");
 		}
 		else{
 		    $cacheableResponse->nChunks = 1;
 		    $cacheableResponse->body = $response->body;
-		    
+
 		    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 		    $mc->add($key, $cacheableResponse, false, PUELIA_CACHE_AGE);
-		    
+
 		    logDebug('Caching Response as '.$key.' with mimetype '.$cacheableResponse->mimetype);
-		}		
+		}
 	}
-	
+
 	public static function cacheURI($uri){
-	    if(!function_exists("memcache_connect")) 
+	    if(!function_exists("memcache_connect"))
 	        return false;
-	    
+
 	    logDebug('Caching '.$uri);
 	    $key = LinkedDataApiCache::cacheKey($uri, '');
 	    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
@@ -210,13 +210,13 @@ class LinkedDataApiCache
 	}
 
 	public static function hasCachedUri($uri){
-	
-	    logDebug("Looking in memcache for $uri");
-	    if(!function_exists("memcache_connect")) 
+
+//	    logDebug("Looking in memcache for $uri");
+	    if(!function_exists("memcache_connect"))
 	        return false;
-	    
+
 	    $mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
-	    
+
 	    $key = LinkedDataApiCache::cacheKey($uri, '');
 	    $cachedObject = $mc->get($key);
 	    if ($cachedObject)
@@ -226,12 +226,12 @@ class LinkedDataApiCache
 	    logDebug("No cached uri $uri");
 	    return false;
 	}
-	
-	
+
+
 	public static function cacheConfig($filepath, ConfigGraph $configgraph){
 		if(!function_exists("memcache_connect")) return false;
-		
-		logDebug('Caching '.$filepath);
+
+//		logDebug('Caching '.$filepath);
 		$key = LinkedDataApiCache::configCacheKey($filepath);
 		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
 		$mc->add($key, $configgraph, false );
@@ -242,8 +242,8 @@ class LinkedDataApiCache
    * @return cached object from memcache, or false if not found.
    */
 	public static function hasCachedConfig($filepath){
-		
-		logDebug("Looking in memcache for $filepath");	
+
+//		logDebug("Looking in memcache for $filepath");
 		if(!function_exists("memcache_connect")) return false;
 		$key = LinkedDataApiCache::configCacheKey($filepath);
 		$mc = memcache_connect(PUELIA_MEMCACHE_HOST, PUELIA_MEMCACHE_PORT);
@@ -251,13 +251,13 @@ class LinkedDataApiCache
 		if ($cachedObject)
 		{
 			return $cachedObject;
-		} 
+		}
 		logDebug("No cached version of ConfigGraph from $filepath");
 		return false;
 	}
 
 	public static function configCacheKey($filepath){
-		$mtime = filemtime($filepath);	
+		$mtime = filemtime($filepath);
 		return md5($filepath.$mtime);
 	}
 
@@ -268,7 +268,7 @@ class LinkedDataApiCache
 			$key .= trim($mimetype);
 		return md5($key);
 	}
-	
+
 	private static function cacheIndexedKey($requestUri, $mimetype, $index)
 	{
 	    $key  = $requestUri;
@@ -277,5 +277,5 @@ class LinkedDataApiCache
 	    $key .= $index;
 	    return md5($key);
 	}
-	
+
 }
