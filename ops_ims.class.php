@@ -127,7 +127,7 @@ class OpsIms {
                }
 
               $url .= '&Uri='.urlencode($input_uri);
-	      //logDebug("IMS Request: ".$url);
+             logDebug("IMS Request: ".$url);
               $variableInfoMap[$variableName]['url']=$url;
               $ch = curl_init();
               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -197,7 +197,7 @@ class OpsIms {
 
    private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
        $response = curl_multi_getcontent($varInfo['handle']);
-       //logDebug("IMS Response: {$response}");
+     logDebug("IMS Response: {$response}");
        curl_close($varInfo['handle']);
        curl_multi_remove_handle($multiHandle, $varInfo['handle']);
        //echo $url;
@@ -231,7 +231,7 @@ class OpsIms {
 //      echo "\n</pre><pre>\n";
 //       echo $url;
 //       echo "\n</pre>\n";
-//logDebug("IMS Request: ".$url);
+     logDebug("IMS Request: ".$url);
        $expanded = simplexml_load_string($response)->expandedQuery ;
        return $expanded;
    }
@@ -308,6 +308,7 @@ class OpsIms {
   }
 
   private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
+    logDebug('$uriLIst = ' . $uriList);
       foreach ($uriList AS $input_uri){
           foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
               foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
@@ -325,7 +326,7 @@ class OpsIms {
       else{
           $filter = " VALUES {$variableName} { <http://www.openphacts.org/api#no_mappings_found> }" ;
       }
-//      logDebug("FILTER clause: ". $filter);
+    logDebug("FILTER clause: ". $filter);
       return $filter;
   }
 
