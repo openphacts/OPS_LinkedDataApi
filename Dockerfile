@@ -8,7 +8,7 @@ RUN tar xJfv php.tar.xz
 RUN ln -s php-* php && cd /usr/src/php/ext/
 WORKDIR /tmp
 RUN curl -L http://pecl.php.net/get/memcached-2.2.0.tgz | tar zxfv - && mv memcached-* /usr/src/php/ext/memcached
-RUN curl -L http://pecl.php.net/get/memcache-2.2.7.tgz | tar zxfv - && mv memcache-* /usr/src/php/ext/memcache
+RUN curl -L http://pecl.php.net/get/memcache-3.0.8.tgz | tar zxfv - && mv memcache-* /usr/src/php/ext/memcache
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libcurl4-openssl-dev libxslt1-dev libmemcached-dev libz-dev && \
   docker-php-ext-install xsl memcache memcached
