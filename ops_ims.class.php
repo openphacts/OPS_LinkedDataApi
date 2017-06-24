@@ -95,9 +95,6 @@ class OpsIms {
   }
 
    private function expandQueryThroughIMS($query, $input_uri, $lens){
-//     echo "expandQueryThroughIMS";
-//     echo $input_uri;
-//     echo $query;
        $output = $query ;
        //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
        $multiHandle = curl_multi_init();
@@ -242,9 +239,6 @@ class OpsIms {
    * @return mixed
    */
   function expandBatchQuery( $query , $uriList, $lens) {
-//    echo "expandBatchQuery";
-//    echo $uriList;
-//    echo $query;
 	$rdf = "";
 	$output['expandedQuery']=$query;
 	$output['imsRDF']=$rdf;
@@ -302,7 +296,6 @@ class OpsIms {
 		}
 	    }
 	}
-	//echo $rdf;
 	$output['imsRDF']=$rdf;
 	return $output;
   }
