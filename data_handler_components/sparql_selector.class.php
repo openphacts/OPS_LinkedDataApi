@@ -6,18 +6,18 @@ require_once 'data_handler_components/selector.interf.php';
 require_once 'sparqlwriter.class.php';
 
 class SparqlSelector implements Selector{
-		
+
 	private $Request;
 	private $SparqlEndpoint;
-	private $SparqlWriter;
+	private $SparqlWriter ;
 	private $selectQuery;
-	
-	function __construct($Request, $SparqlWriter, $SparqlEndpoint){
+
+	function __construct(LinkedDataApiRequest $Request,SparqlWriter $SparqlWriter, $SparqlEndpoint){
 		$this->Request = $Request;
 		$this->SparqlWriter = $SparqlWriter;
 		$this->SparqlEndpoint = $SparqlEndpoint;
 	}
-	
+
 	function getItemMap(){
 		$itemMap = array();
 		$itemMap['item'] = array();
@@ -48,12 +48,12 @@ class SparqlSelector implements Selector{
 			if (empty($results)){//throw exception
 				throw new EmptyResponseException("The selector did not find data in the triple store");
 			}
-			else {		    
+			else {
 			    $expansionVariable = $responsePair['expansionVariable'];
 			    if (!empty($expansionVariable) && strcmp($expansionVariable, 'item')){
 			        $itemMap[$expansionVariable] = array();
 			    }
-			    
+
 				foreach($results as $row){
 					if(isset($row['item'])) $itemMap['item'][]=$row['item']['value'];
 					if (!empty($expansionVariable) && isset($row[$expansionVariable]) && strcmp($expansionVariable, 'item')){
@@ -72,7 +72,7 @@ class SparqlSelector implements Selector{
 
 		return $itemMap;
 	}
-	
+
 	public function getSelectQuery(){
 		return $this->selectQuery;
 	}

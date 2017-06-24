@@ -54,7 +54,9 @@ class LinkedDataApiResponse {
    * @param $ConfigGraph
    * @param bool $HttpRequestFactory
    */
-    function __construct($request, $ConfigGraph, &$HttpRequestFactory=false){
+    function __construct(LinkedDataApiRequest $request,
+                         ConfigGraph $ConfigGraph,
+                         HttpRequestFactory &$HttpRequestFactory=null){
         global $outputFormats;
         $this->Request = $request;
         $this->pageUri = $this->Request->getUriWithPageParam();

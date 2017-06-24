@@ -27,7 +27,7 @@ class ConfigGraph extends PueliaGraph {
     var $_vocab = null;
     var $sparqlEndpointUri = null;
 
-    function __construct($rdf, $request, $requestFactory=false){
+    function __construct($rdf, LinkedDataApiRequest $request, HttpRequestFactory $requestFactory=null){
         $this->_request = $request;
         parent::__construct($rdf);
 
