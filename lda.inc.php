@@ -120,8 +120,21 @@ function endsWith($needle, $haystack){
 
 
 function logError($message){
-    $logger = Logger::getLogger('Puelia');
-    $logger->error($message);
+  $logger = Logger::getLogger('Puelia');
+  $logger->error($message);
+}
+
+function logSparqlError($contextMessage, $response, $query, $endpoint){
+  $message = '';
+  $message .= "SPARQL query failed!\n";
+  $message .= "Context = ${contextMessage}\n";
+  $message .= "Response returned CODE: {$response->status_code}\n";
+  $message .= "Response BODY:\n{$response->body}\n";
+  $message .= "SPARQL Endpoint = ${$endpoint}\n";
+  $message .= "SPARQL QUERY:\n{$query}\n################\n";
+  $logger = Logger::getLogger('Puelia');
+
+  $logger->error($message);
 }
 
 function logSelectQuery($request, $query){
