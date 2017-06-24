@@ -626,6 +626,8 @@ class SparqlWriter {
 
     function getViewQueryForBatchUriList($itemList, $viewerUri, $uriList=null) {
         $ims = $this->createOpsIms();
+        // [2017.06.24] $fromClause added by RKerber, not defined as in other methods where referenced.
+        $fromClause = $this->getFromClause();
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
                 AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
             $ops_uri = $this->_request->getParam('uri');
