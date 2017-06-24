@@ -95,22 +95,23 @@ class LinkedDataApiResponse {
         $this->addMetadataToPage();
     }
 
-  /**
-   * Create a SparqlWriter, a Viewer, a SparqlService, a DataHandler, and then call:
-   * $this->dataHandler->loadData();
-   */
-    function process(){
-        try{
-            if($param = $this->Request->hasUnrecognisedReservedParams()){
+    /**
+     * Create a SparqlWriter, a Viewer, a SparqlService, a DataHandler, and then call:
+     * $this->dataHandler->loadData();
+     *
+     * index.php calls process() and then calls serve().
+     */
+    function process() {
+        try {
+            if ($param = $this->Request->hasUnrecognisedReservedParams()) {
                 throw new BadRequestException("Bad Request: Unrecognised reserved Param: {$param}");
-            }
-            else if ($param=$this->Request->hasEmptyParamValues()){
-            	throw new BadRequestException("Bad Request: Empty value not accepted for parameter: {$param}");
+            } else if ($param = $this->Request->hasEmptyParamValues()) {
+                throw new BadRequestException("Bad Request: Empty value not accepted for parameter: {$param}");
             }
 
             $endpointUri = $this->ConfigGraph->getEndpointUri();
             $apiUri = $this->ConfigGraph->getApiUri();
-            if(empty($endpointUri) OR empty($apiUri)){
+            if (empty($endpointUri) OR empty($apiUri)) {
                 $this->setStatusCode(HTTP_Not_Found);
                 $this->serve();
             }
@@ -121,110 +122,110 @@ class LinkedDataApiResponse {
             $viewerUri = $this->getViewer();
             logDebug("Viewer URI: " . $viewerUri);
 
-            if($this->SanitizationHandler->hasUnknownPropertiesFromRequest()){
+            if ($this->SanitizationHandler->hasUnknownPropertiesFromRequest()) {
                 throw new BadRequestException("Unknown Properties in Request: {$param}");
-            } else if($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)){
+            } else if ($this->SanitizationHandler->hasUnknownPropertiesFromConfig($viewerUri)) {
                 $unknownProps = implode(', ', $this->SanitizationHandler->getUnknownPropertiesFromConfig());
                 $msg = "One or more properties named in filters for API {$apiUri} are not in a vocabulary linked to from the API: {$unknownProps}";
                 throw new BadRequestException($msg);
-            } else if (!$this->SanitizationHandler->hasValidURIParameters()){
+            } else if (!$this->SanitizationHandler->hasValidURIParameters()) {
                 throw new BadRequestException("URIs in the request not well formed");
             }
-        }
-        catch (BadRequestException $e){
-        	$this->setStatusCode(HTTP_Bad_Request);
-        	$this->errorMessages[]=$e->getMessage();
-        	logError($e->getMessage());
-        	$this->serve();
-        }
-        catch (Exception $e) {
+        } catch (BadRequestException $e) {
+            $this->setStatusCode(HTTP_Bad_Request);
+            $this->errorMessages[] = $e->getMessage();
+            logError($e->getMessage());
+            $this->serve();
+        } catch (Exception $e) {
             $this->setStatusCode(HTTP_Internal_Server_Error);
-            $this->errorMessages[]=$e->getMessage();
+            $this->errorMessages[] = $e->getMessage();
             logError($e->getMessage());
             $this->serve();
         }
 
         $this->endpointUrl = $this->ConfigGraph->getEndpointUri();
-        if(strpos($this->endpointUrl, '_:')===0)
+        if (strpos($this->endpointUrl, '_:') === 0)
             $this->endpointUrl = CONFIG_URL;
 
         try {
-          // only used to create $this->SparqlEndpoint below
+            // only used to create $this->SparqlEndpoint below
             $sparqlEndpointUri = $this->ConfigGraph->getSparqlEndpointUri();
         } catch (Exception $e) {
             $this->setStatusCode(HTTP_Internal_Server_Error);
             logError($e->getMessage());
             $apiUri = $this->ConfigGraph->getApiUri();
-            $this->errorMessages[]=" The API is not configured correctly; <{$apiUri}> needs to be given an api:sparqlEndpoint property";
+            $this->errorMessages[] = " The API is not configured correctly; <{$apiUri}> needs to be given an api:sparqlEndpoint property";
             $this->serve();
         }
-        if(defined('SPARQL_Username') && defined('SPARQL_Password')){
-          $credentials = new Credentials(SPARQL_Username, SPARQL_Password);
+        if (defined('SPARQL_Username') && defined('SPARQL_Password')) {
+            $credentials = new Credentials(SPARQL_Username, SPARQL_Password);
         } else {
-          $credentials = false;
+            $credentials = false;
         }
 
         //$noCacheRequestFactory = new HttpRequestFactory();
         //$noCacheRequestFactory->read_from_cache(FALSE);
+
         $this->SparqlEndpoint = new SparqlService($sparqlEndpointUri, $credentials, $this->HttpRequestFactory);
 
         $dataHandlerParams = new DataHandlerParams($this->Request,
-        										$this->ConfigGraph, $this->DataGraph, $viewerUri,
-        										$sparqlWriter, $this->SparqlEndpoint,
-        										$this->endpointUrl);
-        try{
-        	switch($this->ConfigGraph->getEndpointType()){
-        		case API.'ListEndpoint' :
-        			$this->dataHandler = DataHandlerFactory::createListDataHandler($dataHandlerParams);
-        			break;
-        		case API.'ItemEndpoint' :
-        			$this->dataHandler = DataHandlerFactory::createItemDataHandler($dataHandlerParams);
-        			break;
-        		case API.'ExternalHTTPService' :
-        			$this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($dataHandlerParams);
-        			break;
-        		case API.'IntermediateExpansionEndpoint' :
-        			$this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($dataHandlerParams);
-        			break;
-        		case API.'BatchEndpoint' :
-        			$this->dataHandler = DataHandlerFactory::createBatchDataHandler($dataHandlerParams);
-        			break;
-        		default:{
-        			$this->setStatusCode(HTTP_Internal_Server_Error);
-        			logError("Unsupported Endpoint Type");
-        			$apiUri = $this->ConfigGraph->getApiUri();
-        			$this->errorMessages[]=" The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
-        			$this->serve();
-        			break;
-        		}
-        	}
+                                                   $this->ConfigGraph,
+                                                   $this->DataGraph,
+                                                   $viewerUri,
+                                                   $sparqlWriter,
+                                                   $this->SparqlEndpoint,
+                                                   $this->endpointUrl);
+        try {
+            switch ($this->ConfigGraph->getEndpointType()) {
+                case API . 'ListEndpoint' :
+                    $this->dataHandler = DataHandlerFactory::createListDataHandler($dataHandlerParams);
+                    break;
+                case API . 'ItemEndpoint' :
+                    $this->dataHandler = DataHandlerFactory::createItemDataHandler($dataHandlerParams);
+                    break;
+                case API . 'ExternalHTTPService' :
+                    $this->dataHandler = DataHandlerFactory::createExternalServiceDataHandler($dataHandlerParams);
+                    break;
+                case API . 'IntermediateExpansionEndpoint' :
+                    $this->dataHandler = DataHandlerFactory::createIntermediateExpansionDataHandler($dataHandlerParams);
+                    break;
+                case API . 'BatchEndpoint' :
+                    $this->dataHandler = DataHandlerFactory::createBatchDataHandler($dataHandlerParams);
+                    break;
+                default: {
+                    $this->setStatusCode(HTTP_Internal_Server_Error);
+                    logError("Unsupported Endpoint Type");
+                    $apiUri = $this->ConfigGraph->getApiUri();
+                    $this->errorMessages[] = " The endpoint for the API <{$apiUri}> is not configured correctly; it needs a valid rdf:type property";
+                    $this->serve();
+                    break;
+                }
+            }
 
-        	$this->dataHandler->loadData();
-        	$this->pageUri = $this->dataHandler->getPageUri();
-        }
-        catch(EmptyResponseException $e){
-        	logError("EmptyResponseException: ".$e->getMessage());
-        	$this->setStatusCode(HTTP_Not_Found);
-        	$this->errorMessages[]=$e->getMessage();
-        	$this->serve();
-        	exit;
-        }
-        catch (TimeoutException $e){
-        	logError("TimeoutException: ".$e->getMessage());
-        	$this->setStatusCode(HTTP_Gateway_Timeout);
-        	$this->errorMessages[]=$e->getMessage();
-        	$this->serve();
-        	exit;
-        }
-        catch(Exception $e){
-        	$this->setStatusCode(HTTP_Internal_Server_Error);
-        	$this->errorMessages[]=$e->getMessage();
-        	$this->serve();
-        	exit;
+            $this->dataHandler->loadData();
+            $this->pageUri = $this->dataHandler->getPageUri();
+        } catch (EmptyResponseException $e) {
+            logError("EmptyResponseException: " . $e->getMessage());
+            $this->setStatusCode(HTTP_Not_Found);
+            $this->errorMessages[] = $e->getMessage();
+            $this->serve();
+            exit;
+        } catch (TimeoutException $e) {
+            logError("TimeoutException: " . $e->getMessage());
+            $this->setStatusCode(HTTP_Gateway_Timeout);
+            $this->errorMessages[] = $e->getMessage();
+            $this->serve();
+            exit;
+        } catch (Exception $e) {
+            $this->setStatusCode(HTTP_Internal_Server_Error);
+            $this->errorMessages[] = $e->getMessage();
+            $this->serve();
+            exit;
         }
 
         $this->addMetadataToPage();
 
+        // END of function process()
     }
 
     function getViewer(){
