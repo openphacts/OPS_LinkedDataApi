@@ -17,7 +17,7 @@ class MultipleExpansionViewer implements Viewer {
 
 	private $paginationBehavior = false;
 
-	function __construct($dataHandlerParams, $enablePagination=PAGINATION_OFF){
+	function __construct(DataHandlerParams $dataHandlerParams, $enablePagination=PAGINATION_OFF){
 		$this->Request = $dataHandlerParams->Request;
 		$this->DataGraph = $dataHandlerParams->DataGraph;
 		$this->SparqlWriter = $dataHandlerParams->SparqlWriter;

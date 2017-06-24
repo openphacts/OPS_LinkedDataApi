@@ -1,6 +1,11 @@
 <?php
 
-
+/**
+ * Class DataHandlerParams
+ *
+ * Only used in LinkedDataApiResponse.process() to pass to DataHandlerFactory to create some type of
+ * DataHandler.
+ */
 class DataHandlerParams {
 
     public $Request = false;

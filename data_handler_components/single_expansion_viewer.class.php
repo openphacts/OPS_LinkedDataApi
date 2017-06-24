@@ -17,7 +17,7 @@ class SingleExpansionViewer implements Viewer {
 
 	private $paginationBehavior = false;
 
-	function __construct($dataHandlerParams){
+	function __construct(DataHandlerParams $dataHandlerParams){
 		$this->Request = $dataHandlerParams->Request;
 		$this->ConfigGraph = $dataHandlerParams->ConfigGraph;
 		$this->DataGraph = $dataHandlerParams->DataGraph;

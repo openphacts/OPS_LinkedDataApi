@@ -8,7 +8,7 @@ class ItemDataHandler extends OneStepDataHandler{
     private $pageUri = false;
 
 
-    function __construct($dataHandlerParams) {
+    function __construct(DataHandlerParams $dataHandlerParams) {
         parent::__construct($dataHandlerParams);
     }
 

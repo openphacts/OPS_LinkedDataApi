@@ -9,7 +9,7 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 	private $useDatastore = false;
 	private $pageUri = false;
 
-	function __construct($dataHandlerParams) {
+	function __construct(DataHandlerParams $dataHandlerParams) {
 		parent::__construct($dataHandlerParams);
 	}
 

@@ -12,11 +12,13 @@ class SparqlSelector implements Selector{
 	private $SparqlWriter ;
 	private $selectQuery;
 
-	function __construct(LinkedDataApiRequest $Request,SparqlWriter $SparqlWriter, $SparqlEndpoint){
-		$this->Request = $Request;
-		$this->SparqlWriter = $SparqlWriter;
-		$this->SparqlEndpoint = $SparqlEndpoint;
-	}
+  function __construct(LinkedDataApiRequest $Request,
+                       SparqlWriter $SparqlWriter,
+                       $SparqlEndpoint) {
+    $this->Request = $Request;
+    $this->SparqlWriter = $SparqlWriter;
+    $this->SparqlEndpoint = $SparqlEndpoint;
+  }
 
 	function getItemMap(){
 		$itemMap = array();
