@@ -4,7 +4,7 @@ require_once 'data_handler_components/viewer.interf.php';
 require_once 'data_handler_components/pagination_behavior.class.php';
 
 class SingleExpansionViewer implements Viewer {
-	
+
 	private $Request;
 	private $ConfigGraph;
 	private $DataGraph;
@@ -14,9 +14,9 @@ class SingleExpansionViewer implements Viewer {
 	private $viewQuery;
 	private $pageUri;
 	private $endpointUrl;
-	
+
 	private $paginationBehavior = false;
-	
+
 	function __construct($dataHandlerParams){
 		$this->Request = $dataHandlerParams->Request;
 		$this->ConfigGraph = $dataHandlerParams->ConfigGraph;
@@ -25,17 +25,17 @@ class SingleExpansionViewer implements Viewer {
 		$this->SparqlEndpoint = $dataHandlerParams->SparqlEndpoint;
 		$this->viewerUri = $dataHandlerParams->viewerUri;
 		$this->endpointUrl = $dataHandlerParams->endpointUrl;
-		
+
 		$this->paginationBehavior = new PaginationBehavior($dataHandlerParams);
 	}
-	
+
 	public function applyViewerAndBuildDataGraph($itemMap){
 		logDebug("Viewer URI is $this->viewerUri");
 		$this->viewQuery  = $this->SparqlWriter->getViewQueryForUriList($itemMap['item'], $this->viewerUri);
 		if (LOG_VIEW_QUERIES) {
 			logViewQuery( $this->Request, $this->viewQuery);
 		}
-		
+
 		$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
 		if($response->is_success()){
 			$rdf = $response->body;
@@ -61,19 +61,22 @@ class SingleExpansionViewer implements Viewer {
 			$this->pageUri = $this->paginationBehavior->addListMetadataToDataGraph($itemMap['item']);
 
 		} else {
-			logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+
+          logSparqlError("VIEW query in SingleExpansionViewer.applyViewerAndBuildDataGraph()",
+              $response, $this->viewQuery, $this->SparqlEndpoint->uri);
+
 			throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
 		}
 	}
-	
+
 	public function getViewQuery()	{
 		return $this->viewQuery;
 	}
-	
+
 	public function getPageUri(){
 		return $this->pageUri;
 	}
-	
+
 }
 
 

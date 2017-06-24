@@ -63,7 +63,10 @@ class SparqlSelector implements Selector{
 			}
 
 		} else {//unsuccessful response
-			logError("Endpoint returned {$response->status_code} {$response->body} Select Query <<<{$this->selectQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+
+          logSparqlError("SELECT query in SparqlSelector.getItemMap()",
+              $response, $this->selectQuery, $this->SparqlEndpoint->uri);
+
 			throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
 		}
 

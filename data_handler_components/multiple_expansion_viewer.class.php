@@ -5,7 +5,7 @@ require_once 'data_handler_components/viewer.interf.php';
 require_once 'data_handler_components/pagination_behavior.class.php';
 
 class MultipleExpansionViewer implements Viewer {
-	
+
 	protected $Request;
 	protected $DataGraph;
 	protected $SparqlWriter;
@@ -14,9 +14,9 @@ class MultipleExpansionViewer implements Viewer {
 	protected $viewQuery;
 	protected $pageUri;
 	protected $endpointUrl;
-	
+
 	private $paginationBehavior = false;
-	
+
 	function __construct($dataHandlerParams, $enablePagination=PAGINATION_OFF){
 		$this->Request = $dataHandlerParams->Request;
 		$this->DataGraph = $dataHandlerParams->DataGraph;
@@ -24,16 +24,16 @@ class MultipleExpansionViewer implements Viewer {
 		$this->SparqlEndpoint = $dataHandlerParams->SparqlEndpoint;
 		$this->viewerUri = $dataHandlerParams->viewerUri;
 		$this->endpointUrl = $dataHandlerParams->endpointUrl;
-		
+
 		if ($enablePagination==PAGINATION_ON){
 		    $this->paginationBehavior = new PaginationBehavior($dataHandlerParams);
 		}
 	}
-	
+
 	public function applyViewerAndBuildDataGraph($itemMap){
 		logDebug("Viewer URI is $this->viewerUri");
 		$itemList = $this->getInputListForExpansion($itemMap);
-		
+
 		$expansionData  = $this->SparqlWriter->getViewQueryForBatchUriList($itemMap['item'], $this->viewerUri, $itemList);
 		if (isset($expansionData['expandedQuery'])){
 			$expansionDataArray[]=$expansionData;
@@ -46,17 +46,20 @@ class MultipleExpansionViewer implements Viewer {
 				logViewQuery( $this->Request, $this->viewQuery);
 			}
 			$response = $this->SparqlEndpoint->graph($this->viewQuery, PUELIA_RDF_ACCEPT_MIMES);
-		
+
 			if($response->is_success()){
 				$this->buildDataGraphFromIMSAndTripleStore($response, $individualExpansionData['imsRDF'], $itemMap['item']);
 			}
 			else {
-				logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+
+              logSparqlError("VIEW query in MultipleExpansionViewer.applyViewerAndBuildDataGraph()",
+                  $response, $this->viewQuery, $this->SparqlEndpoint->uri);
+
 				throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
 			}
 		}
 	}
-	
+
 	private function buildDataGraphFromIMSAndTripleStore($tripleStoreResponse, $imsRDF, $list){
 		$rdf = $tripleStoreResponse->body;
 		if(isset($tripleStoreResponse->headers['content-type'])){
@@ -71,9 +74,9 @@ class MultipleExpansionViewer implements Viewer {
 		if ($this->DataGraph->is_empty()){
 			throw new EmptyResponseException("Data not found in the triple store");
 		}
-		
+
 		$this->DataGraph->add_turtle($imsRDF);
-		
+
 		foreach ($this->DataGraph->get_subjects() as $subject) {
 			foreach ($this->DataGraph->get_subject_properties($subject) as $property) {
 				$this->DataGraph->remove_resource_triple($subject, $property, $subject);
@@ -86,7 +89,7 @@ class MultipleExpansionViewer implements Viewer {
 		    $this->pageUri = $this->addListMetadataToDataGraph($list);
 		}
 	}
-	
+
 	private function getInputListForExpansion($itemMap){
 	    if (count($itemMap)> 1){
 	        foreach ($itemMap as $key => $value){
@@ -94,18 +97,18 @@ class MultipleExpansionViewer implements Viewer {
 	                $inputList = $value;
 	            }
 	        }
-	    
+
 	        if (empty($inputList)){
 	            throw new ErrorException("Expansion Variable not found although > 1 items in the itemMap");
 	        }
 	    }
-	    
+
 	    return $inputList;
 	}
-	
+
 	protected function addListMetadataToDataGraph($list){
 	    $listUri = $this->Request->getUriWithoutParam(array('_view', '_page'), 'strip extension');
-	   
+
 	    $this->DataGraph->add_resource_triple($listUri, API.'definition', $this->endpointUrl);
 	    $this->DataGraph->add_resource_triple($listUri, RDF_TYPE, API.'List');
 	    $this->DataGraph->add_literal_triple($listUri, DCT.'modified', date("Y-m-d\TH:i:s"), null, XSD.'dateTime' );
@@ -123,18 +126,18 @@ class MultipleExpansionViewer implements Viewer {
 	        $this->DataGraph->add_resource_triple($rdfListUri, RDF_REST, $nextList);
 	        $rdfListUri = $nextList;
 	    }
-	    
+
 	    return $listUri;
 	}
-	
+
 	public function getViewQuery(){
 		return $this->viewQuery;
 	}
-	
+
 	public function getPageUri(){
 		return $this->pageUri;
 	}
-	
+
 }
 
 ?>
