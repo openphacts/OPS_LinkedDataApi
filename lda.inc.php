@@ -93,7 +93,7 @@ $outputFormats = array(
                         'text/tab-separated-values',
                 ),
         ),
-         
+
 );
 
 function queryStringToParams($query){
@@ -126,21 +126,26 @@ function logError($message){
 
 function logSelectQuery($request, $query){
     $uri = $request->getUri();
-    $message = "SELECT Query:{$uri}:\t<<<{$query}>>>";
+    $message = "SELECT Query:\n  LDA cmd: {$uri}\n<<<\n{$query}\n>>>";
     $logger = Logger::getLogger('Puelia');
     $logger->info($message);
-    
+
 }
 function logViewQuery($request, $query){
     $uri = $request->getUri();
-    $message = "{$uri}\t<<<{$query}>>>";
+    $message = "VIEW Query:\n  LDA cmd: {$uri}\n<<<\n{$query}\n>>>";
     $logger = Logger::getLogger('Puelia');
     $logger->info($message);
 }
 
 function logDebug($message){
-    $logger = Logger::getLogger('Puelia');
-    $logger->debug($message);
+  $logger = Logger::getLogger('Puelia');
+  $logger->debug($message);
+}
+
+function logInfo($message){
+  $logger = Logger::getLogger('Puelia');
+  $logger->info($message);
 }
 
 
