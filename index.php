@@ -119,7 +119,7 @@ else
                   }
               }
           }
-          logDebug("Caching $file");
+//          logDebug("Caching $file");
           LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
       }
 

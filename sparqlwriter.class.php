@@ -647,7 +647,7 @@ _SPARQL_;
                 //logDebug("View query before filter: ".$query);
             }
 
-            logDebug("View query after filter: ".$query);
+            logDebug("View query after filter:\n".$query);
             if (!empty($uriList)){//expand another variable besides ?item
                 if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
                     $expandedQuery = $this->addItemsToExpandedQuery($query, $itemList);
