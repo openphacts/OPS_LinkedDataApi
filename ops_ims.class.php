@@ -221,13 +221,6 @@ class OpsIms {
        $url .= '&inputURI=' . urlencode($input_uri) ;
        $response = $this->getResponse($url, "application/xml");
 
-//      echo "<pre>\n";
-//      echo $query;
-//      echo "\n</pre><pre>\n";
-//      echo $expanded;
-//      echo "\n</pre><pre>\n";
-//       echo $url;
-//       echo "\n</pre>\n";
        logDebug("IMS Request (expandQueryThroughExpander):\n  ".$url);
        $expanded = simplexml_load_string($response)->expandedQuery ;
        return $expanded;

@@ -702,10 +702,10 @@ class ConfigGraph extends PueliaGraph {
     function getSparqlEndpointUri() {
       $sparqlEndpointFromRequest = $this->_request->getParam('_sparqlendpoint');
       if ($sparqlEndpointFromRequest) {
-      	logDebug("Using sparql endpoint from params: $sparqlEndpointFromRequest");
+//      	logDebug("Using sparql endpoint from params: $sparqlEndpointFromRequest");
         return $sparqlEndpointFromRequest;
       } else if ($this->sparqlEndpointUri) {
-      	logDebug("Using sparql endpoint from environment variable: $this->sparqlEndpointUri");
+//      	logDebug("Using sparql endpoint from environment variable: $this->sparqlEndpointUri");
         return $this->sparqlEndpointUri;
       } else {
       	if($uri = $this->get_first_resource($this->getApiUri(), API.'sparqlEndpoint')){
