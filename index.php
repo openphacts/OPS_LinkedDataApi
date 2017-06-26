@@ -30,7 +30,6 @@ if(rtrim($Request->getPath(), '/')==$Request->getInstallSubDir()){
 	exit;
 }
 
-
 if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
         $swagger = file_get_contents("api-config-files/swagger.json", true);
         $json = json_decode($swagger, true);
@@ -46,7 +45,6 @@ if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
         exit;
 }
 
-
 if (
     defined("PUELIA_SERVE_FROM_CACHE")
         AND
@@ -55,8 +53,8 @@ if (
     !$Request->hasNoCacheHeader()
         AND
     $cachedResponse = LinkedDataApiCache::hasCachedResponse($Request)
-    )
-{
+   ) 
+{ 
 	logDebug("Found cached response");
 	if (isset($Request->ifNoneMatch) && $cachedResponse->eTag == $Request->ifNoneMatch)
 	{
@@ -100,8 +98,13 @@ else
     */
   $CompleteConfigGraph = new ConfigGraph(null, $Request, $HttpRequestFactory);
   foreach($files as $file){
-      //logDebug("Iterating over files in /api-config: $file");
-      if($ConfigGraph = LinkedDataApiCache::hasCachedConfig($file)){
+	  //logDebug("Iterating over files in /api-config: $file");
+if (
+    defined("PUELIA_SERVE_FROM_CACHE")
+        AND
+    PUELIA_SERVE_FROM_CACHE
+        AND
+    $ConfigGraph = LinkedDataApiCache::hasCachedConfig($file)){
 //          logDebug("Found Cached Config {$file}");
           $CompleteConfigGraph->add_graph($ConfigGraph);
           $ConfigGraph->setRequest($Request);
@@ -118,9 +121,15 @@ else
                       logDebug('Error parsing '.$file.'  '.$errorMsg);
                   }
               }
+	  }
+      if (
+          defined("PUELIA_SERVE_FROM_CACHE")
+              AND
+          PUELIA_SERVE_FROM_CACHE
+         ) {
+              logDebug("Caching $file");
+	      LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
           }
-//          logDebug("Caching $file");
-          LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
       }
 
       /*
