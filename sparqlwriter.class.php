@@ -11,7 +11,9 @@ class SparqlWriter {
     var $_unknownPropertiesFromRequestParameter = array();
     var $_unknownPropertiesFromConfig = array();
 
-    function __construct($config, $request, $parameterPropertyMapper){
+    function __construct(ConfigGraph $config,
+                         LinkedDataApiRequest $request,
+                         ParameterPropertyMapper $parameterPropertyMapper){
         $this->_config = $config;
         $this->_request = $request;
         $this->_parameterPropertyMapper = $parameterPropertyMapper;
