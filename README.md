@@ -51,10 +51,11 @@ currently available as Docker containers):
 
  * `CRS` (default: https://crs/api/v1/)
  * `CONCEPTWIKI` (default: http://conceptwiki:8080/web-ws/concept)
- * 'USE_MEMCACHE' (TRUE or FALSE - default FALSE)
- * 'MEMCACHE_ENDPOINT' (default 'localhost')
- * 'IMS_ENDPOINT' (default: 'localhost:3004')
- * 'OPS_SPARQL_ENDPOINT' (default: none, assumed to be defined in the config settings for each API call)
+ * `USE_MEMCACHE` (TRUE or FALSE - default FALSE)
+ * `MEMCACHE_ENDPOINT` (default 'localhost')
+ * `IMS_ENDPOINT` (default: 'localhost:3004')
+ * `OPS_SPARQL_ENDPOINT` (default: none, assumed to be defined in the config settings for each API call)
+ * `OPS_SEARCH_ENDPOINT` (default: none, assumed to be defined in the config settings for the OPS search API call)
 
 The default values for `CRS` and `CONCEPTWIKI` access the aliases `crs` and `conceptwiki`, but
 if you don't have your own installation of these services, you might use the
@@ -76,21 +77,21 @@ You can also tell the LDAPI where to find the IMS and the sparql endpoint:
     --env IMS_ENDPOINT=http://a.b.c:3000
     --env OPS_SPARQL_ENDPOINT=http://d.e.f:8000
     
-You can also set the endpoint to use for searches:
+You can also set the endpoint to use for searches that will use the  [OPS Search component](https://github.com/openphacts/ops-search/) via the LDAPI:
 
      --env OPS_SEARCH_ENDPOINT=http://localhost:8839
      
 If `OPS_SEARCH_ENDPOINT` is not set then it will use whatever is in the config files.
 
-If using memcache via docker then you need to ensure that both the LDAPI and memcache containers are on the same docker network:
+If using memcache or the OPS Search component via docker then you need to ensure that both the LDAPI and these containers are on the same docker network:
 
   `docker network create ops-ldapi-network`
 
-then you can refer to the `MEMCACHE_ENDPOINT` by it's internal docker network DNS eg `my-memcache`.
+then you can refer to the `MEMCACHE_ENDPOINT` or `OPS_SEARCH_ENDPOINT` by it's internal docker network DNS eg `my-memcache`. OPS Search can also have the port included eg `ops-search:8839`.
 
 ### Example Docker run
 
-To run (not that this example uses the deprecated docker `--link` command):
+To run (note that this example uses the deprecated docker `--link` command):
 
     docker run --name ops-linkeddataapi -p 8081:80 \
       --network=ops-ldapi-network \
