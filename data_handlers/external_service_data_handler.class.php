@@ -58,6 +58,12 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 		}
 	}
 
+    /**
+     * [2017.06.25] returns true for 'ocrs' commands and false for 'conceptwiki' and 'ims', based on
+     * property api:enableCache in the ttl command config files.
+     *
+     * @return bool
+     */
 	private function decideToCheckTripleStore($pathWithoutExtension){
 		$this->useDatastore = $this->ConfigGraph->get_first_literal($this->ConfigGraph->getEndpointUri(), API.'enableCache');
 		$this->useDatastore = $this->useDatastore==='true' ? true:false;

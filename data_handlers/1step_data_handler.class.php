@@ -30,8 +30,13 @@ abstract class OneStepDataHandler implements DataHandlerInterface {
     	return $this->list_of_item_uris;
     }
 
-    function getViewer(){
-    	return $this->$viewerUri;
+    function getViewer() {
+        // [2017.06.25] R.Kerber
+        // Changed below from '$this->$viewerUri' to '$this->viewerUri'. Presumably the latter is
+        // correct. But without a description of what this is supposed to do, it is conceivable that
+        // the previous version was intentional.
+//        return $this->$viewerUri;
+        return $this->viewerUri;
     }
 
     function getViewQuery(){

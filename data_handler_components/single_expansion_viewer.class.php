@@ -50,8 +50,8 @@ class SingleExpansionViewer implements Viewer {
 			} else {
 				$this->DataGraph->add_rdf($rdf);
 			}
-			//logDebug("Virtuoso response");
-			//logDebug($rdf);
+            logDebug("Virtuoso response");
+            logDebug($rdf);
 			//logDebug("ARC2 contents");
 			//logDebug($this->DataGraph->to_turtle());
 			if ($this->DataGraph->is_empty()){
