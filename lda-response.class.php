@@ -176,7 +176,11 @@ class LinkedDataApiResponse {
                                                    $this->SparqlEndpoint,
                                                    $this->endpointUrl);
         try {
-            switch ($this->ConfigGraph->getEndpointType()) {
+            $endpointType = $this->ConfigGraph->getEndpointType();
+
+            logDebug("Creating DataHandler for EndpointType = {$endpointType}");
+
+            switch ($endpointType) {
                 case API . 'ListEndpoint' :
                     $this->dataHandler = DataHandlerFactory::createListDataHandler($dataHandlerParams);
                     break;
@@ -204,6 +208,7 @@ class LinkedDataApiResponse {
 
             $this->dataHandler->loadData();
             $this->pageUri = $this->dataHandler->getPageUri();
+
         } catch (EmptyResponseException $e) {
             logError("EmptyResponseException: " . $e->getMessage());
             $this->setStatusCode(HTTP_Not_Found);
@@ -229,6 +234,8 @@ class LinkedDataApiResponse {
     }
 
     function getViewer(){
+        /* $this->viewer only referenced in this method. */
+
         if($this->viewer)
             return $this->viewer;
 
