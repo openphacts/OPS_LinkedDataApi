@@ -9,7 +9,7 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 	private $useDatastore = false;
 	private $pageUri = false;
 
-	function __construct($dataHandlerParams) {
+	function __construct(DataHandlerParams $dataHandlerParams) {
 		parent::__construct($dataHandlerParams);
 	}
 
@@ -43,7 +43,8 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 				}
 			}
 			else{
-				logError("Endpoint returned {$response->status_code} {$response->body} View Query <<<{$this->viewQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+              logSparqlError("VIEW query in ExternalServiceDataHandler.loadData()",
+                  $response, $this->viewQuery, $this->SparqlEndpoint->uri);
 			}
 		}
 
@@ -102,7 +103,10 @@ class ExternalServiceDataHandler extends OneStepDataHandler{
 
 		$response = $this->SparqlEndpoint->insert($insertQuery, PUELIA_SPARQL_ACCEPT_MIMES);
 		if(!$response->is_success()){
-			logError("Endpoint returned {$response->status_code} {$response->body} Insert Query <<<{$insertQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+          $msg = "INSERT query in ExternalServiceDataHandler.insertRDFDataIntoTripleStore(graphName={$graphName})";
+          logSparqlError($msg,
+              $response, $insertQuery, $this->SparqlEndpoint->uri);
+
 			//even if insert fails we go ahead an give the data to the client
 		}
 		else{

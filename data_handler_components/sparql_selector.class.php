@@ -6,18 +6,24 @@ require_once 'data_handler_components/selector.interf.php';
 require_once 'sparqlwriter.class.php';
 
 class SparqlSelector implements Selector{
-		
+
 	private $Request;
 	private $SparqlEndpoint;
-	private $SparqlWriter;
+	private $SparqlWriter ;
 	private $selectQuery;
-	
-	function __construct($Request, $SparqlWriter, $SparqlEndpoint){
-		$this->Request = $Request;
-		$this->SparqlWriter = $SparqlWriter;
-		$this->SparqlEndpoint = $SparqlEndpoint;
-	}
-	
+
+    function __construct(LinkedDataApiRequest $Request,
+                         SparqlWriter $SparqlWriter,
+                         SparqlService $SparqlEndpoint) {
+        $this->Request = $Request;
+        $this->SparqlWriter = $SparqlWriter;
+        $this->SparqlEndpoint = $SparqlEndpoint;
+
+        assert($this->Request instanceof LinkedDataApiRequest);
+        assert($this->SparqlWriter instanceof SparqlWriter);
+        assert($this->SparqlEndpoint instanceof SparqlService);
+    }
+
 	function getItemMap(){
 		$itemMap = array();
 		$itemMap['item'] = array();
@@ -48,12 +54,12 @@ class SparqlSelector implements Selector{
 			if (empty($results)){//throw exception
 				throw new EmptyResponseException("The selector did not find data in the triple store");
 			}
-			else {		    
+			else {
 			    $expansionVariable = $responsePair['expansionVariable'];
 			    if (!empty($expansionVariable) && strcmp($expansionVariable, 'item')){
 			        $itemMap[$expansionVariable] = array();
 			    }
-			    
+
 				foreach($results as $row){
 					if(isset($row['item'])) $itemMap['item'][]=$row['item']['value'];
 					if (!empty($expansionVariable) && isset($row[$expansionVariable]) && strcmp($expansionVariable, 'item')){
@@ -63,13 +69,16 @@ class SparqlSelector implements Selector{
 			}
 
 		} else {//unsuccessful response
-			logError("Endpoint returned {$response->status_code} {$response->body} Select Query <<<{$this->selectQuery}>>> failed against {$this->SparqlEndpoint->uri}");
+
+          logSparqlError("SELECT query in SparqlSelector.getItemMap()",
+              $response, $this->selectQuery, $this->SparqlEndpoint->uri);
+
 			throw new ErrorException("The SPARQL endpoint used by this URI configuration did not return a successful response.");
 		}
 
 		return $itemMap;
 	}
-	
+
 	public function getSelectQuery(){
 		return $this->selectQuery;
 	}

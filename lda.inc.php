@@ -93,7 +93,7 @@ $outputFormats = array(
                         'text/tab-separated-values',
                 ),
         ),
-         
+
 );
 
 function queryStringToParams($query){
@@ -120,27 +120,45 @@ function endsWith($needle, $haystack){
 
 
 function logError($message){
-    $logger = Logger::getLogger('Puelia');
-    $logger->error($message);
+  $logger = Logger::getLogger('Puelia');
+  $logger->error($message);
+}
+
+function logSparqlError($contextMessage, $response, $query, $endpoint){
+  $message = '';
+  $message .= "SPARQL query failed!\n";
+  $message .= "Context = ${contextMessage}\n";
+  $message .= "Response returned CODE: {$response->status_code}\n";
+  $message .= "Response BODY:\n{$response->body}\n";
+  $message .= "SPARQL Endpoint = ${$endpoint}\n";
+  $message .= "SPARQL QUERY:\n{$query}\n################\n";
+  $logger = Logger::getLogger('Puelia');
+
+  $logger->error($message);
 }
 
 function logSelectQuery($request, $query){
     $uri = $request->getUri();
-    $message = "SELECT Query:{$uri}:\t<<<{$query}>>>";
+    $message = "SELECT Query:\n  LDA cmd: {$uri}\n<<<\n{$query}\n>>>";
     $logger = Logger::getLogger('Puelia');
     $logger->info($message);
-    
+
 }
 function logViewQuery($request, $query){
     $uri = $request->getUri();
-    $message = "{$uri}\t<<<{$query}>>>";
+    $message = "VIEW Query:\n  LDA cmd: {$uri}\n<<<\n{$query}\n>>>";
     $logger = Logger::getLogger('Puelia');
     $logger->info($message);
 }
 
 function logDebug($message){
-    $logger = Logger::getLogger('Puelia');
-    $logger->debug($message);
+  $logger = Logger::getLogger('Puelia');
+  $logger->debug($message);
+}
+
+function logInfo($message){
+  $logger = Logger::getLogger('Puelia');
+  $logger->info($message);
 }
 
 

@@ -81,11 +81,11 @@ class OpsIms {
 //      return IMS_MAP_ENDPOINT;
     $imsEndpointFromRequest = $this->_request->getParam('_imsendpoint');
     if ($imsEndpointFromRequest) {
-    	logDebug("Using IMS endpoint from params: $imsEndpointFromRequest");
+//    	logDebug("Using IMS endpoint from params: $imsEndpointFromRequest");
       $imsMapEndpoint = $imsEndpointFromRequest . '/QueryExpander/mapUriRDF';
       return $imsMapEndpoint;
     } else if (IMS_MAP_ENDPOINT){
-    	logDebug("using IMS endpoint from environment variable: ".IMS_MAP_ENDPOINT);
+//    	logDebug("using IMS endpoint from environment variable: ".IMS_MAP_ENDPOINT);
       $imsMapEndpoint = IMS_MAP_ENDPOINT;
       return $imsMapEndpoint;
     }else {
@@ -95,9 +95,6 @@ class OpsIms {
   }
 
    private function expandQueryThroughIMS($query, $input_uri, $lens){
-//     echo "expandQueryThroughIMS";
-//     echo $input_uri;
-//     echo $query;
        $output = $query ;
        //build a hashtable which maps $variableName -> (uri, curl_handle, filter_clause)
        $multiHandle = curl_multi_init();
@@ -127,7 +124,7 @@ class OpsIms {
                }
 
               $url .= '&Uri='.urlencode($input_uri);
-	      //logDebug("IMS Request: ".$url);
+              logDebug("IMS Request (expandQueryThroughIMS):\n  ".$url);
               $variableInfoMap[$variableName]['url']=$url;
               $ch = curl_init();
               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -197,7 +194,7 @@ class OpsIms {
 
    private function handleResponse($varInfo, $multiHandle, $input_uri, $variableName, &$variableInfoMap){
        $response = curl_multi_getcontent($varInfo['handle']);
-       //logDebug("IMS Response: {$response}");
+       logDebug("IMS Response:\n{$response}");
        curl_close($varInfo['handle']);
        curl_multi_remove_handle($multiHandle, $varInfo['handle']);
        //echo $url;
@@ -224,27 +221,17 @@ class OpsIms {
        $url .= '&inputURI=' . urlencode($input_uri) ;
        $response = $this->getResponse($url, "application/xml");
 
-//      echo "<pre>\n";
-//      echo $query;
-//      echo "\n</pre><pre>\n";
-//      echo $expanded;
-//      echo "\n</pre><pre>\n";
-//       echo $url;
-//       echo "\n</pre>\n";
-//logDebug("IMS Request: ".$url);
+       logDebug("IMS Request (expandQueryThroughExpander):\n  ".$url);
        $expanded = simplexml_load_string($response)->expandedQuery ;
        return $expanded;
    }
 
   /**
-   * Called by SparqlWriter
+   * 3 calls from SparqlWriter.getViewQueryForBatchUriList(...)
    *
    * @return mixed
    */
   function expandBatchQuery( $query , $uriList, $lens) {
-//    echo "expandBatchQuery";
-//    echo $uriList;
-//    echo $query;
 	$rdf = "";
 	$output['expandedQuery']=$query;
 	$output['imsRDF']=$rdf;
@@ -302,12 +289,14 @@ class OpsIms {
 		}
 	    }
 	}
-	//echo $rdf;
 	$output['imsRDF']=$rdf;
+    logDebug("IMS Request (expandBatchQuery) expandedQuery:\n  " . $output['expandedQuery']);
+    logDebug("IMS Request (expandBatchQuery) imsRDF:\n  " . $output['imsRDF']);
 	return $output;
   }
 
   private function buildFilterFromMappings($graph, $uriList, $variableName, &$expanded=array()){
+    logDebug('$uriList = ' . $uriList);
       foreach ($uriList AS $input_uri){
           foreach ($graph->get_subject_properties($input_uri, true) AS $p ) {
               foreach($graph->get_subject_property_values($input_uri, $p) AS $mapping) {
@@ -325,7 +314,7 @@ class OpsIms {
       else{
           $filter = " VALUES {$variableName} { <http://www.openphacts.org/api#no_mappings_found> }" ;
       }
-//      logDebug("FILTER clause: ". $filter);
+      logDebug("FILTER clause: ". $filter);
       return $filter;
   }
 

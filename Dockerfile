@@ -7,11 +7,11 @@ RUN tar xJfv php.tar.xz
 
 RUN ln -s php-* php && cd /usr/src/php/ext/
 WORKDIR /tmp
-RUN curl -L http://pecl.php.net/get/memcached | tar zxfv - && mv memcached-* /usr/src/php/ext/memcached
-RUN curl -L http://pecl.php.net/get/memcache | tar zxfv - && mv memcache-* /usr/src/php/ext/memcache
+#RUN curl -L http://pecl.php.net/get/memcached-2.2.0.tgz | tar zxfv - && mv memcached-* /usr/src/php/ext/memcached
+#RUN curl -L http://pecl.php.net/get/memcache-3.0.8.tgz | tar zxfv - && mv memcache-* /usr/src/php/ext/memcache
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-	libcurl4-openssl-dev libxslt1-dev libmemcached-dev libz-dev && \
-  docker-php-ext-install xsl memcache memcached
+	libcurl4-openssl-dev libxslt1-dev libmemcached-dev=1.0.18-4 libz-dev php5-memcached php5-memcache && \
+  docker-php-ext-install xsl
 # curl and json already installed?
 RUN a2enmod rewrite
 
@@ -31,12 +31,9 @@ RUN echo "[Pcre]" > /usr/local/etc/php/conf.d/ops-pcre.ini
 RUN echo "pcre.backtrack_limit=100000000" >> /usr/local/etc/php/conf.d/ops-pcre.ini
 RUN echo "pcre.recursion_limit=100000000" >> /usr/local/etc/php/conf.d/ops-pcre.ini
 
-RUN mkdir /var/www/html/logs /var/www/html/cache && \
+RUN rm -rf /var/www/html/logs /var/www/html/cache && \
+    mkdir /var/www/html/logs /var/www/html/cache && \
     chmod 777 /var/www/html/logs /var/www/html/cache && \
     chown -R www-data:www-data /var/www/html
 
 CMD ["apache2-foreground"]
-
-
-
-

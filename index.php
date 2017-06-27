@@ -15,10 +15,10 @@ LinkedDataApiRequest::eliminateDebugParams();
 
 $HttpRequestFactory = new HttpRequestFactory();
 
-if(function_exists('memcache_connect')){
-  $MemCacheObject = new LinkedDataApiCache();
-  $HttpRequestFactory->set_cache($MemCacheObject);
-} 
+//if(function_exists('memcache_connect')){
+//  $MemCacheObject = new LinkedDataApiCache();
+//  $HttpRequestFactory->set_cache($MemCacheObject);
+//}
 $Request = new LinkedDataApiRequest();
 header("Access-Control-Allow-Origin: *");
 
@@ -28,7 +28,7 @@ logDebug("Request URI: ".$Request->getUri());
 if(rtrim($Request->getPath(), '/')==$Request->getInstallSubDir()){
 	header("Location: ".CONFIG_URL, true, 303);
 	exit;
-} 	    
+}
 
 
 if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
@@ -47,13 +47,13 @@ if ("/swagger" ==  $Request->getPathWithoutVersionAndExtension()) {
 }
 
 
-if (  
-    defined("PUELIA_SERVE_FROM_CACHE") 
+if (
+    defined("PUELIA_SERVE_FROM_CACHE")
         AND
     PUELIA_SERVE_FROM_CACHE
-        AND 
-    !$Request->hasNoCacheHeader() 
-        AND 
+        AND
+    !$Request->hasNoCacheHeader()
+        AND
     $cachedResponse = LinkedDataApiCache::hasCachedResponse($Request)
     )
 {
@@ -102,11 +102,11 @@ else
   foreach($files as $file){
       //logDebug("Iterating over files in /api-config: $file");
       if($ConfigGraph = LinkedDataApiCache::hasCachedConfig($file)){
-          logDebug("Found Cached Config {$file}");
+//          logDebug("Found Cached Config {$file}");
           $CompleteConfigGraph->add_graph($ConfigGraph);
           $ConfigGraph->setRequest($Request);
       } else {
-          logDebug("Checking Config file: $file");
+//          logDebug("Checking Config file: $file");
           $rdf = file_get_contents($file);
           $CompleteConfigGraph->add_rdf($rdf);
           $ConfigGraph =  new ConfigGraph(null, $Request, $HttpRequestFactory);
@@ -119,7 +119,7 @@ else
                   }
               }
           }
-          logDebug("Caching $file");
+//          logDebug("Caching $file");
           LinkedDataApiCache::cacheConfig($file, $ConfigGraph);
       }
 
@@ -162,7 +162,7 @@ else
 
 $Response->serve();
 if (defined("PUELIA_SERVE_FROM_CACHE") AND  PUELIA_SERVE_FROM_CACHE
-        AND !$Request->hasNoCacheHeader() 
+        AND !$Request->hasNoCacheHeader()
         AND $Response->cacheable)
 {
 	LinkedDataApiCache::cacheResponse($Request, $Response);

@@ -291,173 +291,181 @@ class SparqlWriter {
 
     }
 
-    private function getGeneratedSelectQuery(){
-        $GroupGraphPattern = $this->getGroupGraphPattern();
-        $order = $this->getOrderBy();
-        $limit = $this->getLimit();
-        $offset = $this->getOffset();
-        $fromClause = $this->getFromClause();
-        $query = <<<_SPARQL_
-SELECT DISTINCT ?item
-{$fromClause}
-WHERE {
-{$GroupGraphPattern}
-{$order['graphConditions']}
-}
-{$order['orderBy']}
-LIMIT {$limit}
-OFFSET {$offset}
-_SPARQL_;
-    return $this->addPrefixesToQuery($query);
-    }
+  /* [2017.06.24] method getGeneratedSelectQuery no longer called, so comment-out.
+   */
+//    private function getGeneratedSelectQuery(){
+//        $GroupGraphPattern = $this->getGroupGraphPattern();
+//        $order = $this->getOrderBy();
+//        $limit = $this->getLimit();
+//        $offset = $this->getOffset();
+//        $fromClause = $this->getFromClause();
+//        $query = <<<_SPARQL_
+//SELECT DISTINCT ?item
+//{$fromClause}
+//WHERE {
+//{$GroupGraphPattern}
+//{$order['graphConditions']}
+//}
+//{$order['orderBy']}
+//LIMIT {$limit}
+//OFFSET {$offset}
+//_SPARQL_;
+//    return $this->addPrefixesToQuery($query);
+//    }
 
-    private function getGroupGraphPattern(){
-        $whereRequestParam              =  $this->_request->getParam('_where');
-        $selectorConfigWhereProperty    = $this->getConfigGraph()->getSelectWhere();
-        $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
-        $selectorConfigWhereProperty = $this->fillQueryTemplate($selectorConfigWhereProperty, $bindings);
-        if(!empty($whereRequestParam)) $whereRequestParam = '{'.$whereRequestParam.'}';
-        if(!empty($selectorConfigWhereProperty)) $selectorConfigWhereProperty = '{'.$selectorConfigWhereProperty.'}';
-        $GGP = "{$whereRequestParam}\n{$selectorConfigWhereProperty}\n ";
-        $filter = implode( '&', $this->getConfigGraph()->getAllFilters());
-        foreach($this->_request->getUnreservedParams() as $k => $v){
-            list($k, $v) = array(urlencode($k), urlencode($v));
-            $filter.="&{$k}={$v}";
-        }
-        logDebug("Filter is: {$filter}");
-        $params = queryStringToParams($filter);
-        $langs = array();
-        foreach($params as $k => $v) {
-            if (strpos($k, 'lang-') === 0) {
-                $langs[substr($k, 5)] = $v;
-                unset($params[$k]);
-            }
-        }
-        $GGP .= $this->paramsToSparql($params, $langs);
+  /* [2017.06.24] method getGeneratedSelectQuery no longer called, so comment-out.
+   */
+//    private function getGroupGraphPattern(){
+//        $whereRequestParam              =  $this->_request->getParam('_where');
+//        $selectorConfigWhereProperty    = $this->getConfigGraph()->getSelectWhere();
+//        $bindings = $this->getConfigGraph()->getAllProcessedVariableBindings();
+//        $selectorConfigWhereProperty = $this->fillQueryTemplate($selectorConfigWhereProperty, $bindings);
+//        if(!empty($whereRequestParam)) $whereRequestParam = '{'.$whereRequestParam.'}';
+//        if(!empty($selectorConfigWhereProperty)) $selectorConfigWhereProperty = '{'.$selectorConfigWhereProperty.'}';
+//        $GGP = "{$whereRequestParam}\n{$selectorConfigWhereProperty}\n ";
+//        $filter = implode( '&', $this->getConfigGraph()->getAllFilters());
+//        foreach($this->_request->getUnreservedParams() as $k => $v){
+//            list($k, $v) = array(urlencode($k), urlencode($v));
+//            $filter.="&{$k}={$v}";
+//        }
+//        logDebug("Filter is: {$filter}");
+//        $params = queryStringToParams($filter);
+//        $langs = array();
+//        foreach($params as $k => $v) {
+//            if (strpos($k, 'lang-') === 0) {
+//                $langs[substr($k, 5)] = $v;
+//                unset($params[$k]);
+//            }
+//        }
+//        $GGP .= $this->paramsToSparql($params, $langs);
+//
+//        $GGP = trim($GGP);
+//        if(empty($GGP)){
+//            $GGP = "\n  ?item ?property ?value .";
+//        }
+//
+//        return $GGP;
+//    }
 
-        $GGP = trim($GGP);
-        if(empty($GGP)){
-            $GGP = "\n  ?item ?property ?value .";
-        }
+  /* [2017.06.24] method getGeneratedSelectQuery no longer called, so comment-out.
+   */
+//    private function paramsToSparql($paramsArray, $langArray=array()){
+//        $sparql = '';
+//        $filters = '';
+//        $namespaces = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
+//        $rdfsLabelQnameOrUri = $this->qnameOrUri(RDFS_LABEL, $namespaces);
+//        $defaultLangs = $this->getDefaultSelectLangs();
+//        foreach($paramsArray as $k => $v){
+//
+//            $prefix = $this->_parameterPropertyMapper->prefixFromParamName($k);
+//            $propertiesList = $this->_parameterPropertyMapper->mapParamNameToProperties($k);
+//            $propertyNames = $this->_parameterPropertyMapper->paramNameToPropertyNames($k);
+//            $counter=0;
+//            $name = $propertyNames[0];
+//            $varName = $name;
+//            $nextVarName = '';
+//            $propUri = $propertiesList[$name];
+//            $propQnameOrUri = $this->qnameOrUri($propUri, $namespaces);
+//            $lastPropUri = array_pop(array_values($propertiesList));
+//            $langs = array_key_exists($k, $langArray) ? array($langArray[$k]) : $defaultLangs;
+//            $processedFilterValues = $this->filterValueToSparqlTerm($v, $langs, $lastPropUri);
+//            $nValues = count($processedFilterValues);
+//
+//            if(count($propertyNames) > 1){
+//                $sparql.= "\n  ?item {$propQnameOrUri} ?{$name} . ";
+//            }
+//
+//            foreach($propertiesList as $name => $propUri){
+//                if(isset($propertyNames[$counter+1]) OR count($propertyNames)==1){ //if this ISN'T the last property or is the only property
+//                    if(count($propertyNames)==1){
+//                        $varName = 'item';
+//                        $nextName = $propertyNames[0];
+//                        $nextVarName = $nextName;
+//                    } else {
+//                        $nextName = $propertyNames[$counter+1];
+//                        $nextVarName = $varName.'_'.$nextName;
+//                    }
+//
+//                    $nextProp = $propertiesList[$nextName];
+//                    $nextPropQnameOrUri = $this->qnameOrUri($nextProp, $namespaces);
+//
+//                    //need to cast $nextVarName to compare it with $processedFilterValue
+//                    $castNextVarName = $this->castOrderByVariable($nextVarName, $nextProp);
+//
+//                    if ( (($counter+2) == count($propertyNames) OR count($propertyNames)==1)){ //if last item or only item
+//                        if (!$prefix) {
+//                            if ($nValues > 1) {
+//                                foreach($processedFilterValues as $position => $processedFilterValue) {
+//                                    if ($position) {
+//                                        $sparql .= "\n  UNION";
+//                                    }
+//                                    $sparql.="\n  { ?{$varName} {$nextPropQnameOrUri} {$processedFilterValue} . }";
+//                                }
+//                            } else {
+//                                $processedFilterValue = $processedFilterValues[0];
+//                                $sparql .= "\n  ?{$varName} {$nextPropQnameOrUri} {$processedFilterValue} . ";
+//                            }
+//                        } else if($prefix=='min') {
+//                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} >= {$processedFilterValues[0]})";
+//                        } else if($prefix=='max') {
+//                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} <= {$processedFilterValues[0]})";
+//                        } else if($prefix == 'minEx') {
+//                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} > {$processedFilterValues[0]})";
+//                        } else if($prefix == 'maxEx') {
+//                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} < {$processedFilterValues[0]})";
+//                        } else if($prefix == 'name') {
+//                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} .\n";
+//                            foreach($processedFilterValues as $position => $processedFilterValue) {
+//                                if ($nValues > 1) {
+//                                    $sparql.="\n  {";
+//                                }
+//                                $sparql.="\n  ?{$nextVarName} {$rdfsLabelQnameOrUri} {$processedFilterValue} . ";
+//                                if ($nValues > 1) {
+//                                    $sparql.="\n  } ";
+//                                    if ($position + 1 < $nValues) {
+//                                        $sparql.="\n UNION ";
+//                                    }
+//                                }
+//                            }
+//                        } else if($prefix == 'exists') {
+//                            if($v=="true"){
+//                                $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} [] . ";
+//                            } else {
+//                                $sparql.="\n  OPTIONAL { \n    ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  } \n  FILTER (!bound(?{$nextVarName})) ";
+//                            }
+//                        }
+//                    } else {
+//                        $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . ";
+//                    }
+//                    $varName = $nextVarName;
+//                }
+//                $counter++;
+//            }
+//
+//
+//        }
+//        return  $sparql;
+//    }
 
-        return $GGP;
-    }
-
-    private function paramsToSparql($paramsArray, $langArray=array()){
-        $sparql = '';
-        $filters = '';
-        $namespaces = $this->getConfigGraph()->getPrefixesFromLoadedTurtle();
-        $rdfsLabelQnameOrUri = $this->qnameOrUri(RDFS_LABEL, $namespaces);
-        $defaultLangs = $this->getDefaultSelectLangs();
-        foreach($paramsArray as $k => $v){
-
-            $prefix = $this->_parameterPropertyMapper->prefixFromParamName($k);
-            $propertiesList = $this->_parameterPropertyMapper->mapParamNameToProperties($k);
-            $propertyNames = $this->_parameterPropertyMapper->paramNameToPropertyNames($k);
-            $counter=0;
-            $name = $propertyNames[0];
-            $varName = $name;
-            $nextVarName = '';
-            $propUri = $propertiesList[$name];
-            $propQnameOrUri = $this->qnameOrUri($propUri, $namespaces);
-            $lastPropUri = array_pop(array_values($propertiesList));
-            $langs = array_key_exists($k, $langArray) ? array($langArray[$k]) : $defaultLangs;
-            $processedFilterValues = $this->filterValueToSparqlTerm($v, $langs, $lastPropUri);
-            $nValues = count($processedFilterValues);
-
-            if(count($propertyNames) > 1){
-                $sparql.= "\n  ?item {$propQnameOrUri} ?{$name} . ";
-            }
-
-            foreach($propertiesList as $name => $propUri){
-                if(isset($propertyNames[$counter+1]) OR count($propertyNames)==1){ //if this ISN'T the last property or is the only property
-                    if(count($propertyNames)==1){
-                        $varName = 'item';
-                        $nextName = $propertyNames[0];
-                        $nextVarName = $nextName;
-                    } else {
-                        $nextName = $propertyNames[$counter+1];
-                        $nextVarName = $varName.'_'.$nextName;
-                    }
-
-                    $nextProp = $propertiesList[$nextName];
-                    $nextPropQnameOrUri = $this->qnameOrUri($nextProp, $namespaces);
-
-                    //need to cast $nextVarName to compare it with $processedFilterValue
-                    $castNextVarName = $this->castOrderByVariable($nextVarName, $nextProp);
-
-                    if ( (($counter+2) == count($propertyNames) OR count($propertyNames)==1)){ //if last item or only item
-                        if (!$prefix) {
-                            if ($nValues > 1) {
-                                foreach($processedFilterValues as $position => $processedFilterValue) {
-                                    if ($position) {
-                                        $sparql .= "\n  UNION";
-                                    }
-                                    $sparql.="\n  { ?{$varName} {$nextPropQnameOrUri} {$processedFilterValue} . }";
-                                }
-                            } else {
-                                $processedFilterValue = $processedFilterValues[0];
-                                $sparql .= "\n  ?{$varName} {$nextPropQnameOrUri} {$processedFilterValue} . ";
-                            }
-                        } else if($prefix=='min') {
-                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} >= {$processedFilterValues[0]})";
-                        } else if($prefix=='max') {
-                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} <= {$processedFilterValues[0]})";
-                        } else if($prefix == 'minEx') {
-                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} > {$processedFilterValues[0]})";
-                        } else if($prefix == 'maxEx') {
-                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  FILTER (?{$nextVarName} < {$processedFilterValues[0]})";
-                        } else if($prefix == 'name') {
-                            $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} .\n";
-                            foreach($processedFilterValues as $position => $processedFilterValue) {
-                                if ($nValues > 1) {
-                                    $sparql.="\n  {";
-                                }
-                                $sparql.="\n  ?{$nextVarName} {$rdfsLabelQnameOrUri} {$processedFilterValue} . ";
-                                if ($nValues > 1) {
-                                    $sparql.="\n  } ";
-                                    if ($position + 1 < $nValues) {
-                                        $sparql.="\n UNION ";
-                                    }
-                                }
-                            }
-                        } else if($prefix == 'exists') {
-                            if($v=="true"){
-                                $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} [] . ";
-                            } else {
-                                $sparql.="\n  OPTIONAL { \n    ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . \n  } \n  FILTER (!bound(?{$nextVarName})) ";
-                            }
-                        }
-                    } else {
-                        $sparql.="\n  ?{$varName} {$nextPropQnameOrUri} ?{$nextVarName} . ";
-                    }
-                    $varName = $nextVarName;
-                }
-                $counter++;
-            }
-
-
-        }
-        return  $sparql;
-    }
-
-    private function castOrderByVariable($varName, $propertyUri){
-        $xsdDatatypes = array(
-            XSD."integer"  ,
-            XSD."int"  ,
-            XSD."decimal"  ,
-            XSD."float"    ,
-            XSD."double"   ,
-            XSD."string"   ,
-            XSD."boolean"  ,
-            XSD."dateTime" ,
-            );
-        if($propertyRange = $this->getConfigGraph()->getVocabPropertyRange($propertyUri) AND in_array($propertyRange, $xsdDatatypes)){
-            return "<{$propertyRange}>(?{$varName})";
-        } else {
-            return "?{$varName}";
-        }
-    }
+  /* [2017.06.24] method getGeneratedSelectQuery no longer called, so comment-out.
+   */
+//    private function castOrderByVariable($varName, $propertyUri){
+//        $xsdDatatypes = array(
+//            XSD."integer"  ,
+//            XSD."int"  ,
+//            XSD."decimal"  ,
+//            XSD."float"    ,
+//            XSD."double"   ,
+//            XSD."string"   ,
+//            XSD."boolean"  ,
+//            XSD."dateTime" ,
+//            );
+//        if($propertyRange = $this->getConfigGraph()->getVocabPropertyRange($propertyUri) AND in_array($propertyRange, $xsdDatatypes)){
+//            return "<{$propertyRange}>(?{$varName})";
+//        } else {
+//            return "?{$varName}";
+//        }
+//    }
 
     function getFilterGraph() {
     	$params = $this->_request->getParams();
@@ -618,6 +626,8 @@ _SPARQL_;
 
     function getViewQueryForBatchUriList($itemList, $viewerUri, $uriList=null) {
         $ims = $this->createOpsIms();
+        // [2017.06.24] $fromClause added by RKerber, not defined as in other methods where referenced.
+        $fromClause = $this->getFromClause();
         if(($template = $this->_request->getParam('_template') OR $template = $this->_config->getViewerTemplate($viewerUri)) AND !empty($template)
                 AND $whereGraph = $this->_config->getViewerWhere($viewerUri) AND !empty($whereGraph)){
             $ops_uri = $this->_request->getParam('uri');
@@ -647,7 +657,7 @@ _SPARQL_;
                 //logDebug("View query before filter: ".$query);
             }
 
-            logDebug("View query after filter: ".$query);
+            logDebug("View query after filter:\n".$query);
             if (!empty($uriList)){//expand another variable besides ?item
                 if ($this->_config->getEndpointType() == API.'IntermediateExpansionEndpoint' AND strcasecmp($limit,"all")!==0) {
                     $expandedQuery = $this->addItemsToExpandedQuery($query, $itemList);
