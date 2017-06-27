@@ -425,7 +425,12 @@ class ConfigGraph extends PueliaGraph {
         $paramBindings = $this->getRequestVariableBindings();
 
         //fill in api:externalRequestTemplate
-        $externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), API.'externalRequestTemplate');
+        // Get OPS Search URI from ENV if possible
+        if($this->apiUri == "http://www.openphacts.org/api#opsSearch" && OPS_SEARCH_ENDPOINT) {
+        	$externalRequestTemplate = OPS_SEARCH_ENDPOINT."/search?query={query}";
+        } else {
+        	$externalRequestTemplate = $this->get_first_literal($this->getEndpointUri(), API.'externalRequestTemplate');
+        }
         $externalRequest = $this->bindVariablesInValue($externalRequestTemplate, $paramBindings, RDFS.'Resource');
 
         //add params not appearing in the uri template

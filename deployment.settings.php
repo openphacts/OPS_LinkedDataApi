@@ -28,4 +28,11 @@ if ($sparqlEndpointUri) {
 } else {
 	define('OPS_SPARQL_ENDPOINT', null);
 }
+// OPS search endpoint
+$opsSearchUri = getenv('OPS_SEARCH_ENDPOINT', true) ?: getenv('OPS_SEARCH_ENDPOINT');
+if ($opsSearchUri) {
+	define('OPS_SEARCH_ENDPOINT', $opsSearchUri);
+} else {
+	define('OPS_SEARCH_ENDPOINT', false);
+}
 ?>

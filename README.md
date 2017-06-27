@@ -16,6 +16,8 @@ The sparql endpoint is set from environment variable `OPS_SPARQL_ENDPOINT` eg `e
 
 The IMS API endpoint is set from environment variable `IMS_ENDPOINT` eg `export IMS_ENDPOINT=http://ims-endpoint:8000` and read in `deployment.settings.php`.
 
+The OPS Search API endpoint is set from environment variable `OPS_SEARCH_ENDPOINT` eg `export OPS_SEARCH_ENDPOINT=http://somewhere.com:8839` and read in `deployment.settings.php`.
+
 You can also run on localhost without Apache using php -S localhost:3000.
 
 ## Docker image
@@ -59,6 +61,7 @@ To run:
     docker run --name ops-linkeddataapi -p 8081:80 \
       --env CRS=https://ops.rsc.org/api/v1/ \
       --env CONCEPTWIKI=http://www.conceptwiki.org/web-ws/concept \
+      --env OPS_SEARCH_ENDPOINT=http://localhost:8839 \
       --link memcached:memcached \
       --link identitymappingservice:ims \
       --link virtuoso:sparql \
