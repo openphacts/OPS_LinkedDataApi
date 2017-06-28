@@ -74,7 +74,10 @@ SELECT DISTINCT ?root_node ?g_short WHERE {
 	}
 	GRAPH ?g {
 		[] rdfs:subClassOf ?root_node .
-		MINUS {?root_node rdfs:subClassOf []}
+        MINUS {
+           ?root_node rdfs:subClassOf ?super .
+           FILTER( ?super != ?root_node && ?super != <http://purl.uniprot.org/core/Enzyme> )
+        }
 		FILTER ( isURI(?root_node) )
 		BIND (IF(?g = <http://purl.uniprot.org/enzyme/direct>, IRI(<http://purl.uniprot.org/enzyme>) ,
 			IF(?g = <http://www.ebi.ac.uk/chembl/target/direct>, IRI(<http://www.ebi.ac.uk/chembl/target>) ,
