@@ -44,8 +44,10 @@
 SELECT DISTINCT ?item ?qudt_label COUNT(?activity) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl>  {
 	?activity chembl:hasQUDT ?item .
-        ?item rdfs:label ?qudt_label
 	}
+GRAPH <http://www.ebi.ac.uk/chembl/patch>  {
+    ?item rdfs:label ?qudt_label
+    }
 } GROUP BY ?item ?qudt_label ORDER BY DESC( ?count )
 }" ;
 api:orderBy ""] ;
@@ -76,7 +78,7 @@ SELECT DISTINCT ?item COUNT(?activity) AS ?count WHERE {
    ?activity chembl:hasQUDT ?item  .
   } } GROUP BY ?item
 }
-GRAPH <http://www.ebi.ac.uk/chembl> {
+GRAPH <http://www.ebi.ac.uk/chembl/patch> {
 	?item rdfs:label ?qudt_label
 }
 " .
