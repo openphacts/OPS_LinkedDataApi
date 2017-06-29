@@ -70,7 +70,7 @@ SELECT DISTINCT ?item ?standard_type COUNT(?activity) AS ?count WHERE {
 GRAPH <http://www.ebi.ac.uk/chembl>  {
 	?activity chembl:standardType ?standard_type  .
 }
-GRAPH <http://www.ebi.ac.uk/chembl> {
+GRAPH <http://www.ebi.ac.uk/chembl/patch> {
         ?item rdfs:label ?standard_type
 }
 } GROUP BY ?standard_type ?item ORDER BY DESC(?count)
@@ -128,7 +128,7 @@ SELECT DISTINCT ?type_label COUNT(?activity) AS ?count WHERE {
    ?activity chembl:standardType ?type_label  .
   } } GROUP BY ?type_label
 }
-GRAPH <http://www.ebi.ac.uk/chembl> {
+GRAPH <http://www.ebi.ac.uk/chembl/patch> {
 	?item rdfs:label ?type_label
 }
 " .
