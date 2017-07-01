@@ -56,7 +56,7 @@ _:act_type api:name "act_type" ;
 	rdfs:label ?act_label .
 ?unit rdfs:label ?unit_label . " ;
 	api:where
-"GRAPH <http://www.ebi.ac.uk/chembl> {
+"GRAPH <http://www.ebi.ac.uk/chembl/patch> {
 	?item rdfs:label ?act_label ;
 		chembl:hasQUDT ?unit .
 	?unit rdfs:label ?unit_label .
