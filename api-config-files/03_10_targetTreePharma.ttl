@@ -119,50 +119,6 @@
 		BIND (IF (BOUND(?conf_score_tmp) , ?conf_score_tmp, 0) AS ?conf_score)
 	}
 } }
-GRAPH <http://www.ebi.ac.uk/chembl> {
-	{ ?assay_uri chembl:organismName ?assay_organism }
-	UNION { ?assay_uri dcterms:description ?assay_description }
-	UNION { ?assay_uri chembl:assayTestType ?assay_type }
-	UNION { ?assay_uri chembl:targetConfDesc ?conf_desc }
-	UNION { ?assay_uri chembl:targetRelType ?rel_type ;
-		chembl:targetRelDesc ?rel_desc }
-	UNION { ?chembl_target dcterms:title ?target_name }
-	UNION { ?chembl_target chembl:organismName ?target_organism }
-	UNION { ?chembl_target chembl:hasTargetComponent ?protein .
-		OPTIONAL {
-			GRAPH <http://www.conceptwiki.org> {
-				?cw_target skos:exactMatch ?protein ;
-					skos:prefLabel ?protein_name
-			}
-		}
-	}
-	UNION { ?item chembl:publishedType ?published_type }
-	UNION { ?item chembl:publishedRelation ?published_relation }
-	UNION { ?item chembl:publishedValue ?published_value }
-	UNION { ?item chembl:publishedUnits ?published_unit }
-	UNION { ?item chembl:standardType ?activity_type }
-	UNION { ?item chembl:standardRelation ?activity_relation }
-	UNION { ?item chembl:standardValue ?std_value .
-		BIND (xsd:decimal(?std_value) as ?activity_value)
-	}
-	UNION { ?item chembl:standardUnits ?activity_unit }
-	UNION { ?item chembl:hasQUDT ?qudt_uri }
-	UNION { ?item chembl:pChembl ?pChembl }
-	UNION { ?item chembl:activityComment ?act_comment }
-	UNION { ?item chembl:hasDocument ?document .
-		{ ?document owl:sameAs ?doi }
-		UNION { ?document bibo:pmid ?pmid }
-	}
-	UNION { ?item chembl:dataValidityComment ?comment}
-
-	UNION {
-		GRAPH <http://ops.rsc.org> {
-			{ ?ocrs_compound cheminf:CHEMINF_000396 ?inchi }
-			UNION {?ocrs_compound cheminf:CHEMINF_000399 ?inchi_key}
-			UNION {?ocrs_compound cheminf:CHEMINF_000018 ?smiles }
-		}
-	}
-}
 " ;
 		api:expansionVariable "chembl_compound" ;
 ] ;
