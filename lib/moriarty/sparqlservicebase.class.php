@@ -135,15 +135,19 @@ class SparqlServiceBase {
     $get_uri = $this->get_query_uri($query, $output);
     
     if (strlen($get_uri) <= $this->get_max_uri_length()) {
+        logDebug("in SparqlServiceBase.query() using http GET");
       $request = $this->request_factory->make( 'GET', $get_uri, $this->credentials );
       $request->set_accept($accept);
     }
     else {
+        logDebug("in SparqlServiceBase.query() using http POST");
       $request = $this->request_factory->make( 'POST', $this->uri, $this->credentials );
       $request->set_body( $this->get_query_params($query, $output) );
       $request->set_accept($accept);
       $request->set_content_type(MIME_FORMENCODED);
     }
+
+    logExecuteQuery( $query );
 
    return $request->execute();
   }

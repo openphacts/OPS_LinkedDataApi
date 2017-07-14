@@ -137,13 +137,20 @@ function logSparqlError($contextMessage, $response, $query, $endpoint){
   $logger->error($message);
 }
 
+function logExecuteQuery($query){
+//    $uri = $request->getUri();
+    $message = "pre-execute Query:\n<<<\n{$query}\n>>>";
+    $logger = Logger::getLogger('Puelia');
+    $logger->info($message);
+}
+
 function logSelectQuery($request, $query){
     $uri = $request->getUri();
     $message = "SELECT Query:\n  LDA cmd: {$uri}\n<<<\n{$query}\n>>>";
     $logger = Logger::getLogger('Puelia');
     $logger->info($message);
-
 }
+
 function logViewQuery($request, $query){
     $uri = $request->getUri();
     $message = "VIEW Query:\n  LDA cmd: {$uri}\n<<<\n{$query}\n>>>";
