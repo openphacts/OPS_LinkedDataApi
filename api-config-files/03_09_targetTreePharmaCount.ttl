@@ -243,7 +243,12 @@ SELECT ( COUNT ( DISTINCT ?item ) AS ?count ) WHERE {
 		?class rdfs:subClassOf ?node_uri
 	}
         GRAPH <http://www.ebi.ac.uk/chembl> {
-                { ?chembl_target chembl:hasTargetComponent/chembl:targetCmptXref ?class  } UNION
+                {
+                   ?chembl_target chembl:hasTargetComponent ?tc .
+                   GRAPH <http://www.ebi.ac.uk/chembl/patch> {
+                       ?tc chembl:targetCmptXref ?class .}
+                }
+                UNION
                 { ?chembl_target chembl:hasProteinClassification ?class} UNION
                 { ?chembl_target chembl:hasTargetComponent/skos:exactMatch ?uniprot
                 GRAPH <http://www.openphacts.org/goa>{
