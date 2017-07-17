@@ -8445,7 +8445,7 @@
               "picomolar",
               "second_time"
             ],
-            "description": "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/pages?activity_type=IC50",
+            "description": "The unit in which {activity_value} is given. See /pharmacology/filters/units/pages for allowed values. For e.g. IC50: /pharmacology/filters/units/pages?activity_type=IC50",
             "in": "query",
             "type": "string"
           },
