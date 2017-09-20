@@ -1,9 +1,7 @@
 {
   "swagger": "2.0",
-  "host": "ops2.few.vu.nl",
-  "basePath": "/2.1",
   "schemes": [
-    "https"
+    "http"
   ],
   "info": {
     "title": "Open PHACTS API development version",
@@ -13,7 +11,7 @@
     "/search": {
       "get": {
         "summary": "Free Text to 'thing'",
-        "description": "A set of URIs associated with the input free text.<br><hr><br>Response template: <br><br><hr><br>  ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit </span>.<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>.<br> ",
+        "description": "A set of URIs associated with the input free text.<br><hr><br>Response example: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> _:searchResult foaf:primaryTopic ?primaryTopic </span> ;&nbsp;&nbsp;&nbsp;&nbsp;<br/><span style=\"BACKGROUND-COLOR: #66FFCC\"> ops:type ?searchType ;</span>&nbsp;&nbsp;&nbsp;&nbsp; <br/><span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?result .</span> <br/><span style=\"BACKGROUND-COLOR: #66FFCC\"> ?result skos:prefLabel ?label </span>; </br><span style=\"BACKGROUND-COLOR: #FFFFCC\">  :url ?url </span> .",
         "tags": [
           "Search"
         ],
@@ -23,6 +21,7 @@
             "description": "Your access application id",
             "type": "string",
             "in": "query",
+            "required": true,
             "x-data-threescale-name": "app_ids"
           },
           {
@@ -30,6 +29,7 @@
             "description": "Your access application key",
             "type": "string",
             "in": "query",
+            "required": true,
             "x-data-threescale-name": "app_keys"
           },
           {
@@ -49,12 +49,12 @@
           },
           {
             "name": "type",
-            "description": "The type of thing you want to search for; optional. Limited to one value eg compound. Possible values are compound, target, gene, pathway.",
+            "description": "The type of thing you want to search for; optional. Limited to one value eg compound. Possible values are compound, target, gene, disease.",
             "enum": [
               "compound",
               "target",
               "gene",
-              "pathway"
+              "disease"
             ],
             "required": false,
             "in": "query",
@@ -62,7 +62,7 @@
           },
           {
             "name": "branch",
-            "description": "The search results will be filtered by this source authority. Can be multiple values in an array. Possible values: chembl, chebi, uniprot, wikipathways, go, ocrs, drugbank. If no values are procided then all 'branches' will be searched",
+            "description": "The search results will be filtered by this source authority. Possible values: chembl, chebi, uniprot, wikipathways, go, ocrs, drugbank. If no values are provided then all 'branches' will be searched",
             "enum": [
               "chembl",
               "chebi",
@@ -70,7 +70,8 @@
               "wikipathways",
               "go",
               "ocrs",
-              "drugbank"
+              "drugbank",
+              "disgenet"
             ],
             "required": false,
             "in": "query",
@@ -401,15 +402,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -1383,15 +1375,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -2114,15 +2097,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -2270,7 +2244,7 @@
     "/structure": {
       "get": {
         "summary": "Chemical Structure to URI",
-        "description": "Converts a user specified InChI, InChIKey, or SMILES string into a OPS CRS URI. Driven by RSC.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #FFFFCC\"> cheminf:CHEMINF_000396 ?inchi </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #FFFFCC\"> cheminf:CHEMINF_000399 ?inchi_key </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #FFFFCC\"> cheminf:CHEMINF_000018 ?smiles </span> .<br> ",
+        "description": "Converts a user specified InChI, InChIKey, <b>or</b> SMILES string into a OPS CRS URI.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #FFFFCC\"> cheminf:CHEMINF_000396 ?inchi </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #FFFFCC\"> cheminf:CHEMINF_000399 ?inchi_key </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #FFFFCC\"> cheminf:CHEMINF_000018 ?smiles </span> .<br> ",
         "tags": [
           "Chemical structure search"
         ],
@@ -2362,7 +2336,7 @@
     "/structure/similarity": {
       "get": {
         "summary": "Chemical Structure Search: Similarity",
-        "description": "A list of ChemSpider URIs for compounds similar to the input molecule will be returned. Tanimoto, Tversky and Euclidian similarities are available along with a parameter to specify the similarity threshold. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Threshold ?searchThreshold </span> ;<br> ops_api_search:Alph <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?searchAlpha </span> ;<br> ops_api_search:Bet <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?searchBeta </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> ops_api_common:HasSpectr <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span> .<br> ?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .<br> ",
+        "description": "A list of ChemSpider URIs for compounds similar to the input molecule will be returned. Tanimoto, Tversky and Euclidian similarities are available along with a parameter to specify the similarity threshold.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:Threshold ?searchThreshold </span> ;<br> ops_api_search:Alph <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?searchAlpha </span> ;<br> ops_api_search:Bet <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?searchBeta </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:SimilarityType ?searchSimilarityType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> ops_api_common:HasSpectr <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span> .<br> ?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .<br> ",
         "tags": [
           "Chemical structure search"
         ],
@@ -2494,7 +2468,7 @@
     "/structure/substructure": {
       "get": {
         "summary": "Chemical Structure Search: Substructure",
-        "description": "A list of ChemSpider URLs for compounds containing the specified structure will be returned. Specifying the parameter “searchOptions.MolType” allows either SMILES or SMARTS to be given as input. Driven by ChemSpider.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MolType ?searchMolType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchTautomers ?searchMatchTautomers </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> ops_api_common:HasSpectr <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span> .<br> ?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .<br> ",
+        "description": "A list of ChemSpider URLs for compounds containing the specified structure will be returned. Specifying the parameter “searchOptions.MolType” allows either SMILES or SMARTS to be given as input.<br><hr><br>Response template: <br><br><hr><br>  &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> foaf:primaryTopic ?primaryTopic </span> .<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ?primaryTopic foaf:isPrimaryTopicOf </span> .<br> ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api_search:Molecule ?moleculeSmiles </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MolType ?searchMolType </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:result ?result </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_search:MatchTautomers ?searchMatchTautomers </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Complexity ?complexity </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:Isotopic ?isotopic </span> ;<br> ops_api_common:HasSpectr <span style=\"BACKGROUND-COLOR: #FFFFCC\"> a ?hasSpectra </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_common:HasPatents ?hasPatents </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Start ?start </span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api_result:Count ?count </span> .<br> ?result <span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:relevance ?relevance </span> .<br> ",
         "tags": [
           "Chemical structure search"
         ],
@@ -3017,15 +2991,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -4040,15 +4005,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -4769,15 +4725,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -5107,15 +5054,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -5719,15 +5657,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -5944,15 +5873,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -6169,15 +6089,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -6432,15 +6343,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -6544,15 +6446,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -6741,15 +6634,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -6950,15 +6834,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -7189,15 +7064,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -7416,15 +7282,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -8019,15 +7876,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -8294,15 +8142,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -8445,7 +8284,7 @@
               "picomolar",
               "second_time"
             ],
-            "description": "The unit in which {activity_value} is given. See /pharmacology/filters/units/pages for allowed values. For e.g. IC50: /pharmacology/filters/units/pages?activity_type=IC50",
+            "description": "The unit in which {activity_value} is given. See /pharmacology/filters/units for allowed values. For e.g. IC50: /pharmacology/filters/units/pages?activity_type=IC50",
             "in": "query",
             "type": "string"
           },
@@ -8563,15 +8402,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -8758,15 +8588,6 @@
           {
             "name": "_pageSize",
             "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "type": "integer",
-            "in": "query"
-          },
-          {
-            "name": "_pageSize",
-            "description": "The desired page size. Set to all to retrieve all results in a single page. Default: 10.",
-            "enum": [
-              "all"
-            ],
             "type": "string",
             "required": false,
             "in": "query"
@@ -9031,312 +8852,6 @@
             "type": "string",
             "in": "query",
             "x-data-threescale-name": "app_keys"
-          },
-          {
-            "name": "_format",
-            "description": "The desired result format.",
-            "enum": [
-              "json",
-              "tsv",
-              "ttl",
-              "xml",
-              "rdf",
-              "rdfjson",
-              "html"
-            ],
-            "type": "string",
-            "required": false,
-            "in": "query"
-          },
-          {
-            "name": "_callback",
-            "description": "For JSONP",
-            "type": "string",
-            "in": "query"
-          },
-          {
-            "name": "_metadata",
-            "description": "Additional metadata to be included with response.",
-            "enum": [
-              "execution",
-              "site",
-              "formats",
-              "views",
-              "all"
-            ],
-            "type": "string",
-            "required": false,
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/search/freetext": {
-      "get": {
-        "summary": "Free Text to Concept",
-        "description": "Returns a list of ConceptWiki URIs for a user specified free text search term (e.g. water, aspirin etc). Driven by ConceptWiki.<br><hr><br>Response template: <br><br><hr><br>  ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType </span>;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit </span>.<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>.<br> ",
-        "tags": [
-          "Concept Wiki services"
-        ],
-        "parameters": [
-          {
-            "name": "app_id",
-            "description": "Your access application id",
-            "required": true,
-            "type": "string",
-            "in": "query",
-            "x-data-threescale-name": "app_ids"
-          },
-          {
-            "name": "app_key",
-            "description": "Your access application key",
-            "required": true,
-            "type": "string",
-            "in": "query",
-            "x-data-threescale-name": "app_keys"
-          },
-          {
-            "name": "q",
-            "description": "Query; required. Mininum length is 3 characters.",
-            "default": "aspirin",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "description": "Limits the number of results; optional. Minimum value is 1, default value is 10.",
-            "minimum": 1,
-            "in": "query",
-            "type": "integer"
-          },
-          {
-            "name": "branch",
-            "description": "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways",
-            "required": false,
-            "enum": [
-              "1",
-              "2",
-              "3",
-              "4",
-              "5",
-              "6",
-              "7"
-            ],
-            "in": "query",
-            "type": "integer"
-          },
-          {
-            "name": "_format",
-            "description": "The desired result format.",
-            "enum": [
-              "json",
-              "tsv",
-              "ttl",
-              "xml",
-              "rdf",
-              "rdfjson",
-              "html"
-            ],
-            "type": "string",
-            "required": false,
-            "in": "query"
-          },
-          {
-            "name": "_callback",
-            "description": "For JSONP",
-            "type": "string",
-            "in": "query"
-          },
-          {
-            "name": "_metadata",
-            "description": "Additional metadata to be included with response.",
-            "enum": [
-              "execution",
-              "site",
-              "formats",
-              "views",
-              "all"
-            ],
-            "type": "string",
-            "required": false,
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/search/byTag": {
-      "get": {
-        "summary": "Free Text to Concept for Semantic Tag",
-        "description": "Returns a list of ConceptWiki URIs for a user specified free text search term. The results are limited by a user specified UUID for an input tag that specifies a semantic type. Driven by ConceptWiki.<br><hr><br>Response template: <br><br><hr><br>  ?primaryTopic <span style=\"BACKGROUND-COLOR: #66FFCC\"> rdf:type ?searchType</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:searchTerm ?searchTerm</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:tagUUID ?inputTagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:result ?uuidURL</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> ops_api:limit ?resultsLimit</span> .<br> ?uuidURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> ops_api:match ?match</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #A9A9F5\"> ops_api:semanticTag ?tagBNode</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel</span> ;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode</span> .<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel</span> .<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url</span> ;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType</span> .<br> ",
-        "tags": [
-          "Concept Wiki services"
-        ],
-        "parameters": [
-          {
-            "name": "app_id",
-            "description": "Your access application id",
-            "required": true,
-            "type": "string",
-            "in": "query",
-            "x-data-threescale-name": "app_ids"
-          },
-          {
-            "name": "app_key",
-            "description": "Your access application key",
-            "required": true,
-            "type": "string",
-            "in": "query",
-            "x-data-threescale-name": "app_keys"
-          },
-          {
-            "name": "q",
-            "description": "Query; required. Minimum length is 3 characters.",
-            "default": "aspirin",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "limit",
-            "description": "Limits the number of results; optional. Minimum value is 1, default value is 10.",
-            "minimum": 1,
-            "in": "query",
-            "type": "integer"
-          },
-          {
-            "name": "uuid",
-            "description": "UUID of the tag concept; required. Specifies the 'semantic type' required for the search results. E.g. 07a84994-e464-4bbf-812a-a4b96fa3d197 for 'Chemical Viewed Structurally', eda73945-b112-407e-811a-88448966834f for 'Disease or Syndrome', or eeaec894-d856-4106-9fa1-662b1dc6c6f1 for 'Amino Acid, Peptide, or Protein'",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "branch",
-            "description": "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways",
-            "required": false,
-            "enum": [
-              "1",
-              "2",
-              "3",
-              "4",
-              "5",
-              "6",
-              "7"
-            ],
-            "in": "query",
-            "type": "integer"
-          },
-          {
-            "name": "_format",
-            "description": "The desired result format.",
-            "enum": [
-              "json",
-              "tsv",
-              "ttl",
-              "xml",
-              "rdf",
-              "rdfjson",
-              "html"
-            ],
-            "type": "string",
-            "required": false,
-            "in": "query"
-          },
-          {
-            "name": "_callback",
-            "description": "For JSONP",
-            "type": "string",
-            "in": "query"
-          },
-          {
-            "name": "_metadata",
-            "description": "Additional metadata to be included with response.",
-            "enum": [
-              "execution",
-              "site",
-              "formats",
-              "views",
-              "all"
-            ],
-            "type": "string",
-            "required": false,
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/getConceptDescription": {
-      "get": {
-        "summary": "Concept Description",
-        "description": "Returns the description of a concept stored in the ConceptWiki based on a UUID. Driven by ConceptWiki.<br><hr><br>Response template: <br><br><hr><br>  ?conceptURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?conceptPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?conceptAltLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> ops_api:semanticTag ?tagBNode </span>;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:exactMatch ?urlBNode </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> skos:definition ?definitionText </span>.<br> ?tagBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:uuid tagUUID </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?tagPrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFCC99\"> skos:altLabel ?tagAltLabel </span>;<br> ?urlBNode <span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:url ?url </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #66FFCC\"> cw:matchType ?matchType </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> void:inDataset ?sourceURL </span>;<br> ?sourceURL <span style=\"BACKGROUND-COLOR: #66FFCC\"> skos:prefLabel ?sourcePrefLabel </span>;<br> &nbsp;&nbsp;&nbsp;&nbsp;<span style=\"BACKGROUND-COLOR: #FFFFCC\"> cw:deleted ?deletedFromWikiMarker </span>.<br> ",
-        "tags": [
-          "Concept Wiki services"
-        ],
-        "parameters": [
-          {
-            "name": "app_id",
-            "description": "Your access application id",
-            "required": true,
-            "type": "string",
-            "in": "query",
-            "x-data-threescale-name": "app_ids"
-          },
-          {
-            "name": "app_key",
-            "description": "Your access application key",
-            "required": true,
-            "type": "string",
-            "in": "query",
-            "x-data-threescale-name": "app_keys"
-          },
-          {
-            "name": "uuid",
-            "description": "UUID of the concept; required.",
-            "default": "8e3a87ae-345d-4c25-bd7a-5b3221c6e3fa",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "branch",
-            "description": "The search results will be filtered by this source authority; optional. Possible values: 1 = Community, 2 = UMLS, 3 = SwissProt, 4 = ChemSpider, 5 = Computer Inferred, 6 = Pathway Ontology, 7 = WikiPathways",
-            "required": false,
-            "enum": [
-              "1",
-              "2",
-              "3",
-              "4",
-              "5",
-              "6",
-              "7"
-            ],
-            "in": "query",
-            "type": "integer"
           },
           {
             "name": "_format",
