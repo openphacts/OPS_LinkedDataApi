@@ -46,7 +46,7 @@ The simplest option to start up the Open PHACTS platform is usually the
 
 Additionally these environment variables define the external services for
 [ConceptWiki](http://conceptwiki.org/) and
-[Chemical Resolution Service](https://ops.rsc.org/) (these are not
+[Chemical Resolution Service](https://chemistry.openphacts.org/) (these are not
 currently available as Docker containers):
 
  * `CRS` (default: https://crs/api/v1/)
@@ -61,7 +61,7 @@ The default values for `CRS` and `CONCEPTWIKI` access the aliases `crs` and `con
 if you don't have your own installation of these services, you might use the
 public services, by adding the following to `docker run`:
 
-    --env CRS=https://ops.rsc.org/api/v1/ \
+    --env CRS=https://chemistry.openphacts.org/api/v1/ \
     --env CONCEPTWIKI=http://www.conceptwiki.org/web-ws/concept
 
 You can also add settings for memcache:
@@ -95,7 +95,7 @@ To run (note that this example uses the deprecated docker `--link` command):
 
     docker run --name ops-linkeddataapi -p 8081:80 \
       --network=ops-ldapi-network \
-      --env CRS=https://ops.rsc.org/api/v1/ \
+      --env CRS=https://chemistry.openphacts.org/api/v1/ \
       --env CONCEPTWIKI=http://www.conceptwiki.org/web-ws/concept \
       --env OPS_SEARCH_ENDPOINT=http://localhost:8839 \
       --env USE_MEMCACHE=TRUE \
@@ -109,7 +109,7 @@ The above will expose the Open PHACTS Linked Data API on
 [http://localhost:8081](http://localhost:8081) (or equivalent)
 and link to existing Docker containers `memcached`, `identitymappingservice`
 and `virtuoso` (which must already be running), and the
-public APIs for [CRS](https://ops.rsc.org/) and
+public APIs for [CRS](https://chemistry.openphacts.org/) and
 [ConceptWiki](http://www.conceptwiki.org/). It will also tell the LDAPI to use the memcache container called `my-memcache` on the docker network `ops-ldapi-network`.
 
 If using a docker network then there is no need to `link` the containers but you must ensure that they are on the same docker network. You can either attach the container at run time (as in the example above) or add it afterwards eg. `docker network connect ops-ldapi-network ops-linkeddataapi`.
