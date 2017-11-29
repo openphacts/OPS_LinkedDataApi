@@ -5,7 +5,7 @@ define('SEARCH_RESULTS_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResu
 define('SEARCH_RESULTS_WITH_RELEVANCE_REQUEST_TEMPLATE', CHEMSPIDER_ENDPOINT.'?op=GetSearchResultWithRelevance&rid=');
 
 define('OPS_PREFIX', 'http://www.openphacts.org/api/');
-define('CHEMSPIDER_PREFIX', 'http://ops.rsc.org/OPS');
+define('CHEMSPIDER_PREFIX', 'http://chemistry.openphacts.org/OPS');
 
 define('EXACT_STRUCTURE_SEARCH', 0);
 define('SUBSTRUCTURE_SEARCH', 1);
@@ -84,7 +84,7 @@ function getDecodedFinalResults($requestId, $searchType, $unreservedParameters){
     else{
         $finalRequest=SEARCH_RESULTS_REQUEST_TEMPLATE.$requestId;
     }
-    
+
     $ch = curl_init($finalRequest);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $finalResponse = curl_exec($ch);

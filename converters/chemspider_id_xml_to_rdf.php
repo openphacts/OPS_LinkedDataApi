@@ -1,8 +1,8 @@
 <?php
 //the input data is in the $response variable in xml format
 //the output is put in $rdfData in NTriples format
-//Conversion example for InChI to CSID: 
-//Request: 
+//Conversion example for InChI to CSID:
+//Request:
 // /structure/inchi=InChI%3D1S%2FC9H8O4%2Fc1-6(10)13-8-5-3-2-4-7(8)9(11)12%2Fh2-5H%2C1H3%2C(H%2C11%2C12)
 //Good Response:
 //{"mol": "2157" , "message": "", "confidence":100}
@@ -11,7 +11,7 @@
 //<http://rdf.chemspider.com/2157> cs:inchi "1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)"
 //
 
-define('CHEMSPIDER_PREFIX', 'http://ops.rsc.org/OPS');
+define('CHEMSPIDER_PREFIX', 'http://chemistry.openphacts.org/OPS');
 
 //decode JSON
 $decodedResponse=json_decode($response);
@@ -35,7 +35,7 @@ $inputNode = $this->ConfigGraph->get_first_resource($this->ConfigGraph->getApiUr
 $unreservedParameters = $this->Request->getUnreservedParams();
 
 $paramName = $this->ConfigGraph->get_first_literal($inputNode, API.'label');//'inchi' or 'inchikey'
-$paramValue = $unreservedParameters[$paramName];                        
+$paramValue = $unreservedParameters[$paramName];
 
 //link the CSID to the inchi/inchikey value
 $this->DataGraph->add_literal_triple($fullCSID, $inputNode, $paramValue);
