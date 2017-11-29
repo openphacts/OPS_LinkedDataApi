@@ -11,7 +11,7 @@
 //<http://rdf.chemspider.com/2157> cs:inchi "1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)"
 //
 
-define('CHEMSPIDER_PREFIX', 'http://ops.rsc.org/OPS');
+define('CHEMSPIDER_PREFIX', 'http://chemistry.openphacts.org/OPS');
 
 //decode JSON
 $decodedResponse=json_decode($response);
