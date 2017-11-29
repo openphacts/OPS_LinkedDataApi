@@ -75,7 +75,7 @@
 	ops:rtb ?rtb;
 	ops:molweight ?molweight ;
 	ops:molformula ?molformula ;
-	void:inDataset <http://ops.rsc.org> .
+	void:inDataset <http://chemistry.openphacts.org> .
 ?ops_item skos:exactMatch ?chembl_compound_uri .
 ?chembl_compound_uri ?bNode1 ?mw_freebase ;
 	a ?mol_type;
@@ -113,7 +113,7 @@
 ";
 	api:where
 "
-{ GRAPH <http://ops.rsc.org> {
+{ GRAPH <http://chemistry.openphacts.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles.
 	?ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi.
 	?ocrs_compound_uri cheminf:CHEMINF_000399 ?inchiKey.

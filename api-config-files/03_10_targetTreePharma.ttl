@@ -107,7 +107,7 @@
 		?assay_uri chembl:hasTarget ?chembl_target .
 		?chembl_target a ?target_type .
 		OPTIONAL {
-			GRAPH <http://ops.rsc.org> {
+			GRAPH <http://chemistry.openphacts.org> {
 				?ocrs_compound skos:exactMatch ?chembl_compound .
 			}
 		}
@@ -308,7 +308,7 @@ chembl:targetConfScore api:name "target_conf_score";
         ops:inchikey ?inchi_key;
 	ops:molweight ?molweight ;
         ops:ro5_violations ?num_ro5_violations ;
-        void:inDataset <http://ops.rsc.org> .
+        void:inDataset <http://chemistry.openphacts.org> .
 ?protein skos:exactMatch ?cw_target .
 ?cw_target skos:prefLabel ?protein_name ;
         void:inDataset <http://www.conceptwiki.org> .
@@ -363,7 +363,7 @@ chembl:targetConfScore api:name "target_conf_score";
         }
 } UNION
 {
-        GRAPH <http://ops.rsc.org> {
+        GRAPH <http://chemistry.openphacts.org> {
                 ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                         cheminf:CHEMINF_000399 ?inchi_key;
                         cheminf:CHEMINF_000018 ?smiles .

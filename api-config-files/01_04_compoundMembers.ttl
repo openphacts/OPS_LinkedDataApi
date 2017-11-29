@@ -53,7 +53,7 @@
 GRAPH <http://www.ebi.ac.uk/chebi> {
         ?item rdfs:subClassOf|rdfs:subClassOf/owl:someValuesFrom ?child_node .
 }
-OPTIONAL { GRAPH <http://ops.rsc.org> {
+OPTIONAL { GRAPH <http://chemistry.openphacts.org> {
         ?ocrs_compound skos:exactMatch ?item
 } }
 OPTIONAL {

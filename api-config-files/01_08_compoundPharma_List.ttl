@@ -254,7 +254,7 @@ _:type api:name "target_type" ;
         UNION { ?db_compound_uri drugbank:drug-group/dcterms:title ?drugType . }
       }
 } UNION {
-      GRAPH <http://ops.rsc.org> {
+      GRAPH <http://chemistry.openphacts.org> {
 	?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
 		cheminf:CHEMINF_000396 ?inchi ;
 		cheminf:CHEMINF_000399 ?inchiKey .
@@ -350,7 +350,7 @@ _:type api:name "target_type" ;
 	ops:inchikey ?inchiKey;
 	ops:molweight ?molweight ;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://ops.rsc.org> .
+	void:inDataset <http://chemistry.openphacts.org> .
 ?chembl_compound_uri skos:exactMatch ?db_compound_uri ;
 	void:inDataset <http://www.ebi.ac.uk/chembl> .
 ?db_compound_uri drugbank:drugType ?drugType ;
@@ -376,7 +376,7 @@ _:type api:name "target_type" ;
 	UNION { ?db_compound_uri drugbank:drug-group/dcterms:title ?drugType . }
       }
 } UNION {
-      GRAPH <http://ops.rsc.org> {
+      GRAPH <http://chemistry.openphacts.org> {
         ?ocrs_compound_uri cheminf:CHEMINF_000018 ?smiles ;
                 cheminf:CHEMINF_000396 ?inchi ;
                 cheminf:CHEMINF_000399 ?inchiKey .
