@@ -10,7 +10,7 @@
 	api:sparqlEndpoint <http://alpha.openphacts.org:8890/sparql/> ;
 	api:contentNegotiation api:parameterBased ;
 	api:variable cheminf:CHEMINF_000399 ;
-	api:dataset <http://ops.rsc.org> ;
+	api:dataset <http://chemistry.openphacts.org> ;
 	api:description "An API configuration to return a chemspider URL corresponding to a chemical structure." ;
 	api:endpoint [
 		a api:ExternalHTTPService ;
@@ -24,7 +24,7 @@
 		api:viewer <#externalResponseViewer> ;
 		api:defaultViewer <#externalResponseViewer> . ] .
 
-<http://ops.rsc.org> api:label "OpenPHACTS Chemistry Registration Service" .
+<http://chemistry.openphacts.org> api:label "OpenPHACTS Chemistry Registration Service" .
 
 cheminf:CHEMINF_000399 api:name "inchi_key" ;
 	api:label "inchi_key";

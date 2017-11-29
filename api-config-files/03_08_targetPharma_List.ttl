@@ -276,7 +276,7 @@ _:type api:name "target_type" ;
 	}
 	OPTIONAL { ?item chembl:dataValidityComment ?comment}
 }
-OPTIONAL { GRAPH <http://ops.rsc.org> {
+OPTIONAL { GRAPH <http://chemistry.openphacts.org> {
 	?ocrs_compound skos:exactMatch ?chembl_compound .
         ?ocrs_compound cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
@@ -343,7 +343,7 @@ OPTIONAL { GRAPH <http://ops.rsc.org> {
 	ops:inchikey ?inchi_key;
 	ops:molweight ?molweight ;
         ops:ro5_violations ?num_ro5_violations ;
-	void:inDataset <http://ops.rsc.org> .
+	void:inDataset <http://chemistry.openphacts.org> .
 ?ims_cw_compound_uri skos:prefLabel ?compound_name ;
 	void:inDataset <http://www.conceptwiki.org> .
 " ;
@@ -393,7 +393,7 @@ GRAPH <http://www.ebi.ac.uk/chembl> {
 	OPTIONAL { ?item chembl:dataValidityComment ?comment}
 } } UNION
 {
-GRAPH <http://ops.rsc.org> {
+GRAPH <http://chemistry.openphacts.org> {
         ?ims_ocrs_compound_uri cheminf:CHEMINF_000396 ?inchi;
                 cheminf:CHEMINF_000399 ?inchi_key;
                 cheminf:CHEMINF_000018 ?smiles .
