@@ -118,7 +118,9 @@ If using a docker network then there is no need to `link` the containers but you
 
 The API includes a [Swagger](http://swagger.io/) definition in JSON
 for the exposed services, available at `/swagger` - for example
-http://localhost:8081/swagger
+http://localhost:8081/swagger. This file is in `api-config-files/swagger.json`.
+The swagger files for previous API versions can be found in `api-config-files/swagger/old/`.
+The swagger file for the current API can also be found in `api-config-files/swagger/current/`.
 
 Note that the hostname and port returned as `basePath` here
 depends on the URL the swagger file is accessed at. If you are
