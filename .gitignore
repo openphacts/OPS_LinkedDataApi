@@ -55,3 +55,4 @@ local
 docs/_site
 cache
 /logs/puelia.log
+/logs
