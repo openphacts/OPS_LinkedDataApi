@@ -63,7 +63,7 @@
 		api:variable wp:DirectedInteraction ;
 		api:variable wp:UndirectedInteraction ;
 		api:uriTemplate "/pathways/interactions/byEntity/count?uri={uri}" ;
-	        api:itemTemplate "http://www.wikipathways.org" ;
+	        api:itemTemplate "{uri}" ;
 		api:exampleRequestPath "/pathways/interactions/byEntity/count?uri=http%3A%2F%2Fidentifiers.org%2Fensembl%2FENSBTAG00000004037" ;
 		api:viewer <#pathwayInteractionsByEntityCountViewer> ;
 		api:defaultViewer <#pathwayInteractionsByEntityCountViewer> . ] .
@@ -131,7 +131,7 @@ _:interaction_type api:name "interaction_type" ;
 	api:name "pathwayInteractionsByEntityCountViewer" ;
 	api:template
 "
-<http://www.wikipathways.org> ops:interactions_count ?count .
+?ops_item ops:interactions_count ?count .
 ";
 	api:where
 "
